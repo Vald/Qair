@@ -1,4 +1,13 @@
 ############################################################################################################################
+07/06/2011 0.24
+
+Création de la version 0.24 ed Qair. Un seul changement, mais de taille :
+les valeurs réglementaires sont calculées avec des inégalités strictes.
+
+Une valeur est considérée comme dépassante si et seulement si sa valeur arrondie
+selon les règles définies par l'ADEME dépasse strictement un seuil.
+
+############################################################################################################################
 18/05/2011 0.23
 Création de la vesrion 0.23 de Qair. Un argument (XR6) est ajouté à la fonction Xai2R.
 Pour ceux qui utilisent encore une version antérieure d'XR, il faut mettre cet argument à TRUE. Pour les autres, les modifications apportée sont transparentes. Il suffit d'installer la vesrion 0.23 de Qair pour régler le problème.
