@@ -1,0 +1,11 @@
+Package: Qair
+Type: Package
+Title: Traitement de donnees, domaine de la qualite de l'air
+Version: 0.24
+Date: 2011-06-07
+Depends: chron
+Suggests: RODBC, RJDBC
+Author: Vladislav Navel
+Maintainer: Vladislav Navel <vnavel@yahoo.fr>
+Description: Ce package definit principalement deux types d'objet qui permettent, via les fonctions definies, de traiter les donnees de qualite de l'air de maniere temporelle et par rapport a des donnees de vent.  Les fonctions permettent de transformer des donnees d'une base temporelle a une autre, de calculer des profils (journaliers, hebdomadaires, mensuels, annuels) et des roses de pollution.  
+License: GPL

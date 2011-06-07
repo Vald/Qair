@@ -1,0 +1,61 @@
+<html><head><title>contient des donnees de pollution sur la rochelle. (France)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>larochelle(Qair)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   larochelle">
+<param name="keyword" value=" contient des donnees de pollution sur la rochelle. (France)">
+</object>
+
+
+<h2>contient des donnees de pollution sur la rochelle. (France)</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Les donnees concernees ont ete mesurees en 2007 sur les 3 stations d'Atmo Poitou-Charentes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(larochelle)</pre>
+
+
+<h3>Format</h3>
+
+<p>
+A data frame with 35040 observations on the following 8 variables.
+<dl>
+<dt><code>date</code></dt><dd>a chron - les dates des mesures, en quart-horaire</dd>
+<dt><code>O3_VER</code></dt><dd>a numeric vector - concentration d'ozone sur la station de Verdun.</dd>
+<dt><code>N2_VER</code></dt><dd>a numeric vector - concentration de dioxyde d'azote sur la station de Verdun. </dd>
+<dt><code>NO_VER</code></dt><dd>a numeric vector - concentration de monoxyde d'azote sur la station de Verdun. </dd>
+<dt><code>O3_VAU</code></dt><dd>a numeric vector - concentration d'ozone sur la station de Vaugoin. </dd>
+<dt><code>O3_AYT</code></dt><dd>a numeric vector - concentration d'ozone sur la station d'Aytre. </dd>
+<dt><code>DV_ATM</code></dt><dd>a numeric vector - direction de vents au siege d'Atmo Poitou-Charentes. </dd>
+<dt><code>VV_ATM</code></dt><dd>a numeric vector - vitesse de vents au siege d'Atmo Poitou-Charentes. </dd>
+</dl>
+
+<h3>Source</h3>
+
+<p>
+http://www.atmo-poitou-charentes.org
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(larochelle)
+plot(larochelle["07-01-01", "07-01-10"][grep("O3", names(larochelle), value=TRUE)], ask.leg=FALSE)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>Qair</em> version 0.16.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

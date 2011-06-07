@@ -1,0 +1,439 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HEAD></HEAD><HTML><BODY>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package Qair:  Contents">
+<param name="Local" value="00Index.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package Qair:  R objects">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Qair-package">
+<param name="Local" value="Qair-package.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="$<-.Qair">
+<param name="Local" value="z[.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="arcenciel">
+<param name="Local" value="couleurs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="as.data.frame.Qair">
+<param name="Local" value="as.data.frame.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="as.list.rose">
+<param name="Local" value="as.list.rose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="calcRose">
+<param name="Local" value="calcRose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="calcRose.Qair">
+<param name="Local" value="calcRose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="calcRose.rose">
+<param name="Local" value="calcRose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="calcRoseVent">
+<param name="Local" value="rosevent.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="chaud">
+<param name="Local" value="couleurs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="echelle">
+<param name="Local" value="echelle.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="froid">
+<param name="Local" value="couleurs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="intervalles">
+<param name="Local" value="intervalles.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="intervalles.rose">
+<param name="Local" value="intervalles.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="is.na.Qair">
+<param name="Local" value="is.na.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="larochelle">
+<param name="Local" value="larochelle.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lines.Qair">
+<param name="Local" value="plot.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="merge.Qair">
+<param name="Local" value="merge.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="mesures">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="mesures.Qair">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="mesures.rose">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="names.Qair">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="names.rose">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.Qair">
+<param name="Local" value="plot.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.rose">
+<param name="Local" value="plot.rose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="points.Qair">
+<param name="Local" value="plot.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.rose">
+<param name="Local" value="print.rose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Qair">
+<param name="Local" value="Qair-package.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rosepol">
+<param name="Local" value="plot.rose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rosepol.Qair">
+<param name="Local" value="plot.rose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rosevent">
+<param name="Local" value="rosevent.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rosevent.Qair">
+<param name="Local" value="rosevent.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="stations">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="stations.Qair">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="stations.rose">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toAn">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toAn.hebdo">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toAn.heure">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toAn.jour">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toAn.mois">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toAn.Qair">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toAn.qh">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toHebdo">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toHebdo.heure">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toHebdo.jour">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toHebdo.Qair">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toHebdo.qh">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toHeure">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toHeure.Qair">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toHeure.qh">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toJour">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toJour.heure">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toJour.jour">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toJour.Qair">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toJour.qh">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toMois">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toMois.heure">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toMois.jour">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toMois.Qair">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toMois.qh">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPAn">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPAn.heure">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPAn.jour">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPAn.mois">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPAn.Qair">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPAn.qh">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPHebdo">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPHebdo.heure">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPHebdo.jour">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPHebdo.Qair">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPHebdo.qh">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPJour">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPJour.heure">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPJour.Qair">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPJour.qh">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPMois">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPMois.heure">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPMois.jour">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPMois.Qair">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="toPMois.qh">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="unites">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="unites.Qair">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="unites.rose">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Xair2R">
+<param name="Local" value="Xair2R.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="[.Qair">
+<param name="Local" value="z[.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="[.rose">
+<param name="Local" value="z[.Qair.html">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package Qair:  Titles">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Acces aus attributs d'objets 'Qair' et/ou 'rose'. ">
+<param name="Local" value="mesures.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Acces aux intervalles d'une rose ">
+<param name="Local" value="intervalles.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Affecter une couleur selon une echelle de valeur. ">
+<param name="Local" value="echelle.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Affichage de roses de pollution ">
+<param name="Local" value="plot.rose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Affichage de roses de vent ">
+<param name="Local" value="rosevent.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Affiche les donnees d'objet de la classe 'Qair' ">
+<param name="Local" value="plot.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Calcul sur les donnees pour obtenir des roses de pollution  ">
+<param name="Local" value="calcRose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Calculer des profils moyens (ou autre) journaliers, mensuels, annuels ">
+<param name="Local" value="toPAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="contient des donnees de pollution sur la rochelle. (France) ">
+<param name="Local" value="larochelle.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Convertir des donnees 'Qair' d'une base temporelle a une autre. ">
+<param name="Local" value="toAn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Divers fonctions liees aux couleurs ">
+<param name="Local" value="couleurs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Extract or replace part of 'Qair', extract part of 'rose' ">
+<param name="Local" value="z[.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Extraire des donnees d'une base Xair. ">
+<param name="Local" value="Xair2R.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Merging 2 'Qair' objects ">
+<param name="Local" value="merge.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Not Available / Missing values ">
+<param name="Local" value="is.na.Qair.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Printing 'rose' ">
+<param name="Local" value="print.rose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Traitement de donnees, domaine de la qualite de l'air ">
+<param name="Local" value="Qair-package.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Transformation d'un objet 'rose' en objet 'list' ">
+<param name="Local" value="as.list.rose.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Transformation d'un objet Qair en objet data.frame ">
+<param name="Local" value="as.data.frame.Qair.html">
+</OBJECT>
+</UL>
+</UL>
+</BODY></HTML>
