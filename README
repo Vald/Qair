@@ -1,16 +1,4 @@
 ############################################################################################################################
-15/06/2011 0.25
-
-Création de la version 0.25 de Qair
-
-Correction d'un bug  : sous certaines conditions (assez rares) la fonction
-round.a n'effectuait pas l'arrondi selon les règles définies par l'ADEME (problème
-de représentations internes à R 'incompatibles' entre les numeric et les integer).
-
-Le problème était susceptible d'apparaître à l'utilisation des différentes fonctions
-'toHeure', 'toJour', 'toPJour' etc. en plus de la fonction round.a.
-
-############################################################################################################################
 07/06/2011 0.24
 
 Création de la version 0.24 ed Qair. Un seul changement, mais de taille :

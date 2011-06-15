@@ -19,9 +19,10 @@ function(donnees, pc, prec, FUN="mean", nbIndiv, ...){
 	if(any(!is.na(prec))){
 		prec <- c(NA, prec)
 		whichPrec <- which(!is.na(prec))
-		conversion[whichPrec] <- mapply (
-					round.a, conversion[whichPrec],
-		       			as.list (prec[whichPrec]), SIMPLIFY=FALSE)
+		conversion[whichPrec] <- ifelse(
+			mapply("*", conversion[whichPrec], as.list(10^prec[whichPrec]), SIMPLIFY=TRUE) %% 1 == 0.5,
+			mapply("/", lapply(mapply("*", conversion[whichPrec], as.list(10^prec[whichPrec]), SIMPLIFY=FALSE), ceiling), as.list(10^prec[whichPrec])),
+			mapply(round, conversion[whichPrec], as.list(prec[whichPrec])))
 		}
 #	attributes(conversion)$names <- attributesTemp$names
 #	attributes(conversion)$mesure <- attributesTemp$mesure
