@@ -22,10 +22,9 @@ function(donnees, pc=0.75, prec=NA, FUN="mean", heures, ...){
 	if(any(!is.na(prec))){
 		prec <- c(NA, prec)
 		whichPrec <- which(!is.na(prec))
-		profil[whichPrec] <- ifelse(
-			mapply("*", profil[whichPrec], as.list(10^prec[whichPrec]), SIMPLIFY=TRUE) %% 1 == 0.5,
-			mapply("/", lapply(mapply("*", profil[whichPrec], as.list(10^prec[whichPrec]), SIMPLIFY=FALSE), ceiling), as.list(10^prec[whichPrec])),
-			mapply(round, profil[whichPrec], as.list(prec[whichPrec])))
+		profil[whichPrec] <- mapply (
+					round.a, profil[whichPrec],
+		       			as.list (prec[whichPrec]), SIMPLIFY=FALSE)
 		}
 	profil$date <- chron(times=profil$date)
 	temp <- profil
