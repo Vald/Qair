@@ -1,0 +1,111 @@
+<html><head><title>Merging 2 'Qair' objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>merge.Qair(Qair)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   merge.Qair">
+<param name="keyword" value=" Merging 2 'Qair' objects">
+</object>
+
+
+<h2>Merging 2 'Qair' objects</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Permet de concatener deux objets de type 'Qair' dont le sous-type est identique.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'Qair':
+merge(x, y, by = "date", all = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+Un objet de type 'Qair' </td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+Un objet de type 'Qair' </td></tr>
+<tr valign="top"><td><code>by</code></td>
+<td>
+Noms des colonnes, sous forme de vecteur de 'character', presentent dans les 2 objets et sur lesquelles il faut realiser la fusion. (cf. details) </td></tr>
+<tr valign="top"><td><code>all</code></td>
+<td>
+logical, precise si lorsqu'une date apparait dans un seul des 2 objets, elle doit etre conservee ou non. (T : elle est conservee, F : elle est supprimee) </td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+Autres arguments a passer a la fonction <code><a onclick="findlink('base', 'merge.html')" style="text-decoration: underline; color: blue; cursor: hand">merge</a></code>. </td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+Les 2 objets 'Qair' a fusionner doivent necessairement avoir le meme sous-type, sans quoi une erreur est generee. (sous-type 'heure', 'jour', 'mois', etc.)
+Seule la colonne 'date' est necessaire pour la realisation de la fusion. Neanmoins, lorsque l'utilisateur souhaite fusionner 2 'Qair' couvrant des periodes distinctes pour un meme polluant, il est possible de le rajouter la nom du polluant dans l'argument 'by'.
+Pour de plus amples informations sur le fonctionnement de la fonction sous-jacente : <code><a onclick="findlink('base', 'merge.html')" style="text-decoration: underline; color: blue; cursor: hand">merge</a></code>
+Bien entendu, les attributes de x et y sont egalements fusionnies, si besoin.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+Renvoie un objet 'Qair' regroupant les informations contenues dans x et y et de meme sous-type que x et y.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a onclick="findlink('base', 'merge.html')" style="text-decoration: underline; color: blue; cursor: hand">merge</a></code>,<code><a href="Xair2R.html">Xair2R</a></code>,<code><a href="z[.Qair.html">[.Qair</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  data(larochelle)
+
+  # les donnees d'ozone sont separees des donnees de NOx
+  nox &lt;- larochelle[grep("N", names(larochelle))]
+  ozone &lt;- larochelle[grep("O3", names(larochelle))]
+
+  # les donnees du mois de janvier sont conservees pour les nox, et celles du mois de juin pour l'ozone
+  nox &lt;- nox["07-01-01", "07-02-01"]
+  ozone &lt;- ozone["07-06-01", "07-07-01"]
+
+  # affichage des donnees
+  par(mfrow=c(1, 2))
+  plot(nox, ask.leg=FALSE);plot(ozone, ask.leg=FALSE)
+  dev.off()
+
+  # les donnees sont collees ensemble et affichees
+  plot(merge(nox, ozone), ask.leg=FALSE)
+
+  # 1
+  merge(toJour(nox), toJour(ozone))
+</pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>Qair</em> version 0.16.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

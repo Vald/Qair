@@ -1,0 +1,99 @@
+<html><head><title>Calcul sur les donnees pour obtenir des roses de pollution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>calcRose(Qair)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   calcRose">
+<param name="keyword" value="R:   calcRose.Qair">
+<param name="keyword" value="R:   calcRose.rose">
+<param name="keyword" value=" Calcul sur les donnees pour obtenir des roses de pollution">
+</object>
+
+
+<h2>Calcul sur les donnees pour obtenir des roses de pollution</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Permet de realiser les calculs necessaires a la realisation de roses de pollution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+calcRose(donnees, ...)
+## S3 method for class 'Qair':
+calcRose(donnees, formula, breaksVent = 0:36 * 10 - 5, FUN, ...)
+## S3 method for class 'rose':
+calcRose(donnees, FUN, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>donnees</code></td>
+<td>
+Un element de type 'Qair' contenant une colonne avec des valeurs de vitesses de vent et une colonne avec des valeurs de directions de vent. 
+Ou un element de type 'rose' non encore aggrege. (cf. details).  </td></tr>
+<tr valign="top"><td><code>formula</code></td>
+<td>
+de la forme ~dv+vv avec dv le nom de la colonne des directions de vent et vv celui de la colonne des vitesses de vent. </td></tr>
+<tr valign="top"><td><code>breaksVent</code></td>
+<td>
+un vecteur d'angles (en degre) correspondant aux separations entre les secteurs souhaites sur la rose de pollution. Les valeurs entrees sont automatiquement ramenees entre 0 et 360 degre. </td></tr>
+<tr valign="top"><td><code>FUN</code></td>
+<td>
+la fonction a utiliser pour l'aggregation des donnees. Si 'FUN' n'est pas precisee, la fonction 'mean' est appliquee par defaut avec l'argument na.rm=T. </td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+Permet de preciser des arguments specifiques a la fonction FUN. </td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+La fonction 'calcRose' appliquee a un objet de type 'rose' (cette utilisation est uniquement accessible par les programmes) ou a un objet de type 'Qair' renvoie un objet de type 'rose' aggrege et directement representable via la fonction <code><a href="plot.rose.html">plot.rose</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+Dans le cas d'un objet 'Qair' renvoie un objet 'rose', aggrege.
+Dans le cas d'un objet 'rose' renvoie un objet 'rose', aggrege. (inaccessible)</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="plot.rose.html">plot.rose</a></code>, <code><a href="as.list.rose.html">as.list.rose</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  data(larochelle)
+
+  # 1
+  calcRose(larochelle, ~DV_ATM+VV_ATM)
+  # 2
+  calcRose(larochelle, ~DV_ATM+VV_ATM, FUN="mean", na.rm=TRUE)
+  # 3
+  as.list(calcRose(larochelle, ~DV_ATM+VV_ATM))
+
+  calcRose(larochelle, ~DV_ATM+VV_ATM, breaksVent=c(0, 90, 180, 270), FUN="toPJour", na.rm=TRUE)
+  # 4
+  as.list(calcRose(larochelle, ~DV_ATM+VV_ATM, breaksVent=c(0, 90, 180, 270), FUN="toPJour", na.rm=TRUE))
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>Qair</em> version 0.16.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

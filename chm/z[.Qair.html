@@ -1,0 +1,103 @@
+<html><head><title>Extract or replace part of 'Qair', extract part of 'rose'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>[.Qair(Qair)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   [.Qair">
+<param name="keyword" value="R:   $<-.Qair">
+<param name="keyword" value="R:   [.rose">
+<param name="keyword" value=" Extract or replace part of 'Qair' extract part of 'rose'">
+</object>
+
+
+<h2>Extract or replace part of 'Qair' extract part of 'rose'</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Permet d'acceder a des sous-groupes d'un objet 'Qair' ou 'rose, et de les remplacer dans le cas des objets 'Qair'.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'Qair':
+x[i, j, drop]
+\method{$&lt;-}{Qair}(x, name, value)
+
+## S3 method for class 'rose':
+x[i, j, drop]
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+objet de classe 'Qair' ou de classe 'rose' </td></tr>
+<tr valign="top"><td><code>i</code></td>
+<td>
+voir details </td></tr>
+<tr valign="top"><td><code>j</code></td>
+<td>
+voir details </td></tr>
+<tr valign="top"><td><code>drop</code></td>
+<td>
+Uniquement pour la compatibilite des methodes, ne pas utiliser. </td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+voir details </td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+voir details </td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+Pour Les objets de classe 'Qair', les methodes d'extractions fontcionnent comme pour les data.frame. (cf. <code><a onclick="findlink('base', 'Extract.data.frame.html')" style="text-decoration: underline; color: blue; cursor: hand">[.data.frame</a></code>)
+Pour les objets de classe 'rose', la methode '[' permet d'acceder aux elements de objets 'Qair' qu'elle copntient. Appliquer '[' a un rose revient a l'appliquer a chacun des secteurs qui la compose.
+</p>
+<p>
+Une posssibilite d'extraction suppplementaire a ete ajoutee : elle permet de faire une selection par date. Ainsi il est possible d'indiquer une date de  debut en donnant la valeur a 'i' et une date de  fin en donnant la valeur a j.
+Les dates sont indiquees sous le format suivant "y-m-d" s'il la date est en jour, c("y-m-d", "h:m:s") pour prendreen compte les heures.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+Un objet dans la meme classe que celui a qui est applique la selection.
+La colonne 'date' fait systematiquement partie de l'element extrait.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="merge.Qair.html">merge.Qair</a></code>, <code><a onclick="findlink('base', 'Extract.data.frame.html')" style="text-decoration: underline; color: blue; cursor: hand">[.data.frame</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+</pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>Qair</em> version 0.16.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

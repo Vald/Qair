@@ -1,0 +1,76 @@
+<html><head><title>Printing 'rose'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>print.rose(Qair)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   print.rose">
+<param name="keyword" value=" Printing 'rose'">
+</object>
+
+
+<h2>Printing 'rose'</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Print a 'rose'.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'rose':
+print(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+un objet de classe 'rose' dont on veut afficher les caracteristiques principale. </td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+Arguments to be passed to or from other methods. </td></tr>
+</table>
+
+<h3>Note</h3>
+
+<p>
+Si l'utilisateur souhaite acceder au contenu reel de la 'rose', il suffit d'utiliser la comande as.list(rose).
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a onclick="findlink('base', 'print.html')" style="text-decoration: underline; color: blue; cursor: hand">print</a></code>, <code><a href="as.list.rose.html">as.list.rose</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  data(larochelle)
+  print(calcRose(larochelle, ~DV_ATM+VV_ATM))
+</pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>Qair</em> version 0.16.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

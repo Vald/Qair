@@ -1,0 +1,90 @@
+<html><head><title>Extraire des donnees d'une base Xair.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>Xair2R(Qair)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   Xair2R">
+<param name="keyword" value=" Extraire des donnees d'une base Xair.">
+</object>
+
+
+<h2>Extraire des donnees d'une base Xair.</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Dans le domaine de la qualite de l'air, les donnees sont souvent stockees dans une base Xair. Cette fonction permet d'y acceder simplement.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Xair2R(polluants, dated, datef, dt=c("qh", "heure", "jour", "mois", "an"), merging, codeV = c("A", "R", "O", "W"), dsn=NULL, uid=NULL, pwd=NULL, brute=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>polluants</code></td>
+<td>
+Noms des polluants a aller chercher dans la base. </td></tr>
+<tr valign="top"><td><code>dated</code></td>
+<td>
+date de debut au format "y-m-d" </td></tr>
+<tr valign="top"><td><code>datef</code></td>
+<td>
+date de fin au format "y-m-d" </td></tr>
+<tr valign="top"><td><code>dt</code></td>
+<td>
+Base temporelle des donnees a extraire. </td></tr>
+<tr valign="top"><td><code>merging</code></td>
+<td>
+Un 'Qair' deja existant auquel ajouter les nouvelles donnees </td></tr>
+<tr valign="top"><td><code>codeV</code></td>
+<td>
+Vecteur de 'character' indiquant les codes de validation de Xair pour lesquels les donnees doivent etre rapatriees. </td></tr>
+<tr valign="top"><td><code>dsn</code></td>
+<td>
+Nom de la base de donnees Xair telle que definie dans le pilote ODBC. Si NULL, la fonction demandera a chaque premiere utilisation
+une valeur, puis la conservera dans options('Xair.dsn'). </td></tr>
+<tr valign="top"><td><code>uid</code></td>
+<td>
+Identifiant a utiliser la connection a Xair. Si NULL, la fonction demandera a chaque premiere utilisation une valeur, 
+puis la conservera dans options('Xair.uid'). </td></tr>
+<tr valign="top"><td><code>pwd</code></td>
+<td>
+Mot de passe pour la connection a Xair. Si NULL, la fonction demandera a chaque premiere utilisation une valeur, 
+puis la conservera dans options('Xair.pwd'). </td></tr>
+<tr valign="top"><td><code>brute</code></td>
+<td>
+'logical' indiquant si les donnees a charger son les donnees brutes ou les donnees validees. (n'est utilise que 
+pour les donnees qh, horaires et journalieres. </td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+Renvoie un objet de type 'Qair'.</p>
+
+<h3>Examples</h3>
+
+<pre>
+#  # ne fonctionne que si une 'data source name' appelee BaseN correspond a une base Xair, et 
+#  # si des mesures dont le nom court de mesure est l'un de c("O3_VAU", "O3_VER", "O3_AYT"), sont definies dans la base. 
+#  donnees &lt;- Xair2R(c("O3_VER", "N2_VER", "NO_VER", "O3_VAU", "O3_AYT", "DV_ATM", "VV_ATM"), "07-01-01", "07-12-31", "qh")  
+#  head(donnees) 
+#  mesures(donnees) 
+#  unites(donnees) 
+#  plot(donnees) 
+</pre>
+
+
+
+<hr><div align="center">[Package <em>Qair</em> version 0.16.4 <a href="00Index.html">Index]</a></div>
+
+</body></html>

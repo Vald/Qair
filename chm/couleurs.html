@@ -1,0 +1,64 @@
+<html><head><title>Divers fonctions liees aux couleurs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>couleurs(Qair)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   arcenciel">
+<param name="keyword" value="R:   chaud">
+<param name="keyword" value="R:   froid">
+<param name="keyword" value=" Divers fonctions liees aux couleurs">
+</object>
+
+
+<h2>Divers fonctions liees aux couleurs</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Chaque fonction retourne des details dans un type de ton.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+chaud(n = 100, inverted = FALSE)
+froid(n = 100, inverted = FALSE)
+arcenciel(n = 101, inverted = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+nombre de couleurs souhaitees. (entre 1 et 100, 101 pour la fonction arcenciel) </td></tr>
+<tr valign="top"><td><code>inverted</code></td>
+<td>
+logical. cf value. </td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+Renvoie un vecteur de couleurs. Si inverted == F, les plus pales sont renvoyees au debut, si inverted == T, les plus sombres sont renvoyees au debut.</p>
+
+<h3>Examples</h3>
+
+<pre>
+  par(mfrow=c(1, 2))
+  plot(NA, xlim=c(0, 100), ylim=c(0, 100))
+  abline(v=0:100, col=c(froid(50, TRUE), "white", chaud(50)), lwd=5)
+  plot(NA, xlim=c(0, 100), ylim=c(0, 100))
+  abline(h=0:100, col=arcenciel(101), lwd=5)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>Qair</em> version 0.16.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>
