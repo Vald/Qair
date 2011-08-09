@@ -1,8 +1,8 @@
 Package: Qair
 Type: Package
 Title: Traitement de donnees, domaine de la qualite de l'air
-Version: 0.25
-Date: 2011-06-15
+Version: 0.25.2
+Date: 2011-08-05
 Depends: chron
 Suggests: RODBC, RJDBC
 Author: Vladislav Navel

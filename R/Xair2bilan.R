@@ -9,16 +9,27 @@ function(dated, datef, seuils, parAn=TRUE, fichier=TRUE, interactive.seuils=FALS
 	base <- data.frame(nopol=c("01", "03", "04", "08", "12", "24", "AA", "AC", "AH", "AJ", "P6", "V4", "39"), type=c("SO2", "NO2", "CO", "O3", "Nox", "PM10", "Pb", "Ni", "As", "Cd", "BaP", "C6H6", "PM2.5"))
 	query <- paste("select NOM_COURT_MES, NOPOL FROM MESURE WHERE NOM_COURT_MES IN ('", paste(names(donneesCompletes)[-1], collapse="', '"),"')", sep="")
 	if(.Platform$OS.type=="windows"){
-		conxair <- odbcConnect(getOption("Xair.dsn"), uid = getOption("Xair.uid"), pwd = getOption("Xair.pwd"), case = "nochange", believeNRows = TRUE)
-		type <- sqlQuery(conxair, query, as.is=1:2)
-		odbcClose(conxair)
+		conxair <- odbcConnect (
+			getOption("Xair.dsn"),
+			uid = getOption("Xair.uid"), pwd = getOption("Xair.pwd"),
+			case = "nochange", believeNRows = TRUE)
+		type <- sqlQuery (conxair, query, as.is=1:2)
+		odbcClose (conxair)
 	}else if(.Platform$OS.type=="unix"){
-		drv <- JDBC("oracle.jdbc.driver.OracleDriver", "/usr/lib/jvm/java-6-openjdk/jre/lib/ext/ojdbc14.jar")
-		conxair <- try(dbConnect(drv, paste("jdbc:oracle:thin:@", getOption("Xair.host"), ":1521:", getOption("Xair.dsn"), sep=""), getOption("Xair.uid"), getOption("Xair.pwd"), identifer.quote="'"))
+		drv <- JDBC ("oracle.jdbc.driver.OracleDriver",
+			"/usr/lib/jvm/java-6-openjdk/jre/lib/ext/ojdbc14.jar")
+		conxair <- try (dbConnect (drv,
+			paste (
+				"jdbc:oracle:thin:@", getOption("Xair.host"),
+				":1521:", getOption("Xair.dsn"), sep=""),
+			getOption("Xair.uid"),
+			getOption("Xair.pwd"), identifer.quote="'") )
 		type <- dbGetQuery(conxair, query)
-		for(i in 1:length(type))
+		for(i in 1:length(type) )
 			type[[i]] <- as.character(type[[i]])
-	}else{
+		dbDisconnect (conxair)
+		rm (drv)
+	} else {
 		stop("plateforme non-reconnue")
 		}
 	type <- type$NOPOL[match(names(donneesCompletes)[-1], type$NOM_COURT_MES)]

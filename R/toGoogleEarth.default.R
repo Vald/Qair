@@ -3,6 +3,8 @@ function(x, file, ..., description=NULL, picto=NULL, maxi=NULL, cols = colorRamp
 leg.cex=1, leg.width=150, leg.bg='white'){
 	longitude<- x$longitude
 	latitude <- x$latitude
+	if (length (cote) == 1) cote <- rep (cote, length (x$longitude) )
+	if (length (cote) != length (x$longitude) ) stop ("Longueur de 'cote' inappropriée.")
 	# coordonnees : en degrés décimaux
 	# extension du fichier : ".kml"
 	if(is.null(description))description <- rep(NA, length(longitude))
@@ -53,7 +55,7 @@ leg.cex=1, leg.width=150, leg.bg='white'){
 			cat("<Placemark>", file=file, append=TRUE, sep="")
 			cat("<styleUrl>#conc", ifelse(donnee > maxi, 100, round.a(donnee/maxi*100)), "</styleUrl><Polygon><extrude>1</extrude><altitudeMode>relativeToGround</altitudeMode><outerBoundaryIs><LinearRing><coordinates>\n", file=file, append=TRUE, sep="")
 			temp <- data.frame(longitude=rep(longitude[i], 4), latitude=rep(latitude[i], 4))
-			temp <- temp + data.frame(c(-1, 1, 1, -1)*cote, c(-1, -1, 1, 1)*cote)
+			temp <- temp + data.frame(c(-1, 1, 1, -1)*cote[i], c(-1, -1, 1, 1)*cote[i])
 			for(k in c(1, 2, 3, 4, 1))
 				cat(temp$longitude[k], ",", temp$latitude[k], ",", coeff*ifelse(is.na(donnee), 0, donnee) * 1/maxi*100, "\n", file=file, append=TRUE, sep="")
 			cat("</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>\n", file=file, append=TRUE, sep="")
