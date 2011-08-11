@@ -4,8 +4,8 @@ leg.cex=1, leg.width=150, leg.bg='white'){
 	longitude<- x$longitude
 	latitude <- x$latitude
 	if (length (cote) == 1) cote <- rep (cote, length (x$longitude) )
-	if (length (cote) != length (x$longitude) ) stop ("Longueur de 'cote' inappropriée.")
-	# coordonnees : en degrés décimaux
+	if (length (cote) != length (x$longitude) ) stop ("Longueur de 'cote' inappropriee.")
+	# coordonnees : en degres decimaux
 	# extension du fichier : ".kml"
 	if(is.null(description))description <- rep(NA, length(longitude))
 	
