@@ -75,7 +75,7 @@ function (agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
 	if (missing (agglos) ) {
 		query <- 'SELECT NOM_AGGLO FROM GROUPE_ATMO'
 		if(.Platform$OS.type=="windows") {
-			print (sqLQuery (conxair, query) )
+			print (sqlQuery (conxair, query) )
 			odbcClose(conxair)
 		} else if(.Platform$OS.type=="unix") {
 			print (dbGetQuery (conxair, query) )
@@ -100,7 +100,7 @@ function (agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
 
 
 	if(.Platform$OS.type=="windows") {
-		indices <- sqLQuery (conxair, query)
+		indices <- sqlQuery (conxair, query)
 	} else if(.Platform$OS.type=="unix") {
 		indices <- dbGetQuery (conxair, query)
 	}
