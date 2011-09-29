@@ -12,7 +12,7 @@ Traitement de donnees, domaine de la qualite de l'air
 \tabular{ll}{
 Package: \tab Qair\cr
 Type: \tab Package\cr
-Version: \tab 0.25.3\cr
+Version: \tab 0.26\cr
 Date: \tab 2011-08-11\cr2
 License: \tab GPL\cr
 }
