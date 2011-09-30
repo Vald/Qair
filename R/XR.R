@@ -252,8 +252,6 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 		}
 	}
 
-	print (q)
-
 	query <- sprintf ('%s %s', query, paste (q$tables, collapse=', ') )
 	q$tables <- NULL
 	if (length (q) > 0)
@@ -268,23 +266,45 @@ qh <- new_period (minutes=15)
 h <- new_period (hours=1)
 #---------------------------------
 
-# pour le test
-library (RJDBC)
-conn <- xrConnect()
-pattern <- c('VER', 'AYT')
-polluants <- 'NO2'
-reseaux <- campagnes <- stations <- NULL
-validated <- TRUE
-start <- as.POSIXct('2010-01-01', tz='UTC')
-end <- as.POSIXct('2010-12-31', tz='UTC')
-period <- 'h'
-collapse <- 'AND'
-search.fields <- 'IDENTIFIANT'
-valid.states <- c("A", "R", "O", "W")
-what <- 'both'
+	mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul) {
+		mesure <- identifiant
+		ncm <- unique (data[[grep ('NOM_COURT_MES', names (data))]])
+		data <- data[setdiff (names (data), c('NOM_COURT_MES') )]
+		
+		etats <- data[[grep ('ETAT', names (data))]]
+		data <- data[-grep ('ETAT', names (data))]
+		etats <- unlist (strsplit (etats, ''))
+
+		dates <- unique (data[[grep ('DATE', names (data))]])
+		data <- data[-grep ('DATE', names (data))]
+		tmp <- paste (rep (dates, each=length(data) ), names (data) )
+		tmp <- c(tmp, paste (as.character(as.POSIXct(dates[length(dates)]) + 
+						  switch (period, Q_M01=d, H_M01=d, J_M01=d, M_M01=m, A_M01=m)),
+				     period) )
+		dates <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
+
+		if (what %in% c('value', 'both') ) {
+			values <- c( t(data) )
+			values[!etats %in% valid.states] <- NA
+			values <- data.frame (values)
+			if (!XR6) values <- values*10^fmul
+			names (values) <- mesure
+		}
+		if (what == 'state') {
+			values <- data.frame (etats)
+			names (values) <- mesure
+		} else if (what == 'both') {
+			values <- data.frame (values, etats)
+			names (values) <- paste (mesure, c('value', 'state'), sep= '.')
+		}
+		values <- data.frame (dates, values)
+		attributes(values)$NOM_COURT_MES <- ncm
+		return (values)
+	}
+
 
 xrGetData <- function (conn, pattern=NULL, start, end,
-		       period = c('qh', 'h', 'd', 'm', 'y'),
+		       period = c('h', 'qh', 'd', 'm', 'y'),
 		       validated = TRUE, valid.states = c("A", "R", "O", "W"), what = c('value', 'state', 'both'),
 		       search.fields='IDENTIFIANT', campagnes = NULL, reseaux = NULL, stations = NULL, polluants = NULL,
 		       collapse = c('AND', 'OR'), XR6 = TRUE) {
@@ -293,33 +313,39 @@ xrGetData <- function (conn, pattern=NULL, start, end,
 	period <- match.arg (period)
 	what <- match.arg (what)
 
+	# pour permettre éventuellement d'entrer des chaines de caractères en start en end
+	#	on fait un petit cast
+	if (!is.POSIXt (start) ) start <- as.POSIXct (start, tz = 'UTC')
+	if (!is.POSIXt (end) ) end <- as.POSIXct (end, tz = 'UTC')
+
 	# recuperation des noms de mesures qu'il faut 
 	q <- list ()
 	mesures <- xrGetMesures(conn, pattern, search.fields,
-				campagnes, reseaux, stations, polluants,
-				'IDENTIFIANT', collapse)
-	q$mesures <- paste ("'", mesures$IDENTIFIANT, "'", sep='', collapse=', ')
+				campagnes, reseaux, stations, polluants, collapse=collapse)
+	q$mesures <- paste ("'", mesures$NOM_COURT_MES, "'", sep='', collapse=', ')
 
 	# données brutes ou pas ? Et quelle table aller taper ?
 	if(validated)
 		q$table <- switch (period,
-				 qh = 'JOURNALIER', h = 'JOURNALIER', j = 'JOURNALIER',
+				 qh = 'JOURNALIER', h = 'JOURNALIER', d = 'JOURNALIER',
 				 m = 'MOIS', y = 'MOIS') else {
 		if (period %in% c('m', 'y') )
 			warning ("Il n'y a pas de valeurs brutes pour les mois et les années (period in 'm', 'y').")
 		q$table <-  switch (period,
-				 qh = 'JOURNALIER', h = 'JOURNALIER', j = 'JOURNALIER',
+				 qh = 'JOURNALIER', h = 'JOURNALIER', d = 'JOURNALIER',
 				 m = 'MOIS', y = 'MOIS')
 	}
 
 	# quels champs faut-il rappatrier ? (dépend de la table déterminée juste avant)
 	#	Les champs de données et la date, et le nom_court_mes
-	q$fields <- dbListFields (conn, q$table)
-	q$fields <- lapply (c('DATE', switch (period, qh = 'Q', h = 'H', j = 'J', m = 'M', y = 'A')),
+	q$fields.l <- dbListFields (conn, q$table)
+	q$fields.l <- lapply (c('DATE', switch (period, qh = 'Q_', h = 'H_', d = 'J_', m = 'M_', y = 'A_')),
 			  grep, dbListFields (conn, q$table), value=TRUE)
-	q$fields <- unique (unlist (q$fields) )
-	q$fields <- c('NOM_COURT_MES', setdiff (q$fields, 'Q_ETATB') )
-	q$fields <- q$fields[!grepl ('PV_', q$fields)]
+	q$fields.l <- unique (unlist (q$fields.l) )
+	q$fields.l <- c('NOM_COURT_MES', setdiff (q$fields.l, 'Q_ETATB') )
+	q$fields.l <- unique (unlist (q$fields.l) )
+	q$fields.l <- q$fields.l[!grepl ('PV_', q$fields.l)]
+	q$fields <- q$felds.l
 
 	q$date <- grep ('DATE', q$fields, value=TRUE)
 	
@@ -332,7 +358,7 @@ xrGetData <- function (conn, pattern=NULL, start, end,
 	q$end	<- format (end, format = '%Y-%m-%d', tz='UTC')
 	q$end	<- sprintf ("TO_DATE('%s', 'YYYY-MM-DD')", q$end)
 
-	# la requete à proprement parler. C'est presque décevant :)
+	# la requete à proprement parler. C'est presque décevant tellement ça devient lisible :)
 	query <- sprintf ('SELECT %s FROM %s WHERE NOM_COURT_MES IN (%s) AND %s BETWEEN %s AND %s',
 			  q$fields, q$table, q$mesures, q$date, q$start, q$end)
 
@@ -340,55 +366,117 @@ xrGetData <- function (conn, pattern=NULL, start, end,
 	names (data)[2] <- 'DATE'
 
 	# mise en forme des données
-	period <- eval (parse (text = period) )	# period est évaluée au sens lubridate
+	q$period <- eval (parse (text = period) )	# period est évaluée au sens lubridate
+	q$periodb <- switch (period, qh = 'Q_M01',	# period est évaluée  de façon bidon pour mef.
+			    h = 'H_M01', d = 'J_M01', m = 'M_M01', y = 'A_M01')
 
 	data <- split (data, data$NOM_COURT_MES)
 
-	mef.mesure <- function(data, period, valid.states, what) {
-		mesure <- unique (data[[grep ('NOM_COURT_MES', names (data))]])
-		data <- data[-grep ('NOM_COURT_MES', names (data))]
-		
-		etats <- data[[grep ('ETAT', names (data))]]
-		data <- data[-grep ('ETAT', names (data))]
-		etats <- unlist (strsplit (etats, ''))
-
-		dates <- unique (data[[grep ('DATE', names (data))]])
-		data <- data[-grep ('DATE', names (data))]
-		dates <- data.frame (
-			start=rep (as.POSIXct(dates, tz='UTC'), each=length(data) ) + period * 0:(length(data)-1),
-			end=rep (as.POSIXct(dates, tz='UTC'), each=length(data) ) + period * 1:(length(data)))
-
-		if (what %in% c('value', 'both') ) {
-			values <- c( t(data) )
-			values[!etats %in% valid.states] <- NA
-			values <- data.frame (values)
-			names (values) <- mesure
-		}
-		if (what == 'state') {
-			values <- data.frame (etats)
-			names (values) <- mesure
-		} else if (what == 'both') {
-			values <- data.frame (values, etats)
-			names (values) <- paste (mesure, c('value', 'state'), sep= '.')
-		}
-		return (data.frame (dates, values) )
-	}
+	data <- mapply (mef.mesure, data, mesures$IDENTIFIANT, fmul=mesures$FMUL, SIMPLIFY = FALSE,
+			MoreArgs = list (period=q$periodb, valid.states=valid.states, what=what, XR6=XR6))
+	ncm <- unlist (lapply (data, attr, 'NOM_COURT_MES') )
 	
-	result <- start + period * 1:((end-start)/as.duration (as.interval (period, start) ) )
-	result <- data.frame (start = result-period, end = result)
-	data <- lapply (data, mef.mesure, period=period, valid.states=valid.states, what=what)
+	tmp <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC')),
+		    as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC')),
+		    switch (period, qh='day', h='day', j='day', 'year') )
+	tmp <- format (tmp, '%Y-%m-%d')
+	tmp2 <- grep (switch (period, qh = 'Q_M', h = 'H_M', d = 'J_M', m = 'M_M', y = 'A_M'), 
+		      q$fields.l, value=TRUE)
+	tmp <- paste (rep (tmp, each=length(tmp2) ), tmp2)
+	tmp <- c(tmp, paste (as.character(as.POSIXct(tmp[length(tmp)]) + 
+					  switch (period, qh = d, h = d, d = d, m = m, y = m)),
+			     period) )
+	result <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
 	while (length (data) > 0) {
 		result <- merge (result, data[[1]], all.x=TRUE, all.y=FALSE, by=c('start', 'end') )
 		data[[1]] <- NULL
 	}
+	result$start <- result$end <- NULL
+	rm (data)
+	attributes(result)$NOM_COURT_MES <- ncm
 
+	attributes(result)$dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC')),
+		    as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC')) + 
+					  switch (period, qh = d, h = d, d = d, m = m, y = m),
+		    switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
+	attributes(result)$dates <- data.frame (start = attributes(result)$date[-length(attributes(result)$date)],
+						end = attributes(result)$dates[-1])
 
+	# recuperation des infos
+	q$stations <- xrGetStations (conn, pattern=mesures$NOM_COURT_SIT, search.fields='NOM_COURT_SIT')
+	q$stations <- q$stations[match(mesures$NOM_COURT_SIT, q$stations$NOM_COURT_SIT),]
+	q$polluants <- xrGetPolluants (conn, pattern=mesures$NOPOL, search.fields='NOPOL')
+	q$polluants <- q$polluants[match(mesures$NOPOL, q$polluants$NOPOL),]
+	
+	q$attr.mesures <- cbind (
+		q$stations[, c('LAMBERTX', 'LAMBERTY', 'NSIT', 'NINSEE', 'ISIT', 'NOM_COURT_SIT', 'IDENTIFIANT')],
+		q$polluants[, c('CCHIM', 'NCON', 'NOPOL')])
+	row.names (q$attr.mesures) <- attributes(result)$NOM_COURT_MES
+	
+	attributes(result)$mesures <- SpatialPointsDataFrame (
+		q$attr.mesures[,c('LAMBERTX', 'LAMBERTY')],
+		q$attr.mesures[,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
+		proj4string = CRS('+init=epsg:27572') )
 
+	class(result) <- c('TimeIntervalDataFrame', 'data.frame')
+	attributes(result)$period <- q$period
+	return (result)
+}
 
+print.TimeIntervalDataFrame <- function (x, ...) {
+	to.print <- data.frame (attributes(x)$dates, unclass (x) )
+	to.print <- data.frame (lapply (to.print, function(x) factor(as.character(x) ) ) )
+
+	to.print.tmp <- attributes(x)$mesures
+	to.print.tmp <- data.frame (start='', end=c('', names(to.print.tmp)),
+				    t(data.frame (rep ('', nrow(to.print.tmp) ), to.print.tmp@data) ) )
+	rownames (to.print.tmp) <- NULL
+	to.print <- rbind (to.print, to.print.tmp)
+
+	to.print.tmp <- coordinates(attributes(x)$mesures)
+	to.print.tmp <- data.frame (start = '',
+				    end = c('', colnames(to.print.tmp) ),
+				    t(data.frame (rep('', nrow(to.print.tmp) ), to.print.tmp) ) )
+	rownames (to.print.tmp) <- NULL
+	colnames (to.print.tmp) <- names (to.print)
+	to.print <- rbind (to.print, to.print.tmp)
+
+	print (to.print)
 }
 
 
+Xair2R <- function (polluants, dated, datef, dt = c("qh", "heure", "jour", "mois", "an"),
+		    merging, codeV=c("A", "R", "O", "W"),
+		    dsn=NULL, uid=NULL, pwd=NULL, brute=FALSE,
+		    reseaux=NULL, stations=NULL, campagnes=NULL,
+		    host=NULL, keep.state=FALSE, XR6=TRUE)
+{
+	warning ("La fonction Xair2R est obsolète. il est préférable d'utiliser la fonction xrGetData.")
 
+	conn <- xrConnect(dsn=dsn, uid=uid, pwd=pwd, host=host)
+	result <- xrGetData (conn, pattern = polluants, start = dated, end = datef,
+			     period = switch (dt, qh='qh', heure='h', jour='d', mois='m', an='y'),
+			     validated = !brute, valid.states = codeV, what = ifelse(keep.state, 'both', 'value'),
+			     campagnes = campagnes, reseaux = reseaux, stations = stations, XR6 = XR6)
+	dbDisconnect (conn)
+	return (result)
+}
 
+# library (maptools)
+# library (rgdal)
+# 
+# conn <- xrConnect()
+# test <- xrGetData (conn, c('N2_VER', 'N2_VAU'), '2010-01-01', '2011-02-02', period='m')
+# dbDisconnect (conn)
 
+library (maptools)
+library (RJDBC)
+library (Qair)
+
+trace (mef.mesure, at=1:length (body(mef.mesure)) )
+system.time (test <- Xair2R (c('N2_VER', 'N2_VAU'), '2000-01-01', '2010-12-31', 'heure'))
+untrace (mef.mesure)
+
+rm (Xair2R)
+system.time (test <- Xair2R (c('N2_VER', 'N2_VAU'), '2000-01-01', '2010-12-31', 'heure'))
 
