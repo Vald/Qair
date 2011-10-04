@@ -260,12 +260,6 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	unique (xrGetQuery (conn, query) )
 }
 
-# à déplacer dans un fichier zzz.R
-library (lubridate)
-qh <- new_period (minutes=15)
-h <- new_period (hours=1)
-#---------------------------------
-
 	mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul) {
 		mesure <- identifiant
 		ncm <- unique (data[[grep ('NOM_COURT_MES', names (data))]])
@@ -303,7 +297,7 @@ h <- new_period (hours=1)
 	}
 
 
-xrGetData <- function (conn, pattern=NULL, start, end,
+xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		       period = c('h', 'qh', 'd', 'm', 'y'),
 		       validated = TRUE, valid.states = c("A", "R", "O", "W"), what = c('value', 'state', 'both'),
 		       search.fields='IDENTIFIANT', campagnes = NULL, reseaux = NULL, stations = NULL, polluants = NULL,
@@ -393,14 +387,14 @@ xrGetData <- function (conn, pattern=NULL, start, end,
 	}
 	result$start <- result$end <- NULL
 	rm (data)
-	attributes(result)$NOM_COURT_MES <- ncm
-
-	attributes(result)$dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC')),
-		    as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC')) + 
-					  switch (period, qh = d, h = d, d = d, m = m, y = m),
-		    switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
-	attributes(result)$dates <- data.frame (start = attributes(result)$date[-length(attributes(result)$date)],
-						end = attributes(result)$dates[-1])
+	## si on ne garde pas les Time*DataFrame
+	#         attributes(result)$NOM_COURT_MES <- ncm
+	#         attributes(result)$dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC')),
+	#                     as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC')) + 
+	#                                           switch (period, qh = d, h = d, d = d, m = m, y = m),
+	#                     switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
+	#         attributes(result)$dates <- data.frame (start = attributes(result)$date[-length(attributes(result)$date)],
+	#                                                 end = attributes(result)$dates[-1])
 
 	# recuperation des infos
 	q$stations <- xrGetStations (conn, pattern=mesures$NOM_COURT_SIT, search.fields='NOM_COURT_SIT')
@@ -413,36 +407,57 @@ xrGetData <- function (conn, pattern=NULL, start, end,
 		q$polluants[, c('CCHIM', 'NCON', 'NOPOL')])
 	row.names (q$attr.mesures) <- attributes(result)$NOM_COURT_MES
 	
-	attributes(result)$mesures <- SpatialPointsDataFrame (
-		q$attr.mesures[,c('LAMBERTX', 'LAMBERTY')],
-		q$attr.mesures[,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
-		proj4string = CRS('+init=epsg:27572') )
+	## si on ne garde pas les Time*DataFrame
+	#         attributes(result)$mesures <- SpatialPointsDataFrame (
+	#                 q$attr.mesures[,c('LAMBERTX', 'LAMBERTY')],
+	#                 q$attr.mesures[,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
+	#                 proj4string = CRS('+init=epsg:27572') )
+	# 
+	#         class(result) <- c('TimeIntervalDataFrame', 'data.frame')
+	#         attributes(result)$period <- q$period
 
-	class(result) <- c('TimeIntervalDataFrame', 'data.frame')
-	attributes(result)$period <- q$period
+	for (i in 1:length(result) )
+		attr(result[[i]], 'station') <- SpatialPointsDataFrame (
+			q$attr.mesures[i,c('LAMBERTX', 'LAMBERTY')],
+			q$attr.mesures[i,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
+			proj4string = CRS('+init=epsg:27572') )
+
+	
+	dates <- seq (	as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
+			as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC') + 
+				switch (period, qh = d, h = d, d = d, m = m, y = m),
+			switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
+
+	result <- new('TimeIntervalDataFrame', start=dates[-length(dates)], end=dates[-1], timezone='UTC',
+		      data=result)
+
+
 	return (result)
 }
 
-print.TimeIntervalDataFrame <- function (x, ...) {
-	to.print <- data.frame (attributes(x)$dates, unclass (x) )
-	to.print <- data.frame (lapply (to.print, function(x) factor(as.character(x) ) ) )
-
-	to.print.tmp <- attributes(x)$mesures
-	to.print.tmp <- data.frame (start='', end=c('', names(to.print.tmp)),
-				    t(data.frame (rep ('', nrow(to.print.tmp) ), to.print.tmp@data) ) )
-	rownames (to.print.tmp) <- NULL
-	to.print <- rbind (to.print, to.print.tmp)
-
-	to.print.tmp <- coordinates(attributes(x)$mesures)
-	to.print.tmp <- data.frame (start = '',
-				    end = c('', colnames(to.print.tmp) ),
-				    t(data.frame (rep('', nrow(to.print.tmp) ), to.print.tmp) ) )
-	rownames (to.print.tmp) <- NULL
-	colnames (to.print.tmp) <- names (to.print)
-	to.print <- rbind (to.print, to.print.tmp)
-
-	print (to.print)
-}
+## pour s'inspirer quand on fera du TS*DataFrame
+# print.TimeIntervalDataFrame <- function (x, ...) {
+#         to.print <- data.frame (attributes(x)$dates, unclass (x), stringsAsFactors=FALSE)
+#         to.print <- data.frame (lapply (to.print, function(x) ifelse (is.na(x), 'NA', as.character(x) ) ), stringsAsFactors=FALSE)
+# 
+#         to.print.tmp <- attributes(x)$mesures
+#         to.print.tmp <- data.frame (start='', end=c('', names(to.print.tmp)),
+#                                     t(data.frame (rep ('', nrow(to.print.tmp) ), to.print.tmp@data, stringsAsFactors=FALSE) ),
+#                                     stringsAsFactors=FALSE)
+#         rownames (to.print.tmp) <- NULL
+#         to.print <- rbind (to.print, to.print.tmp, stringsAsFactors=FALSE)
+# 
+#         to.print.tmp <- coordinates(attributes(x)$mesures)
+#         to.print.tmp <- data.frame (start = '',
+#                                     end = c('', colnames(to.print.tmp) ),
+#                                     t(data.frame (rep('', nrow(to.print.tmp) ), to.print.tmp) ),
+#                                     stringsAsFactors=FALSE)
+#         rownames (to.print.tmp) <- NULL
+#         colnames (to.print.tmp) <- names (to.print)
+#         to.print <- rbind (to.print, to.print.tmp, stringsAsFactors=FALSE)
+# 
+#         print (to.print)
+# }
 
 
 Xair2R <- function (polluants, dated, datef, dt = c("qh", "heure", "jour", "mois", "an"),
@@ -451,10 +466,10 @@ Xair2R <- function (polluants, dated, datef, dt = c("qh", "heure", "jour", "mois
 		    reseaux=NULL, stations=NULL, campagnes=NULL,
 		    host=NULL, keep.state=FALSE, XR6=TRUE)
 {
-	warning ("La fonction Xair2R est obsolète. il est préférable d'utiliser la fonction xrGetData.")
+	warning ("La fonction Xair2R est obsolète. il est préférable d'utiliser la fonction xrGetContinuousData.")
 
 	conn <- xrConnect(dsn=dsn, uid=uid, pwd=pwd, host=host)
-	result <- xrGetData (conn, pattern = polluants, start = dated, end = datef,
+	result <- xrGetContinuousData (conn, pattern = polluants, start = dated, end = datef,
 			     period = switch (dt, qh='qh', heure='h', jour='d', mois='m', an='y'),
 			     validated = !brute, valid.states = codeV, what = ifelse(keep.state, 'both', 'value'),
 			     campagnes = campagnes, reseaux = reseaux, stations = stations, XR6 = XR6)
@@ -466,12 +481,22 @@ Xair2R <- function (polluants, dated, datef, dt = c("qh", "heure", "jour", "mois
 # library (rgdal)
 # 
 # conn <- xrConnect()
-# test <- xrGetData (conn, c('N2_VER', 'N2_VAU'), '2010-01-01', '2011-02-02', period='m')
+# test <- xrGetContinuousData (conn, c('N2_VER', 'N2_VAU'), '2010-01-01', '2011-02-02', period='m')
 # dbDisconnect (conn)
 
-library (maptools)
-library (RJDBC)
 library (Qair)
+# à déplacer dans un fichier zzz.R
+# library (lubridate)
+library (RJDBC)
+library (maptools)
+library (timetools)
+qh <- new_period (minutes=15)
+h <- new_period (hours=1)
+#---------------------------------
+
+
+test <- Xair2R('39FCAS', '2008-01-01', '2010-12-31', 'h')
+test <- Xair2R('39FCAS', '2010-01-01', '2010-01-03', 'h')
 
 trace (mef.mesure, at=1:length (body(mef.mesure)) )
 system.time (test <- Xair2R (c('N2_VER', 'N2_VAU'), '2000-01-01', '2010-12-31', 'heure'))
