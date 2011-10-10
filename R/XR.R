@@ -494,14 +494,3 @@ qh <- new_period (minutes=15)
 h <- new_period (hours=1)
 #---------------------------------
 
-
-test <- Xair2R('39FCAS', '2008-01-01', '2010-12-31', 'h')
-test <- Xair2R('39FCAS', '2010-01-01', '2010-01-03', 'h')
-
-trace (mef.mesure, at=1:length (body(mef.mesure)) )
-system.time (test <- Xair2R (c('N2_VER', 'N2_VAU'), '2000-01-01', '2010-12-31', 'heure'))
-untrace (mef.mesure)
-
-rm (Xair2R)
-system.time (test <- Xair2R (c('N2_VER', 'N2_VAU'), '2000-01-01', '2010-12-31', 'heure'))
-
