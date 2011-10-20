@@ -392,15 +392,6 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		result[[i]] <- NA
 	result <- result[mesures$NOM_COURT_MES]
 
-	## si on ne garde pas les Time*DataFrame
-	#         attributes(result)$NOM_COURT_MES <- ncm
-	#         attributes(result)$dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC')),
-	#                     as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC')) + 
-	#                                           switch (period, qh = d, h = d, d = d, m = m, y = m),
-	#                     switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
-	#         attributes(result)$dates <- data.frame (start = attributes(result)$date[-length(attributes(result)$date)],
-	#                                                 end = attributes(result)$dates[-1])
-
 	# recuperation des infos
 	q$stations <- xrGetStations (conn, pattern=mesures$NOM_COURT_SIT, search.fields='NOM_COURT_SIT')
 	q$stations <- q$stations[match(mesures$NOM_COURT_SIT, q$stations$NOM_COURT_SIT),]
@@ -412,15 +403,6 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		q$polluants[, c('CCHIM', 'NCON', 'NOPOL')])
 	row.names (q$attr.mesures) <- attributes(result)$NOM_COURT_MES
 	
-	## si on ne garde pas les Time*DataFrame
-	#         attributes(result)$mesures <- SpatialPointsDataFrame (
-	#                 q$attr.mesures[,c('LAMBERTX', 'LAMBERTY')],
-	#                 q$attr.mesures[,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
-	#                 proj4string = CRS('+init=epsg:27572') )
-	# 
-	#         class(result) <- c('TimeIntervalDataFrame', 'data.frame')
-	#         attributes(result)$period <- q$period
-
 	for (i in 1:length(result) )
 		if (!any (is.na (q$attr.mesures[i,c('LAMBERTX', 'LAMBERTY')]) ) )
 		attr(result[[i]], 'station') <- SpatialPointsDataFrame (
@@ -430,8 +412,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	
 	dates <- seq (	as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
-			as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC') + 
-				switch (period, qh = d, h = d, d = d, m = m, y = m),
+			as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC'), # + 
+			#                                 switch (period, qh = d, h = d, d = d, m = m, y = m),
 			switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
 
 	result <- new('TimeIntervalDataFrame', start=dates[-length(dates)], end=dates[-1], timezone='UTC',
