@@ -388,6 +388,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	}
 	result$start <- result$end <- NULL
 	rm (data)
+
 	for (i in setdiff(mesures$NOM_COURT_MES, names(result) ) )
 		result[[i]] <- NA
 	result <- result[mesures$NOM_COURT_MES]
@@ -410,11 +411,15 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			q$attr.mesures[i,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
 			proj4string = CRS('+init=epsg:27572') )
 
-	
-	dates <- seq (	as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
-			as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC'), # + 
-			#                                 switch (period, qh = d, h = d, d = d, m = m, y = m),
-			switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
+	to <- as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC')
+	if (to != end) to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
+
+	dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
+		      to,
+		      switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
+
+	print (length (dates))
+	print (dim (result))
 
 	result <- new('TimeIntervalDataFrame', start=dates[-length(dates)], end=dates[-1], timezone='UTC',
 		      data=result)
