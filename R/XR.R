@@ -8,7 +8,7 @@ xrGetQuery <- function (conn, query) {
 }
 
 xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL) {
-	# host et ojdbc sont à spécifier uniquement dans le cas de l'utilisation de RJDBC
+	# host et ojdbc sont a specifier uniquement dans le cas de l'utilisation de RJDBC
 
 	# definition de la base de donnees (dsn)
 	if(!is.null(dsn)) {
@@ -307,7 +307,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	period <- match.arg (period)
 	what <- match.arg (what)
 
-	# pour permettre éventuellement d'entrer des chaines de caractères en start en end
+	# pour permettre eventuellement d'entrer des chaines de caracteres en start en end
 	#	on fait un petit cast
 	if (!is.POSIXt (start) ) start <- as.POSIXct (start, tz = 'UTC')
 	if (!is.POSIXt (end) ) end <- as.POSIXct (end, tz = 'UTC')
@@ -318,20 +318,20 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 				campagnes, reseaux, stations, polluants, collapse=collapse)
 	q$mesures <- paste ("'", mesures$NOM_COURT_MES, "'", sep='', collapse=', ')
 
-	# données brutes ou pas ? Et quelle table aller taper ?
+	# donnees brutes ou pas ? Et quelle table aller taper ?
 	if(validated)
 		q$table <- switch (period,
 				 qh = 'JOURNALIER', h = 'JOURNALIER', d = 'JOURNALIER',
 				 m = 'MOIS', y = 'MOIS') else {
 		if (period %in% c('m', 'y') )
-			warning ("Il n'y a pas de valeurs brutes pour les mois et les années (period in 'm', 'y').")
+			warning ("Il n'y a pas de valeurs brutes pour les mois et les annees (period in 'm', 'y').")
 		q$table <-  switch (period,
 				 qh = 'JOURNALIER', h = 'JOURNALIER', d = 'JOURNALIER',
 				 m = 'MOIS', y = 'MOIS')
 	}
 
-	# quels champs faut-il rappatrier ? (dépend de la table déterminée juste avant)
-	#	Les champs de données et la date, et le nom_court_mes
+	# quels champs faut-il rappatrier ? (depend de la table determinee juste avant)
+	#	Les champs de donnees et la date, et le nom_court_mes
 	q$fields.l <- dbListFields (conn, q$table)
 	q$fields.l <- lapply (c('DATE', switch (period, qh = 'Q_', h = 'H_', d = 'J_', m = 'M_', y = 'A_')),
 			  grep, dbListFields (conn, q$table), value=TRUE)
@@ -352,16 +352,16 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	q$end	<- format (end, format = '%Y-%m-%d', tz='UTC')
 	q$end	<- sprintf ("TO_DATE('%s', 'YYYY-MM-DD')", q$end)
 
-	# la requete à proprement parler. C'est presque décevant tellement ça devient lisible :)
+	# la requete a proprement parler. C'est presque decevant tellement ça devient lisible :)
 	query <- sprintf ('SELECT %s FROM %s WHERE NOM_COURT_MES IN (%s) AND %s BETWEEN %s AND %s',
 			  q$fields, q$table, q$mesures, q$date, q$start, q$end)
 
 	data <- xrGetQuery (conn, query)
 	names (data)[2] <- 'DATE'
 
-	# mise en forme des données
-	q$period <- eval (parse (text = period) )	# period est évaluée au sens lubridate
-	q$periodb <- switch (period, qh = 'Q_M01',	# period est évaluée  de façon bidon pour mef.
+	# mise en forme des donnees
+	q$period <- eval (parse (text = period) )	# period est evaluee au sens lubridate
+	q$periodb <- switch (period, qh = 'Q_M01',	# period est evaluee  de façon bidon pour mef.
 			    h = 'H_M01', d = 'J_M01', m = 'M_M01', y = 'A_M01')
 
 	data <- split (data, data$NOM_COURT_MES)
@@ -454,7 +454,7 @@ Xair2R <- function (polluants, dated, datef, dt = c("qh", "heure", "jour", "mois
 		    reseaux=NULL, stations=NULL, campagnes=NULL,
 		    host=NULL, keep.state=FALSE, XR6=TRUE)
 {
-	warning ("La fonction Xair2R est obsolète. il est préférable d'utiliser la fonction xrGetContinuousData.")
+	warning ("La fonction Xair2R est obsolete. il est preferable d'utiliser la fonction xrGetContinuousData.")
 
 	conn <- xrConnect(dsn=dsn, uid=uid, pwd=pwd, host=host)
 	result <- xrGetContinuousData (conn, pattern = polluants, start = dated, end = datef,
@@ -473,7 +473,7 @@ Xair2R <- function (polluants, dated, datef, dt = c("qh", "heure", "jour", "mois
 # dbDisconnect (conn)
 
 # library (Qair)
-# à déplacer dans un fichier zzz.R
+# a deplacer dans un fichier zzz.R
 # library (lubridate)
 # library (RJDBC)
 # library (maptools)

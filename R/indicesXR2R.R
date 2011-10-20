@@ -1,4 +1,4 @@
-# retourne uniquement l'indice diffusé pour l'instant (le champ C_IND_DIFFUSE'
+# retourne uniquement l'indice diffuse pour l'instant (le champ C_IND_DIFFUSE'
 'indicesXR2R' <-
 function (agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
 	# definition de l'hote (unix like system)
@@ -135,10 +135,10 @@ function (agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
 
 plot.indice <- function (x, y, cex=1.7) {
 	commentaires <- factor(
-		c(	'Très bon', 'Très bon', 'Bon', 'Bon', 'Moyen',
-			'Médiocre', 'Médiocre', 'Mauvais', 'Mauvais', 'Très mauvais'),
-		c(	'Très bon', 'Bon', 'Moyen', 'Médiocre', 'Mauvais',
-			'Très mauvais'),,TRUE)
+		c(	'Tres bon', 'Tres bon', 'Bon', 'Bon', 'Moyen',
+			'Mediocre', 'Mediocre', 'Mauvais', 'Mauvais', 'Tres mauvais'),
+		c(	'Tres bon', 'Bon', 'Moyen', 'Mediocre', 'Mauvais',
+			'Tres mauvais'),,TRUE)
 	indices <- x[[y]]
 
 	plot (	NA, xlim=c(-1.5, 1.5), ylim=c(-1.5, 1.5),
