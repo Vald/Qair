@@ -366,7 +366,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	data <- split (data, data$NOM_COURT_MES)
 
-	data <- mapply (mef.mesure, data, mesures$IDENTIFIANT, fmul=mesures$FMUL, SIMPLIFY = FALSE,
+	m <- match (names (data), mesures$NOM_COURT_MES)
+	data <- mapply (mef.mesure, data, mesures$IDENTIFIANT[m], fmul=mesures$FMUL[m], SIMPLIFY = FALSE,
 			MoreArgs = list (period=q$periodb, valid.states=valid.states, what=what, XR6=XR6))
 	ncm <- unlist (lapply (data, attr, 'NOM_COURT_MES') )
 	
@@ -387,6 +388,10 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	}
 	result$start <- result$end <- NULL
 	rm (data)
+	for (i in setdiff(mesures$NOM_COURT_MES, names(result) ) )
+		result[[i]] <- NA
+	result <- result[mesures$NOM_COURT_MES]
+
 	## si on ne garde pas les Time*DataFrame
 	#         attributes(result)$NOM_COURT_MES <- ncm
 	#         attributes(result)$dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC')),
@@ -417,6 +422,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	#         attributes(result)$period <- q$period
 
 	for (i in 1:length(result) )
+		if (!any (is.na (q$attr.mesures[i,c('LAMBERTX', 'LAMBERTY')]) ) )
 		attr(result[[i]], 'station') <- SpatialPointsDataFrame (
 			q$attr.mesures[i,c('LAMBERTX', 'LAMBERTY')],
 			q$attr.mesures[i,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
@@ -484,12 +490,12 @@ Xair2R <- function (polluants, dated, datef, dt = c("qh", "heure", "jour", "mois
 # test <- xrGetContinuousData (conn, c('N2_VER', 'N2_VAU'), '2010-01-01', '2011-02-02', period='m')
 # dbDisconnect (conn)
 
-library (Qair)
+# library (Qair)
 # à déplacer dans un fichier zzz.R
 # library (lubridate)
-library (RJDBC)
-library (maptools)
-library (timetools)
+# library (RJDBC)
+# library (maptools)
+# library (timetools)
 qh <- new_period (minutes=15)
 h <- new_period (hours=1)
 #---------------------------------
