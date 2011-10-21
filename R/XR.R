@@ -272,9 +272,10 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 		dates <- unique (data[[grep ('DATE', names (data))]])
 		data <- data[-grep ('DATE', names (data))]
 		tmp <- paste (rep (dates, each=length(data) ), names (data) )
-		tmp <- c(tmp, paste (as.character(as.POSIXct(dates[length(dates)]) + 
-						  switch (period, Q_M01=d, H_M01=d, J_M01=d, M_M01=m, A_M01=m)),
-				     period) )
+		tmp <- c(paste (as.character(as.POSIXct(dates[1]) - 
+					     switch (period, Q_M01=d, H_M01=d, J_M01=d, M_M01=m, A_M01=m)),
+				names (data)[length(data)] ),
+			 tmp)
 		dates <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
 
 		if (what %in% c('value', 'both') ) {
@@ -326,7 +327,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		if (period %in% c('m', 'y') )
 			warning ("Il n'y a pas de valeurs brutes pour les mois et les annees (period in 'm', 'y').")
 		q$table <-  switch (period,
-				 qh = 'JOURNALIER', h = 'JOURNALIER', d = 'JOURNALIER',
+				 qh = 'BRUTE', h = 'BRUTE', d = 'BRUTE',
 				 m = 'MOIS', y = 'MOIS')
 	}
 
@@ -371,16 +372,17 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			MoreArgs = list (period=q$periodb, valid.states=valid.states, what=what, XR6=XR6))
 	ncm <- unlist (lapply (data, attr, 'NOM_COURT_MES') )
 	
-	tmp <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC')),
-		    as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC')),
+	tmp <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
+		    as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
 		    switch (period, qh='day', h='day', j='day', 'year') )
 	tmp <- format (tmp, '%Y-%m-%d')
 	tmp2 <- grep (switch (period, qh = 'Q_M', h = 'H_M', d = 'J_M', m = 'M_M', y = 'A_M'), 
 		      q$fields.l, value=TRUE)
 	tmp <- paste (rep (tmp, each=length(tmp2) ), tmp2)
-	tmp <- c(tmp, paste (as.character(as.POSIXct(tmp[length(tmp)]) + 
-					  switch (period, qh = d, h = d, d = d, m = m, y = m)),
-			     period) )
+	tmp <- c(paste (as.character(as.POSIXct(tmp[1]) -
+				     switch (period, qh = d, h = d, d = d, m = m, y = m)),
+			tmp2[length(tmp2)]),
+		 tmp)
 	result <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
 	while (length (data) > 0) {
 		result <- merge (result, data[[1]], all.x=TRUE, all.y=FALSE, by=c('start', 'end') )
@@ -411,19 +413,16 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			q$attr.mesures[i,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
 			proj4string = CRS('+init=epsg:27572') )
 
-	to <- as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC')
-	if (to != end) to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
+		#         to <- as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC')
+		#         if (to != end) to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
+	to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
 
 	dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
 		      to,
 		      switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
 
-	print (length (dates))
-	print (dim (result))
-
 	result <- new('TimeIntervalDataFrame', start=dates[-length(dates)], end=dates[-1], timezone='UTC',
 		      data=result)
-
 
 	return (result)
 }
