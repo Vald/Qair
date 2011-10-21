@@ -1,3 +1,4 @@
 export (xrGetQuery, xrConnect,
 	xrGetCampagnes, xrGetReseaux, xrGetStations, xrGetMesures, xrGetPolluants,
 	xrGetContinuousData)
+export (compute.rose, plot.rose, rosepol)
