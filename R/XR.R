@@ -413,9 +413,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			q$attr.mesures[i,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
 			proj4string = CRS('+init=epsg:27572') )
 
-		#         to <- as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC')
+		to <- as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC')
 		#         if (to != end) to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
-	to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
+		to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
 
 	dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
 		      to,

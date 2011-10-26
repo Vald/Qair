@@ -24,7 +24,7 @@ compute.rose <- function(values, dv, fv, breaks=0:17*22.5+22.5/2, FUN, ...) {
 
 	at.rose <- rep(NA, length(unique(breaks%%360)))
 	
-	dots$X <- ifelse(!is.na(fv) & dv > 0, values, NA)
+	dots$X <- ifelse(!is.na(fv) & fv > 0, values, NA)
 	dots$INDEX <- temp
 	dots$FUN <- FUN
 	
