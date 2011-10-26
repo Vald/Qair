@@ -59,7 +59,7 @@ plot.rose <- function(x, y,
 
 	if(length(labels.theta) != length(at.theta)) {
 		warning("Les labels de directions ne correspondent pas en nombre avec leurs emplacements.\nIls sont remplaces par des valeurs par defaut.")
-		labels.theta <- paste(round(at.theta), '°')
+		labels.theta <- paste(round(at.theta), 'deg')
 	}
 
 	if(!add) {
