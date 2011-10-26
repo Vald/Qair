@@ -3,12 +3,13 @@ compute.rosevent <- function(dv, fv, breaks=0:17*22.5+22.5/2, vlims) {
 		vlims <- c(2, 5, 8, max (fv, na.rm=TRUE) )
 	vlims <- sort (unique (vlims) )
 	null.is.zero <- 0 %in% vlims
+	fv[!is.na(fv) & fv <= min (vlims)] <- 0
 	vlims <- vlims[vlims != 0]
-	#         vlims <- c(0, vlims)
 
 	select <- !is.na (fv) & !is.na (dv)
 	cent <- sum (select)
 	f.zero <- sum (select & fv == 0)
+
 	select <- select & fv > 0
 	dv <- dv[select]
 	fv <- fv[select]
@@ -31,10 +32,10 @@ compute.rosevent <- function(dv, fv, breaks=0:17*22.5+22.5/2, vlims) {
 		roses[[length(roses)]]$vlim <- 0
 		roses <- roses[order (sapply(roses, '[[', 'vlim') )]
 	} else {
-		roses[[1]]$values[TRUE] <- sum (roses[[1]]$values, na.rm=TRUE)/length (roses[[1]]$values)
+		roses[[1]]$values[TRUE] <- 0#sum (roses[[1]]$values, na.rm=TRUE)/length (roses[[1]]$values)/cent*100
 	}
 	for (i in 1:length (roses))
-		roses[[i]]$values <- (roses[[i]]$values + f.zero/length (roses[[i]]$values))/cent*100
+		roses[[i]]$values <- (roses[[i]]$values + f.zero/length (roses[[1]]$values))/cent*100
 	return (roses)
 }
 
