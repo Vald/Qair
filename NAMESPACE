@@ -1,4 +1,10 @@
+# liens avec une base XR
 export (xrGetQuery, xrConnect,
 	xrGetCampagnes, xrGetReseaux, xrGetStations, xrGetMesures, xrGetPolluants,
 	xrGetContinuousData)
+
+# fonctions specifiques a certaines 'normes' ademe
+export (round.a, quantile.a)
+
+# fonction en rapport avec des 'roses'
 export (compute.rose, plot.rose, rosepol, compute.rosevent, plot.rosevent)

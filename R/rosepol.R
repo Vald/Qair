@@ -14,8 +14,10 @@ compute.rose <- function(values, dv, fv, breaks=0:17*22.5+22.5/2, FUN, ...) {
 		breaks[breaks < 0] <- breaks[breaks < 0] + 360
 	while(any(breaks > 360))
 		breaks[breaks > 360] <- breaks[breaks > 360] - 360
-	breaks <- c(max(breaks) - 360, breaks, min(breaks) + 360)
-	breaks <- sort(unique(breaks))
+	breaks <- sort (unique (breaks%%360) )
+	if (min (breaks) == 0)
+		breaks <- c(breaks, 360) else
+		breaks <- c(max(breaks)-360, breaks)
 
 	# repartition des mesures dans les intervalles
 	dv <- dv %% 360
