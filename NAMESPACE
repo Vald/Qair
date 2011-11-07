@@ -3,6 +3,9 @@ export (xrGetQuery, xrConnect,
 	xrGetCampagnes, xrGetReseaux, xrGetStations, xrGetMesures, xrGetPolluants,
 	xrGetContinuousData)
 
+# outils divers
+export (slide, representatif)
+
 # fonctions specifiques a certaines 'normes' ademe
 export (round.a, quantile.a)
 
