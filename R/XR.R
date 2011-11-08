@@ -414,12 +414,14 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			proj4string = CRS('+init=epsg:27572') )
 
 		to <- as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC')
-		#         if (to != end) to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
-		to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
+		np.arg <- list(1)
+		names(np.arg) <- switch (period, qh = 'day', h = 'day', d = 'day', m = 'month', y = 'month')
+		to <- to + do.call (new_period, np.arg)
+		#                 to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
 
 	dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
 		      to,
-		      switch (period, qh='15 mins', h='hour', j='day', m='month', a='year') )
+		      switch (period, qh='15 mins', h='hour', d='day', m='month', y='year') )
 
 	result <- new('TimeIntervalDataFrame', start=dates[-length(dates)], end=dates[-1], timezone='UTC',
 		      data=result)

@@ -3,7 +3,7 @@ Type: Package
 Title: Traitement de donnees, domaine de la qualite de l'air
 Version: 2.0-0
 Date: 2011-08-11
-Depends: lubridate
+Depends: timetools
 Suggests: RODBC, RJDBC
 Author: Vladislav Navel
 Maintainer: Vladislav Navel <vnavel@yahoo.fr>
