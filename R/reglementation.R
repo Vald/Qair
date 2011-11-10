@@ -1,3 +1,37 @@
+representatif <- function (x, pc.min=0.75, na.consecutif.max=720) {
+	return (mean (!is.na(x))>=pc.min & !any (slide (is.na(x), na.consecutif.max+1, 1, 1) == 1, na.rm=TRUE) )
+}
+
+setMethod ('aot40', 'TimeIntervalDataFrame',
+	   function (object, mois, heures=10:21, tz='CET', seuil=80, ...) {
+		   if (period(object) != new_period(hour=1) )
+			   stop('object doit etre periodique, de période égale à 1 heure.')
+		   
+		   the.calcul <- function(x, seuil)
+			   if (mean(!is.na(x)) >= 0.9) {
+				   sum(ifelse(!is.na(x) & x > 80, x - 80, 0), na.rm = TRUE)/mean(!is.na(x))
+			   } else { NA }
+
+#                            ifelse (mean(!is.na(x)) >= 0.9,
+#                                    sum(x[x>seuil]-seuil, na.rm=TRUE)/mean(!is.na(x)),
+#                                    NA)
+
+		   if (tz!=timezone (object) )
+			   timezone (object) <- tz
+		   object <- object[month(end(object)) %in% mois & hour(end(object)) %in% heures,]
+
+		   start <- unique (floor_date (start (object), 'day'))
+		   end <- unique (ceiling_date (end (object), 'day'))
+		   to <- new ('TimeIntervalDataFrame', start=start, end=end, timezone=tz, data=data.frame (bidon=1:length(start) ) )
+
+		   object <- project (from=object, to=to, FUN=the.calcul, seuil=seuil,
+				      split.from=FALSE, merge.from=TRUE, min.coverage=0)
+		   timezone (object) <- tz
+		   object$bidon <- NULL
+
+		   return (object)
+	   } )
+
 #seuils <-
 #data.frame (polluant,		# code ISO base XR (NOPOL et surtout pas CCHIM)
 #	    type,		# valeur cible, valeur limite, objectif qualité, niveau critique,
@@ -35,10 +69,6 @@ comparer.seuils <- function (x, seuils, periode, verif.representativite=TRUE, ag
 	# x peut être un TimeIntervalDataFrame
 
 
-}
-
-representatif <- function (x, pc.min=0.75, na.consecutif.max=720) {
-	return (mean (!is.na(x))>=pc.min & !any (slide (is.na(x), na.consecutif.max+1, 1, 1) == 1, na.rm=TRUE) )
 }
 
 
