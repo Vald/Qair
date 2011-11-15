@@ -12,8 +12,10 @@ export (slide, representatif)
 # fonctions specifiques a certaines 'normes' ademe
 export (round.a, quantile.a)
 
+# calculs réglementaires / seuil
+export (aot)
+
 # fonction en rapport avec des 'roses'
 export (compute.rose, plot.rose, rosepol, compute.rosevent, plot.rosevent)
 
-# extension pour les classes Time*DataFrame
-exportMethods (aot40)
+

@@ -260,42 +260,42 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	unique (xrGetQuery (conn, query) )
 }
 
-	mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul) {
-		mesure <- identifiant
-		ncm <- unique (data[[grep ('NOM_COURT_MES', names (data))]])
-		data <- data[setdiff (names (data), c('NOM_COURT_MES') )]
-		
-		etats <- data[[grep ('ETAT', names (data))]]
-		data <- data[-grep ('ETAT', names (data))]
-		etats <- unlist (strsplit (etats, ''))
+mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul) {
+	mesure <- identifiant
+	ncm <- unique (data[[grep ('NOM_COURT_MES', names (data))]])
+	data <- data[setdiff (names (data), c('NOM_COURT_MES') )]
+	
+	etats <- data[[grep ('ETAT', names (data))]]
+	data <- data[-grep ('ETAT', names (data))]
+	etats <- unlist (strsplit (etats, ''))
 
-		dates <- unique (data[[grep ('DATE', names (data))]])
-		data <- data[-grep ('DATE', names (data))]
-		tmp <- paste (rep (dates, each=length(data) ), names (data) )
-		tmp <- c(paste (as.character(as.POSIXct(dates[1]) - 
-					     switch (period, Q_M01=d, H_M01=d, J_M01=d, M_M01=m, A_M01=m)),
-				names (data)[length(data)] ),
-			 tmp)
-		dates <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
+	dates <- unique (data[[grep ('DATE', names (data))]])
+	data <- data[-grep ('DATE', names (data))]
+	tmp <- paste (rep (dates, each=length(data) ), names (data) )
+	tmp <- c(paste (as.character(as.POSIXct(dates[1]) - 
+				     switch (period, Q_M01=d, H_M01=d, J_M01=d, M_M01=m, A_M01=m)),
+			names (data)[length(data)] ),
+		 tmp)
+	dates <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
 
-		if (what %in% c('value', 'both') ) {
-			values <- c( t(data) )
-			values[!etats %in% valid.states] <- NA
-			values <- data.frame (values)
-			if (!XR6) values <- values*10^fmul
-			names (values) <- mesure
-		}
-		if (what == 'state') {
-			values <- data.frame (etats)
-			names (values) <- mesure
-		} else if (what == 'both') {
-			values <- data.frame (values, etats)
-			names (values) <- paste (mesure, c('value', 'state'), sep= '.')
-		}
-		values <- data.frame (dates, values)
-		attributes(values)$NOM_COURT_MES <- ncm
-		return (values)
+	if (what %in% c('value', 'both') ) {
+		values <- c( t(data) )
+		values[!etats %in% valid.states] <- NA
+		values <- data.frame (values)
+		if (!XR6) values <- values*10^fmul
+		names (values) <- mesure
 	}
+	if (what == 'state') {
+		values <- data.frame (etats)
+		names (values) <- mesure
+	} else if (what == 'both') {
+		values <- data.frame (values, etats)
+		names (values) <- paste (mesure, c('value', 'state'), sep= '.')
+	}
+	values <- data.frame (dates, values)
+	attributes(values)$NOM_COURT_MES <- ncm
+	return (values)
+}
 
 
 xrGetContinuousData <- function (conn, pattern=NULL, start, end,
@@ -370,7 +370,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	m <- match (names (data), mesures$NOM_COURT_MES)
 	data <- mapply (mef.mesure, data, mesures$IDENTIFIANT[m], fmul=mesures$FMUL[m], SIMPLIFY = FALSE,
 			MoreArgs = list (period=q$periodb, valid.states=valid.states, what=what, XR6=XR6))
-	ncm <- unlist (lapply (data, attr, 'NOM_COURT_MES') )
+	ncm <- unlist (lapply (data, attr, 'NOM_COURT_MES') ) # ? a quoi ca sert ?
+	for (i in names(data) ) names (data[[i]])[3] <- i
 	
 	tmp <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
 		    as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
@@ -423,6 +424,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		      to,
 		      switch (period, qh='15 mins', h='hour', d='day', m='month', y='year') )
 
+	names (result) <- sprintf ('%s%s', ifelse (!is.na(as.numeric(substr(names(result), 1, 1))), 'X', ''), names(result) )
 	result <- new('TimeIntervalDataFrame', start=dates[-length(dates)], end=dates[-1], timezone='UTC',
 		      data=result)
 
