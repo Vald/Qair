@@ -14,6 +14,7 @@ export (round.a, quantile.a)
 
 # calculs réglementaires / seuil
 export (seuils, sur3ans, typologies,
+	format.seuil,
 	aot, aot40maiJuillet, aot40maiJuillet5ans,
 	alerte400NO2, depsur8h, protecVegeFroidSO2, representatif, 
 	margevlC6H6y, margevlNO2h, margevlNO2y, margevlPM25,
