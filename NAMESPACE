@@ -4,7 +4,8 @@ import (timetools)
 # liens avec une base XR
 export (xrGetQuery, xrConnect,
 	xrGetCampagnes, xrGetReseaux, xrGetStations, xrGetMesures, xrGetPolluants,
-	xrGetContinuousData)
+	xrGetContinuousData,
+	Xair2R)
 
 # outils divers
 export (slide, representatif)
