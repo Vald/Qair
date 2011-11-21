@@ -1,3 +1,4 @@
+print.seuil <- function (x, ...) print (format (x, ...) )
 format.seuil <- function (x, ...) {
 	if (!is.null (x$description) ) return (x$description)
 
@@ -27,6 +28,24 @@ format.seuil <- function (x, ...) {
 
 representatif <- function (x, pc.min=0.75, na.consecutif.max=720) {
 	return (mean (!is.na(x))>=pc.min & !any (slide (is.na(x), na.consecutif.max+1, 1, 1) == 1, na.rm=TRUE) )
+}
+
+check.na.consecutifs <- function (x, na.consecutif.max=720)
+	return (!any (slide (is.na(x), na.consecutif.max+1, 1, 1) == 1, na.rm=TRUE) )
+
+validation.prepare <- function (x, to, ...) {
+	other.args <- list(...)
+	if (!'check.720' %in% names (other.args) ) return (FALSE)
+	if (!other.args$check.720) return (FALSE)
+
+	is.periodic <- try (period (x) )
+	if (!inherits (is.periodic, 'try-error') )
+		if (is.periodic == 'hour' & to == 'year') {
+			test.validation <- x
+			test.validation[T] <- data.frame (lapply (data.frame (x), check.na.consecutifs) )
+			test.validation <- changeTimeIntervaleSupport (test.validation, 'year', 0, all, na.rm=TRUE)
+		}
+	return (test.validation)
 }
 
 aot <- function(x, seuil, rep.min)
@@ -66,7 +85,14 @@ margevlNO2h <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, ..
 		s <- (30:20*10)[findInterval(year(start(x)), c(1900, 2001:2010))] else 
 		s <- 200
 	x[T] <- data.frame (x) > s
+	
+	test <- validation.prepare (x, to='year', ...)	# 720 heures
+
 	x <- changeTimeIntervalSupport (x, 'year', seuil$rep.comparaison, sum, na.rm=TRUE)
+
+	if (!is.logical (test) )			# 720 heures
+		for (i in names(x))			# 720 heures
+			x[[i]][!test[[i]]] <- NA	# 720 heures
 
 	if (!detail)
 		x[T] <- data.frame (x) > if (!is.null (seuil$nb.max)) seuil$nb.max else 0
@@ -103,6 +129,9 @@ depsur8h <- function (x, seuil, ...) {
 }
 
 sur3ans <- function (x, seuil, detail, ...) {
+	# validation des données
+	test <- validation.prepare (x, to='year', ...) # 720 heures
+
 	x <- changeTimeIntervalSupport (x, 'month', 0.9,
 					function (x, seuil) sum (x>seuil, na.rm=TRUE), seuil=seuil$seuil)
 	valid.x <- changeTimeIntervalSupport (x[month(start(x)) %in% 4:9,], 'year', 0, function (x) sum (!is.na(x)) > 4)
@@ -110,11 +139,18 @@ sur3ans <- function (x, seuil, detail, ...) {
 	x <- x[start (x) >= min (start (valid.x)) & end (x) <= max (end (valid.x)),]
 	for (i in names(x))
 		x[[i]][!valid.x[[i]]] <- NA
+
+	if (!is.logical (test) )			# 720 heures
+		for (i in names(x))			# 720 heures
+			x[[i]][!test[[i]]] <- NA	# 720 heures
+
+	# preparation du support de retour
 	annees <- unique (year (start (x) ) )
 	start <- as.POSIXct(sprintf ('%i-01-01', annees-2), timezone (x) )
 	end <- as.POSIXct(sprintf ('%i-01-01', annees+1), timezone (x) )
 	new.x <- new ('TimeIntervalDataFrame', start=start, end=end, timezone=timezone (x),
 		      data=data.frame (bidon=1:length(start) ) )
+	# calculs
 	new.x <- project (x, new.x, FUN='mean', na.rm=TRUE, split.from=TRUE, merge.from=TRUE, min.coverage=1/3)
 	new.x$bidon <- NULL
 
@@ -143,8 +179,16 @@ protecVegeFroidSO2 <- function (x, seuil, ...) {
 
 aot40maiJuillet <- function (x, seuil, ...) {
 	timezone (x) <- 'UTC'
+
+	test <- validation.prepare (x, to='year', ...)	# 720 heures
+
 	x <- x[month (start(x)) %in% 5:7 & hour (end(x)) %in% 8:19,]
 	x <- changeTimeIntervalSupport (x, 'year', min.coverage=0, aot, seuil=80, rep.min=seuil$rep.b.comparaison)
+	
+	if (!is.logical (test) )			# 720 heures
+		for (i in names(x))			# 720 heures
+			x[[i]][!test[[i]]] <- NA	# 720 heures
+	
 	x[T] <- round.a (data.frame (x), seuil$precision)
 	return (x)
 }
@@ -166,7 +210,7 @@ aot40maiJuillet5ans <- function (x, seuil, ...) {
 
 typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régional', 'rural national')
 
-seuils <- list (list (polluant='03', cchim='NO2', type='objectif de qualité', protection='la santé humaine', sites=typologies, 
+.seuils <- list (list (polluant='03', cchim='NO2', type='objectif de qualité', protection='la santé humaine', sites=typologies, 
 		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
 		      precision=0,
 		      seuil=40, unite='microg/m3', reference='Décret 2010-1250 du 21 octobre 2010'),
@@ -452,11 +496,92 @@ seuils <- list (list (polluant='03', cchim='NO2', type='objectif de qualité', p
 		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison=depsur8h, rep.b.comparaison=0.75,
 		      comparaison='year', rep.comparaison=0.9, precision=0,
 		      seuil=7, unite='mg/m3', reference='Directive 2008/50/CE du 21 mai 2008',
-		      description="CO : seuil d'évaluation supérieur pour la protection de la santé humaine. 7 mg/m3 pour le maximum journalier de la moyenne sur 8 heures à ne pas dépasser sur 1 an.")
+		      description="CO : seuil d'évaluation supérieur pour la protection de la santé humaine. 7 mg/m3 pour le maximum journalier de la moyenne sur 8 heures à ne pas dépasser sur 1 an."),
+		list (polluant='80', cchim='Arsenic', type="seuil d'évaluation inférieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=2.4, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='80', cchim='Arsenic', type="seuil d'évaluation supérieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=3.6, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='AH', cchim='Arsenic', type="seuil d'évaluation inférieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=2.4, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='AH', cchim='Arsenic', type="seuil d'évaluation supérieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=3.6, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='82', cchim='Cadmium', type="seuil d'évaluation inférieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=2, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='82', cchim='Cadmium', type="seuil d'évaluation supérieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=3, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='AJ', cchim='Cadmium', type="seuil d'évaluation inférieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=2, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='AJ', cchim='Cadmium', type="seuil d'évaluation supérieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=3, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='87', cchim='Nickel', type="seuil d'évaluation inférieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=0,
+		      seuil=10, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='87', cchim='Nickel', type="seuil d'évaluation supérieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=0,
+		      seuil=14, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='AC', cchim='Nickel', type="seuil d'évaluation inférieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=0,
+		      seuil=10, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='AC', cchim='Nickel', type="seuil d'évaluation supérieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=0,
+		      seuil=14, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='P6', cchim='B(a)P', type="seuil d'évaluation inférieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=0.4, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004'),
+		list (polluant='P6', cchim='B(a)P', type="seuil d'évaluation supérieur", protection='la santé humaine', sites=typologies, 
+		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison='year', rep.b.comparaison=0.9,
+		      precision=1,
+		      seuil=0.6, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004')
 		)
 
 
-preparation.base <- function (x, seuil, base=c('calcul', 'comparaison'), ...) {
+seuils <- function (type=c("objectif de qualité", "seuil d'information et de recommandation", "seuil d'alerte", "valeur limite", "niveau critique", "valeur cible", "seuil d'évaluation inférieur", "seuil d'évaluation supérieur"),
+		    protection=c("la santé humaine", "la végétation", "la mise en oeuvre progressive de mesures d'urgence"),
+		    polluant=c("03", "12", "24", "39", "19", "AA", "01", "08", "04", "V4", "80", "AH", "82", "AJ", "87", "AC", "P6"),
+		    cchim=c("NO2", "NOx", "PM10", "PM2.5", "Plomb", "SO2", "O3", "CO", "C6H6", "Arsenic", "Cadmium", "Nickel", "B(a)P"),
+		    sites=typologies) {
+	type <- match.arg (type, several.ok=TRUE)
+	protection <- match.arg (protection, several.ok=TRUE)
+	polluant <- match.arg (polluant, several.ok=TRUE)
+	cchim <- match.arg (cchim, several.ok=TRUE)
+	sites <- match.arg (sites, several.ok=TRUE)
+	
+	res <- .seuils
+	res <- res[sapply(res, '[[','type') %in% type]
+	res <- res[sapply(res, '[[','protection') %in% protection]
+	res <- res[sapply(res, '[[','polluant') %in% polluant]
+	res <- res[sapply(res, '[[','cchim') %in% cchim]
+	res <- res[sapply (lapply(res, '[[','sites'), function(x, y) any (x %in% y), sites)]
+
+	for (i in 1:length (res) ) class (res[[i]]) <- c('seuil', 'list')
+
+	#         if (length (res) == 1)
+	#                 return (res[[1]]) else
+		return (res)
+}
+
+preparation.base <- function (x, seuil, base=c('calcul', 'comparaison'), check.720=TRUE, ...) {
 	base <- match.arg (base)
 	representativite <- seuil[[sprintf ('rep.b.%s', base)]]
 	base <- seuil[[sprintf ('base.%s', base)]]
@@ -464,7 +589,13 @@ preparation.base <- function (x, seuil, base=c('calcul', 'comparaison'), ...) {
 	} else if (is.function (base) ) {
 		x <- do.call (base, c(list(x), list(seuil), ...) )
 	} else if (is.character (base) | is.period (base) ) {
+		test <- validation.prepare (x, to=base, ...)	# 720 heures
+
 		x <- changeTimeIntervalSupport (x, base, representativite)
+
+		if (!is.logical (test) )			# 720 heures
+			for (i in names(x))			# 720 heures
+				x[[i]][!test[[i]]] <- NA	# 720 heures
 	} else stop ('Préparation des données impossible.')
 
 	if (!is.null (seuil$precision) )
@@ -473,16 +604,23 @@ preparation.base <- function (x, seuil, base=c('calcul', 'comparaison'), ...) {
 	return (x)
 }
 
-comparaison <- function (x, seuil, detail, ...) { 
+comparaison <- function (x, seuil, detail, check.720=TRUE, ...) { 
 	if (is.null (seuil$comparaison) ) {
 		if (!detail)
 			x[T] <- data.frame (x) > seuil$seuil
 	} else if (is.function (seuil$comparaison) ) {
 		x <- do.call (seuil$comparaison, c(list(x), list(seuil), list(detail), ...) )
 	} else if (is.character (seuil$comparaison) | is.period (seuil$comparaison) ) {
+		test <- validation.prepare (x, to=seuil$comparaison, ...)	# 720 heures
+
 		rep.comparaison <- if (is.null(seuil$rep.comparaison)) 0.75 else seuil$rep.comparaison
 		x <- changeTimeIntervalSupport (x, seuil$comparaison, rep.comparaison,
 						function (x, seuil) sum (x>seuil, na.rm=TRUE), seuil=seuil$seuil)
+		
+		if (!is.logical (test) )			# 720 heures
+			for (i in names(x))			# 720 heures
+				x[[i]][!test[[i]]] <- NA	# 720 heures
+		
 		if (!detail)
 			x[T] <- data.frame (x) > if (!is.null (seuil$nb.max)) seuil$nb.max else 0
 	} else stop ('Impossible de calculer un résultat.')
@@ -491,21 +629,29 @@ comparaison <- function (x, seuil, detail, ...) {
 }
 
 validation.reglementaire <- function (x, seuil, etapes=c('preparation.calcul', 'preparation.comparaison'),
-				      resultat=c('detail', 'comparaison'), ...) {
-	resultat <- match.arg (resultat)
+				      resultat=c('detail', 'comparaison'), check.720=TRUE, ...) {
+	etapes <- match.arg (etapes, several.ok=TRUE)
+	resultat <- match.arg (resultat, several.ok=TRUE)
 	param.to.change <- list (...)
 	param.to.change <- param.to.change[names (param.to.change) %in% names (seuil)]
 	if (length (param.to.change) > 0)
 	    seuil[names (param.to.change)] <- param.to.change
 	if ('preparation.calcul' %in% etapes)
-		x <- preparation.base (x, seuil, 'calcul')
+		x <- preparation.base (x, seuil, 'calcul', check.720)
 	if ('preparation.comparaison' %in% etapes)
-		x <- preparation.base (x, seuil, 'comparaison')
-	if (resultat == 'detail')
-		x <- comparaison (x, seuil, detail=TRUE)
-	else if (resultat == 'comparaison')
-		x <- comparaison (x, seuil, detail=FALSE)
+		x <- preparation.base (x, seuil, 'comparaison', check.720)
+	if ('detail' %in% resultat) {
+		det <- comparaison (x, seuil, detail=TRUE, check.720)
+		if (!'comparaison' %in% resultat)
+			x <- det
+	} else if ('comparaison' %in% resultat) {
+		comp <- comparaison (x, seuil, detail=FALSE, check.720)
+		if ('detail' %in% resultat)
+			x <- c(list (det), list(comp) ) else
+			x <- comp
 
+	}
+	
 	return (x)
 }
 

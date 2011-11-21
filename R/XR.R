@@ -83,9 +83,8 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL) {
 match.pattern.fields <- function (pattern, search.fields) {
 	sprintf ('(%s)',
 		 paste ('(', rep (search.fields, each = length(pattern) ),
-			" LIKE '%", pattern, "%')",
+			" = '", pattern, "')",
 			sep = '', collapse = ' OR ') )
-
 }
 
 xrGetCampagnes <- function(conn, pattern=NULL, search.fields=c('NOM_COURT_CM', 'LIBELLE'), start=NULL, end=NULL,
@@ -145,16 +144,19 @@ xrGetReseaux <- function(conn, pattern=NULL, search.fields=c('NOM_COURT_RES', 'N
 }
 
 xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NSIT', 'NOM_COURT_SIT'),
-			  campagnes = NULL, reseaux = NULL, fields = NULL, collapse = c('AND', 'OR')) {
+			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL, collapse = c('AND', 'OR')) {
 
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
 	if (is.null (fields) ) fields <- dbListFields (conn, 'STATION')
-
+	
 	query <- sprintf ('SELECT %s FROM', paste ('STATION', fields, sep='.', collapse=', ') )
 	q <- list()
 	q$tables <- 'STATION'
+
+	if (!is.null (mesures) )
+		pattern <- c(pattern, unique (xrGetMesures (conn, pattern = mesures)$NOM_COURT_SIT) )
 
 	if (!is.null (pattern) & length (search.fields) > 0)
 		q$pattern <- match.pattern.fields (pattern, search.fields)
@@ -184,7 +186,11 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 	if (length (q) > 0)
 		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
 
-	unique (xrGetQuery (conn, query) )
+	stations <- unique (xrGetQuery (conn, query) )
+
+	temp <- dbGetQuery (conn, "SELECT CLE, LIBELLE FROM LISTE_META_DONNEES WHERE CODE_ID_LISTE='CL_SITE'")
+	names (temp)[2] <- 'typologie'
+	merge (stations, temp, by.x='CLASSE_SITE', by.y='CLE', all.x=TRUE, all.y=FALSE)
 }
 
 xrGetPolluants <- function(conn, pattern=NULL, search.fields=c('NOPOL', 'CCHIM', 'NCON'),
