@@ -81,11 +81,10 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL) {
 # conn <- xrConnect()
 
 match.pattern.fields <- function (pattern, search.fields) {
-	sprintf ('(%s)',
-		 paste ('(', rep (search.fields, each = length(pattern) ),
-			" = '", pattern, "')",
-			sep = '', collapse = ' OR ') )
+	patt <- paste (pattern, collapse="', '")
+	sprintf ('(%s)', paste (search.fields, " IN ('", patt, "')", sep='', collapse=' OR ') )
 }
+
 
 xrGetCampagnes <- function(conn, pattern=NULL, search.fields=c('NOM_COURT_CM', 'LIBELLE'), start=NULL, end=NULL,
 			   fields = NULL) {
@@ -143,13 +142,13 @@ xrGetReseaux <- function(conn, pattern=NULL, search.fields=c('NOM_COURT_RES', 'N
 	return (reseaux)
 }
 
-xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NSIT', 'NOM_COURT_SIT'),
+xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NOM_COURT_SIT'),
 			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL, collapse = c('AND', 'OR')) {
 
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
-	if (is.null (fields) ) fields <- dbListFields (conn, 'STATION')
+	if (is.null (fields) ) fields <- '*'#dbListFields (conn, 'STATION')
 	
 	query <- sprintf ('SELECT %s FROM', paste ('STATION', fields, sep='.', collapse=', ') )
 	q <- list()
