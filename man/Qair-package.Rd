@@ -20,5 +20,4 @@ License: \tab GPL\cr
 \author{
 Responsable : Vladislav Navel <vladislav.navel@atmo-poitou-charentes.org>
 }
-\seealso{ \code{\link{Qair}} }
 \keyword{ package }

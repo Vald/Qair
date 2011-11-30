@@ -1,3 +1,14 @@
+#' Calcule un interval de représentation.
+#'
+#' @section Details: À partir d'un vecteur de valeurs numérique, la fonction
+#' renvoie un vecteur de 2 valeurs pouvant servir de limites
+#' pour un graphique (xlim, ylim, rlim, etc.)
+#'
+#' @param x vecteur de 'numeric' pour lequel on souhaite déterminer
+#' 	les limites grpahiques
+#' @param na.rm boolean les valeurs NA doivent être elles considérées ?
+#' @return vecteur de 2 'numeric's
+
 compute.lim <- function(x, na.rm=FALSE) {
 	x <- range(x, na.rm=na.rm)
 

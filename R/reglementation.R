@@ -43,7 +43,7 @@ validation.prepare <- function (x, to, ...) {
 		if (is.periodic == 'hour' & to == 'year') {
 			test.validation <- x
 			test.validation[T] <- data.frame (lapply (data.frame (x), check.na.consecutifs) )
-			test.validation <- changeTimeIntervaleSupport (test.validation, 'year', 0, all, na.rm=TRUE)
+			test.validation <- changeTimeIntervalSupport (test.validation, 'year', 0, all, na.rm=TRUE)
 		}
 	return (test.validation)
 }

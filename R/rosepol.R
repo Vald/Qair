@@ -43,7 +43,7 @@ plot.rose <- function(x, y,
 	rlim=NULL,
 	at.rho = NULL, unite = '', labels.rho=NULL, col.rho, lwd.rho=1, lty.rho=2, expr.rho=FALSE,
 	at.theta = 0:7*45, labels.theta = c('N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'), nb.theta = 360, col.theta, lwd.theta=1, lty.theta=2,
-	centre = list(x=0, y=0), pas.rose = 1, facteur=1, add=FALSE) {
+	centre = list(x=0, y=0), pas.rose = 1, facteur=1, add=FALSE, ...) {
 
 	rose <- x
 	breaks <- rose$breaks

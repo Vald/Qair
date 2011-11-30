@@ -1,3 +1,16 @@
+#' Récupération du résultat d'une requête dans une base XR.
+#' 
+#' @section Details: Cette fonction permet d'envoyer une requête à une connection
+#' sur une base XR et d'en récupérer le résultat.
+#' Sous windows, le pilote utilisé est ODBC (nécessite d'avoir
+#' installer le paquet \code{\link[RODBC]{RODBC}}), sous linux JDBC
+#' (nécessite d'avoir installer le paquet \code{\link[RJDBC]{JDBC}}).
+#' 
+#' @param conn une connection à une base XR (cf \code{\link{xrConnect}})
+#' @param query chaîne de caractères contenant la reqûete
+#' @return une data.frame avec le résultat de la requête ou 
+#' 	une erreur si la requête n'a pas abouti.
+#' @seealso \code{\link{xrConnect}}, \code{\link[RODBC]{RODBC}}, \code{\link[RJDBC]{JDBC}}
 xrGetQuery <- function (conn, query) {
 	if(.Platform$OS.type=="windows") {
 		sqlQuery(conn, query)
@@ -7,6 +20,48 @@ xrGetQuery <- function (conn, query) {
 
 }
 
+#' Initialisation d'une connection à une base XR.
+#'
+#' @section Details: Cette fonction permet d'initialiser une connection avec une base XR.
+#' Sous windows, le pilote utilisé est ODBC (nécessite d'avoir
+#' installer le paquet \code{\link[RODBC]{RODBC}}), sous linux JDBC
+#' (nécessite d'avoir installer le paquet \code{\link[RJDBC]{JDBC}}).
+#'
+#' Une fois définis, les arguments sont définis pour la session entière.
+
+#' Il est possible de définir ces 'argument' en utilisant la 
+#' fonction \code{\link[base]{options}} avec les mêmes arguments, mais précédés de 'Xair.'
+#' (cf la section exemple).
+#'
+#' Les arguments non-spécifiés à l'appel de la fonction et qui n'apparaissent pas
+#' dans les options seront interactivement demandés à l'utilisateur.
+#'
+#' @param dsn Nom de la base de données (cf le pilote concerné, JDBC ou ODBC).
+#'	optionnel : sera demandé si nécessaire.
+#' @param uid Identifiant utilisé pour la connection.
+#'	optionnel : sera demandé si nécessaire.
+#' @param pwd Mot de passe pour initialiser la connection.
+#'	optionnel : sera demandé si nécessaire.
+#' @param host Adresse de l'hôte hébergeant la base de données. Uniquement
+#'	pour les systèmes type unix, utilisant le pilote JDBC.
+#'	optionnel : sera demandé si nécessaire.
+#' @param ojdbc Emplacement de la librairie contenant la définition des classes
+#'	nécessaires à RJDBC. Uniquement 
+#'	pour les systèmes type unix, utilisant le pilote JDBC.
+#' @return Une connection à la base XR (le type exact dépend du pilote utilisé).
+#'
+#' @aliases options, Xair.uid, Xair.pwd, Xair.host, Xair.dsn
+#' @seealso \code{\link{xrConnect}}, \code{\link[RODBC]{RODBC}}, \code{\link[RJDBC]{JDBC}},
+#' 	\code{\link[base]{options}}
+#'
+#' @examples
+#' \dontrun{
+#' # dans le cas d'un système windows
+#' # cette ligne permet de définir l'identifiant et la base de données
+#' options (Xair.uid='vlad', Xair.dsn='BaseN')
+#' # la ligne suivante ne demandera que le mot de passe.
+#' xrConnect()
+#'}
 xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL) {
 	# host et ojdbc sont a specifier uniquement dans le cas de l'utilisation de RJDBC
 
@@ -78,7 +133,6 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL) {
 	return (conxair)
 }
 
-# conn <- xrConnect()
 
 match.pattern.fields <- function (pattern, search.fields) {
 	pattern <- gsub ('_', '!_', pattern)
