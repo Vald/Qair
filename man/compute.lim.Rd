@@ -15,9 +15,6 @@
   vecteur de 2 'numeric's
 }
 \description{
-  Calcule un interval de représentation.
-}
-\section{Details}{
   À partir d'un vecteur de valeurs numérique, la fonction
   renvoie un vecteur de 2 valeurs pouvant servir de limites
   pour un graphique (xlim, ylim, rlim, etc.)
