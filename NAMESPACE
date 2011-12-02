@@ -8,22 +8,22 @@ export (xrGetQuery, xrConnect,
 	Xair2R)
 
 # outils divers
-export (slide, representatif, compute.lim)
+export (slide, compute.lim)
 
 # fonctions specifiques a certaines 'normes' ademe
 export (round.a, quantile.a)
 
 # calculs réglementaires / seuil
-export (seuils, sur3ans, typologies,
+export (seuils, typologies,
 	format.seuil, print.seuil,
-	aot, aot40maiJuillet, aot40maiJuillet5ans,
-	alerte400NO2, depsur8h, protecVegeFroidSO2, representatif, 
-	margevlC6H6y, margevlNO2h, margevlNO2y, margevlPM25,
+	aot, #aot40maiJuillet, aot40maiJuillet5ans,
+	#alerte400NO2, depsur8h, protecVegeFroidSO2, #representatif, 
+	#margevlC6H6y, margevlNO2h, margevlNO2y, margevlPM25, sur3ans, 
 	comparaison, preparation.base, validation.reglementaire)
 S3method ('format', 'seuil')
 S3method ('print', 'seuil')
 
 # fonction en rapport avec des 'roses'
-export (compute.rose, plot.rose, rosepol, compute.rosevent, plot.rosevent)
+export (compute.rose, plot.rose, rosepol, compute.rosevent, plot.rosevent, rosevent)
 
 

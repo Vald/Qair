@@ -12,8 +12,8 @@ Traitement de donnees, domaine de la qualite de l'air
 \tabular{ll}{
 Package: \tab Qair\cr
 Type: \tab Package\cr
-Version: \tab 0.26\cr
-Date: \tab 2011-08-11\cr2
+Version: \tab 2.0-0\cr
+Date: \tab 2011-08-11\cr
 License: \tab GPL\cr
 }
 }

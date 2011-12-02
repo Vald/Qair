@@ -1,0 +1,49 @@
+\name{xrGetStations}
+\alias{xrGetStations}
+\title{Récupération des stations de mesures définies dans une base XR}
+\usage{
+  xrGetStations(conn, pattern = NULL,
+    search.fields = c("IDENTIFIANT", "NOM_COURT_SIT"),
+    campagnes = NULL, reseaux = NULL, fields = NULL,
+    mesures = NULL, collapse = c("AND", "OR"))
+}
+\arguments{
+  \item{mesures}{chaînes de caractères correspondant aux
+  mesures à rappatrier (optionnel) (utilisé via la fonction
+  \code{\link{xrGetMesures}}).}
+
+  \item{fields}{vecteurs indiquant les champs de la table à
+  récupérer.  Tous par défaut.}
+
+  \item{conn}{une connection valide telle que retournée par
+  \code{\link{xrConnect}}.}
+
+  \item{pattern}{chaînes de caractères utilisées pour la
+  recherche (cf \sQuote{Details}).}
+
+  \item{search.fields}{champ de la table dans lesquels
+  \code{pattern} doit être recherché.}
+
+  \item{campagnes}{chaînes de caractères correspondant aux
+  campagnes à rappatrier (optionnel) (utilisé via la
+  fonction\code{\link{xrGetCampagnes}}).}
+
+  \item{reseaux}{chaînes de caractères correspondant aux
+  réseaux à rappatrier (optionnel) (utilisé via la
+  fonction\code{\link{xrGetReseaux}}).}
+
+  \item{collapse}{conjonction à appliquer entre les
+  différents critères de recherche indiqués.}
+}
+\value{
+  une data.frame correspondant au contenu de la table pour
+  les stations trouvées.
+}
+\description{
+  La fonction permet de lister les stations existantes dans
+  la base XR référencée par la connection \code{conn}.
+}
+\seealso{
+  \code{\link{xrGetContinuousData}}
+}
+
