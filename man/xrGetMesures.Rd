@@ -1,6 +1,6 @@
 \name{xrGetMesures}
 \alias{xrGetMesures}
-\title{Récupération des mesures définies dans une base XR}
+\title{Recuperation des mesures definies dans une base XR}
 \usage{
   xrGetMesures(conn, pattern = NULL,
     search.fields = c("IDENTIFIANT", "NOM_COURT_MES"),

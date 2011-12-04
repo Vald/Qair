@@ -1,6 +1,6 @@
 \name{xrGetContinuousData}
 \alias{xrGetContinuousData}
-\title{Récupération de mesure continue dans une base XR}
+\title{Recuperation de mesure continue dans une base XR}
 \usage{
   xrGetContinuousData(conn, pattern = NULL, start, end,
     period = c("h", "qh", "d", "m", "y"), validated = TRUE,

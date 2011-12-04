@@ -1,6 +1,6 @@
 \name{xrGetPolluants}
 \alias{xrGetPolluants}
-\title{Récupération des polluants définis dans une base XR}
+\title{Recuperation des polluants definis dans une base XR}
 \usage{
   xrGetPolluants(conn, pattern = NULL,
     search.fields = c("NOPOL", "CCHIM", "NCON"),

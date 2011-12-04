@@ -1,6 +1,6 @@
 \name{compute.lim}
 \alias{compute.lim}
-\title{Calcule un interval de représentation.}
+\title{Calcule un interval de representation.}
 \usage{
   compute.lim(x, na.rm = FALSE)
 }

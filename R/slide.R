@@ -1,4 +1,4 @@
-#' Aggrégation 'glissante' de données.
+#' Aggregation 'glissante' de donnees.
 #'
 #' Cette fonction permet de calculer des moyennes, des variances,
 #' un maximum ou un minimum en faisant 'glisser' une fenêtre sur un

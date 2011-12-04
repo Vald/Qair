@@ -1,6 +1,6 @@
 \name{check.na.consecutifs}
 \alias{check.na.consecutifs}
-\title{Test la validité d'un vecteur par rapport à nombre de NA consécutif}
+\title{Test la validite d'un vecteur par rapport a nombre de NA consecutifs}
 \usage{
   check.na.consecutifs(x, na.consecutif.max = 720)
 }

@@ -1,6 +1,6 @@
 \name{Xair2R}
 \alias{Xair2R}
-\title{Récupération de mesure continue dans une base XR}
+\title{Recuperation de mesure continue dans une base XR}
 \usage{
   Xair2R(polluants, dated, datef,
     dt = c("qh", "heure", "jour", "mois", "an"), merging,

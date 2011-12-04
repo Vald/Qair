@@ -1,4 +1,4 @@
-#' Initialisation d'une connection à une base XR.
+#' Initialisation d'une connection a une base XR.
 #'
 #' @section Details: Cette fonction permet d'initialiser une connection avec une base XR.
 #' Sous windows, le pilote utilisé est ODBC (nécessite d'avoir

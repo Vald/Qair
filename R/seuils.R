@@ -39,7 +39,7 @@ format.seuil <- function (x, ...) {
 			 '')))))
 }
 
-#' liste les différentes typologie de site possible
+#' liste les differentes typologie de site possible
 typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régional', 'rural national')
 
 .seuils <- list (list (polluant='03', cchim='NO2', type='objectif de qualité', protection='la santé humaine', sites=typologies, 
@@ -387,7 +387,7 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 		      seuil=0.6, unite='ng/m3', reference='Directive 2004/107/CE du 15 décembre 2004')
 		)
 
-#' Seuils réglementaires pour la qualité de l'air
+#' Seuils reglementaires pour la qualite de l'air
 #' 
 #' Cette fonction permet d'accéder à l'ensemble des seuils
 #' réglementaires applicables en France pour la surveillance

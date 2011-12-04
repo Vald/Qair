@@ -1,6 +1,6 @@
 \name{xrGetQuery}
 \alias{xrGetQuery}
-\title{Récupération du résultat d'une requête dans une base XR.}
+\title{Recuperation du resultat d'une requete dans une base XR.}
 \usage{
   xrGetQuery(conn, query)
 }
@@ -15,7 +15,7 @@
   erreur si la requête n'a pas abouti.
 }
 \description{
-  Récupération du résultat d'une requête dans une base XR.
+  Recuperation du resultat d'une requete dans une base XR.
 }
 \section{Details}{
   Cette fonction permet d'envoyer une requête à une

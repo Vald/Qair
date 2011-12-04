@@ -1,4 +1,4 @@
-#' Récupération des polluants définis dans une base XR
+#' Recuperation des polluants definis dans une base XR
 #'
 #' La fonction permet de lister les polluants existants dans la 
 #' base XR référencée par la connection \code{conn}.

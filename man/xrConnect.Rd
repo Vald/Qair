@@ -1,11 +1,11 @@
 \name{xrConnect}
-\alias{options,}
 \alias{Xair.dsn}
 \alias{Xair.host,}
 \alias{Xair.pwd,}
 \alias{Xair.uid,}
+\alias{options,}
 \alias{xrConnect}
-\title{Initialisation d'une connection à une base XR.}
+\title{Initialisation d'une connection a une base XR.}
 \usage{
   xrConnect(dsn = NULL, uid = NULL, pwd = NULL,
     host = NULL, ojdbc = NULL)
@@ -35,7 +35,7 @@
   pilote utilisé).
 }
 \description{
-  Initialisation d'une connection à une base XR.
+  Initialisation d'une connection a une base XR.
 }
 \section{Details}{
   Cette fonction permet d'initialiser une connection avec

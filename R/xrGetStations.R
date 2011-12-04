@@ -1,4 +1,4 @@
-#' Récupération des stations de mesures définies dans une base XR
+#' Recuperation des stations de mesures definies dans une base XR
 #'
 #' La fonction permet de lister les stations existantes dans la 
 #' base XR référencée par la connection \code{conn}.

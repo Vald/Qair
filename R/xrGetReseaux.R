@@ -1,4 +1,4 @@
-#' Récupération des réseaux de mesures définis dans une base XR
+#' Recuperation des reseaux de mesures definis dans une base XR
 #'
 #' La fonction permet de lister les réseaux existants dans la 
 #' base XR référencée par la connection \code{conn}.

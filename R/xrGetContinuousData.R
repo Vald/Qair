@@ -1,4 +1,4 @@
-#' Récupération de mesure continue dans une base XR
+#' Recuperation de mesure continue dans une base XR
 #'
 #' La fonction permet de récupérer une ou plusieurs séries 
 #' de données stockée(s) dans une base XR entre 2 dates données

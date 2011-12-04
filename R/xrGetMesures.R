@@ -1,4 +1,4 @@
-#' Récupération des mesures définies dans une base XR
+#' Recuperation des mesures definies dans une base XR
 #'
 #' La fonction permet de lister les mesures existantes dans la 
 #' base XR référencée par la connection \code{conn}.

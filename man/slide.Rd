@@ -1,6 +1,6 @@
 \name{slide}
 \alias{slide}
-\title{Aggrégation 'glissante' de données.}
+\title{Aggregation 'glissante' de donnees.}
 \usage{
   slide(x, fenetre, pas, pc = 0.75,
     FUN = c("mean", "min", "max", "var"))

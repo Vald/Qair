@@ -1,5 +1,4 @@
-
-#' Récupération du résultat d'une requête dans une base XR.
+#' Recuperation du resultat d'une requete dans une base XR.
 #' 
 #' @section Details: Cette fonction permet d'envoyer une requête à une connection
 #' sur une base XR et d'en récupérer le résultat.

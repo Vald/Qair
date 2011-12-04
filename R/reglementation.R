@@ -2,7 +2,7 @@
 #         return (mean (!is.na(x))>=pc.min & !any (slide (is.na(x), na.consecutif.max+1, 1, 1) == 1, na.rm=TRUE) )
 # }
 
-#' Test la validité d'un vecteur par rapport à nombre de NA consécutif
+#' Test la validite d'un vecteur par rapport a nombre de NA consecutifs
 #'
 #' Le vecteur est considéré valide si le nombre de NA consécutifs 
 #' qui le constitue est inférieur ou égal à \code{na.consecutif.max}.

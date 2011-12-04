@@ -1,6 +1,6 @@
 \name{seuils}
 \alias{seuils}
-\title{Seuils réglementaires pour la qualité de l'air}
+\title{Seuils reglementaires pour la qualite de l'air}
 \usage{
   seuils(type = c("objectif de qualité", "seuil d'information et de recommandation", "seuil d'alerte", "valeur limite", "niveau critique", "valeur cible", "seuil d'évaluation inférieur", "seuil d'évaluation supérieur"),
     protection = c("la santé humaine", "la végétation", "la mise en oeuvre progressive de mesures d'urgence"),

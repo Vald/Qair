@@ -1,6 +1,6 @@
 \name{xrGetReseaux}
 \alias{xrGetReseaux}
-\title{Récupération des réseaux de mesures définis dans une base XR}
+\title{Recuperation des reseaux de mesures definis dans une base XR}
 \usage{
   xrGetReseaux(conn, pattern = NULL,
     search.fields = c("NOM_COURT_RES", "NOM_RES"),

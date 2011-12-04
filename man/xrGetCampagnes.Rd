@@ -1,6 +1,6 @@
 \name{xrGetCampagnes}
 \alias{xrGetCampagnes}
-\title{Récupération des campagnes de mesures définies dans une base XR}
+\title{Recuperation des campagnes de mesures definies dans une base XR}
 \usage{
   xrGetCampagnes(conn, pattern = NULL,
     search.fields = c("NOM_COURT_CM", "LIBELLE"),
