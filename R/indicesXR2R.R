@@ -1,92 +1,14 @@
 # retourne uniquement l'indice diffuse pour l'instant (le champ C_IND_DIFFUSE'
 'indicesXR2R' <-
-function (agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
-	# definition de l'hote (unix like system)
-	if(!is.null(host)) {
-		options(Xair.host=host)
-	} else if(is.null(getOption('Xair.host')) & .Platform$OS.type=='unix') {
-		cat('hote hebergeant la base de donnees :\n')
-		options(Xair.host=scan(what='character', nlines=1))
-		cat('\n')
-	}
-
-	# definition de la base de donnees (dsn)
-	if(!is.null(dsn)) {
-		options(Xair.dsn=dsn)
-	} else if(is.null(getOption('Xair.dsn')) & .Platform$OS.type=='unix') {
-		cat('nom de la base de donnees (DataSourceName) :\n')
-		options(Xair.dsn=scan(what='character', nlines=1))
-		cat('\n')
-	} else if(is.null(getOption('Xair.dsn')) & .Platform$OS.type=='windows') {
-		cat(	'nom de la base de donnees (DataSourceName) :\n',
-			names(odbcDataSources('system')), '\n')
-		options(Xair.dsn=scan(what='character', nlines=1))
-		cat('\n')
-	}
-
-	# definition du login
-	if(!is.null(uid)) {
-		options(Xair.uid=uid)
-	} else if(is.null(getOption('Xair.uid'))) {
-		cat('identifiant pour la connection :\n')
-		options(Xair.uid=scan(what='character', nlines=1))
-		cat('\n')
-	}
-
-	# definition du mot de passe
-	if(!is.null(pwd)) {
-		options(Xair.pwd=pwd)
-	} else if(is.null(getOption('Xair.pwd'))) {
-		cat('mot de passe pour la connection :\n')
-		options(Xair.pwd=scan(what='character', nlines=1))
-		cat('\n')
-	}
-
-	# connection a la base
-	if(.Platform$OS.type=="windows") {
-		conxair <- try (odbcConnect (
-			getOption("Xair.dsn"),
-			uid = getOption("Xair.uid"), pwd = getOption("Xair.pwd"),
-			case = "nochange", believeNRows = TRUE) )
-		if(inherits(conxair, "try-error"))
-			stop("echec de la connection a la base Xair.")
-	} else if(.Platform$OS.type=="unix") {
-		if(!is.null(options()$Xair.ojdbc.file)) {
-			drv <- JDBC (	"oracle.jdbc.OracleDriver",
-					options()$Xair.ojdbc.file)
-		} else {
-			cat('Veuillez entrer le chemin vers le fichier java ojdbc*.jar\nAfin de ne pas avoir a renseigner ce chemin a chaque session\nvous pouvez definir la variable options(Xair.ojdbc.file = ...) dans le fichier ~/.Rprofile\n')
-			drv <- scan(nmax = 1, what = 'character')
-		}
-		conxair <- try (dbConnect (
-			drv,
-			paste (	"jdbc:oracle:thin:@",
-				getOption("Xair.host"),
-				":1521:",
-				getOption("Xair.dsn"), sep=""),
-			getOption("Xair.uid"), getOption("Xair.pwd"),
-			identifer.quote="'") )
-		if(inherits(conxair, "try-error"))
-			stop("echec de la connection a la base Xair.")
-	} else {
-		stop("platforme non reconnue")
-	}
-
+function (conn, agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
 	if (missing (agglos) ) {
 		query <- 'SELECT NOM_AGGLO FROM GROUPE_ATMO'
-		if(.Platform$OS.type=="windows") {
-			print (sqlQuery (conxair, query) )
-			odbcClose(conxair)
-		} else if(.Platform$OS.type=="unix") {
-			print (dbGetQuery (conxair, query) )
-			dbDisconnect(conxair)
-		}
-		return ()
+		return (xrGetQuery (conn, query))
 	}
 
-	dated <- format(as.Date(chron(dated, format='y-m-d')), format='%Y-%m-%d')
-	datef <- as.character(chron(datef, format='y-m-d'))
-	datef <- format(as.Date(chron(datef, format='y-m-d')), format='%Y-%m-%d')
+	#         dated <- format(as.Date(chron(dated, format='y-m-d')), format='%Y-%m-%d')
+	#         datef <- as.character(chron(datef, format='y-m-d'))
+	#         datef <- format(as.Date(chron(datef, format='y-m-d')), format='%Y-%m-%d')
 
 	query <- sprintf (
 		"SELECT NOM_AGGLO, J_DATE, C_IND_DIFFUSE
@@ -99,11 +21,8 @@ function (agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
 		paste (agglos, collapse="', '"), dated, datef)
 
 
-	if(.Platform$OS.type=="windows") {
-		indices <- sqlQuery (conxair, query)
-	} else if(.Platform$OS.type=="unix") {
-		indices <- dbGetQuery (conxair, query)
-	}
+	indices <- xrGetQuery (conn, query)
+
 	indices$NOM_AGGLO <- as.character (indices$NOM_AGGLO)
 	indices$J_DATE <- substr (as.character (indices$J_DATE), 1, 10)
 	names (indices)[names (indices) == 'J_DATE'] <- 'date'
@@ -119,17 +38,12 @@ function (agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
 		indices <- merge (indices, temp[[i]], all=TRUE, by='date')
 	}
 	rm(temp)
-	indices$date <- chron(indices$date, format="y-m-d")
+	indices$date <- as.POSIXct(indices$date, 'UTC')
 
-	indices <- as.Qair(indices, dt='jour')
-	class (indices) <- c('indice', class (indices) )
+	indices <- new ('TimeIntervalDataFrame',
+			start=indices$date, end=indices$date+d,
+			timezone='UTC', data=indices[setdiff(names(indices), 'date')])
 
-	if(.Platform$OS.type=="windows") {
-		odbcClose(conxair)
-	} else if(.Platform$OS.type=="unix") {
-		dbDisconnect(conxair)
-	}
-	
 	return (indices)
 }
 
