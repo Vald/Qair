@@ -3,7 +3,7 @@
 #' La fonction permet de récupérer une ou plusieurs séries 
 #' de données stockée(s) dans une base XR entre 2 dates données
 #' au format voulu (heure, mois, etc.). Les données sont retournées
-#' au format \code{\link[timetools]{TimeIntervalDataFrame}} défini dans le 
+#' au format \code{\link[timetools]{TimeIntervalDataFrame-class}} défini dans le 
 #' paquet \code{\link[timetools]{timetools}}.
 #' Cette fonction est définie pour conserver une certaine compatibilité
 #' avec les versions antérieures de Qair.
@@ -29,7 +29,7 @@
 #' 	sont récupérées ; si TRUE les codes états sont également récupérés.
 #' @param XR6 TRUE si la version de XR est supérieure ou égale à 6, FALSE sinon.
 #'
-#' @return un objet de classe \code{TimeIntervalDataFrame}
+#' @return un objet de classe \code{TimeIntervalDataFrame-class}
 #' 	contenant les données demandées.
 #'
 #' @seealso \code{\link{xrGetContinuousData}}

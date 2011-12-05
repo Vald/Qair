@@ -4,11 +4,12 @@ import (timetools)
 # liens avec une base XR
 export (xrGetQuery, xrConnect,
 	xrGetCampagnes, xrGetReseaux, xrGetStations, xrGetMesures, xrGetPolluants,
-	xrGetContinuousData,
+	xrGetSitesPrelevement, xrGetMethodesPrelevement,
+	xrGetContinuousData, xrGetManualData,
 	Xair2R)
 
 # outils divers
-export (slide, compute.lim)
+export (slide, compute.lim, qh, h)
 
 # fonctions specifiques a certaines 'normes' ademe
 export (round.a, quantile.a)

@@ -75,17 +75,17 @@
   nécessaire.}
 }
 \value{
-  un objet de classe \code{TimeIntervalDataFrame} contenant
-  les données demandées.
+  un objet de classe \code{TimeIntervalDataFrame-class}
+  contenant les données demandées.
 }
 \description{
   La fonction permet de récupérer une ou plusieurs séries
   de données stockée(s) dans une base XR entre 2 dates
   données au format voulu (heure, mois, etc.). Les données
   sont retournées au format
-  \code{\link[timetools]{TimeIntervalDataFrame}} défini
-  dans le paquet \code{\link[timetools]{timetools}}. Cette
-  fonction est définie pour conserver une certaine
+  \code{\link[timetools]{TimeIntervalDataFrame-class}}
+  défini dans le paquet \code{\link[timetools]{timetools}}.
+  Cette fonction est définie pour conserver une certaine
   compatibilité avec les versions antérieures de Qair.
 }
 \seealso{

@@ -70,16 +70,17 @@
   égale à 6, FALSE sinon.}
 }
 \value{
-  un objet de classe \code{TimeIntervalDataFrame} contenant
-  les données demandées.
+  un objet de classe
+  \code{\link[timetools]{TimeIntervalDataFrame-class}}
+  contenant les données demandées.
 }
 \description{
   La fonction permet de récupérer une ou plusieurs séries
   de données stockée(s) dans une base XR entre 2 dates
   données au format voulu (heure, mois, etc.). Les données
   sont retournées au format
-  \code{\link[timetools]{TimeIntervalDataFrame}} défini
-  dans le paquet \code{\link[timetools]{timetools}}.
+  \code{\link[timetools]{TimeIntervalDataFrame-class}}
+  défini dans le paquet \code{\link[timetools]{timetools}}.
 }
 \details{
   L'extraction des séries de données peut être réalisée en
@@ -108,6 +109,7 @@
   \code{\link{xrGetMesures}}, \code{\link{xrGetCampagnes}},
   \code{\link{xrGetReseaux}}, \code{\link{xrGetStations}},
   \code{\link{xrGetPolluants}},
-  \code{\link[timetools]{TimeIntervalDataFrame}}
+  \code{\link[timetools]{TimeIntervalDataFrame-class}}
+  \code{\link{xrGetManuaData}}
 }
 

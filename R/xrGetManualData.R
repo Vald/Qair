@@ -1,105 +1,17 @@
-match.pattern.fields <- function (pattern, search.fields) {
-	pattern <- gsub ('_', '!_', pattern)
-	sprintf ('(%s)',
-		 paste ('(', rep (search.fields, each = length(pattern) ),
-			" LIKE '%", pattern, "%' ESCAPE '!')",
-			sep = '', collapse = ' OR ') )
-}
-
-## pour s'inspirer quand on fera du TS*DataFrame
-# print.TimeIntervalDataFrame <- function (x, ...) {
-#         to.print <- data.frame (attributes(x)$dates, unclass (x), stringsAsFactors=FALSE)
-#         to.print <- data.frame (lapply (to.print, function(x) ifelse (is.na(x), 'NA', as.character(x) ) ), stringsAsFactors=FALSE)
-# 
-#         to.print.tmp <- attributes(x)$mesures
-#         to.print.tmp <- data.frame (start='', end=c('', names(to.print.tmp)),
-#                                     t(data.frame (rep ('', nrow(to.print.tmp) ), to.print.tmp@data, stringsAsFactors=FALSE) ),
-#                                     stringsAsFactors=FALSE)
-#         rownames (to.print.tmp) <- NULL
-#         to.print <- rbind (to.print, to.print.tmp, stringsAsFactors=FALSE)
-# 
-#         to.print.tmp <- coordinates(attributes(x)$mesures)
-#         to.print.tmp <- data.frame (start = '',
-#                                     end = c('', colnames(to.print.tmp) ),
-#                                     t(data.frame (rep('', nrow(to.print.tmp) ), to.print.tmp) ),
-#                                     stringsAsFactors=FALSE)
-#         rownames (to.print.tmp) <- NULL
-#         colnames (to.print.tmp) <- names (to.print)
-#         to.print <- rbind (to.print, to.print.tmp, stringsAsFactors=FALSE)
-# 
-#         print (to.print)
-# }
-
-
-
-# a deplacer dans un fichier zzz.R
-qh <- new_period (minutes=15)
-h <- new_period (hours=1)
-#---------------------------------
-
-xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = c('IDSITEP', 'LIBELLE'),
-			  campagnes = NULL, fields = NULL, collapse = c('AND', 'OR')) {
-	collapse <- match.arg (collapse)
-	collapse <- sprintf (' %s ', collapse)
-
-	if (is.null (fields) ) fields <- '*'
-	
-	query <- sprintf ('SELECT %s FROM', paste ('SITE_PRELEVEMENT', fields, sep='.', collapse=', ') )
-	q <- list()
-	q$tables <- 'SITE_PRELEVEMENT'
-
-	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, search.fields)
-
-	if (!is.null (campagnes) ) {
-		q$campagnes <- unique (xrGetCampagnes (conn, pattern = campagnes)$NOM_COURT_CM)
-		if (length(q$campagnes) == 0) q$campagnes <- NULL else {
-			q$tables <- c(q$tables, 'CAMPMES_SITE_P')
-			q$campagnes <- sprintf(
-				'SITE_PRELEVEMENT.NSIT=CAMPMES_SITE_P.NSIT AND CAMPMES_SITE_P.NOM_COURT_CM IN (%s)',
-				paste ("'", q$campagnes, "'", sep = '', collapse = ", ") )
-		}
-	}
-
-	query <- sprintf ('%s %s', query, paste (q$tables, collapse=', ') )
-	q$tables <- NULL
-	if (length (q) > 0)
-		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
-
-	sites <- unique (xrGetQuery (conn, query) )
-	sites
-}
-
-xrGetMethodesPrelevement <- function(conn, pattern = NULL, search.fields = c('LIBELLE'),
-			  fields = NULL, collapse = c('AND', 'OR')) {
-	collapse <- match.arg (collapse)
-	collapse <- sprintf (' %s ', collapse)
-
-	if (is.null (fields) ) fields <- '*'
-	
-	query <- sprintf ('SELECT %s FROM', paste ('METH_PRELEVEMENT', fields, sep='.', collapse=', ') )
-	q <- list()
-	q$tables <- 'METH_PRELEVEMENT'
-
-	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, search.fields)
-
-	query <- sprintf ('%s %s', query, paste (q$tables, collapse=', ') )
-	q$tables <- NULL
-	if (length (q) > 0)
-		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
-
-	methodes <- unique (xrGetQuery (conn, query) )
-	methodes
-}
-
-# conn <- xrConnect()
-# start <- '2011-01-01'
-# end <- '2012-01-01'
-# sites <- c('COGN_', 'ANGO')
-# valid.states <- c("A", "R", "O", "W")
-# polluants <- 'NO2'
-# campagnes <- methodes <- NULL
+#' Fonction pour recuperer des donnees manuelles de XR
+#'
+#' @param sites chaînes de caractères correspondant aux sites à rappatrier
+#' 	(optionnel) (utilisé via la fonction\code{\link{xrGetSitesPrelevement}}).
+#' @param methodes chaînes de caractères correspondant aux campagnes à rappatrier
+#' 	(optionnel) (utilisé via la fonction\code{\link{xrGetMethodesPrelevement}}).
+#' @inheritParams xrGetContinuousData
+#'
+#' @return un objet de classe \code{\link[timetools]{TimeIntervalDataFrame-class}}
+#' 	contenant les données demandées.
+#'
+#' @seealso \code{\link{xrGetSitesPrelevement}}, \code{\link{xrGetMethodesPrelevement}},
+#'	 \code{\link{xrGetCampagnes}}, \code{\link{xrGetPolluants}}
+#' 	\code{\link[timetools]{TimeIntervalDataFrame-class}}
 
 xrGetManualData <-
 	function (conn, start, end, sites=NULL, polluants=NULL, methodes=NULL,
@@ -201,5 +113,4 @@ xrGetManualData <-
 		       timezone='UTC', data=result[-(1:2)])
 	return (result)
 }
-
 

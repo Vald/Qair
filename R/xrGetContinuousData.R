@@ -3,7 +3,7 @@
 #' La fonction permet de récupérer une ou plusieurs séries 
 #' de données stockée(s) dans une base XR entre 2 dates données
 #' au format voulu (heure, mois, etc.). Les données sont retournées
-#' au format \code{\link[timetools]{TimeIntervalDataFrame}} défini dans le 
+#' au format \code{\link[timetools]{TimeIntervalDataFrame-class}} défini dans le 
 #' paquet \code{\link[timetools]{timetools}}.
 #'
 #' L'extraction des séries de données peut être réalisée en recherchant
@@ -56,11 +56,12 @@
 #'	indiqués.
 #' @param XR6 TRUE si la version de XR est supérieure ou égale à 6, FALSE sinon.
 #'
-#' @return un objet de classe \code{TimeIntervalDataFrame}
+#' @return un objet de classe \code{\link[timetools]{TimeIntervalDataFrame-class}}
 #' 	contenant les données demandées.
 #'
 #' @seealso \code{\link{xrGetMesures}}, \code{\link{xrGetCampagnes}}, \code{\link{xrGetReseaux}},
-#'  \code{\link{xrGetStations}}, \code{\link{xrGetPolluants}}, \code{\link[timetools]{TimeIntervalDataFrame}}
+#'  \code{\link{xrGetStations}}, \code{\link{xrGetPolluants}}, \code{\link[timetools]{TimeIntervalDataFrame-class}}
+#'	\code{\link{xrGetManuaData}}
 
 xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		       period = c('h', 'qh', 'd', 'm', 'y'),
