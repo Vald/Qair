@@ -6,7 +6,7 @@ export (xrGetQuery, xrConnect,
 	xrGetCampagnes, xrGetReseaux, xrGetStations, xrGetMesures, xrGetPolluants,
 	xrGetSitesPrelevement, xrGetMethodesPrelevement,
 	xrGetContinuousData, xrGetManualData,
-	Xair2R)
+	Xair2R, indicesXR2R, plot.indice)
 
 # outils divers
 export (slide, qh, h)

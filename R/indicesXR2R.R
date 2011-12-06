@@ -1,14 +1,28 @@
-# retourne uniquement l'indice diffuse pour l'instant (le champ C_IND_DIFFUSE'
+#' Recuperation des indices de qualite de l'air
+#'
+#' La fonction permet de rappatrier les indices de
+#' la qualité de l'air stocké dans une base XR. Pour 
+#' connaître la liste des réseaux d'indices definis,
+#' il suffit d'invoquer la fonction sans arguments.
+#'
+#' @param agglos chaîne de caractères indiquant les 
+#' 	les réseaux d'indices pour lesquels les donnée
+#' 	doivent être rappatriées (invoquer \code{indices2XR()}
+#' 	sans arguments pour connaître les valeurs possibles).
+#' @inheritParams xrGetContinuousData
+#'
+#' @seealso \code{\link{xrConnect()}}, \code{\link{plot.indice}},
+#' \code{\link[timetools]{TimeIntervalDataFrame-class}}
+#'
+#' @return un objet de classe
+#' \code{\link[timetools:TimeIntervalDataFrame-class]{TimeIntervalDataFrame}}
+#' contenant les indices pour la période demandée.
 'indicesXR2R' <-
-function (conn, agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
+function (conn, agglos, start, end) {
 	if (missing (agglos) ) {
 		query <- 'SELECT NOM_AGGLO FROM GROUPE_ATMO'
 		return (xrGetQuery (conn, query))
 	}
-
-	#         dated <- format(as.Date(chron(dated, format='y-m-d')), format='%Y-%m-%d')
-	#         datef <- as.character(chron(datef, format='y-m-d'))
-	#         datef <- format(as.Date(chron(datef, format='y-m-d')), format='%Y-%m-%d')
 
 	query <- sprintf (
 		"SELECT NOM_AGGLO, J_DATE, C_IND_DIFFUSE
@@ -18,7 +32,7 @@ function (conn, agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
 				J_DATE BETWEEN
 			       		TO_DATE ('%s', 'YYYY-MM-DD') AND
 					TO_DATE ('%s', 'YYYY-MM-DD')",
-		paste (agglos, collapse="', '"), dated, datef)
+		paste (agglos, collapse="', '"), start, end)
 
 
 	indices <- xrGetQuery (conn, query)
@@ -47,6 +61,19 @@ function (conn, agglos, dated, datef, dsn=NULL, uid=NULL, pwd=NULL, host=NULL) {
 	return (indices)
 }
 
+#' Affichage circulaire des indices de qualité de l'air
+#'
+#' fonction permettant de représenter des indices de qualité
+#' de l'air de manière rigoulotte :)
+#'
+#' @param x un objet de la calsse
+#' \code{\link[timetools:TimeIntervalDataFrame-class]{TimeIntervalDataFrame}}
+#' contenant les indices à représenter
+#' @param y valeur unique (numérique, caractère) référençant
+#' 	la colonne à représenter
+#' @inheritParams graphics::par
+#'
+#' @seealso \code{\link{indicesXR2R}}
 plot.indice <- function (x, y, cex=1.7) {
 	commentaires <- factor(
 		c(	'Tres bon', 'Tres bon', 'Bon', 'Bon', 'Moyen',
