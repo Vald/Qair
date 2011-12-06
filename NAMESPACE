@@ -9,7 +9,7 @@ export (xrGetQuery, xrConnect,
 	Xair2R)
 
 # outils divers
-export (slide, compute.lim, qh, h)
+export (slide, qh, h)
 
 # fonctions specifiques a certaines 'normes' ademe
 export (round.a, quantile.a)
