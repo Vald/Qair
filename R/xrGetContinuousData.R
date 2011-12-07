@@ -36,7 +36,7 @@
 #' @param validated booléen. Si TRUE, les données sont récupérées dans la table normale
 #'	de stockage de XR ; si FALSE, les données sont récupérées dans la table \code{BRUTE}.
 #' @param valid.states liste des codes états d'XR à considérer comme valide. Par défaut
-#'	les données dont le code état est'A', 'R', 'O' ou 'W' sont considérées comme valides.
+#'	les données dont le code état est'A', 'R', 'O', 'W' ou 'P' sont considérées comme valides.
 #'	les autres sont remplacées par NA.
 #' @param what un des éléments suivant ('value', 'state', 'both'). value : seules
 #'	les valeurs sont récupérées ; state : seuls les codes états sont récupérées ;
@@ -65,7 +65,7 @@
 
 xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		       period = c('h', 'qh', 'd', 'm', 'y'),
-		       validated = TRUE, valid.states = c("A", "R", "O", "W"), what = c('value', 'state', 'both'),
+		       validated = TRUE, valid.states = c("A", "R", "O", "W", "P"), what = c('value', 'state', 'both'),
 		       search.fields='IDENTIFIANT', campagnes = NULL, reseaux = NULL, stations = NULL, polluants = NULL,
 		       collapse = c('AND', 'OR'), XR6 = TRUE) {
 	# period est un periode au sens lubridate
@@ -78,6 +78,12 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	#	on fait un petit cast
 	if (!is.POSIXt (start) ) start <- as.POSIXct (start, tz = 'UTC')
 	if (!is.POSIXt (end) ) end <- as.POSIXct (end, tz = 'UTC')
+	
+	real.start <- start
+	real.end <- end
+
+	start <- floor_date (start, switch(period, qh='day', h='day', d='day', m='year', y='year') )
+	end <- floor_date (end, switch(period, qh='day', h='day', d='day', m='year', y='year') )
 
 	# recuperation des noms de mesures qu'il faut 
 	q <- list ()
@@ -86,10 +92,11 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	q$mesures <- paste ("'", mesures$NOM_COURT_MES, "'", sep='', collapse=', ')
 
 	# donnees brutes ou pas ? Et quelle table aller taper ?
-	if(validated)
+	if(validated) {
 		q$table <- switch (period,
 				 qh = 'JOURNALIER', h = 'JOURNALIER', d = 'JOURNALIER',
-				 m = 'MOIS', y = 'MOIS') else {
+				 m = 'MOIS', y = 'MOIS')
+	} else {
 		if (period %in% c('m', 'y') )
 			warning ("Il n'y a pas de valeurs brutes pour les mois et les annees (period in 'm', 'y').")
 		q$table <-  switch (period,
@@ -136,20 +143,30 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	m <- match (names (data), mesures$NOM_COURT_MES)
 	data <- mapply (mef.mesure, data, mesures$IDENTIFIANT[m], fmul=mesures$FMUL[m], SIMPLIFY = FALSE,
 			MoreArgs = list (period=q$periodb, valid.states=valid.states, what=what, XR6=XR6))
-	ncm <- unlist (lapply (data, attr, 'NOM_COURT_MES') ) # ? a quoi ca sert ?
+	# ncm <- unlist (lapply (data, attr, 'NOM_COURT_MES') ) # ? a quoi ca sert ? À rien ?
 	for (i in names(data) ) names (data[[i]])[3] <- i
 	
 	tmp <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
 		    as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
-		    switch (period, qh='day', h='day', j='day', 'year') )
+		    switch (period, qh='day', h='day', d='day', 'year') )
 	tmp <- format (tmp, '%Y-%m-%d')
 	tmp2 <- grep (switch (period, qh = 'Q_M', h = 'H_M', d = 'J_M', m = 'M_M', y = 'A_M'), 
 		      q$fields.l, value=TRUE)
 	tmp <- paste (rep (tmp, each=length(tmp2) ), tmp2)
-	tmp <- c(paste (as.character(as.POSIXct(tmp[1]) -
-				     switch (period, qh = d, h = d, d = d, m = m, y = m)),
+	if (period %in% c('qh', 'h') )
+		tmp <- c(paste (as.character(as.POSIXct(tmp[1]) -
+				     switch (period,
+					     qh = new_period(day=1),
+					     h = new_period(day=1))),
 			tmp2[length(tmp2)]),
-		 tmp)
+		 tmp) else if (period %in% c('d', 'm', 'y') )
+		tmp <- c(tmp,
+			 paste (as.character(as.POSIXct(tmp[length(tmp)]) +
+				     switch (period,
+					     d = new_period(day=1),
+					     m = new_period(month=1),
+					     y = new_period(year=1))),
+			tmp2[1]))
 	result <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
 	while (length (data) > 0) {
 		result <- merge (result, data[[1]], all.x=TRUE, all.y=FALSE, by=c('start', 'end') )
@@ -182,18 +199,19 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 		to <- as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC')
 		np.arg <- list(1)
-		names(np.arg) <- switch (period, qh = 'day', h = 'day', d = 'day', m = 'month', y = 'month')
+		names(np.arg) <- switch (period, qh = 'day', h = 'day', d = 'day', m = 'year', y = 'year')
 		to <- to + do.call (new_period, np.arg)
-		#                 to <- to + switch (period, qh = d, h = d, d = d, m = m, y = m)
 
 	dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
 		      to,
 		      switch (period, qh='15 mins', h='hour', d='day', m='month', y='year') )
 
-	names (result) <- sprintf ('%s%s', ifelse (!is.na(as.numeric(substr(names(result), 1, 1))), 'X', ''), names(result) )
+	names (result) <- sprintf ('%s%s', ifelse (substr(names(result), 1, 1) %in% as.character(0:9),
+						   'X', ''), names(result) )
 	result <- new('TimeIntervalDataFrame', start=dates[-length(dates)], end=dates[-1], timezone='UTC',
 		      data=result)
-
+	
+	result <- result[start(result) >= real.start & end(result) <= real.end,]
 	return (result)
 }
 
@@ -210,10 +228,20 @@ mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul)
 	dates <- unique (data[[grep ('DATE', names (data))]])
 	data <- data[-grep ('DATE', names (data))]
 	tmp <- paste (rep (dates, each=length(data) ), names (data) )
-	tmp <- c(paste (as.character(as.POSIXct(dates[1]) - 
-				     switch (period, Q_M01=d, H_M01=d, J_M01=d, M_M01=m, A_M01=m)),
-			names (data)[length(data)] ),
-		 tmp)
+	if (period %in% c('Q_M01', 'H_M01') )
+		tmp <- c(paste (as.character(as.POSIXct(dates[1]) -
+					     switch (period,
+						     Q_M01 = new_period(day=1),
+						     H_M01 = new_period(day=1))),
+				names(data)[length(data)]),
+			 tmp) else if (period %in% c('J_M01', 'M_M01', 'A_M01') )
+		tmp <- c(tmp,
+			 paste (as.character(as.POSIXct(dates[length(dates)]) +
+					     switch (period,
+						     J_M01 = new_period(day=1),
+						     M_M01 = new_period(month=1),
+						     A_M01 = new_period(year=1))),
+				names(data)[1]) )
 	dates <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
 
 	if (what %in% c('value', 'both') ) {
