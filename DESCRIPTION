@@ -2,13 +2,13 @@ Package: Qair
 Type: Package
 Title: Traitement de donnees, domaine de la qualite de l'air
 Version: 2.0-0
-Date: 2011-08-11
+Date: 2011-12-07
 Depends: timetools
 Suggests: RODBC, RJDBC
 LazyData: true
 Author: Vladislav Navel
 Maintainer: Vladislav Navel <vnavel@yahoo.fr>
-Description: Ce package definit principalement deux types d'objet qui permettent, via les fonctions definies, de traiter les donnees de qualite de l'air de maniere temporelle et par rapport a des donnees de vent.  Les fonctions permettent de transformer des donnees d'une base temporelle a une autre, de calculer des profils (journaliers, hebdomadaires, mensuels, annuels) et des roses de pollution.  
+Description: Interface avec une base de données XR, outils de traitement des données de vent et de calculs réglementaires (niveaux Europe et France).
 License: GPL
 URL: http://sourceforge.net/projects/packagerqair/
 Encoding: UTF-8

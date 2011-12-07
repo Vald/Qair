@@ -3,7 +3,7 @@
 \title{Applique strictement des seuils reglementaires a des valeurs donnees}
 \usage{
   validation.reglementaire(x, seuil,
-    etapes = c("preparation.calcul", "preparation.comparaison"),
+    etapes = c("preparation.calcul", "preparation.comparaison", "comparaison"),
     resultat = c("detail", "comparaison"),
     check.720 = TRUE, ...)
 }
@@ -12,10 +12,13 @@
   préparées avant d'appliquer le seuil, et quelles
   préparations doivent être réalisées (\sQuote{calcul}
   et/ou \sQuote{comparaion}).  Voir la section
-  \sQuote{Details} pour plus d'infos.}
+  \sQuote{Details} pour plus d'infos.  Si la comparaison
+  doit être réalisée, cette info doit également être
+  indiquée.}
 
-  \item{resultat}{indique si le résultat doit contenir le
-  détail des calculs, juste le bilan, ou les deux (voir
+  \item{resultat}{dans le cas où la comparaison est
+  demandée, indique si le résultat doit contenir le détail
+  des calculs, juste le bilan, ou les deux (voir
   \sQuote{Value}).}
 
   \item{\dots}{tout argument pouvant être transmis aux
@@ -46,13 +49,14 @@
 \value{
   un objet de classe
   \code{\link[timetools:TimeIntervalDataFrame-class]{TimeIntervalDataFrame}}
-  qui contient le résultat de la comparaison. Si le détail
-  est demandé la valeur (si le seuil consiste simplement en
-  une valeur à ne pas dépasser) ou le nombre de dépassement
-  du seuil (s'il le seuil ne doit pas être dépassé plus
-  d'un nombre de fois donné) est retourné. TRUE ou FALSE si
-  le détail n'est pas demandé. Renvoi les deux si c'est
-  demandé.
+  qui contient soit les données préparées (en fonction de
+  ce qui a été demandé) soit le résultat de la comparaison.
+  Si le détail est demandé la valeur (si le seuil consiste
+  simplement en une valeur à ne pas dépasser) ou le nombre
+  de dépassement du seuil (s'il le seuil ne doit pas être
+  dépassé plus d'un nombre de fois donné) est retourné.
+  TRUE ou FALSE si le détail n'est pas demandé. Renvoi les
+  deux si c'est demandé.
 }
 \description{
   À partir d'un jeu de donnée et d'un seuil réglementaire
@@ -62,9 +66,32 @@
   différentes étapes.
 }
 \details{
-  FAIRE LA SECTION DETAIL SUR UNE UTILISATION BASIQUE
-  NOTAMMENT EXPLICITER LA POSSIBILITE D'ACTIVITE/DESACTIVER
-  LES TROIS ETAPES
+  La fonction \code{validation.reglementaire} permet de
+  vérifier qu'un jeu de données respecte un critère
+  réglementaire donné. Cette vérification est faite par un
+  appel successif aux fonctions \code{preparation.base}
+  (avec l'argument \code{base} = \code{'calcul'} puis
+  \code{'comparaison'}) et \code{comparaison}. Ainsi cette
+  fonction permet de préparer et d'assurer qu'un je de
+  données est correctement formaté avant de le comparer à
+  un critère réglementaire.
+
+  Si l'utilisateur sait que ses données sont correctes, ou
+  si elles sont incorrectes (pas la bonne couverture
+  temporelle par exemple), mais qu'il souhaite quand même
+  comparer ses données au seuil, il peut désactiver les
+  étapes de préparation en précisant l'argument :\cr
+  \code{etapes='comparaison'}\cr ou n'importe quelle
+  combinaison des 3 valeurs possibles.
+
+  Note: quel que soit dans lequel sont indiqués les étapes
+  souhaitées, ces dernières sont toujours effectuées dans
+  l'ordre suivante : \enumerate{ \item preparation.calcul ;
+  \item preparation.comparaison ; \item
+  preparation.comparaison ; }
+
+  Pour une utilisation plus avancée de la fonction, se
+  reporter aux différentes sections suivantes.
 }
 \section{Introduction}{
   La comparaison de données à des seuils réglementaire doit
