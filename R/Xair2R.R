@@ -1,5 +1,5 @@
 'Xair2R' <-
-function(polluants, dated, datef, dt = c("qh", "heure", "jour", "mois", "an"), merging, codeV=c("A", "R", "O", "W"), dsn=NULL, uid=NULL, pwd=NULL, brute=FALSE, reseaux=NULL, stations=NULL, campagnes=NULL, host=NULL, keep.state=FALSE, XR6=TRUE){
+function(polluants, dated, datef, dt = c("qh", "heure", "jour", "mois", "an"), merging, codeV=c("A", "R", "O", "W", "P"), dsn=NULL, uid=NULL, pwd=NULL, brute=FALSE, reseaux=NULL, stations=NULL, campagnes=NULL, host=NULL, keep.state=FALSE, XR6=TRUE){
 #172.16.19.33:1521:N09
 
 	if(missing(merging)) {

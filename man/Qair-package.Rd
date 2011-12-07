@@ -12,13 +12,13 @@ Traitement de donnees, domaine de la qualite de l'air
 \tabular{ll}{
 Package: \tab Qair\cr
 Type: \tab Package\cr
-Version: \tab 0.25.3\cr
-Date: \tab 2011-08-11\cr2
+Version: \tab 1.0.0\cr
+Date: \tab 2011-12-07\cr2
 License: \tab GPL\cr
 }
 }
 \author{
-Responsable : Vladislav Navel <vladislav.navel@atmo-poitou-charentes.org>
+Responsable : Vladislav Navel <vladislav.navel@atmopc.org>
 }
 \seealso{ \code{\link{Qair}} }
 \keyword{ package }

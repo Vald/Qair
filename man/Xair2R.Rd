@@ -8,7 +8,7 @@
 \usage{
 Xair2R (
   polluants, dated, datef, dt=c("qh", "heure", "jour", "mois", "an"),
-  merging, codeV = c("A", "R", "O", "W"),
+  merging, codeV = c("A", "R", "O", "W", "P"),
   dsn=NULL, uid=NULL, pwd=NULL,
   brute=FALSE, reseaux=NULL, stations=NULL,
   host=NULL, campagnes=NULL)
