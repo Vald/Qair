@@ -34,8 +34,9 @@
   est demandé la valeur (si le seuil consiste simplement en
   une valeur à ne pas dépasser) ou le nombre de dépassement
   du seuil (s'il le seuil ne doit pas être dépassé plus
-  d'un nombre de fois donné) est retourné. TRUE ou FALSE si
-  le détail n'est pas demandé.
+  d'un nombre de fois donné) est retourné. TRUE (critère
+  dépassé) ou FALSE (critère respecté) si le détail n'est
+  pas demandé.
 }
 \description{
   Cette fonction prend un jeu de données au format

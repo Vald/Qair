@@ -24,5 +24,5 @@
 \seealso{
   \code{\link[lubridate]{seconds}}
 }
-\keyword{dataset}
+\keyword{datasets}
 

@@ -33,8 +33,8 @@
 
   \item{valid.states}{liste des codes états d'XR à
   considérer comme valide. Par défaut les données dont le
-  code état est'A', 'R', 'O' ou 'W' sont considérées comme
-  valides.  les autres sont remplacées par NA.}
+  code état est'A', 'R', 'O', 'W' ou 'P' sont considérées
+  comme valides.  les autres sont remplacées par NA.}
 
   \item{what}{un des éléments suivant ('value', 'state',
   'both'). value : seules les valeurs sont récupérées ;

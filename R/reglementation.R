@@ -57,7 +57,8 @@ aot40maiJuillet <- function (x, seuil, ...) {
 	test <- validation.prepare (x, to='year', ...)	# 720 heures
 
 	x <- x[month (start(x)) %in% 5:7 & hour (end(x)) %in% 8:19,]
-	x <- changeTimeIntervalSupport (x, 'year', min.coverage=0, aot, seuil=seuil$seuil, rep.min=seuil$rep.b.comparaison)
+	if (nrow(x) == 0) stop ("Il n'est pas possible de calculer un AOT 'mai-juillet' si aucune donnée pour cette période n'est fournie.")
+	x <- changeTimeIntervalSupport (x, 'year', min.coverage=0, aot, seuil=80, rep.min=seuil$rep.b.comparaison)
 	
 	if (!is.logical (test) )			# 720 heures
 		for (i in names(x))			# 720 heures
@@ -89,6 +90,7 @@ margevlPM25 <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, ..
 			val.seuil <- (29:25)[findInterval(year(start(x)), c(1900, 2011:2013, 2015))] else 
 			val.seuil <- 25
 		x[T] <- data.frame (x) > val.seuil
+		x@data <- data.frame (lapply (x@data, as.logical))
 	}
 	return (x)
 }
@@ -108,8 +110,10 @@ margevlNO2h <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, ..
 		for (i in names(x))			# 720 heures
 			x[[i]][!test[[i]]] <- NA	# 720 heures
 
-	if (!detail)
+	if (!detail) {
 		x[T] <- data.frame (x) > if (!is.null (seuil$nb.max)) seuil$nb.max else 0
+		x@data <- data.frame (lapply (x@data, as.logical))
+	}
 	return (x)
 }
 
@@ -120,6 +124,7 @@ margevlNO2y <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, ..
 			val.seuil <- (30:20*2)[findInterval(year(start(x)), c(1900, 2001:2010))] else 
 			val.seuil <- 40
 		x[T] <- data.frame (x) > val.seuil
+		x@data <- data.frame (lapply (x@data, as.logical))
 	}
 	return (x)
 }
@@ -131,6 +136,7 @@ margevlC6H6y <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, .
 			val.seuil <- (10:5)[findInterval(year(start(x)), c(1900, 2006:2010))] else 
 			val.seuil <- 5
 		x[T] <- data.frame (x) > val.seuil
+		x@data <- data.frame (lapply (x@data, as.logical))
 	}
 	return (x)
 }
@@ -164,7 +170,14 @@ sur3ans <- function (x, seuil, detail, ...) {
 
 	x <- changeTimeIntervalSupport (x, 'month', 0.9,
 					function (x, seuil) sum (x>seuil, na.rm=TRUE), seuil=seuil$seuil)
-	valid.x <- changeTimeIntervalSupport (x[month(start(x)) %in% 4:9,], 'year', 0, function (x) sum (!is.na(x)) > 4)
+	valid.x <- RegularTimeIntervalDataFrame (floor_date(min(start(x)), 'year'),
+						 ceiling_date(max(end(x)), 'year'),
+						 'year', timezone(x))
+	valid.x <- project (x[month(start(x))%in% 4:9,], valid.x,
+			    split.from=FALSE, merge.from=TRUE,
+			    function(x) sum (!is.na(x)) > 4,
+			    min.coverage=0)
+	valid.x[is.na(data.frame(valid.x))] <- 0
 	x <- changeTimeIntervalSupport (x, 'year', 0, sum, na.rm=TRUE)
 	x <- x[start (x) >= min (start (valid.x)) & end (x) <= max (end (valid.x)),]
 	for (i in names(x))
@@ -186,8 +199,10 @@ sur3ans <- function (x, seuil, detail, ...) {
 
 	if (!is.null (seuil$precision) )
 		new.x[T] <- round.a (data.frame (new.x), seuil$precision)
-	if (!detail)
+	if (!detail) {
 		new.x[T] <- data.frame (new.x) > if (!is.null (seuil$nb.max)) seuil$nb.max else 0
+		x@data <- data.frame (lapply (x@data, as.logical))
+	}
 	return (new.x)
 }
 
@@ -201,8 +216,10 @@ alerte400NO2 <- function(x, seuil, detail, ...) {
 	new.x <- project (x, new.x, function (x, val) sum (x>val, na.rm=TRUE), val=val,
 			  split.from=TRUE, min.coverage=representativite)
 	new.x$bidon <- NULL
-	if (!detail)
+	if (!detail) {
 		new.x[T] <- data.frame (new.x) > if (!is.null (seuil$nb.max)) seuil$nb.max else 0
+		x@data <- data.frame (lapply (x@data, as.logical))
+	}
 	return (new.x)
 }
 
@@ -302,7 +319,7 @@ preparation.base <- function (x, seuil, base=c('calcul', 'comparaison'), check.7
 #' la valeur (si le seuil consiste simplement en une valeur à ne pas
 #' dépasser) ou le nombre de dépassement du seuil (s'il
 #' le seuil ne doit pas être dépassé plus d'un nombre de fois donné)
-#' est retourné. TRUE ou FALSE si le détail n'est pas demandé.
+#' est retourné. TRUE (critère dépassé) ou FALSE (critère respecté) si le détail n'est pas demandé.
 comparaison <- function (x, seuil, detail, check.720=TRUE, ...) { 
 	if (is.null (seuil$comparaison) ) {
 		if (!detail)
@@ -320,8 +337,10 @@ comparaison <- function (x, seuil, detail, check.720=TRUE, ...) {
 			for (i in names(x))			# 720 heures
 				x[[i]][!test[[i]]] <- NA	# 720 heures
 		
-		if (!detail)
+		if (!detail) {
 			x[T] <- data.frame (x) > if (!is.null (seuil$nb.max)) seuil$nb.max else 0
+			x@data <- data.frame (lapply (x@data, as.logical))
+		}
 	} else stop ('Impossible de calculer un résultat.')
 
 	return (x)
@@ -567,6 +586,7 @@ comparaison <- function (x, seuil, detail, check.720=TRUE, ...) {
 #' de la moyenne glissante sur 8 heures par un AOT pourrait avoir 
 #' des conséquences inattendues (ou pas).
 #' 
+#' @param seuils list de \code{\link{seuils}} à appliquer au jeu de données.
 #' @param etapes indique si les données doivent d'abord être préparées
 #'	avant d'appliquer le seuil, et quelles préparations doivent 
 #' 	être réalisées (\sQuote{calcul} et/ou \sQuote{comparaion}).
@@ -617,8 +637,8 @@ comparaison <- function (x, seuil, detail, check.720=TRUE, ...) {
 #' # redéfinition 'locale' d'un paramètre
 #' #-------------------------------------
 #' # sélection d'un seuil pour tester
-#' seuil <- seuils(cchim='CO', type='valeur limite')[[1]]
-#' seuil
+#' seuil <- seuils(cchim='CO', type='valeur limite')
+#' seuil[[1]]
 #'
 #' validation.reglementaire(donnees, seuil, resultat='comparaison')
 #' validation.reglementaire(donnees, seuil, resultat='comparaison', rep.comparaison=0)
@@ -631,29 +651,89 @@ comparaison <- function (x, seuil, detail, check.720=TRUE, ...) {
 #' le seuil ne doit pas être dépassé plus d'un nombre de fois donné)
 #' est retourné. TRUE ou FALSE si le détail n'est pas demandé.
 #' Renvoi les deux si c'est demandé.
-validation.reglementaire <- function (x, seuil, etapes=c('preparation.calcul', 'preparation.comparaison', 'comparaison'),
+validation.reglementaire <- function (x, seuils,
+				      etapes=c('preparation.calcul', 'preparation.comparaison', 'comparaison'),
 				      resultat=c('detail', 'comparaison'), check.720=TRUE, ...) {
 	etapes <- match.arg (etapes, several.ok=TRUE)
 	resultat <- match.arg (resultat, several.ok=TRUE)
+
 	param.to.change <- list (...)
-	param.to.change <- param.to.change[names (param.to.change) %in% names (seuil)]
 	if (length (param.to.change) > 0)
-	    seuil[names (param.to.change)] <- param.to.change
-	if ('preparation.calcul' %in% etapes)
-		x <- preparation.base (x, seuil, 'calcul', check.720)
-	if ('preparation.comparaison' %in% etapes)
-		x <- preparation.base (x, seuil, 'comparaison', check.720)
-	if ('comparaison' %in% etapes) {
-		if ('detail' %in% resultat) {
-			det <- comparaison (x, seuil, detail=TRUE, check.720)
-			if (!'comparaison' %in% resultat)
-				x <- det
-		} else if ('comparaison' %in% resultat) {
-			comp <- comparaison (x, seuil, detail=FALSE, check.720)
-			if ('detail' %in% resultat)
-				x <- c(list (det), list(comp) ) else
-				x <- comp
+		for (i in 1:length(seuils)) {
+			ptc <- param.to.change[names (param.to.change) %in% names(seuils[[i]])]
+		    seuils[[i]][names (ptc)] <- ptc
 		}
+
+	if ('preparation.calcul' %in% etapes) {
+		prepas.cal <- lapply (seuils, '[', c('base.calcul', 'rep.b.calcul', 'precision'))
+		prepas.cal.unique <- unique (prepas.cal)
+		x <- lapply (prepas.cal.unique, preparation.base, x=x, base='calcul', check.720=check.720)
+		names (x) <- sapply (lapply (prepas.cal.unique, as.character), paste, collapse='-')
+		attributes(x)$prepas.cal <- prepas.cal.unique 
+	}
+	if ('preparation.comparaison' %in% etapes) {
+		prepas.comp <- lapply (seuils, '[', c('base.comparaison', 'rep.b.comparaison', 'precision'))
+		if ('preparation.calcul' %in% etapes) {
+			prepas.comp <- split (prepas.comp,
+					     sapply (lapply (prepas.cal, as.character), paste, collapse='-') )
+		     	prepas.cal.unique <- attributes(x)$prepas.cal
+			x <- mapply (function (x, prepas.comp, check.720) {
+					prepas.comp.unique <- unique (prepas.comp)
+					x <- lapply (prepas.comp.unique, preparation.base,
+						     x=x, base='comparaison', check.720=check.720)
+					names (x) <- sapply (lapply (prepas.comp.unique, as.character),
+							     paste, collapse='-')
+					attributes(x)$prepas.comp <- prepas.comp.unique
+					x
+				},
+				x, prepas.comp[names(x)], check.720, SIMPLIFY=FALSE)
+			names (x) <- sapply (lapply (prepas.cal.unique, as.character), paste, collapse='-')
+			attributes(x)$prepas.cal <- prepas.cal.unique
+		} else {
+			prepas.comp.unique <- unique (prepas.comp)
+			x <- lapply (prepas.comp.unique, preparation.base, x=x, base='comparaison', check.720=check.720)
+			names (x) <- sapply (lapply (prepas.comp.unique, as.character), paste, collapse='-')
+			attributes(x)$prepas.comp <- prepas.comp.unique 
+		}
+	}
+	if ('comparaison' %in% etapes) {
+		y <- list()
+		for (i in 1:length (seuils) ) {
+			# selection de la donnee preparee en fonction du seuil qui va etre teste
+			if (all (c('preparation.calcul', 'preparation.comparaison') %in% etapes) ) {
+				n.prepa.cal <-
+					paste (as.character(seuils[[i]][c('base.calcul', 'rep.b.calcul', 'precision')]), collapse='-')
+				n.prepa.comp <- 
+					paste (as.character(seuils[[i]][c('base.comparaison', 'rep.b.comparaison', 'precision')]), collapse='-')
+				z <- x[[n.prepa.cal]][[n.prepa.comp]]
+			} else if (any (c('preparation.calcul', 'preparation.comparaison') %in% etapes) ){
+				n.prepa <- sub ('preparation.', '', setdiff(etapes, 'comparaison'))
+				n.prepa <- 
+					paste (as.character(seuils[[i]][c(sprintf('base.%s', n.prepa),
+									  sprintf('rep.b.%s', n.prepa),
+									  'precision')]), collapse='-')
+				z <- x[[n.prepa]]
+			} else {
+				z <- x
+			}
+
+			if ('detail' %in% resultat) {
+				det <- comparaison (z, seuils[[i]], detail=TRUE, check.720)
+				if (!'comparaison' %in% resultat)
+					y[[i]] <- det
+			}
+
+			if ('comparaison' %in% resultat) {
+				comp <- comparaison (z, seuils[[i]], detail=FALSE, check.720)
+				if ('detail' %in% resultat) {
+					y[[i*2-1]] <- det
+					y[[i*2]] <- comp
+				} else
+					y[[i]] <- comp
+			}
+			rm (z)
+		}
+	x <- y
 	}
 	
 	return (x)

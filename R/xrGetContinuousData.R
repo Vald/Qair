@@ -178,6 +178,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	for (i in setdiff(mesures$NOM_COURT_MES, names(result) ) )
 		result[[i]] <- NA
 	result <- result[mesures$NOM_COURT_MES]
+	names (result) <- mesures$IDENTIFIANT[match(names(result), mesures$NOM_COURT_MES)]
 
 	# recuperation des infos
 	q$stations <- xrGetStations (conn, pattern=mesures$NOM_COURT_SIT, search.fields='NOM_COURT_SIT')

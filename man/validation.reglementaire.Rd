@@ -2,12 +2,15 @@
 \alias{validation.reglementaire}
 \title{Applique strictement des seuils reglementaires a des valeurs donnees}
 \usage{
-  validation.reglementaire(x, seuil,
+  validation.reglementaire(x, seuils,
     etapes = c("preparation.calcul", "preparation.comparaison", "comparaison"),
     resultat = c("detail", "comparaison"),
     check.720 = TRUE, ...)
 }
 \arguments{
+  \item{seuils}{list de \code{\link{seuils}} à appliquer au
+  jeu de données.}
+
   \item{etapes}{indique si les données doivent d'abord être
   préparées avant d'appliquer le seuil, et quelles
   préparations doivent être réalisées (\sQuote{calcul}
@@ -36,9 +39,6 @@
   \item{x}{jeu de données
   (\code{\link[timetools]{TimeIntervalDataFrame-class}})
   contenant les données à mettre en forme}
-
-  \item{seuil}{seuil (cf \code{\link{seuis}}) pour lequel
-  les données doivent être mise en forme}
 
   \item{check.720}{booléen indiquant si, lorsque cela est
   pertinent, la règle des \sQuote{720 heures consécutives}
@@ -333,8 +333,8 @@ mon.seuil
 # redéfinition 'locale' d'un paramètre
 #-------------------------------------
 # sélection d'un seuil pour tester
-seuil <- seuils(cchim='CO', type='valeur limite')[[1]]
-seuil
+seuil <- seuils(cchim='CO', type='valeur limite')
+seuil[[1]]
 
 validation.reglementaire(donnees, seuil, resultat='comparaison')
 validation.reglementaire(donnees, seuil, resultat='comparaison', rep.comparaison=0)

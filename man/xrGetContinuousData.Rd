@@ -4,7 +4,7 @@
 \usage{
   xrGetContinuousData(conn, pattern = NULL, start, end,
     period = c("h", "qh", "d", "m", "y"), validated = TRUE,
-    valid.states = c("A", "R", "O", "W"),
+    valid.states = c("A", "R", "O", "W", "P"),
     what = c("value", "state", "both"),
     search.fields = "IDENTIFIANT", campagnes = NULL,
     reseaux = NULL, stations = NULL, polluants = NULL,
@@ -35,8 +35,8 @@
 
   \item{valid.states}{liste des codes états d'XR à
   considérer comme valide. Par défaut les données dont le
-  code état est'A', 'R', 'O' ou 'W' sont considérées comme
-  valides.  les autres sont remplacées par NA.}
+  code état est'A', 'R', 'O', 'W' ou 'P' sont considérées
+  comme valides.  les autres sont remplacées par NA.}
 
   \item{what}{un des éléments suivant ('value', 'state',
   'both'). value : seules les valeurs sont récupérées ;
