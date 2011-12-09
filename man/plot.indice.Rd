@@ -11,6 +11,9 @@
 
   \item{y}{valeur unique (numérique, caractère) référençant
   la colonne à représenter}
+
+  \item{cex}{character expansion, cf
+  \code{\link[graphics]{par}}}
 }
 \description{
   fonction permettant de représenter des indices de qualité

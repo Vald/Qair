@@ -11,7 +11,7 @@
 #' 	sans arguments pour connaître les valeurs possibles).
 #' @inheritParams xrGetContinuousData
 #'
-#' @seealso \code{\link{xrConnect()}}, \code{\link{plot.indice}},
+#' @seealso \code{\link{xrConnect}}, \code{\link{plot.indice}},
 #' \code{\link[timetools]{TimeIntervalDataFrame-class}}
 #'
 #' @return un objet de classe
@@ -71,7 +71,7 @@ function (conn, agglos, start, end) {
 #' contenant les indices à représenter
 #' @param y valeur unique (numérique, caractère) référençant
 #' 	la colonne à représenter
-#' @inheritParams graphics::par
+#' @param cex character expansion, cf \code{\link[graphics]{par}}
 #'
 #' @seealso \code{\link{indicesXR2R}}
 plot.indice <- function (x, y, cex=1.7) {

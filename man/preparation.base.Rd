@@ -11,7 +11,7 @@
   (\code{\link[timetools]{TimeIntervalDataFrame-class}})
   contenant les données à mettre en forme}
 
-  \item{seuil}{seuil (cf \code{\link{seuis}}) pour lequel
+  \item{seuil}{seuil (cf \code{\link{seuils}}) pour lequel
   les données doivent être mise en forme}
 
   \item{base}{chaîne de caractères indiquant si la

@@ -33,7 +33,7 @@
   d'invoquer la fonction sans arguments.
 }
 \seealso{
-  \code{\link{xrConnect()}}, \code{\link{plot.indice}},
+  \code{\link{xrConnect}}, \code{\link{plot.indice}},
   \code{\link[timetools]{TimeIntervalDataFrame-class}}
 }
 

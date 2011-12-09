@@ -25,7 +25,8 @@ validation.prepare <- function (x, to, ...) {
 		if (is.periodic == 'hour' & to == 'year') {
 			test.validation <- x
 			test.validation[T] <- data.frame (lapply (data.frame (x), check.na.consecutifs) )
-			test.validation <- changeTimeIntervalSupport (test.validation, 'year', 0, all, na.rm=TRUE)
+			test.validation <- changeSupport (from=test.validation, to='year',
+							  min.coverage=0, FUN=all, na.rm=TRUE)
 		}
 	return (test.validation)
 }
@@ -58,7 +59,7 @@ aot40maiJuillet <- function (x, seuil, ...) {
 
 	x <- x[month (start(x)) %in% 5:7 & hour (end(x)) %in% 8:19,]
 	if (nrow(x) == 0) stop ("Il n'est pas possible de calculer un AOT 'mai-juillet' si aucune donnée pour cette période n'est fournie.")
-	x <- changeTimeIntervalSupport (x, 'year', min.coverage=0, aot, seuil=80, rep.min=seuil$rep.b.comparaison)
+	x <- changeSupport (from=x, to='year', min.coverage=0, FUN=aot, seuil=80, rep.min=seuil$rep.b.comparaison)
 	
 	if (!is.logical (test) )			# 720 heures
 		for (i in names(x))			# 720 heures
@@ -75,7 +76,7 @@ aot40maiJuillet5ans <- function (x, seuil, ...) {
 	end <- as.POSIXct(sprintf ('%i-01-01', annees+1), timezone (x) )
 	new.x <- new ('TimeIntervalDataFrame', start=start, end=end, timezone=timezone (x),
 		      data=data.frame (bidon=1:length(start) ) )
-	new.x <- project (x, new.x, FUN='mean', na.rm=TRUE, split.from=TRUE, merge.from=TRUE, min.coverage=3/5)
+	new.x <- changeSupport (x, new.x, FUN='mean', na.rm=TRUE, split.from=TRUE, merge.from=TRUE, min.coverage=3/5)
 	new.x$bidon <- NULL
 
 	if (!is.null (seuil$precision) )
@@ -104,7 +105,7 @@ margevlNO2h <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, ..
 	
 	test <- validation.prepare (x, to='year', ...)	# 720 heures
 
-	x <- changeTimeIntervalSupport (x, 'year', seuil$rep.comparaison, sum, na.rm=TRUE)
+	x <- changeSupport (from=x, to='year', min.coverage=seuil$rep.comparaison, FUN=sum, na.rm=TRUE)
 
 	if (!is.logical (test) )			# 720 heures
 		for (i in names(x))			# 720 heures
@@ -143,7 +144,7 @@ margevlC6H6y <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, .
 
 depsur8h <- function (x, seuil, ...) {
 	x[T] <- sapply (data.frame(x), slide, 8, 1, 0.75, 'mean')
-	x <- changeTimeIntervalSupport (x, 'day', seuil$rep.b.comparaison, max, na.rm=TRUE)
+	x <- changeSupport (from=x, to='day', min.coverage=seuil$rep.b.comparaison, FUN=max, na.rm=TRUE)
 	x[T] <- round.a (data.frame (x), seuil$precision)
 	return (x)
 }
@@ -155,7 +156,7 @@ protecVegeFroidSO2 <- function (x, seuil, ...) {
 	end <- as.POSIXct(sprintf ('%i-04-01', annees[-1]), timezone (x) )
 	new.x <- new ('TimeIntervalDataFrame', start=start, end=end, timezone=timezone (x),
 		      data=data.frame (bidon=1:length(start) ) )
-	new.x <- project (x, new.x, FUN='mean', na.rm=TRUE, split.from=FALSE, min.coverage=seuil$rep.b.comparaison)
+	new.x <- changeSupport (x, new.x, FUN='mean', na.rm=TRUE, split.from=FALSE, min.coverage=seuil$rep.b.comparaison)
 	new.x$bidon <- NULL
 
 	if (!is.null (seuil$precision) )
@@ -168,18 +169,18 @@ sur3ans <- function (x, seuil, detail, ...) {
 	# validation des données
 	test <- validation.prepare (x, to='year', ...) # 720 heures
 
-	x <- changeTimeIntervalSupport (x, 'month', 0.9,
-					function (x, seuil) sum (x>seuil, na.rm=TRUE), seuil=seuil$seuil)
-	valid.x <- RegularTimeIntervalDataFrame (floor_date(min(start(x)), 'year'),
-						 ceiling_date(max(end(x)), 'year'),
-						 'year', timezone=timezone(x))
-	valid.x <- project (x[month(start(x))%in% 4:9,], valid.x,
+	x <- changeSupport (from=x, to='month', min.coverage=0.9,
+					FUN=function (x, seuil) sum (x>seuil, na.rm=TRUE), seuil=seuil$seuil)
+	valid.x <- RegularTimeIntervalDataFrame (from=floor_date(min(start(x)), 'year'),
+						 to=ceiling_date(max(end(x)), 'year'),
+						 by='year', timezone=timezone(x))
+	valid.x <- changeSupport (x[month(start(x))%in% 4:9,], valid.x,
 			    split.from=FALSE, merge.from=TRUE,
 			    function(x) sum (!is.na(x)) > 4,
 			    min.coverage=0)
 	for (i in 1:length(valid.x))
 		valid.x[[i]] <- ifelse(is.na(valid.x[[i]]), FALSE, valid.x[[i]])
-	x <- changeTimeIntervalSupport (x, 'year', 0, sum, na.rm=TRUE)
+	x <- changeSupport (from=x, to='year', min.coverage=0, FUN=sum, na.rm=TRUE)
 	x <- x[start (x) >= min (start (valid.x)) & end (x) <= max (end (valid.x)),]
 	for (i in names(x))
 		x[[i]][!valid.x[[i]]] <- NA
@@ -195,7 +196,7 @@ sur3ans <- function (x, seuil, detail, ...) {
 	new.x <- new ('TimeIntervalDataFrame', start=start, end=end, timezone=timezone (x),
 		      data=data.frame (bidon=1:length(start) ) )
 	# calculs
-	new.x <- project (x, new.x, FUN='mean', na.rm=TRUE, split.from=TRUE, merge.from=TRUE, min.coverage=1/3)
+	new.x <- changeSupport (x, new.x, FUN='mean', na.rm=TRUE, split.from=TRUE, merge.from=TRUE, min.coverage=1/3)
 	new.x$bidon <- NULL
 
 	if (!is.null (seuil$precision) )
@@ -214,7 +215,7 @@ alerte400NO2 <- function(x, seuil, detail, ...) {
 	end <- end (x)[3:nrow(x)]
 	new.x <- new ('TimeIntervalDataFrame', start=start, end=end,
 		      data=data.frame (bidon=1:length (start)), timezone=timezone (x) )
-	new.x <- project (x, new.x, function (x, val) sum (x>val, na.rm=TRUE), val=val,
+	new.x <- changeSupport (x, new.x, function (x, val) sum (x>val, na.rm=TRUE), val=val,
 			  split.from=TRUE, min.coverage=representativite)
 	new.x$bidon <- NULL
 	if (!detail) {
@@ -239,7 +240,7 @@ alerte400NO2 <- function(x, seuil, detail, ...) {
 #'
 #' @param x jeu de données (\code{\link[timetools]{TimeIntervalDataFrame-class}})
 #' 	contenant les données à mettre en forme
-#' @param seuil seuil (cf \code{\link{seuis}}) pour lequel les données
+#' @param seuil seuil (cf \code{\link{seuils}}) pour lequel les données
 #' 	doivent être mise en forme
 #' @param base chaîne de caractères indiquant si la préparation
 #' 	est celle de l'étape \sQuote{calcul} ou \sQuote{comparaison}.
@@ -275,7 +276,7 @@ preparation.base <- function (x, seuil, base=c('calcul', 'comparaison'), check.7
 	} else if (is.character (base) | is.period (base) ) {
 		test <- validation.prepare (x, to=base, ...)	# 720 heures
 
-		x <- changeTimeIntervalSupport (x, base, representativite)
+		x <- changeSupport (from=x, to=base, min.coverage=representativite)
 
 		if (!is.logical (test) )			# 720 heures
 			for (i in names(x))			# 720 heures
@@ -331,8 +332,8 @@ comparaison <- function (x, seuil, detail, check.720=TRUE, ...) {
 		test <- validation.prepare (x, to=seuil$comparaison, ...)	# 720 heures
 
 		rep.comparaison <- if (is.null(seuil$rep.comparaison)) 0.75 else seuil$rep.comparaison
-		x <- changeTimeIntervalSupport (x, seuil$comparaison, rep.comparaison,
-						function (x, seuil) sum (x>seuil, na.rm=TRUE), seuil=seuil$seuil)
+		x <- changeSupport (from=x, to=seuil$comparaison, min.coverage=rep.comparaison,
+						FUN=function (x, seuil) sum (x>seuil, na.rm=TRUE), seuil=seuil$seuil)
 		
 		if (!is.logical (test) )			# 720 heures
 			for (i in names(x))			# 720 heures
@@ -615,7 +616,7 @@ comparaison <- function (x, seuil, detail, check.720=TRUE, ...) {
 #' @examples
 #' # création d'un jeu de données 'bidon'
 #' #-------------------------------------
-#' donnees <- RegularTimeIntervalDataFrame('2010-01-01', '2010-03-01', 'hour', 'UTC')
+#' donnees <- RegularTimeIntervalDataFrame(from='2010-01-01', to='2010-03-01', by='hour', timezone='UTC')
 #' donnees$yo <- sample (100, nrow(donnees), TRUE)
 #' head (donnees)
 #' summary (donnees)

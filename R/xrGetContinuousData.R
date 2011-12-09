@@ -61,7 +61,7 @@
 #'
 #' @seealso \code{\link{xrGetMesures}}, \code{\link{xrGetCampagnes}}, \code{\link{xrGetReseaux}},
 #'  \code{\link{xrGetStations}}, \code{\link{xrGetPolluants}}, \code{\link[timetools]{TimeIntervalDataFrame-class}}
-#'	\code{\link{xrGetManuaData}}
+#'	\code{\link{xrGetManualData}}
 
 xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		       period = c('h', 'qh', 'd', 'm', 'y'),

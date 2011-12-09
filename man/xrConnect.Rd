@@ -1,9 +1,9 @@
 \name{xrConnect}
-\alias{options,}
 \alias{Xair.dsn}
 \alias{Xair.host,}
 \alias{Xair.pwd,}
 \alias{Xair.uid,}
+\alias{options,}
 \alias{xrConnect}
 \title{Initialisation d'une connection a une base XR.}
 \usage{

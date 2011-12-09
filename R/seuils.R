@@ -449,13 +449,13 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 #' 	s'agir de les mettre au format horaire (ce qui est le cas
 #' 	le plus courant). Si l'opération à réaliser est une simple
 #' 	conversion temporelle, \code{base.calcul} peut être une 
-#' 	chaîne de caractères utilisable comme argument de \code{\link{new_period}}
-#' 	('hour' par exemple) ou directement un objet \code{\link{period}}.
+#' 	chaîne de caractères utilisable comme argument de \code{\link[lubridate]{new_period}}
+#' 	('hour' par exemple) ou directement un objet \code{\link[lubridate]{period}}.
 #' 	Si l'opération de préparation est plus complexe, \sQuote{base.calcul}
 #' 	peut être directement une fonction à appliquer aux données. NULL
 #' 	si aucun préparation n'est nécessaire.}
 #' \item{rep.b.calcul}{Dans le cas où \code{base.calcul} est un 
-#' 	\code{\link{period}} (ou une chaîne de caractères),
+#' 	\code{\link[lubridate]{period}} (ou une chaîne de caractères),
 #' 	\sQuote{rep.b.calcul} est la représentativité minimale
 #' 	en-dessous de laquelle la conversion temporelle donnera NA.}
 #' \item{base.comparaison}{Dans certains cas, les mesures ne sont
@@ -463,8 +463,8 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 #' 	préalablement transformées. Dans le cas où la transformation
 #' 	est uniquement temporelle (concentration moyenne annuelle par
 #' 	exemple), \code{base.comparaison} est une
-#' 	chaîne de caractères utilisable comme argument de \code{\link{new_period}}
-#' 	('hour' par exemple) ou directement un objet \code{\link{period}}.
+#' 	chaîne de caractères utilisable comme argument de \code{\link[lubridate]{new_period}}
+#' 	('hour' par exemple) ou directement un objet \code{\link[lubridate]{period}}.
 #' 	Pour des transformations plus complexes (calcul d'AOT40), 
 #' 	\code{base.comparaison} peut être directement une fonction. NULL
 #'	si aucune transformation n'est requise.}.
@@ -483,7 +483,7 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 #' 	réglementaire est issu le seuil.}
 #' \item{comparaison}{Soit NULL si les données préparées avec
 #' 	\code{base.comparaison} ont juste à être comparées au seuil ;
-#'	un objet \code{\link{period}} (ou chaîne de caractères correspondante)
+#'	un objet \code{\link[lubridate]{period}} (ou chaîne de caractères correspondante)
 #'	si, une fois comparées, les données préparées doivent être 
 #' 	agrégées sur cette période (nombre limite de dépassements journaliers
 #' 	sur une année, etc.) ; directement une fonction dans les cas 

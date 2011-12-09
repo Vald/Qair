@@ -310,7 +310,7 @@
 \examples{
 # création d'un jeu de données 'bidon'
 #-------------------------------------
-donnees <- RegularTimeIntervalDataFrame('2010-01-01', '2010-03-01', 'hour', 'UTC')
+donnees <- RegularTimeIntervalDataFrame(from='2010-01-01', to='2010-03-01', by='hour', timezone='UTC')
 donnees$yo <- sample (100, nrow(donnees), TRUE)
 head (donnees)
 summary (donnees)

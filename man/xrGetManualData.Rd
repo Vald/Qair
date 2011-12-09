@@ -4,7 +4,7 @@
 \usage{
   xrGetManualData(conn, start, end, sites = NULL,
     polluants = NULL, methodes = NULL,
-    valid.states = c("A", "R", "O", "W"),
+    valid.states = c("A", "R", "O", "W", "P"),
     what = c("value", "state", "both"), campagnes = NULL)
 }
 \arguments{

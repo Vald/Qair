@@ -2,7 +2,7 @@
 \name{typologies}
 \alias{typologies}
 \title{liste les differentes typologie de site possible}
-\format{chr [1:6] "industriel" "trafic" "urbain" "périurbain" "rural régional" "rural national"}
+\format{chr [1:6] "industriel" "trafic" "urbain" "périurbain" ...}
 \usage{
   typologies
 }
