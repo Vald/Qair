@@ -15,7 +15,7 @@
 
 xrGetManualData <-
 	function (conn, start, end, sites=NULL, polluants=NULL, methodes=NULL,
-	   	  valid.states = c("A", "R", "O", "W"), what = c('value', 'state', 'both'),
+	   	  valid.states = c("A", "R", "O", "W", "P"), what = c('value', 'state', 'both'),
 		  campagnes = NULL) {
 	# start et end doivent être des POSIXt (pour la prise en compte des timezones).
 	what <- match.arg (what)

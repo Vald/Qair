@@ -172,12 +172,13 @@ sur3ans <- function (x, seuil, detail, ...) {
 					function (x, seuil) sum (x>seuil, na.rm=TRUE), seuil=seuil$seuil)
 	valid.x <- RegularTimeIntervalDataFrame (floor_date(min(start(x)), 'year'),
 						 ceiling_date(max(end(x)), 'year'),
-						 'year', timezone(x))
+						 'year', timezone=timezone(x))
 	valid.x <- project (x[month(start(x))%in% 4:9,], valid.x,
 			    split.from=FALSE, merge.from=TRUE,
 			    function(x) sum (!is.na(x)) > 4,
 			    min.coverage=0)
-	valid.x[is.na(data.frame(valid.x))] <- 0
+	for (i in 1:length(valid.x))
+		valid.x[[i]] <- ifelse(is.na(valid.x[[i]]), FALSE, valid.x[[i]])
 	x <- changeTimeIntervalSupport (x, 'year', 0, sum, na.rm=TRUE)
 	x <- x[start (x) >= min (start (valid.x)) & end (x) <= max (end (valid.x)),]
 	for (i in names(x))
@@ -699,32 +700,41 @@ validation.reglementaire <- function (x, seuils,
 	if ('comparaison' %in% etapes) {
 		y <- list()
 		for (i in 1:length (seuils) ) {
+			seuil <- seuils[[i]]
 			# selection de la donnee preparee en fonction du seuil qui va etre teste
 			if (all (c('preparation.calcul', 'preparation.comparaison') %in% etapes) ) {
-				n.prepa.cal <-
-					paste (as.character(seuils[[i]][c('base.calcul', 'rep.b.calcul', 'precision')]), collapse='-')
-				n.prepa.comp <- 
-					paste (as.character(seuils[[i]][c('base.comparaison', 'rep.b.comparaison', 'precision')]), collapse='-')
+				n.prepa.cal <- which (sapply(lapply(
+							attributes(x)$prepas.cal,
+							all.equal,
+							seuil[c('base.calcul', 'rep.b.calcul', 'precision')]), isTRUE))
+				n.prepa.comp <- which (sapply(lapply(
+							attributes(x[[n.prepa.cal]])$prepas.comp,
+							all.equal,
+							seuil[c('base.comparaison', 'rep.b.comparaison', 'precision')]), isTRUE))
 				z <- x[[n.prepa.cal]][[n.prepa.comp]]
 			} else if (any (c('preparation.calcul', 'preparation.comparaison') %in% etapes) ){
-				n.prepa <- sub ('preparation.', '', setdiff(etapes, 'comparaison'))
-				n.prepa <- 
-					paste (as.character(seuils[[i]][c(sprintf('base.%s', n.prepa),
-									  sprintf('rep.b.%s', n.prepa),
-									  'precision')]), collapse='-')
+				n.prepa <- list (setdiff (names(attributes(x)), 'names'),
+						 sub ('preparation.', '', setdiff(etapes, 'comparaison')) )
+
+				n.prepa <- which (sapply(lapply(
+							attributes(x)[[n.prepa[[1]]]],
+							all.equal,
+							seuil[c(sprintf('base.%s', n.prepa[[2]]),
+							sprintf('rep.b.%s', n.prepa[[2]]),
+							'precision')]), isTRUE))
 				z <- x[[n.prepa]]
 			} else {
 				z <- x
 			}
 
 			if ('detail' %in% resultat) {
-				det <- comparaison (z, seuils[[i]], detail=TRUE, check.720)
+				det <- comparaison (z, seuil, detail=TRUE, check.720)
 				if (!'comparaison' %in% resultat)
 					y[[i]] <- det
 			}
 
 			if ('comparaison' %in% resultat) {
-				comp <- comparaison (z, seuils[[i]], detail=FALSE, check.720)
+				comp <- comparaison (z, seuil, detail=FALSE, check.720)
 				if ('detail' %in% resultat) {
 					y[[i*2-1]] <- det
 					y[[i*2]] <- comp
