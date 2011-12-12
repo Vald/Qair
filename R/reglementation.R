@@ -154,10 +154,8 @@ protecVegeFroidSO2 <- function (x, seuil, ...) {
 	annees <- c(annees[1]-1, annees, annees[length(annees)]+1)
 	start <- as.POSIXct(sprintf ('%i-10-01', annees[-length(annees)]), timezone (x) )
 	end <- as.POSIXct(sprintf ('%i-04-01', annees[-1]), timezone (x) )
-	new.x <- new ('TimeIntervalDataFrame', start=start, end=end, timezone=timezone (x),
-		      data=data.frame (bidon=1:length(start) ) )
+	new.x <- TimeIntervalDataFrame (start, end, timezone(x))
 	new.x <- changeSupport (x, new.x, FUN='mean', na.rm=TRUE, split.from=FALSE, min.coverage=seuil$rep.b.comparaison)
-	new.x$bidon <- NULL
 
 	if (!is.null (seuil$precision) )
 		new.x[T] <- round.a (data.frame (new.x), seuil$precision)

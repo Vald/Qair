@@ -163,7 +163,7 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison=depsur8h, rep.b.comparaison=0.75,
 		      comparaison=sur3ans, precision=0, nb.max=25,
 		      seuil=120, unite='microg/m3', reference='Décret 2010-1250 du 21 octobre 2010', applicable=as.POSIXct('2010-01-01'),
-		      description="O3 : valeur cible pour la protection de la santé humaine. 120 microg/m3 pour le maximum journalier de la moyenne sur 8 heures à ne pas dépasser plus de 25 fois tous les ans."),
+		      description="O3 : valeur cible pour la protection de la santé humaine. 120 microg/m3 pour le maximum journalier de la moyenne sur 8 heures à ne pas dépasser plus de 25 fois par an en moyenne sur 3 ans."),
 		list (polluant='08', cchim='O3', type='valeur cible', protection='la végétation', sites=c('rural régional', 'rural national', 'périurbain'), 
 		      base.calcul='hour', rep.b.calcul=0.75, base.comparaison=aot40maiJuillet5ans, rep.b.comparaison=0.9,
 		      precision=0,
