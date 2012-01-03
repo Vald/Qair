@@ -9,7 +9,7 @@ export (xrGetQuery, xrConnect,
 	Xair2R, indicesXR2R, plot.indice)
 
 # outils divers
-export (slide, qh, h)
+export (slide, qh, h, estimation_sondage)
 
 # fonctions specifiques a certaines 'normes' ademe
 export (round.a, quantile.a)
