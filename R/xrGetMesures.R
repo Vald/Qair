@@ -25,7 +25,8 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	q$tables <- 'MESURE'
 
 	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, search.fields)
+		q$pattern <- match.pattern.fields (pattern,
+						   paste ('MESURE', search.fields, sep='.'))
 
 	if (!is.null (reseaux) ) {
 		q$reseaux <- unique (xrGetReseaux (conn, pattern = reseaux)$NOM_COURT_RES)

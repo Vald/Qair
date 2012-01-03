@@ -87,8 +87,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	# recuperation des noms de mesures qu'il faut 
 	q <- list ()
-	mesures <- xrGetMesures(conn, pattern, search.fields,
-				campagnes, reseaux, stations, polluants, collapse=collapse)
+	mesures <- xrGetMesures(conn=conn, pattern=pattern, search.fields=search.fields,
+				campagnes=campagnes, reseaux=reseaux, stations=stations,
+				polluants=polluants, collapse=collapse)
 	q$mesures <- paste ("'", mesures$NOM_COURT_MES, "'", sep='', collapse=', ')
 
 	# donnees brutes ou pas ? Et quelle table aller taper ?
