@@ -83,7 +83,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	real.end <- end
 
 	start <- floor_date (start, switch(period, qh='day', h='day', d='day', m='year', y='year') )
-	end <- floor_date (end, switch(period, qh='day', h='day', d='day', m='year', y='year') )
+	end <- ceiling_date (end, switch(period, qh='day', h='day', d='day', m='year', y='year') )
 
 	# recuperation des noms de mesures qu'il faut 
 	q <- list ()

@@ -87,8 +87,8 @@
   Note: quel que soit dans lequel sont indiqués les étapes
   souhaitées, ces dernières sont toujours effectuées dans
   l'ordre suivante : \enumerate{ \item preparation.calcul ;
-  \item preparation.comparaison ; \item
-  preparation.comparaison ; }
+  \item preparation.comparaison ; \item réalisation de la
+  comparaison ; }
 
   Pour une utilisation plus avancée de la fonction, se
   reporter aux différentes sections suivantes.

@@ -1,6 +1,6 @@
 \name{estimation_sondage}
 \alias{estimation_sondage}
-\title{Calcul de moyenne par application des méthodes issues des plans de sondage}
+\title{Calcul de moyenne par application des methodes issues des plans de sondage}
 \usage{
   estimation_sondage(echantillon, auxiliaire,
     redressement = NULL, iso = NULL, grappe = "grappe",
@@ -36,6 +36,11 @@
   \item{strate}{le nom des colonnes contenant la
   répartition des strates. Doit être identique pour
   \sQuote{echantillon} et \sQuote{auxiliaire}.}
+}
+\value{
+  une liste contenant pour chaque couple (\sQuote{interet},
+  \sQuote{auxiliare}) une \code{\link[base]{data.frame}}
+  contenant les estimations et les variances d'estimations.
 }
 \description{
   Cette fonction permet de réaliser les estimations

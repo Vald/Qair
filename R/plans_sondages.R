@@ -44,6 +44,10 @@
 #' @param strate le nom des colonnes contenant la répartition des strates. Doit être
 #' identique pour \sQuote{echantillon} et \sQuote{auxiliaire}.
 #'
+#' @return une liste contenant pour chaque couple
+#' (\sQuote{interet}, \sQuote{auxiliare}) une \code{\link[base]{data.frame}}
+#' contenant les estimations et les variances d'estimations.
+#'
 #' @references guide ADEME pour l'élaboration d'un plan
 #' d'échantillonnage temporel et la reconstitution de données :
 #' \url{http://www2.ademe.fr/servlet/getDoc?cid=96&m=3&id=63725&p1=02&p2=01&ref=17597}
@@ -83,8 +87,6 @@ es.sub <- function (echantillon, auxiliaire, redressement, iso, grappe, strate)
 	# nom des variables dont on cherche a estimer la moyenne
 	aux <- setdiff (names(auxiliaire), strate)[1]
 	interet <- setdiff (names(echantillon), c(grappe, strate, names(aux)))[1]
-	#         interet <- names(echantillon)[5]
-	#         aux <- names(auxiliaire)[4]
 
 	# mise en forme
 	#--------------
@@ -93,8 +95,6 @@ es.sub <- function (echantillon, auxiliaire, redressement, iso, grappe, strate)
 
 	if(!is.null(redressement))
 	{
-		#                 grappe_d <- chron(tapply(echValide$dated, echValide$grappe, min, na.rm=T))
-		#                 grappe_f <- chron(tapply(echValide$datef, echValide$grappe, max, na.rm=T))
 		grappe_d <- as.POSIXct(tapply(start (echValide), echValide[[grappe]], min), origin=origin)
 		grappe_f <- as.POSIXct(tapply(end (echValide), echValide[[grappe]], max), origin=origin)
 		compa_date <- outer(grappe_d, start(auxiliaire), "<=") & outer(grappe_f, end(auxiliaire), ">=")
@@ -120,9 +120,6 @@ es.sub <- function (echantillon, auxiliaire, redressement, iso, grappe, strate)
 		auxValide <- auxiliaire[!is.na(indices), c(strate, aux)]
 		auxValide[[grappe]] <- indices[!is.na(indices)]
 		auxValide <- auxValide[c(strate, grappe, aux)]
-		#                 auxValide <- data.frame(auxValide, grappe=indices[!is.na(indices)])
-		#                 auxValide <- data.frame(auxValide, auxiliaire[!is.na(indices), 4])
-		#                 names(auxValide)[5] <- aux
 	}
 
 	# determination des caracteristiques utiles de chaque grappe
@@ -131,10 +128,6 @@ es.sub <- function (echantillon, auxiliaire, redressement, iso, grappe, strate)
 	grappe_ech <- split(data.frame (echValide), echValide$grappe)
 	grappe_ech <- data.frame(t(rbind(poids = sapply(lapply(grappe_ech, "[[", "poids"), sum),
 					 sapply(lapply(grappe_ech, "[", c(grappe, strate, interet)), colMeans))))
-	#         echValide$poids <- as.numeric(echValide$datef)-as.numeric(echValide$dated)
-	#         grappe_ech <- split(echValide[-(1:2)], echValide$grappe)
-	#         grappe_ech <- data.frame(t(rbind(poids = sapply(lapply(grappe_ech, "[[", "poids"), sum),
-	#                                          sapply(lapply(grappe_ech, "[", c("grappe", "strate", interet)), colMeans))))
 	grappe_ech$poids <- unlist(mapply("/",
 					  split(grappe_ech$poids, grappe_ech[[strate]]),
 					  as.list(tapply(grappe_ech$poids, grappe_ech[[strate]], sum)), SIMPLIFY=F))
@@ -150,13 +143,6 @@ es.sub <- function (echantillon, auxiliaire, redressement, iso, grappe, strate)
 		grappe_aux$poids <- unlist(mapply("/",
 						  split(grappe_aux$poids, grappe_aux[[strate]]),
 						  as.list(tapply(grappe_aux$poids, grappe_aux[[strate]], sum)), SIMPLIFY=F))
-		#                 auxValide$poids <- as.numeric(auxValide$datef)-as.numeric(auxValide$dated)
-		#                 grappe_aux <- split(auxValide[!is.na(auxValide[5]), -(1:2)], auxValide$grappe[!is.na(auxValide[5])])
-		#                 grappe_aux <- data.frame(t(rbind(poids = sapply(lapply(grappe_aux, "[[", "poids"), sum),
-		#                                                  sapply(lapply(grappe_aux, "[", c("grappe", "strate", aux)), colMeans))))
-		#                 grappe_aux$poids <- unlist(mapply("/",
-		#                                                   split(grappe_aux$poids, grappe_aux$strate),
-		#                                                   as.list(tapply(grappe_aux$poids, grappe_aux$strate, sum)), SIMPLIFY=F))
 		names(grappe_aux)[4] <- "moy"
 	}
 
