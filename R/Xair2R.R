@@ -235,9 +235,10 @@ function(polluants, dated, datef, dt = c("qh", "heure", "jour", "mois", "an"), m
 		attributs <- dbGetQuery(conxair, query)
 		}
 	attributs[-length(attributs)] <- lapply(attributs[-length(attributs)], as.character)
-	attributs <- attributs[attributs$NOM_COURT_MES %in% sub('\\.mes$', '', names(donnees)),]
 	attributs$LATI <- as.numeric(sub(",", ".", attributs$LATI))*180/pi
 	attributs$LONGI <- as.numeric(sub(",", ".", attributs$LONGI))*180/pi
+	attributs.tmp <- attributs[!attributs$NOM_COURT_MES %in% sub('\\.mes$', '', names(donnees)),]
+	attributs <- attributs[attributs$NOM_COURT_MES %in% sub('\\.mes$', '', names(donnees)),]
 
 	# prise en compte du fmul
 	selection <- paste (attributs$NOM_COURT_MES,
@@ -271,13 +272,38 @@ function(polluants, dated, datef, dt = c("qh", "heure", "jour", "mois", "an"), m
 				polluants,
 				unique (sub ('\\.(mes|etat)$', '', names(donnees))))
 		for (i in  noms) {
-			donnees[[paste (i, 'mes', sep='.')]] <- NA
-			donnees[[paste (i, 'etat', sep='.')]] <- NA
+			indice <- attributs.tmp$NOM_COURT_MES==i
+			donnees <- '$<-.Qair'(donnees, paste (i, 'mes', sep='.'), list(newVar=NA,
+								     unite=attributs.tmp$UNITE[indice],
+								     mesure=attributs.tmp$NCON[indice],
+								     station=attributs.tmp$ISIT[indice],
+								     longitude=attributs.tmp$LONGI[indice],
+								     latitude=attributs.tmp$LATI[indice],
+								     lambertx=attributs.tmp$LAMBERTX[indice],
+								     lamberty=attributs.tmp$LAMBERTY[indice]))
+			donnees <- '$<-.Qair'(donnees, paste (i, 'etat', sep='.'), list(newVar=NA,
+								     unite=attributs.tmp$UNITE[indice],
+								     mesure=attributs.tmp$NCON[indice],
+								     station=attributs.tmp$ISIT[indice],
+								     longitude=attributs.tmp$LONGI[indice],
+								     latitude=attributs.tmp$LATI[indice],
+								     lambertx=attributs.tmp$LAMBERTX[indice],
+								     lamberty=attributs.tmp$LAMBERTY[indice]))
 		}
 		return (donnees)
 	} else {
 		for (i in setdiff(polluants, names(donnees)))
-			donnees[[i]] <- NA
+		{
+			indice <- attributs.tmp$NOM_COURT_MES==i
+			donnees <- '$<-.Qair'(donnees, i, list(newVar=NA,
+					     unite=attributs.tmp$UNITE[indice],
+					     mesure=attributs.tmp$NCON[indice],
+					     station=attributs.tmp$ISIT[indice],
+					     longitude=attributs.tmp$LONGI[indice],
+					     latitude=attributs.tmp$LATI[indice],
+					     lambertx=attributs.tmp$LAMBERTX[indice],
+					     lamberty=attributs.tmp$LAMBERTY[indice]))
+		}
 		return (donnees[c("date", polluants)])
 	}
 
