@@ -135,7 +135,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	names (data)[2] <- 'DATE'
 
 	# mise en forme des donnees
-	q$period <- eval (parse (text = period) )	# period est evaluee au sens lubridate
+	#q$period <- eval (parse (text = period) )	# period est evaluee au sens lubridate
 	q$periodb <- switch (period, qh = 'Q_M01',	# period est evaluee  de façon bidon pour mef.
 			    h = 'H_M01', d = 'J_M01', m = 'M_M01', y = 'A_M01')
 
@@ -157,16 +157,16 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	if (period %in% c('qh', 'h') )
 		tmp <- c(paste (as.character(as.POSIXct(tmp[1]) -
 				     switch (period,
-					     qh = new_period(day=1),
-					     h = new_period(day=1))),
+					     qh = POSIXctp(unit='day'),
+					     h = POSIXctp(unit='day'))),
 			tmp2[length(tmp2)]),
 		 tmp) else if (period %in% c('d', 'm', 'y') )
 		tmp <- c(tmp,
 			 paste (as.character(as.POSIXct(tmp[length(tmp)]) +
 				     switch (period,
-					     d = new_period(day=1),
-					     m = new_period(month=1),
-					     y = new_period(year=1))),
+					     d = POSIXctp(unit='day'),
+					     m = POSIXctp(unit='month'),
+					     y = POSIXctp(unit='year'))),
 			tmp2[1]))
 	result <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
 	while (length (data) > 0) {
@@ -200,9 +200,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	#                         proj4string = CRS('+init=epsg:27572') )
 
 		to <- as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC')
-		np.arg <- list(1)
-		names(np.arg) <- switch (period, qh = 'day', h = 'day', d = 'day', m = 'year', y = 'year')
-		to <- to + do.call (new_period, np.arg)
+		#np.arg <- list(1)
+		np.arg <- switch (period, qh = 'day', h = 'day', d = 'day', m = 'year', y = 'year')
+		to <- to + POSIXctp(unit=np.arg)#do.call (new_period, np.arg)
 
 	dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
 		      to,
@@ -233,16 +233,16 @@ mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul)
 	if (period %in% c('Q_M01', 'H_M01') )
 		tmp <- c(paste (as.character(as.POSIXct(dates[1]) -
 					     switch (period,
-						     Q_M01 = new_period(day=1),
-						     H_M01 = new_period(day=1))),
+						     Q_M01 = POSIXctp(unit='day'),
+						     H_M01 = POSIXctp(unit='day'))),
 				names(data)[length(data)]),
 			 tmp) else if (period %in% c('J_M01', 'M_M01', 'A_M01') )
 		tmp <- c(tmp,
 			 paste (as.character(as.POSIXct(dates[length(dates)]) +
 					     switch (period,
-						     J_M01 = new_period(day=1),
-						     M_M01 = new_period(month=1),
-						     A_M01 = new_period(year=1))),
+						     J_M01 = POSIXctp(unit='day'),
+						     M_M01 = POSIXctp(unit='month'),
+						     A_M01 = POSIXctp(unit='year'))),
 				names(data)[1]) )
 	dates <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
 

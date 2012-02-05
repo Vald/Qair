@@ -5,9 +5,15 @@
 #' les années etc. dans \code{\link[lubridate:seconds]{lubridate}}.
 #' 
 #' @seealso \code{\link[lubridate]{seconds}}
-qh <- new_period (minutes=15)
+qh <- POSIXctp (15, 'minute')
 #' @rdname qh
-h <- new_period (hours=1)
+h <- POSIXctp (1, 'hour')
+#' @rdname qh
+d <- POSIXctp (1, 'day')
+#' @rdname qh
+m <- POSIXctp (1, 'month')
+#' @rdname qh
+y <- POSIXctp (1, 'year')
 
 # .First.lib <-function (lib, pkg) { 
 .onLoad <- function (lib, pkg) {

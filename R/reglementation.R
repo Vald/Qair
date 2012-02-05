@@ -20,9 +20,12 @@ validation.prepare <- function (x, to, ...) {
 	if (!'check.720' %in% names (other.args) ) return (FALSE)
 	if (!other.args$check.720) return (FALSE)
 
-	is.periodic <- try (period (x) )
+	is.periodic <- period (x)
+	if (is.character(to)) to <- POSIXctp(unit=to)
+	#is.periodic <- try (period (x) )
 	if (!inherits (is.periodic, 'try-error') )
-		if (is.periodic == 'hour' & to == 'year') {
+		if (length(is.periodic)==1 & all(is.periodic == POSIXctp(unit='hour')) &
+		    to == POSIXctp(unit='year')) {
 			test.validation <- x
 			test.validation[T] <- data.frame (lapply (data.frame (x), check.na.consecutifs) )
 			test.validation <- changeSupport (from=test.validation, to='year',
@@ -271,7 +274,7 @@ preparation.base <- function (x, seuil, base=c('calcul', 'comparaison'), check.7
 	if (is.null (base) ) {
 	} else if (is.function (base) ) {
 		x <- do.call (base, c(list(x), list(seuil), ...) )
-	} else if (is.character (base) | is.period (base) ) {
+	} else if (is.character (base) | inherits (base, 'POSIXctp') ) {
 		test <- validation.prepare (x, to=base, ...)	# 720 heures
 
 		x <- changeSupport (from=x, to=base, min.coverage=representativite)
@@ -326,7 +329,7 @@ comparaison <- function (x, seuil, detail, check.720=TRUE, ...) {
 			x[T] <- data.frame (x) > seuil$seuil
 	} else if (is.function (seuil$comparaison) ) {
 		x <- do.call (seuil$comparaison, c(list(x), list(seuil), list(detail), ...) )
-	} else if (is.character (seuil$comparaison) | is.period (seuil$comparaison) ) {
+	} else if (is.character (seuil$comparaison) | inherits (seuil$comparaison, 'POSIXctp') ) {
 		test <- validation.prepare (x, to=seuil$comparaison, ...)	# 720 heures
 
 		rep.comparaison <- if (is.null(seuil$rep.comparaison)) 0.75 else seuil$rep.comparaison
@@ -507,7 +510,7 @@ comparaison <- function (x, seuil, detail, check.720=TRUE, ...) {
 #' le nombre de dépassement du seuil. Dans ce cas, le seuil
 #' possède un élément nommé \code{comparaison} qui indique de quelle
 #' période il s'agit (\code{'year'} le plus souvent, mais peut être
-#' \code{new_period(hour=3)} pour des seuils d'alerte).
+#' \code{POSIXctp(3, 'hour')} pour des seuils d'alerte).
 #'
 #' Dans ce cas, le seuil possède deux autres éléments.
 #' Le premier, \code{rep.comparaison}, 

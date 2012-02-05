@@ -16,12 +16,12 @@ format.seuil <- function (x, ...) {
 	if (!is.null (x$description) ) return (x$description)
 
 	get.unite <- function(x) {
-		if (is.period (x) )
+		if (inherits (x, 'POSIXctp') )
 			x <- names(x)[x > 0][1]
 		c('seconde', 'minute', 'heure', 'jour', 'mois', 'an')[
 					match(x, c('second', 'minute', 'hour', 'day', 'month', 'year'))]
 	}
-	get.val <- function (x) x[x>0][1]
+	get.val <- function (x) duration(x)
 	sprintf ('%s : %s pour la protection de %s. %s %s en moyenne%s à ne pas dépasser%s.',
 		 x$cchim, x$type, x$protection,
 		 as.character(x$seuil), x$unite,
@@ -32,9 +32,9 @@ format.seuil <- function (x, ...) {
 				 sprintf (' plus de %s fois tous les %ss', x$nb.max, get.unite(x$comparaison)), ifelse (
 		 	 !is.null (x$comparaison) & is.character (x$comparaison) & is.null(x$nb.max),
 			 	sprintf (' sur 1 %s', get.unite(x$comparaison)), ifelse (
-			 !is.null (x$comparaison) & is.period (x$comparaison) & !is.null(x$nb.max),
+			 !is.null (x$comparaison) & inherits (x$comparaison, 'POSIXctp') & !is.null(x$nb.max),
 			 	sprintf (' plus de %s fois tous les %i %ss', x$nb.max, get.val(x$comparaison), get.unite(x$comparaison)), ifelse (
-			 !is.null (x$comparaison) & is.period (x$comparaison) & is.null(x$nb.max),
+			 !is.null (x$comparaison) & inherits (x$comparaison, 'POSIXctp') & is.null(x$nb.max),
 			 	sprintf (' sur %i %s', get.val(x$comparaison), get.unite(x$comparaison)),
 			 '')))))
 }
@@ -53,7 +53,7 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 		list (polluant='03', cchim='NO2', type="seuil d'alerte", protection='la santé humaine', sites=typologies, 
 		      base.comparaison='hour', rep.b.comparaison=0.75,
 		      #                       comparaison=alerte400NO2, rep.comparaison=1, precision=0, nb.max=2,
-		      comparaison=new_period(hour=3), rep.comparaison=1, precision=0, nb.max=2,
+		      comparaison=POSIXctp(3, 'hour'), rep.comparaison=1, precision=0, nb.max=2,
 		      seuil=400, unite='microg/m3', reference='Décret 2010-1250 du 21 octobre 2010'),
 		list (polluant='03', cchim='NO2', type="seuil d'alerte", protection='la santé humaine', sites=typologies, 
 		      base.comparaison='hour', rep.b.comparaison=0.75,
@@ -130,7 +130,7 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 		      seuil=300, unite='microg/m3', reference='Décret 2010-1250 du 21 octobre 2010'),
 		list (polluant='01', cchim='SO2', type="seuil d'alerte", protection='la santé humaine', sites=typologies, 
 		      base.comparaison='hour', rep.b.comparaison=0.75,
-		      comparaison=new_period (hour=3), rep.comparaison=1, precision=0, nb.max=2,
+		      comparaison=POSIXctp (3, 'hour'), rep.comparaison=1, precision=0, nb.max=2,
 		      seuil=500, unite='microg/m3', reference='Décret 2010-1250 du 21 octobre 2010'),
 		list (polluant='01', cchim='SO2', type='valeur limite', protection='la santé humaine', sites=typologies, 
 		      base.comparaison='hour', rep.b.comparaison=0.75,
@@ -179,11 +179,11 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 		      seuil=240, unite='microg/m3', reference='Décret 2010-1250 du 21 octobre 2010'),
 		list (polluant='08', cchim='O3', type="seuil d'alerte", protection="la mise en oeuvre progressive de mesures d'urgence", sites=typologies, 
 		      base.comparaison='hour', rep.b.comparaison=0.75,
-		      comparaison=new_period(hour=3), rep.comparaison=1, precision=0, nb.max=2,
+		      comparaison=POSIXctp(3, 'hour'), rep.comparaison=1, precision=0, nb.max=2,
 		      seuil=240, unite='microg/m3', reference='Décret 2010-1250 du 21 octobre 2010'),
 		list (polluant='08', cchim='O3', type="seuil d'alerte", protection="la mise en oeuvre progressive de mesures d'urgence", sites=typologies, 
 		      base.comparaison='hour', rep.b.comparaison=0.75,
-		      comparaison=new_period(hour=3), rep.comparaison=1, precision=0, nb.max=2,
+		      comparaison=POSIXctp(3, 'hour'), rep.comparaison=1, precision=0, nb.max=2,
 		      seuil=300, unite='microg/m3', reference='Décret 2010-1250 du 21 octobre 2010'),
 		list (polluant='08', cchim='O3', type="seuil d'alerte", protection="la mise en oeuvre progressive de mesures d'urgence", sites=typologies, 
 		      base.comparaison='hour', rep.b.comparaison=0.75,
@@ -449,13 +449,14 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 #' 	s'agir de les mettre au format horaire (ce qui est le cas
 #' 	le plus courant). Si l'opération à réaliser est une simple
 #' 	conversion temporelle, \code{base.calcul} peut être une 
-#' 	chaîne de caractères utilisable comme argument de \code{\link[lubridate]{new_period}}
-#' 	('hour' par exemple) ou directement un objet \code{\link[lubridate]{period}}.
+#' 	chaîne de caractères utilisable comme \code{unit} pour la 
+#' 	la fonction \code{\link[timetools]{POSIXctp}}
+#' 	('hour' par exemple) ou directement un objet \code{\link[timetools]{POSIXctp}}.
 #' 	Si l'opération de préparation est plus complexe, \sQuote{base.calcul}
 #' 	peut être directement une fonction à appliquer aux données. NULL
 #' 	si aucun préparation n'est nécessaire.}
 #' \item{rep.b.calcul}{Dans le cas où \code{base.calcul} est un 
-#' 	\code{\link[lubridate]{period}} (ou une chaîne de caractères),
+#' 	\code{\link[timetools]{POSIXctp}} (ou une chaîne de caractères),
 #' 	\sQuote{rep.b.calcul} est la représentativité minimale
 #' 	en-dessous de laquelle la conversion temporelle donnera NA.}
 #' \item{base.comparaison}{Dans certains cas, les mesures ne sont
@@ -463,8 +464,9 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 #' 	préalablement transformées. Dans le cas où la transformation
 #' 	est uniquement temporelle (concentration moyenne annuelle par
 #' 	exemple), \code{base.comparaison} est une
-#' 	chaîne de caractères utilisable comme argument de \code{\link[lubridate]{new_period}}
-#' 	('hour' par exemple) ou directement un objet \code{\link[lubridate]{period}}.
+#' 	chaîne de caractères utilisable comme \code{unit} pour la fonction
+#'	\code{\link[timetools]{POSIXctp}}
+#' 	('hour' par exemple) ou directement un objet \code{\link[timetools]{POSIXctp}}.
 #' 	Pour des transformations plus complexes (calcul d'AOT40), 
 #' 	\code{base.comparaison} peut être directement une fonction. NULL
 #'	si aucune transformation n'est requise.}.
@@ -483,7 +485,7 @@ typologies <- c('industriel', 'trafic', 'urbain', 'périurbain', 'rural régiona
 #' 	réglementaire est issu le seuil.}
 #' \item{comparaison}{Soit NULL si les données préparées avec
 #' 	\code{base.comparaison} ont juste à être comparées au seuil ;
-#'	un objet \code{\link[lubridate]{period}} (ou chaîne de caractères correspondante)
+#'	soit un objet \code{\link[timetools]{POSIXctp}} (ou chaîne de caractères correspondante)
 #'	si, une fois comparées, les données préparées doivent être 
 #' 	agrégées sur cette période (nombre limite de dépassements journaliers
 #' 	sur une année, etc.) ; directement une fonction dans les cas 
