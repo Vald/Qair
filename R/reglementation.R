@@ -172,8 +172,12 @@ sur3ans <- function (x, seuil, detail, ...) {
 
 	x <- changeSupport (from=x, to='month', min.coverage=0.9,
 					FUN=function (x, seuil) sum (x>seuil, na.rm=TRUE), seuil=seuil$seuil)
-	valid.x <- RegularTimeIntervalDataFrame (from=floor_date(min(start(x)), 'year'),
-						 to=ceiling_date(max(end(x)), 'year'),
+	valid.x <- RegularTimeIntervalDataFrame (from=as.POSIXct(sprintf('%s-01-01',
+									 format (min(start(x)), '%Y')),
+								 timezone(x)),
+						 to=as.POSIXct(sprintf('%s-01-01',
+									 as.numeric(format (max(end(x)), '%Y')))+1,
+								 timezone(x)),
 						 by='year', timezone=timezone(x))
 	valid.x <- changeSupport (x[month(start(x))%in% 4:9,], valid.x,
 			    split.from=FALSE, merge.from=TRUE,

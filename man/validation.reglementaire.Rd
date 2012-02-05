@@ -222,7 +222,7 @@
   du seuil. Dans ce cas, le seuil possède un élément nommé
   \code{comparaison} qui indique de quelle période il
   s'agit (\code{'year'} le plus souvent, mais peut être
-  \code{new_period(hour=3)} pour des seuils d'alerte).
+  \code{POSIXctp(3, 'hour')} pour des seuils d'alerte).
 
   Dans ce cas, le seuil possède deux autres éléments. Le
   premier, \code{rep.comparaison}, indique la

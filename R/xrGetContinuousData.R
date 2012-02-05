@@ -76,14 +76,20 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	# pour permettre eventuellement d'entrer des chaines de caracteres en start en end
 	#	on fait un petit cast
-	if (!is.POSIXt (start) ) start <- as.POSIXct (start, tz = 'UTC')
-	if (!is.POSIXt (end) ) end <- as.POSIXct (end, tz = 'UTC')
+	if (!inherits (start, 'POSIXct') ) start <- as.POSIXct (start, tz = 'UTC')
+	if (!inherits (end, 'POSIXct') ) end <- as.POSIXct (end, tz = 'UTC')
 	
 	real.start <- start
 	real.end <- end
 
-	start <- floor_date (start, switch(period, qh='day', h='day', d='day', m='year', y='year') )
-	end <- ceiling_date (end, switch(period, qh='day', h='day', d='day', m='year', y='year') )
+	#start <- floor_date (start, switch(period, qh='day', h='day', d='day', m='year', y='year') )
+	start <- ifelse (period %in% c('qh', 'h', 'd'), 
+			 as.POSIXct(format(start, '%Y-%m-%d'), timezone(start)),
+			 as.POSIXct(sprintf('%s-01-01', format(start, '%Y')), timezone(start)))
+	#end <- ceiling_date (end, switch(period, qh='day', h='day', d='day', m='year', y='year') )
+	end <- ifelse (period %in% c('qh', 'h', 'd'), 
+		       as.POSIXct(format(end, '%Y-%m-%d'), timezone(end)) + POSIXctp(unit='day'),
+		       as.POSIXct(sprintf('%s-01-01', format(end, '%Y')), timezone(end)) + POSIXctp(unit='year'))
 
 	# recuperation des noms de mesures qu'il faut 
 	q <- list ()

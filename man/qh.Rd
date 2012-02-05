@@ -1,19 +1,22 @@
 \docType{data}
 \name{qh}
+\alias{d}
 \alias{h}
+\alias{m}
 \alias{qh}
+\alias{y}
 \title{definition d'un raccourci pour les heures et les quart-d'heures}
-\format{Classes ‘period’ and 'data.frame':	1 obs. of  6 variables:
- $ year  : num 0
- $ month : num 0
- $ day   : num 0
- $ hour  : num 0
- $ minute: num 15
- $ second: num 0}
+\format{Formal class 'POSIXctp' [package "timetools"] with 2 slots}
 \usage{
   qh
 
   h
+
+  d
+
+  m
+
+  y
 }
 \description{
   Pour faciliter la manipulation des heures et des

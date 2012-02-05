@@ -22,8 +22,8 @@ xrGetManualData <-
 
 	# pour permettre eventuellement d'entrer des chaines de caracteres en start en end
 	#	on fait un petit cast
-	if (!is.POSIXt (start) ) start <- as.POSIXct (start, tz = 'UTC')
-	if (!is.POSIXt (end) ) end <- as.POSIXct (end, tz = 'UTC')
+	if (!inherits (start, 'POSIXct') ) start <- as.POSIXct (start, tz = 'UTC')
+	if (!inherits (end, 'POSIXct') ) end <- as.POSIXct (end, tz = 'UTC')
 
 	# recuperation des noms de sites, de polluants, de methode de prelevement
 	q <- list ()
