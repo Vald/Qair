@@ -83,13 +83,13 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	real.end <- end
 
 	#start <- floor_date (start, switch(period, qh='day', h='day', d='day', m='year', y='year') )
-	start <- ifelse (period %in% c('qh', 'h', 'd'), 
-			 as.POSIXct(format(start, '%Y-%m-%d'), timezone(start)),
-			 as.POSIXct(sprintf('%s-01-01', format(start, '%Y')), timezone(start)))
+	start <- if (period %in% c('qh', 'h', 'd'))
+			 as.POSIXct(format(start, '%Y-%m-%d'), attributes(start)$tzone) else
+			 as.POSIXct(sprintf('%s-01-01', format(start, '%Y')), attributes(start)$tzone)
 	#end <- ceiling_date (end, switch(period, qh='day', h='day', d='day', m='year', y='year') )
-	end <- ifelse (period %in% c('qh', 'h', 'd'), 
-		       as.POSIXct(format(end, '%Y-%m-%d'), timezone(end)) + POSIXctp(unit='day'),
-		       as.POSIXct(sprintf('%s-01-01', format(end, '%Y')), timezone(end)) + POSIXctp(unit='year'))
+	end <- if (period %in% c('qh', 'h', 'd')) 
+		       as.POSIXct(format(end, '%Y-%m-%d'), attributes(end)$tzone) + POSIXctp(unit='day') else 
+		       as.POSIXct(sprintf('%s-01-01', format(end, '%Y')), attributes(end)$tzone) + POSIXctp(unit='year')
 
 	# recuperation des noms de mesures qu'il faut 
 	q <- list ()
