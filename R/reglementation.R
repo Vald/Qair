@@ -60,7 +60,7 @@ aot40maiJuillet <- function (x, seuil, ...) {
 
 	test <- validation.prepare (x, to='year', ...)	# 720 heures
 
-	x <- x[month (start(x)) %in% 5:7 & hour (end(x)) %in% 8:19,]
+	x <- x[month (start(x)) %in% (5:7-1) & hour (end(x), 'day') %in% 8:19,]
 	if (nrow(x) == 0) stop ("Il n'est pas possible de calculer un AOT 'mai-juillet' si aucune donnée pour cette période n'est fournie.")
 	x <- changeSupport (from=x, to='year', min.coverage=0, FUN=aot, seuil=80, rep.min=seuil$rep.b.comparaison)
 	
@@ -176,7 +176,7 @@ sur3ans <- function (x, seuil, detail, ...) {
 									 format (min(start(x)), '%Y')),
 								 timezone(x)),
 						 to=as.POSIXct(sprintf('%s-01-01',
-									 as.numeric(format (max(end(x)), '%Y')))+1,
+									 as.numeric(format (max(end(x)), '%Y'))+1),
 								 timezone(x)),
 						 by='year', timezone=timezone(x))
 	valid.x <- changeSupport (x[month(start(x))%in% 4:9,], valid.x,
