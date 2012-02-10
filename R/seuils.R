@@ -17,7 +17,7 @@ format.seuil <- function (x, ...) {
 
 	get.unite <- function(x) {
 		if (inherits (x, 'POSIXctp') )
-			x <- names(x)[x > 0][1]
+			x <- as.character(unit(x))
 		c('seconde', 'minute', 'heure', 'jour', 'mois', 'an')[
 					match(x, c('second', 'minute', 'hour', 'day', 'month', 'year'))]
 	}
