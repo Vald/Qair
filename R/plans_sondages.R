@@ -80,7 +80,7 @@ es.sub <- function (echantillon, auxiliaire, redressement, iso, grappe, strate)
 	# constantes
 	#-----------
 	#         duree <- as.numeric(mean(auxiliaire$datef-auxiliaire$dated))
-	duree <- mean (when(auxiliaire))
+	duree <- mean(as.numeric(difftime(end(auxiliaire), start(auxiliaire), units='secs')))
 	redressement <- if(any(redressement %in% c("diff", "quot", "reg")))
 		redressement[which(redressement %in% c("diff", "quot", "reg"))] else
 		NULL
@@ -124,7 +124,7 @@ es.sub <- function (echantillon, auxiliaire, redressement, iso, grappe, strate)
 
 	# determination des caracteristiques utiles de chaque grappe
 	#-----------------------------------------------------------
-	echValide$poids <- as.numeric (when (echValide))
+	echValide$poids <- as.numeric (difftime(end(echValide), start(echValide), units='secs'))
 	grappe_ech <- split(data.frame (echValide), echValide$grappe)
 	grappe_ech <- data.frame(t(rbind(poids = sapply(lapply(grappe_ech, "[[", "poids"), sum),
 					 sapply(lapply(grappe_ech, "[", c(grappe, strate, interet)), colMeans))))
@@ -135,7 +135,7 @@ es.sub <- function (echantillon, auxiliaire, redressement, iso, grappe, strate)
 
 	if(!is.null(redressement))
 	{
-		auxValide$poids <- as.numeric(when (auxValide))
+		auxValide$poids <- as.numeric(difftime(end(auxValide), start(auxValide), units='secs'))
 		grappe_aux <- split (data.frame (auxValide[!is.na(auxValide[[aux]]), ]),
 				     auxValide[[grappe]][!is.na(auxValide[[aux]])])
 		grappe_aux <- data.frame(t(rbind(poids = sapply(lapply(grappe_aux, "[[", "poids"), sum),
@@ -155,8 +155,10 @@ es.sub <- function (echantillon, auxiliaire, redressement, iso, grappe, strate)
 	grappes <- split(grappe_ech, grappe_ech[[strate]])
 	nbGrappeEch <- sapply(grappes, nrow)
 	nbGrappePop <- nbGrappeEch*
-			tapply(as.numeric(when(auxiliaire)), auxiliaire[[strate]], sum)/
-			tapply(as.numeric(when(echValide)), echValide[[strate]], sum)
+			tapply(as.numeric(difftime(end(auxiliaire), start(auxiliaire), units='secs')),
+			       auxiliaire[[strate]], sum)/
+			tapply(as.numeric(difftime(end(echValide), start(echValide), units='secs')),
+			       echValide[[strate]], sum)
 	varGrappe <- sapply(lapply(mapply("-", mapply("*", lapply(grappes, "[[", "moy"), lapply(grappes, "[[", "poids"), SIMPLIFY=F), as.list(strates$m_ech / nbGrappeEch), SIMPLIFY=F), "^", 2), sum)
 
 	strates$v_ech <- nbGrappeEch/nbGrappePop * (nbGrappePop - nbGrappeEch)/(nbGrappeEch - 1) * varGrappe
