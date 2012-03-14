@@ -1,0 +1,80 @@
+\name{estimation_sondage}
+\alias{estimation_sondage}
+\title{Calcul de moyenne par application des methodes issues des plans de sondage}
+\usage{
+  estimation_sondage(echantillon, auxiliaire,
+    redressement = NULL, iso = NULL, grappe = "grappe",
+    strate = "strate")
+}
+\arguments{
+  \item{echantillon}{\code{\link[=TimeIntervalDataFrame-class]{TimeIntervalDataFrame}}
+  contenant les variables d'intérets ainsi qu'une colonne
+  dont le nom est identique à la valeur de \sQuote{grappe}
+  et une autre identique à la valeur de \sQuote{strate}.}
+
+  \item{auxiliaire}{\code{\link[=TimeIntervalDataFrame-class]{TimeIntervalDataFrame}}
+  contenant les variables auxiliaires si un redressement
+  est à réaliser. Une colonne doit avoir un nom identique
+  la valeur de \sQuote{strate}. Les intervalles de cet
+  objet définissent la période d'estimation de la moyenne.}
+
+  \item{redressement}{chaîne de caractères indiquant le ou
+  les redressements à effectuer (c('diff', 'quot', 'reg')).
+  NULL si aucun redressement ne doit être calculé.}
+
+  \item{iso}{vecteur de valeurs numériques indiquant dans
+  quelle \sQuote{grappe} iso chaque valeur horaire de la
+  periode d'estimation se trouve. Dans le cas où ce vecteur
+  n'est pas nul, la méthode ISO est appliquée (cf guide
+  LCSQA pour de plus amples détails). Les données doivent
+  alors être impérativement horaires. NULL si la méthode
+  ISO ne doit pas être appliquée.}
+
+  \item{grappe}{chaîne de caractères indiquant le nom de la
+  colonne contenant la répartition des grappes.}
+
+  \item{strate}{le nom des colonnes contenant la
+  répartition des strates. Doit être identique pour
+  \sQuote{echantillon} et \sQuote{auxiliaire}.}
+}
+\value{
+  une liste contenant pour chaque couple (\sQuote{interet},
+  \sQuote{auxiliare}) une \code{\link[base]{data.frame}}
+  contenant les estimations et les variances d'estimations.
+}
+\description{
+  Cette fonction permet de réaliser les estimations
+  statistiques développées dans le cadre d'un groupe de
+  travail national piloté par l'ADEME et décrite dans un
+  guide méthodologique (cf. \sQuote{references}).
+}
+\details{
+  Seules les méthodes de reconstitution de données issues
+  de la théorie des plans de sondage sont mis-à-disposition
+  au travers de cette fonction. Les autres méthodes
+  (élaboration d'un plan de sondage, reconstitution par
+  regression linéaire, etc.) sont accessibles à travers
+  l'outils développé et mis à disposition par le LCSQA sur
+  son site Internet (cf. \sQuote{references}).
+}
+\section{Note}{
+  Dans le cas où le paramètre \sQuote{auxiliaire} ne
+  contient aucune variable autre que celle identifiée par
+  \sQuote{strate}, aucun redressement n'est effectué.
+
+  Si plusieurs variables d'intérêt et/ou auxiliaires sont
+  fournies, les estimations sont calculées pour toutes les
+  combinaisons (intérêt , auxiliaire) possible.
+}
+\references{
+  guide ADEME pour l'élaboration d'un plan
+  d'échantillonnage temporel et la reconstitution de
+  données :
+  \url{http://www2.ademe.fr/servlet/getDoc?cid=96&m=3&id=63725&p1=02&p2=01&ref=17597}
+
+  Pour les utilisateurs dotés d'un compte sur le site du
+  LCSQA (\url{http://www.lcsqa.org/}), le guide est
+  également disponible avec ses annexes à cette adresse :
+  \url{http://www.lcsqa.org/echantillonnage-reconstitution-donnees/documentation/guide-pratique-elaboration-plans-echantillonnag}.
+}
+
