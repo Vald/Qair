@@ -1,9 +1,9 @@
 Package: Qair
 Type: Package
 Title: Traitement de donnees, domaine de la qualite de l'air
-Version: 2.0-3
-Date: 2012-03-14
-Depends: timetools
+Version: 2.1-1
+Date: 2012-03-13
+Depends: timetools,DBI,methods
 Suggests: RODBC, RJDBC
 LazyData: true
 Author: Vladislav Navel
