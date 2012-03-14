@@ -58,7 +58,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 
 	stations <- unique (xrGetQuery (conn, query) )
 
-	temp <- xrGetQuery (conn, "SELECT CLE, LIBELLE FROM LISTE_META_DONNEES WHERE CODE_ID_LISTE='CL_SITE'")
+	temp <- dbGetQuery (conn, "SELECT CLE, LIBELLE FROM LISTE_META_DONNEES WHERE CODE_ID_LISTE='CL_SITE'")
 	names (temp)[2] <- 'typologie'
 	merge (stations, temp, by.x='CLASSE_SITE', by.y='CLE', all.x=TRUE, all.y=FALSE)
 }

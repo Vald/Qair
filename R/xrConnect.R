@@ -44,19 +44,15 @@
 #' # la ligne suivante ne demandera que le mot de passe.
 #' xrConnect()
 #'}
-xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.type=NULL) {
+xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.type) {
 	# host et ojdbc sont a specifier uniquement dans le cas de l'utilisation de RJDBC
 
 	# définition du pilote à utiliser
-	if (!is.null(drv.type)) {
-		options(Xair.drv=drv.type)
-	} else if (is.null(getOption('Xair.drv'))) {
+	if (missing(drv.type)) {
 		if(.Platform$OS.type=='unix') {
-			library (RJDBC)
 			message ("le pilote 'jdbc' est utilisé pour la connexion à XR")
 			options (Xair.drv = 'jdbc')
 		} else if(.Platform$OS.type=='unix') {
-			library (RODBC)
 			message ("le pilote 'odbc' est utilisé pour la connexion à XR")
 			options (Xair.drv = 'odbc')
 		} else {
@@ -65,18 +61,17 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.t
 			cat('\n')
 		}
 	}
-
-	if (!getOption('Xair.drv') %in% c('odbc', 'jdbc'))
+	if (!options()$Xair.drv %in% c('odbc', 'jdbc'))
 		stop("le pilote pour la connexion à la base doit être 'jdbc' ou 'odbc'")
 
 	# definition de la base de donnees (dsn)
 	if(!is.null(dsn)) {
 		options(Xair.dsn=dsn)
-	} else if(is.null(getOption('Xair.dsn')) & getOption('Xair.drv') == 'jdbc') {
+	} else if(is.null(getOption('Xair.dsn')) & options()$Xair.drv=='jdbc') {
 		cat('nom de la base de donnees (DataSourceName) :\n')
 		options(Xair.dsn=scan(what='character', nlines=1))
 		cat('\n')
-	} else if(is.null(getOption('Xair.dsn')) & getOption('Xair.drv') == 'odbc') {
+	} else if(is.null(getOption('Xair.dsn')) & options()$Xair.drv=='odbc') {
 		cat('nom de la base de donnees (DataSourceName) :\n',
 		    names(odbcDataSources('system')), '\n')
 		options(Xair.dsn=scan(what='character', nlines=1));cat('\n')
@@ -102,7 +97,7 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.t
 	# definition de l'hote (jdbc)
 	if(!is.null(host)) {
 		options(Xair.host=host)
-	} else if(is.null(getOption('Xair.host')) & getOption('Xair.drv') == 'jdbc') {
+	} else if(is.null(getOption('Xair.host')) & options()$Xair.drv=='jdbc') {
 		cat('hote hebergeant la base de donnees :\n')
 		options(Xair.host=scan(what='character', nlines=1))
 		cat('\n')
@@ -111,14 +106,14 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.t
 	# definition de l'emplacement des pilotes jdbc
 	if(!is.null(ojdbc)) {
 		options(Xair.ojdbc.file=ojdbc)
-	} else if(is.null(getOption('Xair.ojdbc.file')) & getOption('Xair.drv') == 'jdbc') {
+	} else if(is.null(getOption('Xair.ojdbc.file')) & options()$Xair.drv=='jdbc') {
 		cat('emplacement du fichier ojdbc*.jar définissant le pilote nécessaire à JDBC :\n')
 		options(Xair.ojdbc.file=scan(what='character', nlines=1))
 		cat('\n')
 	}
 
 	# connection a la base
-	if(getOption('Xair.drv') == 'odbc') {
+	if(options()$Xair.drv=='odbc') {
 		library (RODBC)
 		conxair <- try (odbcConnect (getOption('Xair.dsn'),
 					     uid = getOption('Xair.uid'),
@@ -126,9 +121,9 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.t
 					     case = 'nochange', believeNRows = TRUE) )
 		if(inherits(conxair, 'try-error'))
 			stop('echec de la connection a la base Xair.')
-	} else if(getOption('Xair.drv') == 'jdbc') {
+	} else if(options()$Xair.drv=='jdbc') {
 		library (RJDBC)
-		drv <- JDBC('oracle.jdbc.OracleDriver', getOption('Xair.ojdbc.file'))
+		drv <- JDBC('oracle.jdbc.OracleDriver', options()$Xair.ojdbc.file)
 		conxair <- try (dbConnect (drv,
 					   paste ('jdbc:oracle:thin:@', getOption('Xair.host'),
 						  ':1521:', getOption('Xair.dsn'), sep=''),
