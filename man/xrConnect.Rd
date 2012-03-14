@@ -1,14 +1,14 @@
 \name{xrConnect}
+\alias{options,}
 \alias{Xair.dsn}
 \alias{Xair.host,}
 \alias{Xair.pwd,}
 \alias{Xair.uid,}
-\alias{options,}
 \alias{xrConnect}
 \title{Initialisation d'une connection a une base XR.}
 \usage{
   xrConnect(dsn = NULL, uid = NULL, pwd = NULL,
-    host = NULL, ojdbc = NULL)
+    host = NULL, ojdbc = NULL, drv.type)
 }
 \arguments{
   \item{dsn}{Nom de la base de données (cf le pilote
@@ -28,7 +28,14 @@
 
   \item{ojdbc}{Emplacement de la librairie contenant la
   définition des classes nécessaires à RJDBC. Uniquement
-  pour les systèmes type unix, utilisant le pilote JDBC.}
+  dans le cas où jdbc est choisi comme driver (par défaut
+  pour les systèmes type 'unix')}
+
+  \item{drv.type}{chaine de caractere indiquant le driver
+  de base de données à utiliser.  peut prendre les valeurs
+  'jdbc' ou 'odbc'. Par défault, la valeur utilisée est
+  'jdbc' pour les systèmes type 'unix' et 'odbc' pour
+  windows.}
 }
 \value{
   Une connection à la base XR (le type exact dépend du

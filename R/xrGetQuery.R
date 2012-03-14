@@ -14,9 +14,9 @@
 #' 
 #' @seealso \code{\link{xrConnect}}, \code{\link[RODBC]{RODBC}}, \code{\link[RJDBC]{JDBC}}
 xrGetQuery <- function (conn, query) {
-	if(.Platform$OS.type=="windows") {
+	if(options()$Xair.drv == 'odbc') {
 		sqlQuery(conn, query)
-	} else if(.Platform$OS.type=="unix") {
+	} else if(options()$Xair.drv == 'jdbc') {
 		dbGetQuery(conn, query)
 	} else stop ('Unrecognized platform oO.')
 
