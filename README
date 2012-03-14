@@ -1,3 +1,30 @@
+----------  Qair V2.1-0 (14-03-2012)
+1)
+Gestion des drivers pour la connexion à la base modifiée :
+* par défaut jdbc est toujours utilisé sous les systèmes de type 'unix'
+* par défaut odbc est toujours utilisé sous windows
+* il désormais possible de spécifier explicitement le pilote à utiliser
+  (après ya pas de raison d'utiliser plus l'un ou l'autre en fonction du système)
+
+La spécification se fait au moment de la création de la connexion (xrConnect)
+avec l'argument drv.type. L'info est alors stockée dans 'options()$Xair.drv'
+Pour changer le comportement par défaut de manière pérenne, il est donc possible
+de préciser dans le fichier .Rprofile options(Xair.drv="le pilote que je préfère").
+
+Il n'est plus nécessaire de charger la librairie adéquate (RJDBC ou RODBC selon) :
+celle-ci est automatiquement chargée au moment de l'appel à 'xrConnect' si elle
+ne l'est pas encore.
+
+2)
+Correction des fonctions de plans de sondage qui ne prenaient pas en compte 
+la suppression de la dépendance vis-à-vis de lubridate
+
+----------  Qair V2.0-1 (10-02-2012)
+Correction d'un bug dans format.seuil (du à la suppression de la dépendance vis-à-vis de timetools)
+
+
+----------  Qair V2
+
 la V2 de Qair est enfin disponible. Version 2 car il y a de nombreux changements qui font que la V2 et la V1 ne sont pas compatibles. En gros, il va falloir ré-écrire tous les programmes dépendant de Qair !!! Bon, nan, en réalité, il suffira d'installer 2 versions du paquet et de migrer doucement (ou pas du tout pour les anciens prog) vers la V2.
 Pour ça, voir la deuxième partie du mail.
 
