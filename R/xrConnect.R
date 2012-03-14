@@ -50,9 +50,11 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.t
 	# définition du pilote à utiliser
 	if (missing(drv.type)) {
 		if(.Platform$OS.type=='unix') {
+			library (RJDBC)
 			message ("le pilote 'jdbc' est utilisé pour la connexion à XR")
 			options (Xair.drv = 'jdbc')
 		} else if(.Platform$OS.type=='windows') {
+			library (RODBC)
 			message ("le pilote 'odbc' est utilisé pour la connexion à XR")
 			options (Xair.drv = 'odbc')
 		} else {

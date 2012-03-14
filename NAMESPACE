@@ -1,5 +1,6 @@
 # import des dependances
 import (timetools)
+importFrom(DBI, dbListFields)
 
 # liens avec une base XR
 export (xrGetQuery, xrConnect,
@@ -7,6 +8,10 @@ export (xrGetQuery, xrConnect,
 	xrGetSitesPrelevement, xrGetMethodesPrelevement,
 	xrGetContinuousData, xrGetManualData,
 	Xair2R, indicesXR2R, plot.indice)
+
+# pour que ODBC est un comportement "normal"
+export (dbListFields.RODBC)
+S3method (dbListFields, RODBC)
 
 # outils divers
 export (slide, qh, h, estimation_sondage)
