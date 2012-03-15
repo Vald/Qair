@@ -66,13 +66,24 @@
 xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		       period = c('h', 'qh', 'd', 'm', 'y'),
 		       validated = TRUE, valid.states = c("A", "R", "O", "W", "P"), what = c('value', 'state', 'both'),
-		       search.fields='IDENTIFIANT', campagnes = NULL, reseaux = NULL, stations = NULL, polluants = NULL,
+		       search.fields, campagnes = NULL, reseaux = NULL, stations = NULL, polluants = NULL,
 		       collapse = c('AND', 'OR'), XR6 = TRUE) {
 	# period est un periode au sens lubridate
 	# start et end doivent être des POSIXt (pour la prise en compte des timezones).
 	period <- match.arg (period)
 	what <- match.arg (what)
 	collapse <- match.arg (collapse)
+
+	# champ de recherche par défaut selonc que l'on est en V6 ou non
+	if (XR6) {
+		id.field <- 'IDENTIFIANT'
+		if (missing (search.fields))
+			search.fields <- 'IDENTIFIANT'
+	} else {
+		id.field <- 'NOM_COURT_MES'
+		if (missing (search.fields))
+			search.fields <- 'NOM_COURT_MES'
+	}
 
 	# pour permettre eventuellement d'entrer des chaines de caracteres en start en end
 	#	on fait un petit cast
@@ -148,7 +159,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	data <- split (data, data$NOM_COURT_MES)
 
 	m <- match (names (data), mesures$NOM_COURT_MES)
-	data <- mapply (mef.mesure, data, mesures$IDENTIFIANT[m], fmul=mesures$FMUL[m], SIMPLIFY = FALSE,
+	data <- mapply (mef.mesure, data, mesures[[id.field]][m], fmul=mesures$FMUL[m], SIMPLIFY = FALSE,
 			MoreArgs = list (period=q$periodb, valid.states=valid.states, what=what, XR6=XR6))
 	# ncm <- unlist (lapply (data, attr, 'NOM_COURT_MES') ) # ? a quoi ca sert ? À rien ?
 	for (i in names(data) ) names (data[[i]])[3] <- i
@@ -185,7 +196,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	for (i in setdiff(mesures$NOM_COURT_MES, names(result) ) )
 		result[[i]] <- NA
 	result <- result[mesures$NOM_COURT_MES]
-	names (result) <- mesures$IDENTIFIANT[match(names(result), mesures$NOM_COURT_MES)]
+	names (result) <- mesures[[id.field]][match(names(result), mesures$NOM_COURT_MES)]
 
 	# recuperation des infos
 	q$stations <- xrGetStations (conn, pattern=mesures$NOM_COURT_SIT, search.fields='NOM_COURT_SIT')
@@ -194,7 +205,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	q$polluants <- q$polluants[match(mesures$NOPOL, q$polluants$NOPOL),]
 	
 	q$attr.mesures <- cbind (
-		q$stations[, c('LAMBERTX', 'LAMBERTY', 'NSIT', 'NINSEE', 'ISIT', 'NOM_COURT_SIT', 'IDENTIFIANT')],
+		q$stations[, c('LAMBERTX', 'LAMBERTY', 'NSIT', 'NINSEE', 'ISIT', 'NOM_COURT_SIT', id.field)],
 		q$polluants[, c('CCHIM', 'NCON', 'NOPOL')])
 	row.names (q$attr.mesures) <- attributes(result)$NOM_COURT_MES
 	

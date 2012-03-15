@@ -8,7 +8,7 @@
 \title{Initialisation d'une connection a une base XR.}
 \usage{
   xrConnect(dsn = NULL, uid = NULL, pwd = NULL,
-    host = NULL, ojdbc = NULL, drv.type)
+    host = NULL, ojdbc = NULL, drv.type = NULL)
 }
 \arguments{
   \item{dsn}{Nom de la base de données (cf le pilote

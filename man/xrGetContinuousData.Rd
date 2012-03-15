@@ -5,10 +5,10 @@
   xrGetContinuousData(conn, pattern = NULL, start, end,
     period = c("h", "qh", "d", "m", "y"), validated = TRUE,
     valid.states = c("A", "R", "O", "W", "P"),
-    what = c("value", "state", "both"),
-    search.fields = "IDENTIFIANT", campagnes = NULL,
-    reseaux = NULL, stations = NULL, polluants = NULL,
-    collapse = c("AND", "OR"), XR6 = TRUE)
+    what = c("value", "state", "both"), search.fields,
+    campagnes = NULL, reseaux = NULL, stations = NULL,
+    polluants = NULL, collapse = c("AND", "OR"),
+    XR6 = TRUE)
 }
 \arguments{
   \item{conn}{une connection valide telle que retournée par
