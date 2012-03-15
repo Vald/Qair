@@ -19,6 +19,8 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
+	fields.tmp <- dbListFields (conn, 'STATION')
+	search.fields <- intersect (search.fields, fields.tmp)
 	if (is.null (fields) ) fields <- '*'#dbListFields (conn, 'STATION')
 	
 	query <- sprintf ('SELECT %s FROM', paste ('STATION', fields, sep='.', collapse=', ') )
