@@ -205,7 +205,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	q$polluants <- q$polluants[match(mesures$NOPOL, q$polluants$NOPOL),]
 	
 	q$attr.mesures <- cbind (
-		q$stations[, c('LAMBERTX', 'LAMBERTY', 'NSIT', 'NINSEE', 'ISIT', 'NOM_COURT_SIT', id.field)],
+		q$stations[, intersect(names(q$stations), c('LAMBERTX', 'LAMBERTY', 'NSIT_PUBLIC', 'NINSEE', 'ISIT', 'NOM_COURT_SIT', 'IDENTIFIANT'))],
 		q$polluants[, c('CCHIM', 'NCON', 'NOPOL')])
 	row.names (q$attr.mesures) <- attributes(result)$NOM_COURT_MES
 	
