@@ -6,6 +6,7 @@
     FUN = "mean", col, border, density = -1, rlim = NULL,
     at.rho = NULL, unite = "", labels.rho = NULL, col.rho,
     lwd.rho = 1, lty.rho = 2, expr.rho = FALSE,
+    cex.rho = 1, theta.rho = sample(360, 1),
     at.theta = 0:7 * 45,
     labels.theta = c("N", "NE", "E", "SE", "S", "SO", "O", "NO"),
     nb.theta = 360, col.theta, lwd.theta = 1,
@@ -79,6 +80,11 @@
   \item{expr.rho}{logical indiquant si labels.rho contient
   des chaînes de caractères ou des expressions (cf
   \sQuote{Details}).}
+
+  \item{cex.rho}{character expansion pour la graduation}
+
+  \item{theta.rho}{angle en degré où affiché les
+  graduations}
 
   \item{at.theta}{indique pour quels degrés les étiquettes
   pour l'échelle des directions de vent doivent être

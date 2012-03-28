@@ -171,6 +171,8 @@ compute.rose <- function(values, dv, fv, breaks=0:17*22.5+22.5/2, FUN, ...) {
 #'
 #' @param at.rho valeurs de rayon auxquelles doivent être affichés des divisions
 #'	pour l'échelle des concentrations.
+#' @param theta.rho angle en degré où affiché les graduations
+#' @param cex.rho character expansion pour la graduation
 #' @param unite chaîne de caractères qui sera ajouté à chaque étiquette de l'échelle
 #' 	des concentrations.
 #' @param labels.rho chaînes de caractères ou expressions (cf \sQuote{Details})
@@ -210,7 +212,7 @@ compute.rose <- function(values, dv, fv, breaks=0:17*22.5+22.5/2, FUN, ...) {
 plot.rose <- function(x, y,
 	col, border, density=-1,
 	rlim=NULL,
-	at.rho = NULL, unite = '', labels.rho=NULL, col.rho, lwd.rho=1, lty.rho=2, expr.rho=FALSE,
+	at.rho = NULL, unite = '', labels.rho=NULL, col.rho, lwd.rho=1, lty.rho=2, expr.rho=FALSE, cex.rho=1, theta.rho=sample(360, 1),
 	at.theta = 0:7*45, labels.theta = c('N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'), nb.theta = 360, col.theta, lwd.theta=1, lty.theta=2,
 	centre = list(x=0, y=0), pas.rose = 1, facteur=1, add=FALSE, ...) {
 
@@ -250,16 +252,26 @@ plot.rose <- function(x, y,
 	y <- facteur * unlist(mapply('*', at.rose - min(rlim), lapply(theta, cos), SIMPLIFY=FALSE)) + centre$y
 	polygon(x[c(1:length(x), 1)], y[c(1:length(y), 1)], density=density, col=col, border=border)
 
-	if(!all(is.na(at.rho))){
-		theta <- seq(0, 360, length=nb.theta)
-		mapply(polygon, as.data.frame(outer(cos(theta * pi/180), at.rho - min(rlim), '*') * facteur +centre$x), as.data.frame(outer(sin(theta * pi/180), at.rho - min(rlim), '*') * facteur +centre$y), MoreArgs=list(lty=lty.rho, lwd=lwd.rho, col=col.rho, density=0))
-		theta <- sample(0:360, 1)
-		text((at.rho - min(rlim))*sin(theta) * facteur + centre$x, (at.rho - min(rlim))*cos(theta) * facteur + centre$y, if(expr.rho) parse(text=labels.rho) else labels.rho)
+	if(!all(is.na(at.theta)))
+	{
+		text(sin(at.theta * pi/180) * abs(diff(rlim)) * 1.1 * facteur + centre$x,
+		     cos(at.theta * pi/180) * abs(diff(rlim)) * 1.1 * facteur + centre$y,
+		     labels.theta, col=col.theta)
+		segments(x0=centre$x, y0=centre$y, x1=sin(at.theta * pi/180) * abs(diff(rlim)) * facteur + centre$x, y1=cos(at.theta * pi/180) * abs(diff(rlim)) * facteur + centre$y, col=col.theta, lty=lty.theta, lwd=lwd.theta)
 	}
 
-	if(!all(is.na(at.theta))) {
-		text(sin(at.theta * pi/180) * abs(diff(rlim)) * 1.1 * facteur + centre$x, cos(at.theta * pi/180) * abs(diff(rlim)) * 1.1 * facteur + centre$y, labels.theta, col=col.theta)
-		segments(x0=centre$x, y0=centre$y, x1=sin(at.theta * pi/180) * abs(diff(rlim)) * facteur + centre$x, y1=cos(at.theta * pi/180) * abs(diff(rlim)) * facteur + centre$y, col=col.theta, lty=lty.theta, lwd=lwd.theta)
+	if(!all(is.na(at.rho)))
+	{
+		theta <- seq(0, 360, length=nb.theta)
+		mapply(polygon,
+		       as.data.frame(outer(cos(theta * pi/180), at.rho - min(rlim), '*') * facteur +centre$x),
+		       as.data.frame(outer(sin(theta * pi/180), at.rho - min(rlim), '*') * facteur +centre$y),
+		       MoreArgs=list(lty=lty.rho, lwd=lwd.rho, col=col.rho, density=0))
+		theta <- theta.rho*pi/180
+		text((at.rho - min(rlim))*sin(theta) * facteur + centre$x,
+		     (at.rho - min(rlim))*cos(theta) * facteur + centre$y,
+		     if(expr.rho) parse(text=labels.rho) else labels.rho,
+		     cex=cex.rho, col=col.rho)
 	}
 }
 
@@ -285,12 +297,12 @@ rosepol <- function(
 	values, dv, fv, breaks=0:17*22.5+22.5/2, FUN = 'mean',
 	col, border, density=-1,
 	rlim=NULL,
-	at.rho = NULL, unite = '', labels.rho=NULL, col.rho, lwd.rho=1, lty.rho=2, expr.rho=FALSE,
+	at.rho = NULL, unite = '', labels.rho=NULL, col.rho, lwd.rho=1, lty.rho=2, expr.rho=FALSE, cex.rho=1, theta.rho=sample(360, 1),
 	at.theta = 0:7*45, labels.theta = c('N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'), nb.theta = 360, col.theta, lwd.theta=1, lty.theta=2,
 	centre = list(x=0, y=0), pas.rose = 1, facteur=1, add=FALSE,
 	...) {
 	rose <- compute.rose(values, dv, fv, breaks, FUN, ...)
-	plot.rose(x=rose, col=col, border=border, density=density, rlim=rlim, at.rho=at.rho, unite=unite, labels.rho=labels.rho, at.theta=at.theta, labels.theta=labels.theta, nb.theta=nb.theta, centre=centre, pas.rose=pas.rose, facteur=facteur, add=add, col.rho=col.rho, col.theta=col.theta, expr.rho=expr.rho)
+	plot.rose(x=rose, col=col, border=border, density=density, rlim=rlim, at.rho=at.rho, unite=unite, labels.rho=labels.rho, at.theta=at.theta, labels.theta=labels.theta, nb.theta=nb.theta, centre=centre, pas.rose=pas.rose, facteur=facteur, add=add, col.rho=col.rho, col.theta=col.theta, expr.rho=expr.rho, lty.theta=lty.theta, lty.rho=lty.rho, cex.rho=cex.rho, theta.rho=theta.rho)
 invisible(rose)
 }
 

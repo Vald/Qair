@@ -5,6 +5,7 @@
   plot.rose(x, y, col, border, density = -1, rlim = NULL,
     at.rho = NULL, unite = "", labels.rho = NULL, col.rho,
     lwd.rho = 1, lty.rho = 2, expr.rho = FALSE,
+    cex.rho = 1, theta.rho = sample(360, 1),
     at.theta = 0:7 * 45,
     labels.theta = c("N", "NE", "E", "SE", "S", "SO", "O", "NO"),
     nb.theta = 360, col.theta, lwd.theta = 1,
@@ -31,6 +32,11 @@
   \item{at.rho}{valeurs de rayon auxquelles doivent être
   affichés des divisions pour l'échelle des
   concentrations.}
+
+  \item{theta.rho}{angle en degré où affiché les
+  graduations}
+
+  \item{cex.rho}{character expansion pour la graduation}
 
   \item{unite}{chaîne de caractères qui sera ajouté à
   chaque étiquette de l'échelle des concentrations.}
