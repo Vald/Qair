@@ -75,7 +75,7 @@ xrGetManualData <-
 		debut <- unique (x$DATE_DEB)
 		fin <- unique (x$DATE_FIN)
 		valeurs <- split (x[c('VALEUR', 'CODE_QUALITE')],
-				  gsub(' ', '.', paste (x$SITE, x$METHODE, x$CCHIM, sep='.')) )
+				  gsub(' ', '.', paste (x$SITE, x$METHODE, x$NOPOL, sep='.')) )
 		if (any (sapply (valeurs, nrow) > 1) ) {
 			warning (sprintf ("\n%s, \nCertains prélèvements sont dupliqués. L'association entre les différentes mesures risque d'être arbitraire.", paste (names(valeurs)[sapply (valeurs, nrow) > 1]) ) )
 		

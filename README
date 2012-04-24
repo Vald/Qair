@@ -1,3 +1,12 @@
+----------  Qair V2.1-2
+Modification des noms des variables dans les objets retournés par xrGetManualData
+afin d'éviter le mélange des composés
+
+
+Sur les fonctions de traçage de roses :
+* correction de la non-prise en compte d'arguments purement graphiques
+* ajout des arguments theta.rho et cex.rho
+
 ----------  Qair V2.1-1 (15-03-2012)
 Corrections diverses pour assurer la compatibilité avec XR dont la version est inférieure à 6.
 Corrections diverses pour assurer le bon fonctionnement de Qair avec RODBC.
