@@ -22,6 +22,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 	fields.tmp <- dbListFields (conn, 'STATION')
 	search.fields <- intersect (search.fields, fields.tmp)
 	if (is.null (fields) ) fields <- '*'#dbListFields (conn, 'STATION')
+	fields <- c(fields, 'CLASSE_SITE')
 	
 	query <- sprintf ('SELECT %s FROM', paste ('STATION', fields, sep='.', collapse=', ') )
 	q <- list()
@@ -59,10 +60,12 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
 
 	stations <- unique (xrGetQuery (conn, query) )
+	names (stations)[length(stations)] <- 'tada'
 
 	temp <- xrGetQuery (conn, "SELECT CLE, LIBELLE FROM LISTE_META_DONNEES WHERE CODE_ID_LISTE='CL_SITE'")
 	names (temp)[2] <- 'typologie'
-	merge (stations, temp, by.x='CLASSE_SITE', by.y='CLE', all.x=TRUE, all.y=FALSE)
+	stations <- merge (stations, temp, by.x='tada', by.y='CLE', all.x=TRUE, all.y=FALSE)
+	stations[setdiff(names(stations), 'tada')]
 }
 
 
