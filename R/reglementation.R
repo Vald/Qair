@@ -24,13 +24,19 @@ validation.prepare <- function (x, to, ...) {
 	if (is.character(to)) to <- POSIXctp(unit=to)
 	#is.periodic <- try (period (x) )
 	if (!inherits (is.periodic, 'try-error') )
+	{
 		if (length(is.periodic)==1 & all(is.periodic == POSIXctp(unit='hour')) &
 		    to == POSIXctp(unit='year')) {
 			test.validation <- x
 			test.validation[T] <- data.frame (lapply (data.frame (x), check.na.consecutifs) )
 			test.validation <- changeSupport (from=test.validation, to='year',
 							  min.coverage=0, FUN=all, na.rm=TRUE)
+		} else if (is.periodic == POSIXctp(86400, 'second')) {
+			test.validation <- TRUE
 		}
+	} else {
+		test.validation <- FALSE
+	}
 	return (test.validation)
 }
 
@@ -182,7 +188,8 @@ sur3ans <- function (x, seuil, detail, ...) {
 									 format (min(start(x)), '%Y')),
 								 timezone(x)),
 						 to=as.POSIXct(sprintf('%s-01-01',
-									 as.numeric(format (max(end(x)), '%Y'))+1),
+									 as.numeric(format (max(end(x)), '%Y')) +
+									 	ifelse(second(max(end(x)), 'year') == 0, 0, 1)),
 								 timezone(x)),
 						 by='year', timezone=timezone(x))
 	valid.x <- changeSupport (x[month(start(x))%in% 4:9,], valid.x,
