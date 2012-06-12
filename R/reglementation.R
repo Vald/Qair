@@ -77,7 +77,9 @@ aot40 <- function (x, seuil, ...) {
 }
 
 aot40maiJuillet5ans <- function (x, seuil, ...) {
-	x <- aot40maiJuillet (x, seuil)
+	seuil$mois <- 5:7-1
+	seuil$MORE.b.comparaison='mois'
+	x <- aot40 (x, seuil)
 	annees <- unique (year (start (x) ) )
 	start <- as.POSIXct(sprintf ('%i-01-01', annees-4), timezone (x) )
 	end <- as.POSIXct(sprintf ('%i-01-01', annees+1), timezone (x) )
