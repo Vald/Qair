@@ -28,11 +28,13 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 	q <- list()
 	q$tables <- 'STATION'
 
-	if (!is.null (mesures) )
-		pattern <- c(pattern, unique (xrGetMesures (conn, pattern = mesures)$NOM_COURT_SIT) )
+	if (!is.null (mesures) ) {
+		q$mesures <- unique (xrGetMesures (conn, pattern = mesures)$NOM_COURT_SIT)
+		q$mesures <- match.pattern.fields (q$mesures, 'STATION.NOM_COURT_SIT', 'IN')
+	}
 
 	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, search.fields)
+		q$pattern <- match.pattern.fields (pattern, sprintf('STATION.%s', search.fields))
 
 	if (!is.null (campagnes) ) {
 		q$campagnes <- unique (xrGetCampagnes (conn, pattern = campagnes)$NOM_COURT_CM)
