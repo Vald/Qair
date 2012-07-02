@@ -1,9 +1,13 @@
 \name{dbListFields}
+\alias{dbDisconnect}
+\alias{dbDisconnect,RODBC-method}
 \alias{dbListFields}
 \alias{dbListFields,RODBC,character-method}
 \title{extends dbListFields for RODBC objects}
 \usage{
   dbListFields(conn, name, ...)
+
+  dbDisconnect(conn, ...)
 }
 \arguments{
   \item{\dots}{pour compatibiltié avec la méthode
