@@ -24,12 +24,13 @@ xrGetCampagnes(xr, 'LARO', end='2011-01-01')
 
 xrGetReseaux(xr, 'R_SO2')
 
-xrGetStations(xr, 'Chas')
-xrGetStations(xr, mesures='SO2')
-xrGetStations(xr, reseaux='R_SO2')
-xrGetStations(xr, campagnes='ANG12')
-xrGetStations(xr, campagnes='ANG12', mesures='24')
-xrGetStations(xr, campagnes='ANG12', mesures='SO2', collapse='OR')
+colonnes <- c(63, 64, 70)
+xrGetStations(xr, 'Chas')[-colonnes]
+xrGetStations(xr, mesures='SO2')[-colonnes]
+xrGetStations(xr, reseaux='R_SO2')[-colonnes]
+xrGetStations(xr, campagnes='ANG12')[-colonnes]
+xrGetStations(xr, campagnes='ANG12', mesures='24')[-colonnes]
+xrGetStations(xr, campagnes='ANG12', mesures='SO2', collapse='OR')[-colonnes]
 
 summary(xrGetSitesPrelevement(xr, 'TLAROC_L'))
 xrGetSitesPrelevement(xr, campagnes='TLAROC2009')
@@ -59,6 +60,11 @@ for (args in arguments)
 			1:length(args),
 			x=args, simplify=FALSE),
 	       recursive=FALSE)
+
+	# on restreint les tests aux listes d'arguments composés de 2 éléments 
+	# minimum (ça évite de demander tous les PM10 qui évoluent sans cesse)
+	
+	tmp <- tmp[sapply(tmp, length) > 1]
 
 	# ajout de la connection à XR dans chacune des combinaisons d'arugments
 
