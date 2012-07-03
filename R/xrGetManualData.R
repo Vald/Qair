@@ -31,6 +31,9 @@ xrGetManualData <-
 	if (!is.null (sites) ) {
 		sites <- xrGetSitesPrelevement (conn, sites, campagnes=campagnes)
 		q$sites <- paste ("'", sites$NSIT, "'", sep='', collapse=', ')
+	} else if (!is.null(campagnes)) {
+		sites <- xrGetSitesPrelevement (conn, campagnes=campagnes)
+		q$sites <- paste ("'", sites$NSIT, "'", sep='', collapse=', ')
 	}
 	if (!is.null (polluants) ) {
 		polluants <- xrGetPolluants (conn, polluants)

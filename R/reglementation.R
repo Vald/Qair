@@ -24,13 +24,19 @@ validation.prepare <- function (x, to, ...) {
 	if (is.character(to)) to <- POSIXctp(unit=to)
 	#is.periodic <- try (period (x) )
 	if (!inherits (is.periodic, 'try-error') )
+	{
 		if (length(is.periodic)==1 & all(is.periodic == POSIXctp(unit='hour')) &
 		    to == POSIXctp(unit='year')) {
 			test.validation <- x
 			test.validation[T] <- data.frame (lapply (data.frame (x), check.na.consecutifs) )
 			test.validation <- changeSupport (from=test.validation, to='year',
 							  min.coverage=0, FUN=all, na.rm=TRUE)
+		} else if (is.periodic == POSIXctp(86400, 'second')) {
+			test.validation <- TRUE
 		}
+	} else {
+		test.validation <- FALSE
+	}
 	return (test.validation)
 }
 
@@ -55,13 +61,17 @@ aot <- function(x, seuil, rep.min)
 		sum(ifelse(!is.na(x) & x > seuil, x - seuil, 0), na.rm = TRUE)/mean(!is.na(x))
 	} else { NA }
 
-aot40maiJuillet <- function (x, seuil, ...) {
+aot40 <- function (x, seuil, ...) {
 	timezone (x) <- 'UTC'
+	mois <- seuil$mois
 
 	test <- validation.prepare (x, to='year', ...)	# 720 heures
 
-	x <- x[month (start(x)) %in% (5:7-1) & hour (end(x), 'day') %in% 8:19,]
-	if (nrow(x) == 0) stop ("Il n'est pas possible de calculer un AOT 'mai-juillet' si aucune donnée pour cette période n'est fournie.")
+	x <- x[month (start(x)) %in% mois & hour (end(x), 'day') %in% 8:19,]
+	if (nrow(x) == 0)
+		stop (paste("Il n'est pas possible de calculer un AOT pour les mois",
+			    min(mois), "à", max(mois),
+			    "si aucune donnée pour cette période n'est fournie."))
 	x <- changeSupport (from=x, to='year', min.coverage=0, FUN=aot, seuil=80, rep.min=seuil$rep.b.comparaison)
 	
 	if (!is.logical (test) )			# 720 heures
@@ -73,7 +83,9 @@ aot40maiJuillet <- function (x, seuil, ...) {
 }
 
 aot40maiJuillet5ans <- function (x, seuil, ...) {
-	x <- aot40maiJuillet (x, seuil)
+	seuil$mois <- 5:7-1
+	seuil$MORE.b.comparaison='mois'
+	x <- aot40 (x, seuil)
 	annees <- unique (year (start (x) ) )
 	start <- as.POSIXct(sprintf ('%i-01-01', annees-4), timezone (x) )
 	end <- as.POSIXct(sprintf ('%i-01-01', annees+1), timezone (x) )
@@ -176,7 +188,8 @@ sur3ans <- function (x, seuil, detail, ...) {
 									 format (min(start(x)), '%Y')),
 								 timezone(x)),
 						 to=as.POSIXct(sprintf('%s-01-01',
-									 as.numeric(format (max(end(x)), '%Y'))+1),
+									 as.numeric(format (max(end(x)), '%Y')) +
+									 	ifelse(second(max(end(x)), 'year') == 0, 0, 1)),
 								 timezone(x)),
 						 by='year', timezone=timezone(x))
 	valid.x <- changeSupport (x[month(start(x))%in% 4:9,], valid.x,
@@ -679,7 +692,12 @@ validation.reglementaire <- function (x, seuils,
 		attributes(x)$prepas.cal <- prepas.cal.unique 
 	}
 	if ('preparation.comparaison' %in% etapes) {
-		prepas.comp <- lapply (seuils, '[', c('base.comparaison', 'rep.b.comparaison', 'precision'))
+#		prepas.comp <- lapply (seuils, '[', c('base.comparaison', 'rep.b.comparaison', 'precision'))
+		prepas.comp <- lapply (seuils, 
+				      function(seuil)
+					      seuil[c('base.comparaison', 'rep.b.comparaison', 'precision',
+						      seuil$MORE.b.comparaison)])
+
 		if ('preparation.calcul' %in% etapes) {
 			prepas.comp <- split (prepas.comp,
 					     sapply (lapply (prepas.cal, as.character), paste, collapse='-') )
@@ -716,7 +734,7 @@ validation.reglementaire <- function (x, seuils,
 				n.prepa.comp <- which (sapply(lapply(
 							attributes(x[[n.prepa.cal]])$prepas.comp,
 							all.equal,
-							seuil[c('base.comparaison', 'rep.b.comparaison', 'precision')]), isTRUE))
+							seuil[c('base.comparaison', 'rep.b.comparaison', 'precision', seuil$MORE.b.comparaison)]), isTRUE))
 				z <- x[[n.prepa.cal]][[n.prepa.comp]]
 			} else if (any (c('preparation.calcul', 'preparation.comparaison') %in% etapes) ){
 				n.prepa <- list (setdiff (names(attributes(x)), 'names'),

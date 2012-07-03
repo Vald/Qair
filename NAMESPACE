@@ -1,7 +1,7 @@
 # import des dependances
 import (timetools)
-importMethodsFrom(DBI, dbListFields)
-exportMethods (dbListFields)
+importMethodsFrom(DBI, dbListFields, dbDisconnect)
+exportMethods (dbListFields, dbDisconnect)
 
 # liens avec une base XR
 export (xrGetQuery, xrConnect,

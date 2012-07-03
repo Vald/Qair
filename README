@@ -1,4 +1,22 @@
-----------  Qair V2.1-2
+----------  Qair V2.2-1
+Interface à XR
+* Prise en compte de l'argument campagnes dans la fonction xrGetManualData
+* correction de la fonction xrGetStations pour qu'elle fonctionne même si le champ
+	'CLASSE_SITE' n'est pas demandé (remarque de S. Rapenne) 
+* correction de la fonction xrGetStations pour permettre l'utilisation simultanée
+des arguments 'mesures', 'campagnes' et 'reseaux'.
+* ajout d'une méthode "dbDisconnect" pour les connections ROBDC afin de permettre
+à la foncrion Xair2R de fonctionner avec le driver RODBC.
+
+Calculs réglementaires
+* Modification de 'validation.reglementaire' et 'seuils' pour pouvoir changer les mois de l'AOT40
+* correction des valeurs de seuil d'évaluation min et max pour le PM2,5
+
+Validation
+* Ajout du repertoire 'tests' et de fichier permettant la validation du paquet
+au moment du R CMD check
+
+----------  Qair V2.2-0
 Modification des noms des variables dans les objets retournés par xrGetManualData
 afin d'éviter le mélange des composés
 
