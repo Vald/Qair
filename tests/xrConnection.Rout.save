@@ -192,7 +192,7 @@ replacing previous import 'show' when loading 'rJava'
   SEUIL_ALR_INTER
 1              NA
 > 
-> colonnes <- c(63, 64, 70)
+> colonnes <- c(63, 64, 70, 92)
 > xrGetStations(xr, 'Chas')[-colonnes]
   NSIT NDEPART NINSEE        ISIT NOM_COURT_SIT       AXE CODE_POSTAL
 1 9010      86  86062 Chasseneuil        Chasse Leclanché       86360
@@ -222,12 +222,12 @@ replacing previous import 'show' when loading 'rJava'
 1           <NA>             NA             NA        <NA>         <NA>
   DER_LECT_DEF DER_LECT_ALR DER_LECT_SCN DER_LECT_CAL DER_ESSAI_COMM DER_ETAT
 1         <NA>         <NA>         <NA>         <NA>           <NA>     <NA>
-  ETAT_ALARME NB_ECHEC_COMM     ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR
-1        <NA>            NA 127.0.0.1:9010        9010             NA
-  CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN
-1           6        16           18            23        NA              93
-  NB_VEHICULE RAYON_ACTION MODEM_TEMPO MODEM_RELAIS IDENTIFIANT   typologie
-1          NA           NA        <NA>         <NA>      Chasse Périurbaine
+  ETAT_ALARME NB_ECHEC_COMM NSIT_PUBLIC SUPERVISION_TR CLASSE_SITE SITE_TYPE
+1        <NA>            NA        9010             NA           6        16
+  TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION
+1           18            23        NA              93          NA           NA
+  MODEM_TEMPO MODEM_RELAIS IDENTIFIANT   typologie
+1        <NA>         <NA>      Chasse Périurbaine
 > xrGetStations(xr, mesures='SO2')[-colonnes]
    NSIT NDEPART NINSEE                 ISIT NOM_COURT_SIT
 1  9002      17  17300              VAUGOIN        VAUGOI
@@ -409,54 +409,54 @@ replacing previous import 'show' when loading 'rJava'
 9         <NA>         <NA>         <NA>         <NA>         <NA>         <NA>
 10        <NA>         <NA>         <NA>         <NA>         <NA>         <NA>
 11        <NA>         <NA>         <NA>         <NA>         <NA>         <NA>
-   DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM         ADRESSE_IP
-1            <NA>     <NA>        <NA>            NA     127.0.0.1:9002
-2            <NA>     <NA>        <NA>            NA     127.0.0.1:9036
-3            <NA>     <NA>        <NA>            NA 90.84.183.156:3005
-4            <NA>     <NA>        <NA>            NA     127.0.0.1:9203
-5            <NA>     <NA>        <NA>            NA 172.16.19.151:3005
-6            <NA>     <NA>        <NA>            NA 172.16.19.152:3005
-7            <NA>     <NA>        <NA>            NA     127.0.0.1:9030
-8            <NA>     <NA>        <NA>            NA 172.16.19.154:3005
-9            <NA>     <NA>        <NA>            NA 172.16.19.155:3005
-10           <NA>     <NA>        <NA>            NA 172.16.19.156:3005
-11           <NA>     <NA>        <NA>            NA 172.16.19.153:3005
-   NSIT_PUBLIC SUPERVISION_TR CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE
-1         9002             NA           6        16           18            23
-2         9036             NA           9        15           18            23
-3         9036             NA           9        15           18            23
-4           NA              0           9        15           NA            NA
-5           NA             NA          NA        NA           NA            NA
-6           NA             NA          NA        NA           NA            NA
-7         9030             NA          NA        NA           NA            NA
-8           NA              0          NA        NA           NA            NA
-9           NA              0          NA        NA           NA            NA
-10          NA              0          NA        NA           NA            NA
-11          NA              0          NA        NA           NA            NA
-   TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION    MODEM_TEMPO
-1         NA              93          NA           NA           <NA>
-2         NA              93          NA           NA 00000000030000
-3         NA              93          NA           NA 00000000030000
-4         NA              93          NA           NA           <NA>
-5         NA              NA          NA           NA           <NA>
-6         NA              NA          NA           NA           <NA>
-7         NA              NA          NA           NA           <NA>
-8         NA              NA          NA           NA           <NA>
-9         NA              NA          NA           NA           <NA>
-10        NA              NA          NA           NA           <NA>
-11        NA              NA          NA           NA           <NA>
-   MODEM_RELAIS     IDENTIFIANT    typologie
-1          <NA>          VAUGOI  Périurbaine
-2          <NA> DOMINAN_BERNARD Industrielle
-3          <NA>  QUILLE_BERNARD Industrielle
-4          <NA>      ORBIGNY_LR Industrielle
-5          <NA>          IMLR01         <NA>
-6          <NA>          IMLR02         <NA>
-7          <NA>    TIMAC_TONNAY         <NA>
-8          <NA>          IMLR04         <NA>
-9          <NA>          IMLR05         <NA>
-10         <NA>          IMLR06         <NA>
-11         <NA>          IMLR03         <NA>
+   DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM NSIT_PUBLIC SUPERVISION_TR
+1            <NA>     <NA>        <NA>            NA        9002             NA
+2            <NA>     <NA>        <NA>            NA        9036             NA
+3            <NA>     <NA>        <NA>            NA        9036             NA
+4            <NA>     <NA>        <NA>            NA          NA              0
+5            <NA>     <NA>        <NA>            NA          NA             NA
+6            <NA>     <NA>        <NA>            NA          NA             NA
+7            <NA>     <NA>        <NA>            NA        9030             NA
+8            <NA>     <NA>        <NA>            NA          NA              0
+9            <NA>     <NA>        <NA>            NA          NA              0
+10           <NA>     <NA>        <NA>            NA          NA              0
+11           <NA>     <NA>        <NA>            NA          NA              0
+   CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN
+1            6        16           18            23        NA              93
+2            9        15           18            23        NA              93
+3            9        15           18            23        NA              93
+4            9        15           NA            NA        NA              93
+5           NA        NA           NA            NA        NA              NA
+6           NA        NA           NA            NA        NA              NA
+7           NA        NA           NA            NA        NA              NA
+8           NA        NA           NA            NA        NA              NA
+9           NA        NA           NA            NA        NA              NA
+10          NA        NA           NA            NA        NA              NA
+11          NA        NA           NA            NA        NA              NA
+   NB_VEHICULE RAYON_ACTION    MODEM_TEMPO MODEM_RELAIS     IDENTIFIANT
+1           NA           NA           <NA>         <NA>          VAUGOI
+2           NA           NA 00000000030000         <NA> DOMINAN_BERNARD
+3           NA           NA 00000000030000         <NA>  QUILLE_BERNARD
+4           NA           NA           <NA>         <NA>      ORBIGNY_LR
+5           NA           NA           <NA>         <NA>          IMLR01
+6           NA           NA           <NA>         <NA>          IMLR02
+7           NA           NA           <NA>         <NA>    TIMAC_TONNAY
+8           NA           NA           <NA>         <NA>          IMLR04
+9           NA           NA           <NA>         <NA>          IMLR05
+10          NA           NA           <NA>         <NA>          IMLR06
+11          NA           NA           <NA>         <NA>          IMLR03
+      typologie
+1   Périurbaine
+2  Industrielle
+3  Industrielle
+4  Industrielle
+5          <NA>
+6          <NA>
+7          <NA>
+8          <NA>
+9          <NA>
+10         <NA>
+11         <NA>
 > xrGetStations(xr, reseaux='R_SO2')[-colonnes]
   NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
 1 9017      16  16102           COGNAC        COGNAC
@@ -528,26 +528,21 @@ replacing previous import 'show' when loading 'rJava'
 2         <NA>         <NA>         <NA>         <NA>         <NA>
 3         <NA>         <NA>         <NA>         <NA>         <NA>
 4         <NA>         <NA>         <NA>         <NA>         <NA>
-  DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM     ADRESSE_IP NSIT_PUBLIC
-1           <NA>     <NA>        <NA>            NA 127.0.0.1:9017        9017
-2           <NA>     <NA>        <NA>            NA 127.0.0.1:9016        9016
-3           <NA>     <NA>        <NA>            NA 127.0.0.1:9203          NA
-4           <NA>     <NA>        <NA>            NA 127.0.0.1:9301        9301
-  SUPERVISION_TR CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE
-1             NA           5        16           17            23        NA
-2             NA           6        16           18            23        NA
-3              0           9        15           NA            NA        NA
-4             NA           9        15           19            25        NA
-  TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION MODEM_TEMPO MODEM_RELAIS IDENTIFIANT
-1              93          NA           NA        <NA>         <NA>      COGNAC
-2              92          NA           NA        <NA>         <NA>      LACOUR
-3              93          NA           NA        <NA>         <NA>  ORBIGNY_LR
-4              93          NA           NA        <NA>         <NA>      AIRVA2
-     typologie
-1      Urbaine
-2  Périurbaine
-3 Industrielle
-4 Industrielle
+  DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM NSIT_PUBLIC SUPERVISION_TR
+1           <NA>     <NA>        <NA>            NA        9017             NA
+2           <NA>     <NA>        <NA>            NA        9016             NA
+3           <NA>     <NA>        <NA>            NA          NA              0
+4           <NA>     <NA>        <NA>            NA        9301             NA
+  CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN
+1           5        16           17            23        NA              93
+2           6        16           18            23        NA              92
+3           9        15           NA            NA        NA              93
+4           9        15           19            25        NA              93
+  NB_VEHICULE RAYON_ACTION MODEM_TEMPO MODEM_RELAIS IDENTIFIANT    typologie
+1          NA           NA        <NA>         <NA>      COGNAC      Urbaine
+2          NA           NA        <NA>         <NA>      LACOUR  Périurbaine
+3          NA           NA        <NA>         <NA>  ORBIGNY_LR Industrielle
+4          NA           NA        <NA>         <NA>      AIRVA2 Industrielle
 > xrGetStations(xr, campagnes='ANG12')[-colonnes]
   NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
 1 9036      16  16113 Lafarge site sud        ANG_13
@@ -605,18 +600,18 @@ replacing previous import 'show' when loading 'rJava'
 1         <NA>         <NA>           <NA>     <NA>        <NA>            NA
 2         <NA>         <NA>           <NA>     <NA>        <NA>            NA
 3         <NA>         <NA>           <NA>     <NA>        <NA>            NA
-          ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR CLASSE_SITE SITE_TYPE
-1 90.84.183.156:3005        9036             NA           6        16
-2   90.94.10.74:3005        9035             NA          NA        NA
-3    90.94.16.8:3005        9033             NA          NA        NA
-  TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION
-1           18            23        NA              93          NA           NA
-2           NA            NA        NA              NA          NA           NA
-3           NA            NA        NA              NA          NA           NA
-     MODEM_TEMPO MODEM_RELAIS IDENTIFIANT   typologie
-1 00000000030000           16      ANG_13 Périurbaine
-2 00000000000000         <NA>      ANG_12        <NA>
-3 00000000000000         <NA>      ANG_14        <NA>
+  NSIT_PUBLIC SUPERVISION_TR CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE
+1        9036             NA           6        16           18            23
+2        9035             NA          NA        NA           NA            NA
+3        9033             NA          NA        NA           NA            NA
+  TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION    MODEM_TEMPO
+1        NA              93          NA           NA 00000000030000
+2        NA              NA          NA           NA 00000000000000
+3        NA              NA          NA           NA 00000000000000
+  MODEM_RELAIS IDENTIFIANT   typologie
+1           16      ANG_13 Périurbaine
+2         <NA>      ANG_12        <NA>
+3         <NA>      ANG_14        <NA>
 > xrGetStations(xr, campagnes='ANG12', mesures='24')[-colonnes]
   NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
 1 9036      16  16113 Lafarge site sud        ANG_13
@@ -660,15 +655,15 @@ replacing previous import 'show' when loading 'rJava'
   DER_LECT_SCN DER_LECT_CAL DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM
 1         <NA>         <NA>           <NA>     <NA>        <NA>            NA
 2         <NA>         <NA>           <NA>     <NA>        <NA>            NA
-          ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR CLASSE_SITE SITE_TYPE
-1 90.84.183.156:3005        9036             NA           6        16
-2   90.94.10.74:3005        9035             NA          NA        NA
-  TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION
-1           18            23        NA              93          NA           NA
-2           NA            NA        NA              NA          NA           NA
-     MODEM_TEMPO MODEM_RELAIS IDENTIFIANT   typologie
-1 00000000030000           16      ANG_13 Périurbaine
-2 00000000000000         <NA>      ANG_12        <NA>
+  NSIT_PUBLIC SUPERVISION_TR CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE
+1        9036             NA           6        16           18            23
+2        9035             NA          NA        NA           NA            NA
+  TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION    MODEM_TEMPO
+1        NA              93          NA           NA 00000000030000
+2        NA              NA          NA           NA 00000000000000
+  MODEM_RELAIS IDENTIFIANT   typologie
+1           16      ANG_13 Périurbaine
+2         <NA>      ANG_12        <NA>
 > xrGetStations(xr, campagnes='ANG12', mesures='SO2', collapse='OR')[-colonnes]
    NSIT NDEPART NINSEE                 ISIT NOM_COURT_SIT
 1  9036      16  16113     Lafarge site sud        ANG_13
@@ -895,66 +890,66 @@ replacing previous import 'show' when loading 'rJava'
 12        <NA>         <NA>         <NA>         <NA>         <NA>         <NA>
 13        <NA>         <NA>         <NA>         <NA>         <NA>         <NA>
 14        <NA>         <NA>         <NA>         <NA>         <NA>         <NA>
-   DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM         ADRESSE_IP
-1            <NA>     <NA>        <NA>            NA 90.84.183.156:3005
-2            <NA>     <NA>        <NA>            NA     127.0.0.1:9002
-3            <NA>     <NA>        <NA>            NA     127.0.0.1:9036
-4            <NA>     <NA>        <NA>            NA 90.84.183.156:3005
-5            <NA>     <NA>        <NA>            NA     127.0.0.1:9203
-6            <NA>     <NA>        <NA>            NA   90.94.10.74:3005
-7            <NA>     <NA>        <NA>            NA     127.0.0.1:9030
-8            <NA>     <NA>        <NA>            NA    90.94.16.8:3005
-9            <NA>     <NA>        <NA>            NA 172.16.19.151:3005
-10           <NA>     <NA>        <NA>            NA 172.16.19.152:3005
-11           <NA>     <NA>        <NA>            NA 172.16.19.153:3005
-12           <NA>     <NA>        <NA>            NA 172.16.19.154:3005
-13           <NA>     <NA>        <NA>            NA 172.16.19.155:3005
-14           <NA>     <NA>        <NA>            NA 172.16.19.156:3005
-   NSIT_PUBLIC SUPERVISION_TR CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE
-1         9036             NA           6        16           18            23
-2         9002             NA           6        16           18            23
-3         9036             NA           9        15           18            23
-4         9036             NA           9        15           18            23
-5           NA              0           9        15           NA            NA
-6         9035             NA          NA        NA           NA            NA
-7         9030             NA          NA        NA           NA            NA
-8         9033             NA          NA        NA           NA            NA
-9           NA             NA          NA        NA           NA            NA
-10          NA             NA          NA        NA           NA            NA
-11          NA              0          NA        NA           NA            NA
-12          NA              0          NA        NA           NA            NA
-13          NA              0          NA        NA           NA            NA
-14          NA              0          NA        NA           NA            NA
-   TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION    MODEM_TEMPO
-1         NA              93          NA           NA 00000000030000
-2         NA              93          NA           NA           <NA>
-3         NA              93          NA           NA 00000000030000
-4         NA              93          NA           NA 00000000030000
-5         NA              93          NA           NA           <NA>
-6         NA              NA          NA           NA 00000000000000
-7         NA              NA          NA           NA           <NA>
-8         NA              NA          NA           NA 00000000000000
-9         NA              NA          NA           NA           <NA>
-10        NA              NA          NA           NA           <NA>
-11        NA              NA          NA           NA           <NA>
-12        NA              NA          NA           NA           <NA>
-13        NA              NA          NA           NA           <NA>
-14        NA              NA          NA           NA           <NA>
-   MODEM_RELAIS     IDENTIFIANT    typologie
-1            16          ANG_13  Périurbaine
-2          <NA>          VAUGOI  Périurbaine
-3          <NA> DOMINAN_BERNARD Industrielle
-4          <NA>  QUILLE_BERNARD Industrielle
-5          <NA>      ORBIGNY_LR Industrielle
-6          <NA>          ANG_12         <NA>
-7          <NA>    TIMAC_TONNAY         <NA>
-8          <NA>          ANG_14         <NA>
-9          <NA>          IMLR01         <NA>
-10         <NA>          IMLR02         <NA>
-11         <NA>          IMLR03         <NA>
-12         <NA>          IMLR04         <NA>
-13         <NA>          IMLR05         <NA>
-14         <NA>          IMLR06         <NA>
+   DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM NSIT_PUBLIC SUPERVISION_TR
+1            <NA>     <NA>        <NA>            NA        9036             NA
+2            <NA>     <NA>        <NA>            NA        9002             NA
+3            <NA>     <NA>        <NA>            NA        9036             NA
+4            <NA>     <NA>        <NA>            NA        9036             NA
+5            <NA>     <NA>        <NA>            NA          NA              0
+6            <NA>     <NA>        <NA>            NA        9035             NA
+7            <NA>     <NA>        <NA>            NA        9030             NA
+8            <NA>     <NA>        <NA>            NA        9033             NA
+9            <NA>     <NA>        <NA>            NA          NA             NA
+10           <NA>     <NA>        <NA>            NA          NA             NA
+11           <NA>     <NA>        <NA>            NA          NA              0
+12           <NA>     <NA>        <NA>            NA          NA              0
+13           <NA>     <NA>        <NA>            NA          NA              0
+14           <NA>     <NA>        <NA>            NA          NA              0
+   CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN
+1            6        16           18            23        NA              93
+2            6        16           18            23        NA              93
+3            9        15           18            23        NA              93
+4            9        15           18            23        NA              93
+5            9        15           NA            NA        NA              93
+6           NA        NA           NA            NA        NA              NA
+7           NA        NA           NA            NA        NA              NA
+8           NA        NA           NA            NA        NA              NA
+9           NA        NA           NA            NA        NA              NA
+10          NA        NA           NA            NA        NA              NA
+11          NA        NA           NA            NA        NA              NA
+12          NA        NA           NA            NA        NA              NA
+13          NA        NA           NA            NA        NA              NA
+14          NA        NA           NA            NA        NA              NA
+   NB_VEHICULE RAYON_ACTION    MODEM_TEMPO MODEM_RELAIS     IDENTIFIANT
+1           NA           NA 00000000030000           16          ANG_13
+2           NA           NA           <NA>         <NA>          VAUGOI
+3           NA           NA 00000000030000         <NA> DOMINAN_BERNARD
+4           NA           NA 00000000030000         <NA>  QUILLE_BERNARD
+5           NA           NA           <NA>         <NA>      ORBIGNY_LR
+6           NA           NA 00000000000000         <NA>          ANG_12
+7           NA           NA           <NA>         <NA>    TIMAC_TONNAY
+8           NA           NA 00000000000000         <NA>          ANG_14
+9           NA           NA           <NA>         <NA>          IMLR01
+10          NA           NA           <NA>         <NA>          IMLR02
+11          NA           NA           <NA>         <NA>          IMLR03
+12          NA           NA           <NA>         <NA>          IMLR04
+13          NA           NA           <NA>         <NA>          IMLR05
+14          NA           NA           <NA>         <NA>          IMLR06
+      typologie
+1   Périurbaine
+2   Périurbaine
+3  Industrielle
+4  Industrielle
+5  Industrielle
+6          <NA>
+7          <NA>
+8          <NA>
+9          <NA>
+10         <NA>
+11         <NA>
+12         <NA>
+13         <NA>
+14         <NA>
 > 
 > summary(xrGetSitesPrelevement(xr, 'TLAROC_L'))
     NRESSURV      NSIT         IDSITEP            LIBELLE         
@@ -1048,7 +1043,9 @@ replacing previous import 'show' when loading 'rJava'
 + 
 + 	# ajout de la connection à XR dans chacune des combinaisons d'arugments
 + 
-+ 	tmp <- lapply(tmp, function(x, conn) c(conn = xr, x), xr)
++ 	for (i in 1:length(tmp) ) {
++ 		tmp[[i]]$conn <- xr
++ 	}
 + 
 + 	# tests
 + 
@@ -6097,8 +6094,13 @@ replacing previous import 'show' when loading 'rJava'
 + 		       start = '2010-12-06',
 + 		       end = rep(c('2011-03-05', '2011-01-18', '2011-09-24',
 + 				   '2012-02-05', '2012-02-05'),
-+ 				 length.out=length(tmp)),
-+ 		       MoreArgs=list(conn=xr))
++ 				 length.out=length(tmp)))
++ 
++ 	# ajout de la connection à XR dans chacune des combinaisons d'arugments
++ 
++ 	for (i in 1:length(tmp) ) {
++ 		tmp[[i]]$conn <- xr
++ 	}
 + 
 + 	# tests
 + 
@@ -7131,9 +7133,12 @@ replacing previous import 'show' when loading 'rJava'
 > tmp <- mapply (SIMPLIFY=FALSE, c, tmp,
 + 	       what = rep( c('value', 'state', 'both'),
 + 			   length.out=length(tmp) ),
-+ 	       MoreArgs=list(conn=xr,
++ 	       MoreArgs=list(
 + 			     start = '2009-12-06',
 + 			     end = '2011-02-05'))
+> for (i in 1:length(tmp) ) {
++ 	tmp[[i]]$conn <- xr
++ }
 > 
 > # tests
 > 
@@ -7823,4 +7828,4 @@ There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > proc.time()
    user  system elapsed 
- 31.170   0.910  40.611 
+ 30.200   1.020  28.974 

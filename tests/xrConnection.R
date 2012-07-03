@@ -24,7 +24,7 @@ xrGetCampagnes(xr, 'LARO', end='2011-01-01')
 
 xrGetReseaux(xr, 'R_SO2')
 
-colonnes <- c(63, 64, 70)
+colonnes <- c(63, 64, 70, 92)
 xrGetStations(xr, 'Chas')[-colonnes]
 xrGetStations(xr, mesures='SO2')[-colonnes]
 xrGetStations(xr, reseaux='R_SO2')[-colonnes]
@@ -68,7 +68,9 @@ for (args in arguments)
 
 	# ajout de la connection à XR dans chacune des combinaisons d'arugments
 
-	tmp <- lapply(tmp, function(x, conn) c(conn = xr, x), xr)
+	for (i in 1:length(tmp) ) {
+		tmp[[i]]$conn <- xr
+	}
 
 	# tests
 
@@ -116,8 +118,13 @@ for (args in arguments)
 		       start = '2010-12-06',
 		       end = rep(c('2011-03-05', '2011-01-18', '2011-09-24',
 				   '2012-02-05', '2012-02-05'),
-				 length.out=length(tmp)),
-		       MoreArgs=list(conn=xr))
+				 length.out=length(tmp)))
+
+	# ajout de la connection à XR dans chacune des combinaisons d'arugments
+
+	for (i in 1:length(tmp) ) {
+		tmp[[i]]$conn <- xr
+	}
 
 	# tests
 
@@ -154,9 +161,12 @@ tmp <- unlist( lapply (FUN = combn,
 tmp <- mapply (SIMPLIFY=FALSE, c, tmp,
 	       what = rep( c('value', 'state', 'both'),
 			   length.out=length(tmp) ),
-	       MoreArgs=list(conn=xr,
+	       MoreArgs=list(
 			     start = '2009-12-06',
 			     end = '2011-02-05'))
+for (i in 1:length(tmp) ) {
+	tmp[[i]]$conn <- xr
+}
 
 # tests
 
