@@ -252,6 +252,8 @@ plot.rose <- function(x, y,
 	y <- facteur * unlist(mapply('*', at.rose - min(rlim), lapply(theta, cos), SIMPLIFY=FALSE)) + centre$y
 	polygon(x[c(1:length(x), 1)], y[c(1:length(y), 1)], density=density, col=col, border=border)
 
+	# tracé de l'axe des angles
+
 	if(!all(is.na(at.theta)))
 	{
 		text(sin(at.theta * pi/180) * abs(diff(rlim)) * 1.1 * facteur + centre$x,
@@ -259,6 +261,8 @@ plot.rose <- function(x, y,
 		     labels.theta, col=col.theta)
 		segments(x0=centre$x, y0=centre$y, x1=sin(at.theta * pi/180) * abs(diff(rlim)) * facteur + centre$x, y1=cos(at.theta * pi/180) * abs(diff(rlim)) * facteur + centre$y, col=col.theta, lty=lty.theta, lwd=lwd.theta)
 	}
+
+	# tracé de l'axe des 'concentrations'
 
 	if(!all(is.na(at.rho)))
 	{
