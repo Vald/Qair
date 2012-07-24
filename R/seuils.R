@@ -2,7 +2,24 @@
 #'
 #' @method print seuil
 #' @param x objet à afficher
+#' @param format précise le format d'affichage avec une combinaison des caractères
+#' '\%P', '\%t', '\%p', '\%s', '\%u', '\%b', '\%f' (cf section \sQuote{Details}).
+#' Si le seuil est extraordinaire et qu'il est défini avec sa propre description
+#' \sQuote{format} est ignoré.
 #' @param \dots pour les autres méthodes
+#'
+#' @section Details :
+#' la signification des différentes caractères pour le formatage suit :
+#' \describe{
+#' \item{\%P}{polluant concerné par le seuil},
+#' \item{\%t}{type de seuil},
+#' \item{\%p}{protection visée par le seuil},
+#' \item{\%s}{valeur du seuil},
+#' \item{\%u}{unité du seuil},
+#' \item{\%b}{base temporelle du calcul},
+#' \item{\%f}{fréquence temporelle autorisée pour le dépassement du seuil}
+#' }
+#'
 print.seuil <- function (x, ...) print (format (x, ...) )
 #' Mise forme 'lisible' des objets de classe seuil (classe S3)
 #'
@@ -12,8 +29,12 @@ print.seuil <- function (x, ...) print (format (x, ...) )
 #' @inheritParams print.seuil
 #' 
 #' @return une chaîne de caractères décrivant l'objet \code{x}
-format.seuil <- function (x, ...) {
-	if (!is.null (x$description) ) return (x$description)
+format.seuil <- function (x, format, ...) {
+	if (missing(format))
+	{
+		if (!is.null (x$description) ) return (x$description)
+		format <- "%P : %t pour %p. %s %u en moyenne%b à ne pas dépasser%f"
+	}
 
 	get.unite <- function(x) {
 		if (inherits (x, 'POSIXctp') )
@@ -22,21 +43,29 @@ format.seuil <- function (x, ...) {
 					match(x, c('second', 'minute', 'hour', 'day', 'month', 'year'))]
 	}
 	get.val <- function (x) duration(x)
-	sprintf ('%s : %s pour la protection de %s. %s %s en moyenne%s à ne pas dépasser%s.',
-		 x$cchim, x$type, x$protection,
-		 as.character(x$seuil), x$unite,
-		 ifelse (!is.null (x$base.comparaison) & is.character (x$base.comparaison),
-			 sprintf (' sur 1 %s', get.unite(x$base.comparaison) ),
-			 '??'),
-		 ifelse (!is.null (x$comparaison) & is.character (x$comparaison) & !is.null(x$nb.max),
-				 sprintf (' plus de %s fois tous les %ss', x$nb.max, get.unite(x$comparaison)), ifelse (
-		 	 !is.null (x$comparaison) & is.character (x$comparaison) & is.null(x$nb.max),
+	P <- x$cchim
+	t <- x$type
+	p <- x$protection
+	s <- as.character(x$seuil)
+	u <- x$unite
+       	b <- ifelse (!is.null (x$base.comparaison) & is.character (x$base.comparaison),
+		       sprintf (' sur 1 %s', get.unite(x$base.comparaison) ), '??')
+	f <- ifelse (!is.null (x$comparaison) & is.character (x$comparaison) & !is.null(x$nb.max),
+		sprintf (' plus de %s fois tous les %ss', x$nb.max, get.unite(x$comparaison)),
+		ifelse ( !is.null (x$comparaison) & is.character (x$comparaison) & is.null(x$nb.max),
 			 	sprintf (' sur 1 %s', get.unite(x$comparaison)), ifelse (
 			 !is.null (x$comparaison) & inherits (x$comparaison, 'POSIXctp') & !is.null(x$nb.max),
 			 	sprintf (' plus de %s fois tous les %i %ss', x$nb.max, get.val(x$comparaison), get.unite(x$comparaison)), ifelse (
 			 !is.null (x$comparaison) & inherits (x$comparaison, 'POSIXctp') & is.null(x$nb.max),
 			 	sprintf (' sur %i %s', get.val(x$comparaison), get.unite(x$comparaison)),
-			 '')))))
+			 '') ) ) )
+	gsub('%P', P,
+	gsub('%t', t,
+	gsub('%p', p,
+	gsub('%s', s,
+	gsub('%u', u,
+	gsub('%b', b,
+	gsub('%f', f, format)))))))
 }
 
 #' liste les differentes typologie de site possible

@@ -5,10 +5,16 @@
 \usage{
   \method{print}{seuil} (x, ...)
 
-  \method{format}{seuil} (x, ...)
+  \method{format}{seuil} (x, format, ...)
 }
 \arguments{
   \item{x}{objet à afficher}
+
+  \item{format}{précise le format d'affichage avec une
+  combinaison des caractères '\%P', '\%t', '\%p', '\%s',
+  '\%u', '\%b', '\%f' (cf section \sQuote{Details}). Si le
+  seuil est extraordinaire et qu'il est défini avec sa
+  propre description \sQuote{format} est ignoré.}
 
   \item{\dots}{pour les autres méthodes}
 }
@@ -20,5 +26,15 @@
 
   Mise forme 'lisible' des objets de classe seuil (classe
   S3)
+}
+\section{Details }{
+  la signification des différentes caractères pour le
+  formatage suit : \describe{ \item{\%P}{polluant concerné
+  par le seuil}, \item{\%t}{type de seuil},
+  \item{\%p}{protection visée par le seuil},
+  \item{\%s}{valeur du seuil}, \item{\%u}{unité du seuil},
+  \item{\%b}{base temporelle du calcul},
+  \item{\%f}{fréquence temporelle autorisée pour le
+  dépassement du seuil} }
 }
 
