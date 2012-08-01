@@ -43,7 +43,7 @@ xrGetSitesPrelevement(xr, campagnes='TLAROC2009')
 
 arguments <- list (
 		list	(campagnes = 'ANG12',
-			 stations = '14',
+			 stations = 'ANG_14',
 			 polluants = '24'),
 		list 	(pattern = 'VER',
 			 reseaux = 'INDICE',
@@ -74,7 +74,7 @@ for (args in arguments)
 
 	# tests
 
-	print( lapply(lapply (FUN = do.call, tmp, what=xrGetMesures), summary))
+	print( lapply(lapply (FUN = do.call, tmp, what=xrGetMesures), function(x) summary(x[setdiff(names(x), c('NO_APPAREIL', 'TYPE_RUE'))])))
 
 	dbDisconnect(xr)
 }
