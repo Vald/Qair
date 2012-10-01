@@ -16,14 +16,20 @@
 xrGetManualData <-
 	function (conn, start, end, sites=NULL, polluants=NULL, methodes=NULL,
 	   	  valid.states = c("A", "R", "O", "W", "P"), what = c('value', 'state', 'both'),
-		  campagnes = NULL) {
+		  campagnes = NULL, tz='UTC', cursor=NULL) {
 	# start et end doivent être des POSIXt (pour la prise en compte des timezones).
 	what <- match.arg (what)
 
 	# pour permettre eventuellement d'entrer des chaines de caracteres en start en end
 	#	on fait un petit cast
-	if (!inherits (start, 'POSIXct') ) start <- as.POSIXct (start, tz = 'UTC')
-	if (!inherits (end, 'POSIXct') ) end <- as.POSIXct (end, tz = 'UTC')
+	if( inherits(start, 'POSIXlt') ) start <- as.POSIXct(start)
+	if( inherits(end, 'POSIXlt') ) end <- as.POSIXct(end)
+
+	if( !inherits(start, 'POSIXct') ) start <- as.POSIXct(start, tz=tz)
+	if( !inherits(end, 'POSIXct') ) end <- as.POSIXct(end, tz=tz)
+
+	start <- as.POSIXct(as.POSIXlt(start, tz='UTC'))
+	end <- as.POSIXct(as.POSIXlt(end, tz='UTC'))
 
 	# recuperation des noms de sites, de polluants, de methode de prelevement
 	q <- list ()
@@ -114,6 +120,11 @@ xrGetManualData <-
 		       start=as.POSIXct(result$start, 'UTC'),
 		       end=as.POSIXct(result$end, 'UTC'),
 		       timezone='UTC', data=result[-(1:2)])
+
+	if( !is.null(cursor) )
+		result <- as.TimeInstantDataFrame(result, cursor)
+	timezone(result) <- tz
+
 	return (result)
 }
 

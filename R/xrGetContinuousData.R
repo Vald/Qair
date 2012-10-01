@@ -55,6 +55,11 @@
 #' @param collapse conjonction à appliquer entre les différents critères de recherche
 #'	indiqués.
 #' @param XR6 TRUE si la version de XR est supérieure ou égale à 6, FALSE sinon.
+#' @param tz timezone dans laquelle les données doivent être retournées. Si les dates
+#' 	debut et fin sont des chaînes de caractères, tz est utilisé pour les définir.
+#' @param cursor détermine le format de sortie des données : NULL pour un 
+#' 	TimeIntervalDataFrame (par défaut) une valeur entre 0 et 1 pour un 
+#' 	TimeInstantDataFrame (1 pour respecter les conventions XR).
 #'
 #' @return un objet de classe \code{\link[timetools]{TimeIntervalDataFrame-class}}
 #' 	contenant les données demandées.
@@ -67,7 +72,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		       period = c('h', 'qh', 'd', 'm', 'y'),
 		       validated = TRUE, valid.states = c("A", "R", "O", "W", "P"), what = c('value', 'state', 'both'),
 		       search.fields, campagnes = NULL, reseaux = NULL, stations = NULL, polluants = NULL,
-		       collapse = c('AND', 'OR'), XR6 = TRUE) {
+		       collapse = c('AND', 'OR'), XR6 = TRUE,
+		       tz='UTC', cursor=NULL) {
 	# period est un periode au sens lubridate
 	# start et end doivent être des POSIXt (pour la prise en compte des timezones).
 	period <- match.arg (period)
@@ -87,9 +93,15 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	# pour permettre eventuellement d'entrer des chaines de caracteres en start en end
 	#	on fait un petit cast
-	if (!inherits (start, 'POSIXct') ) start <- as.POSIXct (start, tz = 'UTC')
-	if (!inherits (end, 'POSIXct') ) end <- as.POSIXct (end, tz = 'UTC')
-	
+	if( inherits(start, 'POSIXlt') ) start <- as.POSIXct(start)
+	if( inherits(end, 'POSIXlt') ) end <- as.POSIXct(end)
+
+	if( !inherits(start, 'POSIXct') ) start <- as.POSIXct(start, tz=tz)
+	if( !inherits(end, 'POSIXct') ) end <- as.POSIXct(end, tz=tz)
+
+	start <- as.POSIXct(as.POSIXlt(start, tz='UTC'))
+	end <- as.POSIXct(as.POSIXlt(end, tz='UTC'))
+
 	real.start <- start
 	real.end <- end
 
@@ -231,6 +243,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		      data=result)
 	
 	result <- result[start(result) >= real.start & end(result) <= real.end,]
+	if( !is.null(cursor) )
+		result <- as.TimeInstantDataFrame(result, cursor)
+	timezone(result) <- tz
 	return (result)
 }
 

@@ -5,7 +5,8 @@
   xrGetManualData(conn, start, end, sites = NULL,
     polluants = NULL, methodes = NULL,
     valid.states = c("A", "R", "O", "W", "P"),
-    what = c("value", "state", "both"), campagnes = NULL)
+    what = c("value", "state", "both"), campagnes = NULL,
+    tz = "UTC", cursor = NULL)
 }
 \arguments{
   \item{sites}{chaînes de caractères correspondant aux
@@ -45,6 +46,15 @@
   \item{campagnes}{chaînes de caractères correspondant aux
   campagnes à rappatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetCampagnes}}).}
+
+  \item{tz}{timezone dans laquelle les données doivent être
+  retournées. Si les dates debut et fin sont des chaînes de
+  caractères, tz est utilisé pour les définir.}
+
+  \item{cursor}{détermine le format de sortie des données :
+  NULL pour un TimeIntervalDataFrame (par défaut) une
+  valeur entre 0 et 1 pour un TimeInstantDataFrame (1 pour
+  respecter les conventions XR).}
 }
 \value{
   un objet de classe

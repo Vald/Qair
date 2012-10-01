@@ -8,7 +8,7 @@
     what = c("value", "state", "both"), search.fields,
     campagnes = NULL, reseaux = NULL, stations = NULL,
     polluants = NULL, collapse = c("AND", "OR"),
-    XR6 = TRUE)
+    XR6 = TRUE, tz = "UTC", cursor = NULL)
 }
 \arguments{
   \item{conn}{une connection valide telle que retournée par
@@ -68,6 +68,15 @@
 
   \item{XR6}{TRUE si la version de XR est supérieure ou
   égale à 6, FALSE sinon.}
+
+  \item{tz}{timezone dans laquelle les données doivent être
+  retournées. Si les dates debut et fin sont des chaînes de
+  caractères, tz est utilisé pour les définir.}
+
+  \item{cursor}{détermine le format de sortie des données :
+  NULL pour un TimeIntervalDataFrame (par défaut) une
+  valeur entre 0 et 1 pour un TimeInstantDataFrame (1 pour
+  respecter les conventions XR).}
 }
 \value{
   un objet de classe
