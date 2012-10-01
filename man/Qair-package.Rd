@@ -38,7 +38,7 @@
 Package: \tab Qair\cr
 Type: \tab Package\cr
 Version: \tab 2.2-2\cr
-Date: \tab 2012-07-10\cr
+Date: \tab 2012-10-01\cr
 License: \tab GPL\cr
 }
 }
