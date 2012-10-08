@@ -172,15 +172,18 @@ plot.rosevent <- function (x, y, col, border, density=-1, rlim=NULL,
 		if (j == 1) {
 			plot.rose (rose[[order(sapply(rose, '[[', 'vlim'), decreasing=TRUE)[j]]],
 				   col=col[j], density=density[j], border=border[j],
-				   rlim=rlim, at.rho=NA, at.theta=NA, add=add)
+				   rlim=rlim, at.rho=NA, at.theta=NA, add=add,
+				   centre=centre, facteur=facteur)
 		} else if (j == length (rose) ) {
 			plot.rose (rose[[order(sapply(rose, '[[', 'vlim'), decreasing=TRUE)[j]]],
 				   col=col[j], density=density[j], border=border[j],
-				   rlim=rlim, add=TRUE, ...)
+				   rlim=rlim, add=TRUE,
+				   centre=centre, facteur=facteur, ...)
 		} else {
 			plot.rose (rose[[order(sapply(rose, '[[', 'vlim'), decreasing=TRUE)[j]]],
 				   col=col[j], density=density[j], border=border[j],
-				   rlim=rlim, at.rho=NA, at.theta=NA, add=TRUE)
+				   rlim=rlim, at.rho=NA, at.theta=NA, add=TRUE,
+				   centre=centre, facteur=facteur)
 		}
 	}
 }

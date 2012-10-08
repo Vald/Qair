@@ -1,3 +1,15 @@
+----------  Qair V2.2-3
+
+les arguments 'facteur' et 'centre' n'étaient pas pris en compte dans la
+fonction 'plot.rosevent'. Erreur corrigée
+
+
+----------  Qair V2.2-2
+
+ajout des arguments tz et cursor pour les fonctions xrGet*Data
+ajout de la possibilité de customiser le format d'affichage des seuils
+modification des tests pour alléger le paquet
+
 ----------  Qair V2.2-1
 Interface à XR
 * Prise en compte de l'argument campagnes dans la fonction xrGetManualData
