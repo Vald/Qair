@@ -67,7 +67,7 @@ aot40 <- function (x, seuil, ...) {
 
 	test <- validation.prepare (x, to='year', ...)	# 720 heures
 
-	x <- x[month (start(x)) %in% mois & hour (end(x), 'day') %in% 8:19,]
+	x <- x[as.numeric(month(start(x))) %in% mois & as.numeric(hour (end(x), 'day')) %in% 8:19,]
 	if (nrow(x) == 0)
 		stop (paste("Il n'est pas possible de calculer un AOT pour les mois",
 			    min(mois), "à", max(mois),
@@ -86,7 +86,7 @@ aot40maiJuillet5ans <- function (x, seuil, ...) {
 	seuil$mois <- 5:7-1
 	seuil$MORE.b.comparaison='mois'
 	x <- aot40 (x, seuil)
-	annees <- unique (year (start (x) ) )
+	annees <- unique (as.numeric(year (start (x) )) )
 	start <- as.POSIXct(sprintf ('%i-01-01', annees-4), timezone (x) )
 	end <- as.POSIXct(sprintf ('%i-01-01', annees+1), timezone (x) )
 	new.x <- new ('TimeIntervalDataFrame', start=start, end=end, timezone=timezone (x),
@@ -165,7 +165,7 @@ depsur8h <- function (x, seuil, ...) {
 }
 
 protecVegeFroidSO2 <- function (x, seuil, ...) {
-	annees <- unique (year (start (x) ) )
+	annees <- unique (as.numeric(year (start (x) )) )
 	annees <- c(annees[1]-1, annees, annees[length(annees)]+1)
 	start <- as.POSIXct(sprintf ('%i-10-01', annees[-length(annees)]), timezone (x) )
 	end <- as.POSIXct(sprintf ('%i-04-01', annees[-1]), timezone (x) )
@@ -192,7 +192,7 @@ sur3ans <- function (x, seuil, detail, ...) {
 									 	ifelse(second(max(end(x)), 'year') == 0, 0, 1)),
 								 timezone(x)),
 						 by='year', timezone=timezone(x))
-	valid.x <- changeSupport (x[month(start(x))%in% 4:9,], valid.x,
+	valid.x <- changeSupport (x[as.numeric(month(start(x)))%in% 4:9,], valid.x,
 			    split.from=FALSE, merge.from=TRUE,
 			    function(x) sum (!is.na(x)) > 4,
 			    min.coverage=0)
@@ -208,7 +208,7 @@ sur3ans <- function (x, seuil, detail, ...) {
 			x[[i]][!test[[i]]] <- NA	# 720 heures
 
 	# preparation du support de retour
-	annees <- unique (year (start (x) ) )
+	annees <- unique (as.numeric(year (start (x) )) )
 	start <- as.POSIXct(sprintf ('%i-01-01', annees-2), timezone (x) )
 	end <- as.POSIXct(sprintf ('%i-01-01', annees+1), timezone (x) )
 	new.x <- new ('TimeIntervalDataFrame', start=start, end=end, timezone=timezone (x),
