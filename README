@@ -1,3 +1,9 @@
+----------  Qair v2.2.4
+
+Modifications transparentes pour l'utilisateur qui permettront cependant
+d'assurer la compatibilité avec la future version 1.2 de timetools (prévue
+pour le mois de décembre)
+
 ----------  Qair V2.2-3
 
 les arguments 'facteur' et 'centre' n'étaient pas pris en compte dans la
