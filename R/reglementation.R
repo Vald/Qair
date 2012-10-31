@@ -103,7 +103,7 @@ margevlPM25 <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, ..
 	if (get.marges) return (data.frame (annee=c(1900, 2011:2013, 2015), seuil=29:25) )
 	if (!detail) {
 		if (use.marges)
-			val.seuil <- (29:25)[findInterval(year(start(x)), c(1900, 2011:2013, 2015))] else 
+			val.seuil <- (29:25)[findInterval(as.numeric(year(start(x))), c(1900, 2011:2013, 2015))] else 
 			val.seuil <- 25
 		x[T] <- data.frame (x) > val.seuil
 		x@data <- data.frame (lapply (x@data, as.logical))
@@ -114,7 +114,7 @@ margevlPM25 <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, ..
 margevlNO2h <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, ...) {
 	if (get.marges) return (data.frame (annee=c(1900, 2001:2010), seuil=30:20*10) )
 	if (use.marges)
-		s <- (30:20*10)[findInterval(year(start(x)), c(1900, 2001:2010))] else 
+		s <- (30:20*10)[findInterval(as.numeric(year(start(x))), c(1900, 2001:2010))] else 
 		s <- 200
 	x[T] <- data.frame (x) > s
 	
@@ -137,7 +137,7 @@ margevlNO2y <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, ..
 	if (get.marges) return (data.frame (annee=c(1900, 2001:2010), seuil=30:20*2) )
 	if (!detail) {
 		if (use.marges)
-			val.seuil <- (30:20*2)[findInterval(year(start(x)), c(1900, 2001:2010))] else 
+			val.seuil <- (30:20*2)[findInterval(as.numeric(year(start(x))), c(1900, 2001:2010))] else 
 			val.seuil <- 40
 		x[T] <- data.frame (x) > val.seuil
 		x@data <- data.frame (lapply (x@data, as.logical))
@@ -149,7 +149,7 @@ margevlC6H6y <- function (x, seuil, detail, use.marges=TRUE, get.marges=FALSE, .
 	if (get.marges) return (data.frame (annee=c(1900, 2006:2010), seuil=10:5) )
 	if (!detail) {
 		if (use.marges)
-			val.seuil <- (10:5)[findInterval(year(start(x)), c(1900, 2006:2010))] else 
+			val.seuil <- (10:5)[findInterval(as.numeric(year(start(x))), c(1900, 2006:2010))] else 
 			val.seuil <- 5
 		x[T] <- data.frame (x) > val.seuil
 		x@data <- data.frame (lapply (x@data, as.logical))
