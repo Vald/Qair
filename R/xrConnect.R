@@ -1,20 +1,21 @@
 #' Initialisation d'une connection a une base XR.
 #'
 #' @section Details: Cette fonction permet d'initialiser une connection avec une base XR.
-#' Sous windows, le pilote utilisé est ODBC (nécessite d'avoir
+#' Sous windows, le pilote utilisé par défaut est ODBC (nécessite d'avoir
 #' installer le paquet \code{\link[RODBC]{RODBC}}), sous linux JDBC
-#' (nécessite d'avoir installer le paquet \code{\link[RJDBC]{JDBC}}).
+#' (nécessite d'avoir installer le paquet \code{\link[RJDBC:JDBC]{RJDBC}}).
+#' Il est également possible d'utiliser le paquet \code{\link[ROracle:Oracle]{ROracle}}).
 #'
 #' Une fois définis, les arguments sont définis pour la session entière.
 
-#' Il est possible de définir ces 'argument' en utilisant la 
+#' Il est possible de définir ces 'arguments' en utilisant la 
 #' fonction \code{\link[base]{options}} avec les mêmes arguments, mais précédés de 'Xair.'
 #' (cf la section exemple).
 #'
 #' Les arguments non-spécifiés à l'appel de la fonction et qui n'apparaissent pas
 #' dans les options seront interactivement demandés à l'utilisateur.
 #'
-#' @param dsn Nom de la base de données (cf le pilote concerné, JDBC ou ODBC).
+#' @param dsn Nom de la base de données (cf le pilote concerné, JDBC, ODBC ou Oracle).
 #'	optionnel : sera demandé si nécessaire.
 #' @param uid Identifiant utilisé pour la connection.
 #'	optionnel : sera demandé si nécessaire.
@@ -34,7 +35,7 @@
 #'
 #' @aliases options, Xair.uid, Xair.pwd, Xair.host, Xair.dsn
 #' @seealso \code{\link{xrConnect}}, \code{\link[RODBC]{RODBC}}, \code{\link[RJDBC]{JDBC}},
-#' 	\code{\link[base]{options}}
+#' 	\code{\link[base]{options}}, \code{\link[ROracle]{Oracle}}
 #'
 #' @examples
 #' \dontrun{
@@ -52,27 +53,33 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.t
 		options(Xair.drv=drv.type)
 	} else if (is.null(getOption('Xair.drv'))) {
 		if(.Platform$OS.type=='unix') {
+			if( require(ROracle) ) {
+				message ("le pilote 'oracle' est utilisé pour la connexion à XR")
+				options (Xair.drv = 'oracle')
+			} else {
 			library (RJDBC)
-			message ("le pilote 'jdbc' est utilisé pour la connexion à XR")
-			options (Xair.drv = 'jdbc')
+				message ("le pilote 'jdbc' est utilisé pour la connexion à XR")
+				options (Xair.drv = 'jdbc')
+			}
 		} else if(.Platform$OS.type=='windows') {
 			library (RODBC)
 			message ("le pilote 'odbc' est utilisé pour la connexion à XR")
 			options (Xair.drv = 'odbc')
 		} else {
-			cat("Plateforme non-reconnue.\nMerci de préciser le driver (drv.type) à utiliser ('jdbc' ou 'odbc')\n")
+			cat("Plateforme non-reconnue.\nMerci de préciser le driver (drv.type) à
+utiliser ('jdbc', 'odbc' ou 'oracle')\n")
 			options(Xair.drv=scan(what='character', nlines=1))
 			cat('\n')
 		}
 	}
 
-	if (!getOption('Xair.drv') %in% c('odbc', 'jdbc'))
-		stop("le pilote pour la connexion à la base doit être 'jdbc' ou 'odbc'")
+	if (!getOption('Xair.drv') %in% c('odbc', 'jdbc', 'oracle'))
+		stop("le pilote pour la connexion à la base doit être 'jdbc', 'odbc' ou oracle'")
 
 	# definition de la base de donnees (dsn)
 	if(!is.null(dsn)) {
 		options(Xair.dsn=dsn)
-	} else if(is.null(getOption('Xair.dsn')) & getOption('Xair.drv') == 'jdbc') {
+	} else if(is.null(getOption('Xair.dsn')) & getOption('Xair.drv') %in% c('jdbc', 'oracle')) {
 		cat('nom de la base de donnees (DataSourceName) :\n')
 		options(Xair.dsn=scan(what='character', nlines=1))
 		cat('\n')
@@ -102,7 +109,7 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.t
 	# definition de l'hote (jdbc)
 	if(!is.null(host)) {
 		options(Xair.host=host)
-	} else if(is.null(getOption('Xair.host')) & getOption('Xair.drv') == 'jdbc') {
+	} else if(is.null(getOption('Xair.host')) & getOption('Xair.drv') %in% c('jdbc', 'oracle')) {
 		cat('hote hebergeant la base de donnees :\n')
 		options(Xair.host=scan(what='character', nlines=1))
 		cat('\n')
@@ -135,6 +142,15 @@ xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.t
 					   getOption('Xair.uid'),
 					   getOption('Xair.pwd'),
 					   identifer.quote='\'') )
+		if(inherits(conxair, 'try-error'))
+			stop('echec de la connection a la base Xair.')
+	} else if(getOption('Xair.drv') == 'oracle') {
+		library (ROracle)
+		drv <- Oracle()
+		conxair <- try (dbConnect (drv, username=getOption('Xair.uid'),
+					   password=getOption('Xair.pwd'),
+					   sprintf('%s:1521/%s', getOption('Xair.host'),
+ 						   getOption('Xair.dsn'), sep='') ) )
 		if(inherits(conxair, 'try-error'))
 			stop('echec de la connection a la base Xair.')
 	} else {
