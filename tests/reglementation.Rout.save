@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -385,57 +385,57 @@ replacing previous import 'show' when loading 'rJava'
            start            end
 1 2011-01-01 UTC 2012-01-01 UTC
   La.Rochelle...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
-1                                                   0.8
+1                                                  0.81
 
 [[2]]
            start            end
 1 2011-01-01 UTC 2012-01-01 UTC
   La.Rochelle...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
-1                                                   0.8
+1                                                  0.81
 
 [[3]]
            start            end
 1 2011-01-01 UTC 2012-01-01 UTC
   La.Rochelle...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
-1                                                   0.8
+1                                                  0.81
 
 [1] "Cadmium particulaire"
 [[1]]
            start            end
 1 2011-01-01 UTC 2012-01-01 UTC
   La.Rochelle...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
-1                                                   0.1
+1                                                  0.08
 
 [[2]]
            start            end
 1 2011-01-01 UTC 2012-01-01 UTC
   La.Rochelle...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
-1                                                   0.1
+1                                                  0.08
 
 [[3]]
            start            end
 1 2011-01-01 UTC 2012-01-01 UTC
   La.Rochelle...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
-1                                                   0.1
+1                                                  0.08
 
 [1] "Nickel particulaire"
 [[1]]
            start            end
 1 2011-01-01 UTC 2012-01-01 UTC
   La.Rochelle...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
-1                                                     1
+1                                                  1.29
 
 [[2]]
            start            end
 1 2011-01-01 UTC 2012-01-01 UTC
   La.Rochelle...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
-1                                                     1
+1                                                  1.29
 
 [[3]]
            start            end
 1 2011-01-01 UTC 2012-01-01 UTC
   La.Rochelle...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
-1                                                     1
+1                                                  1.29
 
 [1] "Benzo(a)pyrène particulaire"
 [[1]]
@@ -465,4 +465,4 @@ replacing previous import 'show' when loading 'rJava'
 > 
 > proc.time()
    user  system elapsed 
- 37.170   0.430  37.449 
+ 37.190   0.410  37.746 
