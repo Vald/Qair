@@ -1,13 +1,32 @@
 #' Fonction pour recuperer des donnees manuelles de XR
 #'
+#' @param polluants chaînes de caractères correspondant aux polluants à rappatrier
+#'   (optionnel) (utilisé via la fonction\code{\link{xrGetPolluants}}).
+#'  si c'est un vecteur, est directement utilisé comme pattern pour la fonction
+#'  xrGetPolluants. Si c'est une liste, les éléments doivent être nommés. Chaque
+#'  élément est alors utilisé comme argument pour la fonction xrGetPolluants.
+#'   pattern doit alors est précisé :
+#'
+#'  \code{... list(pattern='DF', search.fields='NOPOL') ...}
 #' @param sites chaînes de caractères correspondant aux sites à rappatrier
-#' 	(optionnel) (utilisé via la fonction\code{\link{xrGetSitesPrelevement}}).
+#'   (optionnel) (utilisé via la fonction\code{\link{xrGetSitesPrelevement}}).
 #' @param methodes chaînes de caractères correspondant aux campagnes à rappatrier
-#' 	(optionnel) (utilisé via la fonction\code{\link{xrGetMethodesPrelevement}}).
+#'   (optionnel) (utilisé via la fonction\code{\link{xrGetMethodesPrelevement}}).
+#' @param categories vecteur indiquant les categories des mesures à rappatrier.
+#'   combinaison quelconques des valeurs '0', '1', '2', '3' ou '4' avec la
+#'   correspondance suivante (attention ce doit être des chaînes de caractères) :
+#'  \describe{
+#'     \item{'0'}{analyse ;}
+#'     \item{'1'}{contrôle ;}
+#'     \item{'2'}{blanc terrain ;}
+#'     \item{'3'}{blanc laboratoire ;}
+#'     \item{'4'}{blanc transport.}
+#'   }
+#'   Par défaut, toutes les catégories de mesures sont récupérées.
 #' @inheritParams xrGetContinuousData
 #'
 #' @return un objet de classe \code{\link[timetools]{TimeIntervalDataFrame-class}}
-#' 	contenant les données demandées.
+#'   contenant les données demandées.
 #'
 #' @seealso \code{\link{xrGetSitesPrelevement}}, \code{\link{xrGetMethodesPrelevement}},
 #'	 \code{\link{xrGetCampagnes}}, \code{\link{xrGetPolluants}}
@@ -15,12 +34,16 @@
 
 xrGetManualData <-
 	function (conn, start, end, sites=NULL, polluants=NULL, methodes=NULL,
-	   	  valid.states = c("A", "R", "O", "W", "P"), what = c('value', 'state', 'both'),
-		  campagnes = NULL, tz='UTC', cursor=NULL) {
-	# start et end doivent être des POSIXt (pour la prise en compte des timezones).
-	what <- match.arg (what)
+	   	  valid.states = c("A", "R", "O", "W", "P"),
+		  what = c('value', 'state', 'both'),
+		  campagnes = NULL, tz='UTC', cursor=NULL,
+		  categories=as.character(0:4)) {
 
-	# pour permettre eventuellement d'entrer des chaines de caracteres en start en end
+	what <- match.arg (what)
+	categories <- match.arg(categories, several.ok=TRUE)
+
+	# pour permettre eventuellement d'entrer des chaines de caracteres en
+	# start en end
 	#	on fait un petit cast
 	if( inherits(start, 'POSIXlt') ) start <- as.POSIXct(start)
 	if( inherits(end, 'POSIXlt') ) end <- as.POSIXct(end)
@@ -42,7 +65,9 @@ xrGetManualData <-
 		q$sites <- paste ("'", sites$NSIT, "'", sep='', collapse=', ')
 	}
 	if (!is.null (polluants) ) {
-		polluants <- xrGetPolluants (conn, polluants)
+		if( !is.list(polluants) )
+			polluants <- xrGetPolluants (conn, polluants) else
+			polluants <- do.call(xrGetPolluants, c(conn=conn, polluants))
 		q$polluants <- paste ("'", polluants$NOPOL, "'", sep='', collapse=', ')
 	}
 	if (!is.null (methodes) ) {
@@ -58,7 +83,8 @@ xrGetManualData <-
 	
 	# création de LA requete de rappatriement
 	query <- sprintf (
-	"SELECT SITE_PRELEVEMENT.LIBELLE site, LONGI, LATI, LAMBERTX, LAMBERTY, METH_PRELEVEMENT.LIBELLE methode,
+	"SELECT SITE_PRELEVEMENT.LIBELLE site, LONGI, LATI, LAMBERTX, LAMBERTY,
+		METH_PRELEVEMENT.LIBELLE methode,
 		VALEUR, CODE_QUALITE, UNITE, NOPOL, CCHIM,
 		PRELEVEMENT.DATE_DEB, PRELEVEMENT.DATE_FIN
 	FROM SITE_METH_PRELEV
@@ -69,11 +95,15 @@ xrGetManualData <-
 		JOIN MESURE_LABO USING (CODE_SMP, CODE_MES_LABO)
 		JOIN NOM_MESURE USING (NOPOL)
 	WHERE (PRELEVEMENT.DATE_DEB>=%s AND PRELEVEMENT.DATE_FIN<=%s) AND
-		CODE_QUALITE IN (%s)", q$start, q$end, q$valid.states)
+		CODE_QUALITE IN (%s) AND CATEGORIE IN (%s)",
+	q$start, q$end, q$valid.states, paste(categories, collapse=', '))
 
-	if (!is.null(q$sites)) query <- sprintf ("%s AND NSIT IN (%s)", query, q$sites)
-	if (!is.null(q$polluants)) query <- sprintf ("%s AND NOPOL IN (%s)", query, q$polluants)
-	if (!is.null(q$methodes)) query <- sprintf ("%s AND CODE_METH_P IN (%s)", query, q$methodes)
+	if (!is.null(q$sites))
+		query <- sprintf ("%s AND NSIT IN (%s)", query, q$sites)
+	if (!is.null(q$polluants))
+		query <- sprintf ("%s AND NOPOL IN (%s)", query, q$polluants)
+	if (!is.null(q$methodes))
+		query <- sprintf ("%s AND CODE_METH_P IN (%s)", query, q$methodes)
 
 	# recuperation des données
 	result <- xrGetQuery (conn, query)
@@ -83,28 +113,38 @@ xrGetManualData <-
 	fun.tmp <- function(x, what) {
 		debut <- unique (x$DATE_DEB)
 		fin <- unique (x$DATE_FIN)
-		valeurs <- split (x[c('VALEUR', 'CODE_QUALITE')],
-				  gsub(' ', '.', paste (x$SITE, x$METHODE, x$NOPOL, sep='.')) )
+		valeurs <- split (
+			x[c('VALEUR', 'CODE_QUALITE')],
+			gsub(' ', '.', paste(x$SITE, x$METHODE, x$NOPOL, sep='.')))
+
 		if (any (sapply (valeurs, nrow) > 1) ) {
-			warning (sprintf ("\n%s, \nCertains prélèvements sont dupliqués. L'association entre les différentes mesures risque d'être arbitraire.", paste (names(valeurs)[sapply (valeurs, nrow) > 1]) ) )
+			warning (sprintf ("\n%s, \nCertains prélèvements sont
+dupliqués. L'association entre les différentes mesures risque d'être arbitraire.",
+paste (names(valeurs)[sapply (valeurs, nrow) > 1]) ) )
 		
 			for (i in which (sapply (valeurs, nrow) > 1))
-				for (j in nrow (valeurs[[i]]) )
-					valeurs[[paste(names(valeurs)[i], j, sep='.')]] <-
+			for (j in nrow (valeurs[[i]]) )
+				valeurs[[paste(names(valeurs)[i], j, sep='.')]] <-
 						valeurs[[i]][j, , drop=FALSE]
 			valeurs[which (sapply (valeurs, nrow) > 1)] <- NULL
 		}
 		ret <- data.frame (start=debut, end=fin)
 		if (what=='value')
-			ret <- data.frame (ret, lapply (valeurs, function(x) x$VALEUR) ) else
+			ret <- data.frame(
+				ret,
+				lapply(valeurs, function(x) x$VALEUR)) else
 		if (what=='state')
-			ret <- data.frame (ret, lapply (valeurs, function(x) x$CODE_QUALITE) ) else {
+			ret <- data.frame(
+				ret,
+				lapply(valeurs, function(x) x$CODE_QUALITE)) else{
 			noms <- names (valeurs)
-			ret <- data.frame (ret, lapply (valeurs, function(x) x$VALEUR),
-					   lapply (valeurs, function(x) x$CODE_QUALITE) )
-			names(ret)[-(1:2)] <- paste (rep (noms, 2),
-						     rep (c('value', 'state'), each=length(noms)),
-						     sep='.')
+			ret <- data.frame(
+				ret, lapply (valeurs, function(x) x$VALEUR),
+				lapply (valeurs, function(x) x$CODE_QUALITE))
+			names(ret)[-(1:2)] <- paste(
+				rep (noms, 2),
+				rep (c('value', 'state'), each=length(noms)),
+				sep='.')
 			}
 
 		return (ret)
