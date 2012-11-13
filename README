@@ -1,3 +1,8 @@
+----------  Qair v2.2.5
+
+partie réglementaire : la précision pour les métaux lourds a été passée à 2
+partie XR : un argument 'categories' a été ajouté à la fonction xrGetManualData
+
 ----------  Qair v2.2.4
 
 Modifications transparentes pour l'utilisateur qui permettront cependant
