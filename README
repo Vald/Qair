@@ -1,3 +1,8 @@
+----------  Qair v2.2.6
+
+ajout du support de ROracle pour la connection à XR.
+Utiliser options(Xair.drv='oracle') # au lieu de 'jdbc' ou 'odbc'
+
 ----------  Qair v2.2.5
 
 partie réglementaire : la précision pour les métaux lourds a été passée à 2
