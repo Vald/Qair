@@ -13,7 +13,8 @@
 #'	pour les réseaux trouvés.
 xrGetReseaux <- function(conn, pattern=NULL, search.fields=c('NOM_COURT_RES', 'NOM_RES'),
 			   fields = NULL) {
-	if (is.null (fields) ) fields <- dbListFields (conn, 'RESEAUDEF')
+	if (is.null (fields) )
+		fields <- dbListFields (conn, 'RESEAUDEF', schema='RSDBA')
 
 	query <- sprintf ('SELECT %s FROM RESEAUDEF', paste ('RESEAUDEF', fields, sep='.', collapse=', ') )
 	q <- list()

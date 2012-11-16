@@ -13,7 +13,8 @@
 #'	pour les polluants trouvés.
 xrGetPolluants <- function(conn, pattern=NULL, search.fields=c('NOPOL', 'CCHIM', 'NCON'),
 			   fields = NULL) {
-	if (is.null (fields) ) fields <- dbListFields (conn, 'NOM_MESURE')
+	if (is.null (fields) )
+		fields <- dbListFields (conn, 'NOM_MESURE', schema='RSDBA')
 
 	query <- sprintf ('SELECT %s FROM NOM_MESURE', paste ('NOM_MESURE', fields, sep='.', collapse=', ') )
 	q <- list()

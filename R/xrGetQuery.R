@@ -16,9 +16,11 @@
 xrGetQuery <- function (conn, query) {
 	if(options()$Xair.drv == 'odbc') {
 		sqlQuery(conn, query, stringsAsFactors=FALSE)
+	} else if(options()$Xair.drv == 'oracle') {
+		dbGetQuery(conn, query)
 	} else if(options()$Xair.drv == 'jdbc') {
 		dbGetQuery(conn, query)
-	} else stop ('Unrecognized platform oO.')
+	} else stop ('Unrecognized driver.')
 
 }
 

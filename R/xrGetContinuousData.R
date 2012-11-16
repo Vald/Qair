@@ -136,9 +136,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	# quels champs faut-il rappatrier ? (depend de la table determinee juste avant)
 	#	Les champs de donnees et la date, et le nom_court_mes
-	q$fields.l <- dbListFields (conn, q$table)
+	q$fields.l <- dbListFields (conn, q$table, schema='RSDBA')
 	q$fields.l <- lapply (c('DATE', switch (period, qh = 'Q_', h = 'H_', d = 'J_', m = 'M_', y = 'A_')),
-			  grep, dbListFields (conn, q$table), value=TRUE)
+			  grep, dbListFields (conn, q$table, schema='RSDBA'), value=TRUE)
 	q$fields.l <- unique (unlist (q$fields.l) )
 	q$fields.l <- c('NOM_COURT_MES', setdiff (q$fields.l, 'Q_ETATB') )
 	q$fields.l <- unique (unlist (q$fields.l) )

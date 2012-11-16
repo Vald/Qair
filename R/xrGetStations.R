@@ -19,7 +19,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
-	fields.tmp <- dbListFields (conn, 'STATION')
+	fields.tmp <- dbListFields (conn, 'STATION', schema='RSDBA')
 	search.fields <- intersect (search.fields, fields.tmp)
 	if (is.null (fields) ) fields <- '*'#dbListFields (conn, 'STATION')
 	fields <- c(fields, 'CLASSE_SITE')

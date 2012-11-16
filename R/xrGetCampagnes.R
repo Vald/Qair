@@ -14,9 +14,11 @@
 #'
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les campagnes trouvées.
-xrGetCampagnes <- function(conn, pattern=NULL, search.fields=c('NOM_COURT_CM', 'LIBELLE'), start=NULL, end=NULL,
-			   fields = NULL) {
-	if (is.null (fields) ) fields <- dbListFields (conn, 'CAMPMES')
+xrGetCampagnes <- function(conn, pattern=NULL,
+			   search.fields=c('NOM_COURT_CM', 'LIBELLE'),
+			   start=NULL, end=NULL, fields = NULL) {
+	if (is.null (fields) )
+		fields <- dbListFields (conn, 'CAMPMES', schema='RSDBA')
 
 	query <- sprintf ('SELECT %s FROM CAMPMES', paste ('CAMPMES', fields, sep='.', collapse=', ') )
 	q <- list()

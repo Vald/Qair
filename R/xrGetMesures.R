@@ -18,7 +18,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
-	fields.tmp <- dbListFields (conn, 'MESURE')
+	fields.tmp <- dbListFields (conn, 'MESURE', schema='RSDBA')
 	search.fields <- intersect (search.fields, fields.tmp)
 	if (is.null (fields) ) fields <- fields.tmp
 
