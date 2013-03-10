@@ -60,8 +60,8 @@
   fonction\code{\link{xrGetCampagnes}}).}
 
   \item{dsn}{Nom de la base de données (cf le pilote
-  concerné, JDBC ou ODBC).  optionnel : sera demandé si
-  nécessaire.}
+  concerné, JDBC, ODBC ou Oracle).  optionnel : sera
+  demandé si nécessaire.}
 
   \item{uid}{Identifiant utilisé pour la connection.
   optionnel : sera demandé si nécessaire.}

@@ -4,7 +4,7 @@
 \usage{
   xrGetCampagnes(conn, pattern = NULL,
     search.fields = c("NOM_COURT_CM", "LIBELLE"),
-    start = NULL, end = NULL, fields = NULL)
+    start = NULL, end = NULL, fields = NULL, exact = FALSE)
 }
 \arguments{
   \item{fields}{vecteurs indiquant les champs de la table à
@@ -26,6 +26,11 @@
   \item{end}{date de fin de la période à rappatrier (au
   format \code{\link[base]{POSIXct}} ou character pouvant
   être converti en \code{\link[base]{POSIXct}}).}
+
+  \item{exact}{booléen indiquant si les mesures à
+  rappatrier doivent être exactement identiques à
+  \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
+  dans une expression régulière.}
 }
 \value{
   une data.frame correspondant au contenu de la table pour

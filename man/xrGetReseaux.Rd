@@ -4,7 +4,7 @@
 \usage{
   xrGetReseaux(conn, pattern = NULL,
     search.fields = c("NOM_COURT_RES", "NOM_RES"),
-    fields = NULL)
+    fields = NULL, exact = FALSE)
 }
 \arguments{
   \item{fields}{vecteurs indiquant les champs de la table à
@@ -18,6 +18,11 @@
 
   \item{search.fields}{champ de la table dans lesquels
   \code{pattern} doit être recherché.}
+
+  \item{exact}{booléen indiquant si les mesures à
+  rappatrier doivent être exactement identiques à
+  \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
+  dans une expression régulière.}
 }
 \value{
   une data.frame correspondant au contenu de la table pour

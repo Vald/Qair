@@ -8,7 +8,7 @@
     what = c("value", "state", "both"), search.fields,
     campagnes = NULL, reseaux = NULL, stations = NULL,
     polluants = NULL, collapse = c("AND", "OR"),
-    XR6 = TRUE, tz = "UTC", cursor = NULL)
+    XR6 = TRUE, tz = "UTC", cursor = NULL, exact = FALSE)
 }
 \arguments{
   \item{conn}{une connection valide telle que retournée par
@@ -77,6 +77,11 @@
   NULL pour un TimeIntervalDataFrame (par défaut) une
   valeur entre 0 et 1 pour un TimeInstantDataFrame (1 pour
   respecter les conventions XR).}
+
+  \item{exact}{booléen indiquant si les mesures à
+  rappatrier doivent être exactement identiques à
+  \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
+  dans une expression régulière.}
 }
 \value{
   un objet de classe
