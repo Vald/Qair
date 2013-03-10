@@ -14,7 +14,8 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les stations trouvées.
 xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NOM_COURT_SIT'),
-			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL, collapse = c('AND', 'OR')) {
+			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL,
+			  collapse = c('AND', 'OR'), exact=FALSE) {
 
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
@@ -34,7 +35,9 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 	}
 
 	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, sprintf('STATION.%s', search.fields))
+		q$pattern <- match.pattern.fields (
+					pattern, sprintf('STATION.%s', search.fields),
+					type=ifelse(exact, 'IN', 'LIKE'))
 
 	if (!is.null (campagnes) ) {
 		q$campagnes <- unique (xrGetCampagnes (conn, pattern = campagnes)$NOM_COURT_CM)

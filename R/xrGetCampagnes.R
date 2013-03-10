@@ -16,7 +16,7 @@
 #'	pour les campagnes trouvées.
 xrGetCampagnes <- function(conn, pattern=NULL,
 			   search.fields=c('NOM_COURT_CM', 'LIBELLE'),
-			   start=NULL, end=NULL, fields = NULL) {
+			   start=NULL, end=NULL, fields = NULL, exact=FALSE) {
 	if (is.null (fields) )
 		fields <- dbListFields (conn, 'CAMPMES', schema='RSDBA')
 
@@ -24,7 +24,9 @@ xrGetCampagnes <- function(conn, pattern=NULL,
 	q <- list()
 
 	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, search.fields)
+		q$pattern <- match.pattern.fields (
+					pattern, search.fields,
+					type=ifelse(exact, 'IN', 'LIKE'))
 
 	if (!is.null (start) ) {
 		if (length (start) > 1) warning ("Only the first 'start' value is used.")

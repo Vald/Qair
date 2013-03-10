@@ -1,3 +1,9 @@
+----------  Qair v2.2.7
+
+Ajout d'un argument 'exact' aux fonctions xrGet*.
+Cet argument permet de spécifier si les éléments récupérés dans la base
+doivent correspondrent exactement à 'pattern' ou non.
+
 ----------  Qair v2.2.6
 
 ajout du support de ROracle pour la connection à XR.
