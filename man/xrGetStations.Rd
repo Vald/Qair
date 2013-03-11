@@ -5,7 +5,8 @@
   xrGetStations(conn, pattern = NULL,
     search.fields = c("IDENTIFIANT", "NOM_COURT_SIT"),
     campagnes = NULL, reseaux = NULL, fields = NULL,
-    mesures = NULL, collapse = c("AND", "OR"))
+    mesures = NULL, collapse = c("AND", "OR"),
+    exact = FALSE)
 }
 \arguments{
   \item{mesures}{chaînes de caractères correspondant aux
@@ -34,6 +35,11 @@
 
   \item{collapse}{conjonction à appliquer entre les
   différents critères de recherche indiqués.}
+
+  \item{exact}{booléen indiquant si les mesures à
+  rappatrier doivent être exactement identiques à
+  \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
+  dans une expression régulière.}
 }
 \value{
   une data.frame correspondant au contenu de la table pour

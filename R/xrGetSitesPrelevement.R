@@ -12,7 +12,7 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les sites trouvés.
 xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = c('IDSITEP', 'LIBELLE'),
-			  campagnes = NULL, fields = NULL, collapse = c('AND', 'OR')) {
+			  campagnes = NULL, fields = NULL, collapse = c('AND', 'OR'), exact=FALSE) {
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
@@ -23,7 +23,9 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = c('IDSIT
 	q$tables <- 'SITE_PRELEVEMENT'
 
 	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, search.fields)
+		q$pattern <- match.pattern.fields (
+					pattern, search.fields,
+					type=ifelse(exact, 'IN', 'LIKE'))
 
 	if (!is.null (campagnes) ) {
 		q$campagnes <- unique (xrGetCampagnes (conn, pattern = campagnes)$NOM_COURT_CM)

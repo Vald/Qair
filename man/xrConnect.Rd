@@ -1,9 +1,9 @@
 \name{xrConnect}
-\alias{options,}
 \alias{Xair.dsn}
 \alias{Xair.host,}
 \alias{Xair.pwd,}
 \alias{Xair.uid,}
+\alias{options,}
 \alias{xrConnect}
 \title{Initialisation d'une connection a une base XR.}
 \usage{
@@ -12,8 +12,8 @@
 }
 \arguments{
   \item{dsn}{Nom de la base de données (cf le pilote
-  concerné, JDBC ou ODBC).  optionnel : sera demandé si
-  nécessaire.}
+  concerné, JDBC, ODBC ou Oracle).  optionnel : sera
+  demandé si nécessaire.}
 
   \item{uid}{Identifiant utilisé pour la connection.
   optionnel : sera demandé si nécessaire.}
@@ -46,14 +46,17 @@
 }
 \section{Details}{
   Cette fonction permet d'initialiser une connection avec
-  une base XR. Sous windows, le pilote utilisé est ODBC
-  (nécessite d'avoir installer le paquet
+  une base XR. Sous windows, le pilote utilisé par défaut
+  est ODBC (nécessite d'avoir installer le paquet
   \code{\link[RODBC]{RODBC}}), sous linux JDBC (nécessite
-  d'avoir installer le paquet \code{\link[RJDBC]{JDBC}}).
+  d'avoir installer le paquet
+  \code{\link[RJDBC:JDBC]{RJDBC}}). Il est également
+  possible d'utiliser le paquet
+  \code{\link[ROracle:Oracle]{ROracle}}).
 
   Une fois définis, les arguments sont définis pour la
   session entière. Il est possible de définir ces
-  'argument' en utilisant la fonction
+  'arguments' en utilisant la fonction
   \code{\link[base]{options}} avec les mêmes arguments,
   mais précédés de 'Xair.' (cf la section exemple).
 
@@ -72,6 +75,7 @@ xrConnect()
 }
 \seealso{
   \code{\link{xrConnect}}, \code{\link[RODBC]{RODBC}},
-  \code{\link[RJDBC]{JDBC}}, \code{\link[base]{options}}
+  \code{\link[RJDBC]{JDBC}}, \code{\link[base]{options}},
+  \code{\link[ROracle]{Oracle}}
 }
 

@@ -60,6 +60,9 @@
 #' @param cursor détermine le format de sortie des données : NULL pour un 
 #' 	TimeIntervalDataFrame (par défaut) une valeur entre 0 et 1 pour un 
 #' 	TimeInstantDataFrame (1 pour respecter les conventions XR).
+#' @param exact booléen indiquant si les mesures à rappatrier doivent être 
+#' 	exactement identiques à \sQuote{pattern} ou si \sQuote{pattern} doit 
+#' 	être utilisé dans une expression régulière.
 #'
 #' @return un objet de classe \code{\link[timetools]{TimeIntervalDataFrame-class}}
 #' 	contenant les données demandées.
@@ -73,7 +76,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		       validated = TRUE, valid.states = c("A", "R", "O", "W", "P"), what = c('value', 'state', 'both'),
 		       search.fields, campagnes = NULL, reseaux = NULL, stations = NULL, polluants = NULL,
 		       collapse = c('AND', 'OR'), XR6 = TRUE,
-		       tz='UTC', cursor=NULL) {
+		       tz='UTC', cursor=NULL, exact=FALSE) {
 	# period est un periode au sens lubridate
 	# start et end doivent être des POSIXt (pour la prise en compte des timezones).
 	period <- match.arg (period)
@@ -118,7 +121,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	q <- list ()
 	mesures <- xrGetMesures(conn=conn, pattern=pattern, search.fields=search.fields,
 				campagnes=campagnes, reseaux=reseaux, stations=stations,
-				polluants=polluants, collapse=collapse)
+				polluants=polluants, collapse=collapse, exact=exact)
 	q$mesures <- paste ("'", mesures$NOM_COURT_MES, "'", sep='', collapse=', ')
 
 	# donnees brutes ou pas ? Et quelle table aller taper ?

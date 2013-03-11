@@ -12,7 +12,7 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les polluants trouvés.
 xrGetPolluants <- function(conn, pattern=NULL, search.fields=c('NOPOL', 'CCHIM', 'NCON'),
-			   fields = NULL) {
+			   fields = NULL, exact=FALSE) {
 	if (is.null (fields) )
 		fields <- dbListFields (conn, 'NOM_MESURE', schema='RSDBA')
 
@@ -20,7 +20,9 @@ xrGetPolluants <- function(conn, pattern=NULL, search.fields=c('NOPOL', 'CCHIM',
 	q <- list()
 
 	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, search.fields)
+		q$pattern <- match.pattern.fields (
+					pattern, search.fields,
+					type=ifelse(exact, 'IN', 'LIKE'))
 
 	if (length (q) > 0)
 		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = ' AND ') )

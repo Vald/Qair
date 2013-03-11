@@ -13,7 +13,7 @@
 #'	pour les mesures trouvées.
 xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NOM_COURT_MES'),
 			  campagnes = NULL, reseaux = NULL, stations=NULL, polluants = NULL,
-			  fields = NULL, collapse = c('AND', 'OR')) {
+			  fields = NULL, collapse = c('AND', 'OR'), exact=FALSE) {
 
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
@@ -27,8 +27,10 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	q$tables <- 'MESURE'
 
 	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern,
-						   paste ('MESURE', search.fields, sep='.'))
+		q$pattern <- match.pattern.fields (
+			pattern,
+			paste ('MESURE', search.fields, sep='.'),
+			type=ifelse(exact, 'IN', 'LIKE'))
 
 	if (!is.null (reseaux) ) {
 		q$reseaux <- unique (xrGetReseaux (conn, pattern = reseaux)$NOM_COURT_RES)

@@ -12,7 +12,7 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les réseaux trouvés.
 xrGetReseaux <- function(conn, pattern=NULL, search.fields=c('NOM_COURT_RES', 'NOM_RES'),
-			   fields = NULL) {
+			   fields = NULL, exact=FALSE) {
 	if (is.null (fields) )
 		fields <- dbListFields (conn, 'RESEAUDEF', schema='RSDBA')
 
@@ -20,7 +20,9 @@ xrGetReseaux <- function(conn, pattern=NULL, search.fields=c('NOM_COURT_RES', 'N
 	q <- list()
 
 	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, search.fields)
+		q$pattern <- match.pattern.fields (
+					pattern, search.fields,
+					type=ifelse(exact, 'IN', 'LIKE'))
 
 
 	if (length (q) > 0)

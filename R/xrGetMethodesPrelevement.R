@@ -12,7 +12,7 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les méthodes trouvées.
 xrGetMethodesPrelevement <- function(conn, pattern = NULL, search.fields = c('LIBELLE'),
-			  fields = NULL, collapse = c('AND', 'OR')) {
+			  fields = NULL, collapse = c('AND', 'OR'), exact=FALSE) {
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
@@ -23,7 +23,9 @@ xrGetMethodesPrelevement <- function(conn, pattern = NULL, search.fields = c('LI
 	q$tables <- 'METH_PRELEVEMENT'
 
 	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (pattern, search.fields)
+		q$pattern <- match.pattern.fields (
+					pattern, search.fields,
+					type=ifelse(exact, 'IN', 'LIKE'))
 
 	query <- sprintf ('%s %s', query, paste (q$tables, collapse=', ') )
 	q$tables <- NULL

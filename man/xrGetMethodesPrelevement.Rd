@@ -4,7 +4,7 @@
 \usage{
   xrGetMethodesPrelevement(conn, pattern = NULL,
     search.fields = c("LIBELLE"), fields = NULL,
-    collapse = c("AND", "OR"))
+    collapse = c("AND", "OR"), exact = FALSE)
 }
 \arguments{
   \item{fields}{vecteurs indiquant les champs de la table à
@@ -21,6 +21,11 @@
 
   \item{collapse}{conjonction à appliquer entre les
   différents critères de recherche indiqués.}
+
+  \item{exact}{booléen indiquant si les mesures à
+  rappatrier doivent être exactement identiques à
+  \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
+  dans une expression régulière.}
 }
 \value{
   une data.frame correspondant au contenu de la table pour
