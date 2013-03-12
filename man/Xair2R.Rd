@@ -63,10 +63,10 @@
   concerné, JDBC, ODBC ou Oracle).  optionnel : sera
   demandé si nécessaire.}
 
-  \item{uid}{Identifiant utilisé pour la connection.
+  \item{uid}{Identifiant utilisé pour la connexion.
   optionnel : sera demandé si nécessaire.}
 
-  \item{pwd}{Mot de passe pour initialiser la connection.
+  \item{pwd}{Mot de passe pour initialiser la connexion.
   optionnel : sera demandé si nécessaire.}
 
   \item{host}{Adresse de l'hôte hébergeant la base de

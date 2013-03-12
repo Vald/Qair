@@ -6,7 +6,7 @@ doivent correspondrent exactement à 'pattern' ou non.
 
 ----------  Qair v2.2.6
 
-ajout du support de ROracle pour la connection à XR.
+ajout du support de ROracle pour la connexion à XR.
 Utiliser options(Xair.drv='oracle') # au lieu de 'jdbc' ou 'odbc'
 
 ----------  Qair v2.2.5
@@ -39,7 +39,7 @@ Interface à XR
 	'CLASSE_SITE' n'est pas demandé (remarque de S. Rapenne) 
 * correction de la fonction xrGetStations pour permettre l'utilisation simultanée
 des arguments 'mesures', 'campagnes' et 'reseaux'.
-* ajout d'une méthode "dbDisconnect" pour les connections ROBDC afin de permettre
+* ajout d'une méthode "dbDisconnect" pour les connexions ROBDC afin de permettre
 à la foncrion Xair2R de fonctionner avec le driver RODBC.
 
 Calculs réglementaires

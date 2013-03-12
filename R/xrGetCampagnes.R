@@ -1,7 +1,7 @@
 #' Recuperation des campagnes de mesures definies dans une base XR
 #'
 #' La fonction permet de lister les campagnes existantes dans la 
-#' base XR référencée par la connection \code{conn}.
+#' base XR référencée par la connexion \code{conn}.
 #'
 #' Il est possible de préciser les champs de recherche,
 #' ou des dates entre lesquelles la station a fonctionné.

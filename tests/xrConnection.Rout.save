@@ -26,7 +26,7 @@ Loading required package: DBI
 + 	Xair.ojdbc.file = '/usr/share/java/ojdbc14.jar',
 + 	Xair.drv='jdbc')
 > 
-> # test de la connection  à XR
+> # test de la connexion  à XR
 > #============================
 > 
 > xr <- xrConnect()

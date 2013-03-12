@@ -5,7 +5,7 @@
 \alias{Xair.uid,}
 \alias{options,}
 \alias{xrConnect}
-\title{Initialisation d'une connection a une base XR.}
+\title{Initialisation d'une connexion a une base XR.}
 \usage{
   xrConnect(dsn = NULL, uid = NULL, pwd = NULL,
     host = NULL, ojdbc = NULL, drv.type = NULL)
@@ -15,10 +15,10 @@
   concerné, JDBC, ODBC ou Oracle).  optionnel : sera
   demandé si nécessaire.}
 
-  \item{uid}{Identifiant utilisé pour la connection.
+  \item{uid}{Identifiant utilisé pour la connexion.
   optionnel : sera demandé si nécessaire.}
 
-  \item{pwd}{Mot de passe pour initialiser la connection.
+  \item{pwd}{Mot de passe pour initialiser la connexion.
   optionnel : sera demandé si nécessaire.}
 
   \item{host}{Adresse de l'hôte hébergeant la base de
@@ -38,14 +38,14 @@
   windows.}
 }
 \value{
-  Une connection à la base XR (le type exact dépend du
+  Une connexion à la base XR (le type exact dépend du
   pilote utilisé).
 }
 \description{
-  Initialisation d'une connection a une base XR.
+  Initialisation d'une connexion a une base XR.
 }
 \section{Details}{
-  Cette fonction permet d'initialiser une connection avec
+  Cette fonction permet d'initialiser une connexion avec
   une base XR. Sous windows, le pilote utilisé par défaut
   est ODBC (nécessite d'avoir installer le paquet
   \code{\link[RODBC]{RODBC}}), sous linux JDBC (nécessite

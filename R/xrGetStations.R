@@ -1,7 +1,7 @@
 #' Recuperation des stations de mesures definies dans une base XR
 #'
 #' La fonction permet de lister les stations existantes dans la 
-#' base XR référencée par la connection \code{conn}.
+#' base XR référencée par la connexion \code{conn}.
 #'
 #' @inheritParams xrGetContinuousData
 #' @param mesures chaînes de caractères correspondant aux mesures à rappatrier

@@ -5,7 +5,7 @@
   xrGetQuery(conn, query)
 }
 \arguments{
-  \item{conn}{une connection à une base XR (cf
+  \item{conn}{une connexion à une base XR (cf
   \code{\link{xrConnect}})}
 
   \item{query}{chaîne de caractères contenant la reqûete}
@@ -19,7 +19,7 @@
 }
 \section{Details}{
   Cette fonction permet d'envoyer une requête à une
-  connection sur une base XR et d'en récupérer le résultat.
+  connexion sur une base XR et d'en récupérer le résultat.
   Sous windows, le pilote utilisé est ODBC (nécessite
   d'avoir installer le paquet \code{\link[RODBC]{RODBC}}),
   sous linux JDBC (nécessite d'avoir installer le paquet

@@ -6,7 +6,7 @@ options(Xair.host = '172.16.19.33',
 	Xair.ojdbc.file = '/usr/share/java/ojdbc14.jar',
 	Xair.drv='jdbc')
 
-# test de la connection  à XR
+# test de la connexion  à XR
 #============================
 
 xr <- xrConnect()

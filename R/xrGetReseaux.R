@@ -1,7 +1,7 @@
 #' Recuperation des reseaux de mesures definis dans une base XR
 #'
 #' La fonction permet de lister les réseaux existants dans la 
-#' base XR référencée par la connection \code{conn}.
+#' base XR référencée par la connexion \code{conn}.
 #'
 #' @inheritParams xrGetContinuousData
 #' @param fields vecteurs indiquant les champs de la table à récupérer.

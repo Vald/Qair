@@ -39,7 +39,7 @@
   transport.} } Par défaut, toutes les catégories de
   mesures sont récupérées.}
 
-  \item{conn}{une connection valide telle que retournée par
+  \item{conn}{une connexion valide telle que retournée par
   \code{\link{xrConnect}}.}
 
   \item{start}{date initiale de la période à rappatrier (au

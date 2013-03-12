@@ -10,7 +10,7 @@
   \item{fields}{vecteurs indiquant les champs de la table à
   récupérer.  Tous par défaut.}
 
-  \item{conn}{une connection valide telle que retournée par
+  \item{conn}{une connexion valide telle que retournée par
   \code{\link{xrConnect}}.}
 
   \item{pattern}{chaînes de caractères utilisées pour la
@@ -33,7 +33,7 @@
 }
 \description{
   La fonction permet de lister les méthodes de prélèvement
-  existantes dans la base XR référencée par la connection
+  existantes dans la base XR référencée par la connexion
   \code{conn}.
 }
 \seealso{

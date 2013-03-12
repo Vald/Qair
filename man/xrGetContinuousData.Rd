@@ -11,7 +11,7 @@
     XR6 = TRUE, tz = "UTC", cursor = NULL, exact = FALSE)
 }
 \arguments{
-  \item{conn}{une connection valide telle que retournée par
+  \item{conn}{une connexion valide telle que retournée par
   \code{\link{xrConnect}}.}
 
   \item{pattern}{chaînes de caractères utilisées pour la

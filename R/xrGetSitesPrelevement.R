@@ -1,7 +1,7 @@
 #' Recuperation des sites de prelevement manuels definis dans une base XR
 #'
 #' La fonction permet de lister les sites de prélèvement existants dans la 
-#' base XR référencée par la connection \code{conn}.
+#' base XR référencée par la connexion \code{conn}.
 #'
 #' @inheritParams xrGetContinuousData
 #' @param fields vecteurs indiquant les champs de la table à récupérer.

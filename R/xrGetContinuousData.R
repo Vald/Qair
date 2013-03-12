@@ -25,7 +25,7 @@
 #' différents critères est précisée par l'argument \code{collapse}.
 #'
 #'
-#' @param conn une connection valide telle que retournée par \code{\link{xrConnect}}.
+#' @param conn une connexion valide telle que retournée par \code{\link{xrConnect}}.
 #' @param pattern chaînes de caractères utilisées pour la recherche (cf \sQuote{Details}).
 #' @param start date initiale de la période à rappatrier (au format \code{\link[base]{POSIXct}} ou character
 #'	pouvant être converti en \code{\link[base]{POSIXct}}).
