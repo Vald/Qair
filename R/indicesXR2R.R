@@ -138,9 +138,6 @@ function (conn, agglos, start, end, detail=FALSE,
 	return (indices)
 }
 
-# raccourci pour l'ancienne utilisation deFaC
-ss.indicesXR2R <- function (conn, agglo, start, end) 
-
 #' Affichage circulaire des indices de qualité de l'air
 #'
 #' fonction permettant de représenter des indices de qualité
