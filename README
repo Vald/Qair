@@ -1,3 +1,7 @@
+----------  Qair v2.3.0
+* la fonction indicesXR2R permet désormais de récupérer également les sous-indices
+* 'connection' a été remplacé par 'connexion'. C'est plus français ...
+
 ----------  Qair v2.2.7
 
 Ajout d'un argument 'exact' aux fonctions xrGet*.
