@@ -1,4 +1,5 @@
 #' extends dbListFields for RODBC objects
+#' @param conn une connexion
 #' @inheritParams DBI::dbListFields
 #' @param \dots pour compatibiltié avec la méthode générique
 #' @seealso \code{\link[DBI]{dbListFields}}, \code{\link[RODBC]{sqlColumns}}

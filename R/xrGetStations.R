@@ -14,14 +14,25 @@
 #'  \code{... list(pattern = 'N2_VER', search.fields = 'IDENTIFIANT') ...}
 #' @param fields vecteurs indiquant les champs de la table à récupérer.
 #'	Tous par défaut.
+#' @param SP booléen indiquant si le résultat doit être au format
+#'	SpatialPointsDataFrame. proj4string est alors utilisé pour 
+#' 	préciser le référentiel spatial choisi. Les coordonnées utilisées
+#' 	sont les champs 'LAMBERTX' et LAMBERTY' de XR.
+#' @param proj4string indique les paramètres de projections. Par défaut :
+#' CRS('+init=epsg:2154') (lambert 93). Pour du lambert II étendu, indiquer :
+#' CRS('+init=epsg:27572')
 #'
-#' @seealso \code{\link{xrGetContinuousData}}
+#' @seealso \code{\link{xrGetContinuousData}},
+#' \code{\link[maptools]{SpatialPointsDataFrame}}
 #'
 #' @return une data.frame correspondant au contenu de la table 
-#'	pour les stations trouvées.
-xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NOM_COURT_SIT'),
-			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL,
-			  collapse = c('AND', 'OR'), exact=FALSE) {
+#'	pour les stations trouvées. Si SP est TRUE, la data.frame
+#'	est "encapsulée" dans une \code{\link[maptools]{SpatialPointsDataFrame}}.
+xrGetStations <- function(conn, pattern = NULL,
+			  search.fields = c('IDENTIFIANT', 'NOM_COURT_SIT'),
+			  campagnes = NULL, reseaux = NULL, fields = NULL,
+			  mesures = NULL, collapse = c('AND', 'OR'), exact=FALSE,
+			  SP=FALSE, proj4string=CRS('+init=epsg:2154')) {
 
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
@@ -80,7 +91,18 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 	temp <- xrGetQuery (conn, "SELECT CLE, LIBELLE FROM LISTE_META_DONNEES WHERE CODE_ID_LISTE='CL_SITE'")
 	names (temp)[2] <- 'typologie'
 	stations <- merge (stations, temp, by.x='CLASSE_SITE', by.y='CLE', all.x=TRUE, all.y=FALSE)
-	stations[setdiff(names(stations), 'tada')]
+	stations <- stations[setdiff(names(stations), 'tada')]
+
+	if( SP ) {
+		stations$LAMBERTX[is.na(stations$LAMBERTX)] <- 0
+		stations$LAMBERTY[is.na(stations$LAMBERTY)] <- 0
+
+		stations <- SpatialPointsDataFrame(
+			stations[c('LAMBERTX', 'LAMBERTY')], stations,
+			proj4string=proj4string)
+	}
+
+	return( stations )
 }
 
 

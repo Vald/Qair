@@ -6,7 +6,8 @@
     search.fields = c("IDENTIFIANT", "NOM_COURT_SIT"),
     campagnes = NULL, reseaux = NULL, fields = NULL,
     mesures = NULL, collapse = c("AND", "OR"),
-    exact = FALSE)
+    exact = FALSE, SP = FALSE,
+    proj4string = CRS("+init=epsg:2154"))
 }
 \arguments{
   \item{mesures}{chaînes de caractères correspondant aux
@@ -23,6 +24,16 @@
 
   \item{fields}{vecteurs indiquant les champs de la table à
   récupérer.  Tous par défaut.}
+
+  \item{SP}{booléen indiquant si le résultat doit être au
+  format SpatialPointsDataFrame. proj4string est alors
+  utilisé pour préciser le référentiel spatial choisi. Les
+  coordonnées utilisées sont les champs 'LAMBERTX' et
+  LAMBERTY' de XR.}
+
+  \item{proj4string}{indique les paramètres de projections.
+  Par défaut : CRS('+init=epsg:2154') (lambert 93). Pour du
+  lambert II étendu, indiquer : CRS('+init=epsg:27572')}
 
   \item{conn}{une connexion valide telle que retournée par
   \code{\link{xrConnect}}.}
@@ -67,13 +78,16 @@
 }
 \value{
   une data.frame correspondant au contenu de la table pour
-  les stations trouvées.
+  les stations trouvées. Si SP est TRUE, la data.frame est
+  "encapsulée" dans une
+  \code{\link[maptools]{SpatialPointsDataFrame}}.
 }
 \description{
   La fonction permet de lister les stations existantes dans
   la base XR référencée par la connexion \code{conn}.
 }
 \seealso{
-  \code{\link{xrGetContinuousData}}
+  \code{\link{xrGetContinuousData}},
+  \code{\link[maptools]{SpatialPointsDataFrame}}
 }
 
