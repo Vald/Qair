@@ -5,11 +5,22 @@
   xrGetSitesPrelevement(conn, pattern = NULL,
     search.fields = c("IDSITEP", "LIBELLE"),
     campagnes = NULL, fields = NULL,
-    collapse = c("AND", "OR"), exact = FALSE)
+    collapse = c("AND", "OR"), exact = FALSE, SP = FALSE,
+    proj4string = CRS("+init=epsg:2154"))
 }
 \arguments{
   \item{fields}{vecteurs indiquant les champs de la table à
   récupérer.  Tous par défaut.}
+
+  \item{SP}{booléen indiquant si le résultat doit être au
+  format SpatialPointsDataFrame. proj4string est alors
+  utilisé pour préciser le référentiel spatial choisi. Les
+  coordonnées utilisées sont les champs 'LAMBERTX' et
+  LAMBERTY' de XR.}
+
+  \item{proj4string}{indique les paramètres de projections.
+  Par défaut : CRS('+init=epsg:2154') (lambert 93). Pour du
+  lambert II étendu, indiquer : CRS('+init=epsg:27572')}
 
   \item{conn}{une connexion valide telle que retournée par
   \code{\link{xrConnect}}.}

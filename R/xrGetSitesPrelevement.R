@@ -6,13 +6,23 @@
 #' @inheritParams xrGetContinuousData
 #' @param fields vecteurs indiquant les champs de la table à récupérer.
 #'	Tous par défaut.
+#' @param SP booléen indiquant si le résultat doit être au format
+#'	SpatialPointsDataFrame. proj4string est alors utilisé pour 
+#' 	préciser le référentiel spatial choisi. Les coordonnées utilisées
+#' 	sont les champs 'LAMBERTX' et LAMBERTY' de XR.
+#' @param proj4string indique les paramètres de projections. Par défaut :
+#' CRS('+init=epsg:2154') (lambert 93). Pour du lambert II étendu, indiquer :
+#' CRS('+init=epsg:27572')
 #'
 #' @seealso \code{\link{xrGetManualData}}, \code{\link{xrGetMethodesPrelevement}}
 #'
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les sites trouvés.
-xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = c('IDSITEP', 'LIBELLE'),
-			  campagnes = NULL, fields = NULL, collapse = c('AND', 'OR'), exact=FALSE) {
+xrGetSitesPrelevement <- function(conn, pattern = NULL,
+			  search.fields = c('IDSITEP', 'LIBELLE'),
+			  campagnes = NULL, fields = NULL,
+			  collapse = c('AND', 'OR'), exact=FALSE, SP=FALSE,
+			  proj4string=CRS('+init=epsg:2154')) {
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
@@ -46,7 +56,17 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = c('IDSIT
 		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
 
 	sites <- unique (xrGetQuery (conn, query) )
-	sites
+
+	if( SP ) {
+		sites$LAMBERTX[is.na(sites$LAMBERTX)] <- 0
+		sites$LAMBERTY[is.na(sites$LAMBERTY)] <- 0
+
+		sites <- SpatialPointsDataFrame(
+			sites[c('LAMBERTX', 'LAMBERTY')], sites,
+			proj4string=proj4string)
+	}
+
+	return( sites )
 }
 
 

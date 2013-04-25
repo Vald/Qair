@@ -10,10 +10,10 @@
   dbDisconnect(conn, ...)
 }
 \arguments{
+  \item{conn}{une connexion}
+
   \item{\dots}{pour compatibiltié avec la méthode
   générique}
-
-  \item{conn}{a connection object}
 
   \item{name}{a character string with the name of the
   remote table.}
