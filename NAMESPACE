@@ -1,5 +1,7 @@
 # import des dependances
-import (timetools)
+import( timetools )
+import( maptools )
+import( rgdal )
 importMethodsFrom(DBI, dbListFields, dbDisconnect)
 exportMethods (dbListFields, dbDisconnect)
 
