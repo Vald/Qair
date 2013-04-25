@@ -29,10 +29,10 @@
 #'	pour les stations trouvées. Si SP est TRUE, la data.frame
 #'	est "encapsulée" dans une \code{\link[maptools]{SpatialPointsDataFrame}}.
 xrGetStations <- function(conn, pattern = NULL,
-			  search.fields = c('IDENTIFIANT', 'NOM_COURT_SIT'),
-			  campagnes = NULL, reseaux = NULL, fields = NULL,
-			  mesures = NULL, collapse = c('AND', 'OR'), exact=FALSE,
-			  SP=FALSE, proj4string=CRS('+init=epsg:2154')) {
+		  search.fields = c('IDENTIFIANT', 'NOM_COURT_SIT'),
+		  campagnes = NULL, reseaux = NULL, fields = NULL,
+		  mesures = NULL, collapse = c('AND', 'OR'), exact=FALSE,
+		  SP=FALSE, proj4string=CRS('+init=epsg:2154')) {
 
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
@@ -43,7 +43,9 @@ xrGetStations <- function(conn, pattern = NULL,
 	if( fields != '*' & !'CLASSE_SITE' %in% fields)
 		fields <- c(fields, 'CLASSE_SITE')
 	
-	query <- sprintf ('SELECT %s FROM', paste ('STATION', fields, sep='.', collapse=', ') )
+	query <- sprintf ('SELECT %s FROM',
+			  paste ('STATION', fields, sep='.', collapse=', ') )
+
 	q <- list()
 	q$tables <- 'STATION'
 
@@ -56,8 +58,8 @@ xrGetStations <- function(conn, pattern = NULL,
 
 	if (!is.null (pattern) & length (search.fields) > 0)
 		q$pattern <- match.pattern.fields (
-					pattern, sprintf('STATION.%s', search.fields),
-					type=ifelse(exact, 'IN', 'LIKE'))
+			pattern, sprintf('STATION.%s', search.fields),
+			type=ifelse(exact, 'IN', 'LIKE'))
 
 	if (!is.null (campagnes) ) {
 		if( !is.list(campagnes) )
@@ -67,24 +69,29 @@ xrGetStations <- function(conn, pattern = NULL,
 			q$tables <- c(q$tables, 'CAMPMES_STATION')
 			q$campagnes <- sprintf(
 				'STATION.NOM_COURT_SIT=CAMPMES_STATION.NOM_COURT_SIT AND CAMPMES_STATION.NOM_COURT_CM IN (%s)',
-				paste ("'", q$campagnes, "'", sep = '', collapse = ", ") )
+				paste ("'", q$campagnes, "'",
+				       sep = '', collapse = ", ") )
 		}
 	}
 
 	if (!is.null (reseaux) ) {
-		q$reseaux <- unique (xrGetReseaux (conn, pattern = reseaux)$NOM_COURT_RES)
+		q$reseaux <- unique (xrGetReseaux (
+			conn, pattern = reseaux)$NOM_COURT_RES)
+
 		if (length(q$reseaux) == 0) q$reseaux <- NULL else {
 			q$tables <- c(q$tables, 'RESEAUSTA')
 			q$reseaux <- sprintf(
 				'STATION.NOM_COURT_SIT=RESEAUSTA.NOM_COURT_SIT AND RESEAUSTA.NOM_COURT_RES IN (%s)',
-				paste ("'", q$reseaux, "'", sep = '', collapse = ", ") )
+				paste ("'", q$reseaux, "'",
+				       sep = '', collapse = ", ") )
 		}
 	}
 
 	query <- sprintf ('%s %s', query, paste (q$tables, collapse=', ') )
 	q$tables <- NULL
 	if (length (q) > 0)
-		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
+		query <- sprintf ('%s WHERE %s', query,
+				  paste (q, collapse = collapse) )
 
 	stations <- unique (xrGetQuery (conn, query) )
 

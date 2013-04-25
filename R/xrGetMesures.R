@@ -11,9 +11,11 @@
 #'
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les mesures trouvées.
-xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NOM_COURT_MES'),
-			  campagnes = NULL, reseaux = NULL, stations=NULL, polluants = NULL,
-			  fields = NULL, collapse = c('AND', 'OR'), exact=FALSE) {
+xrGetMesures <- function(conn, pattern = NULL,
+		search.fields = c('IDENTIFIANT', 'NOM_COURT_MES'),
+		campagnes = NULL, reseaux = NULL, stations=NULL,
+		polluants = NULL, fields = NULL, collapse = c('AND', 'OR'),
+		exact=FALSE) {
 
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
@@ -22,7 +24,8 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	search.fields <- intersect (search.fields, fields.tmp)
 	if (is.null (fields) ) fields <- fields.tmp
 
-	query <- sprintf ('SELECT %s FROM', paste ('MESURE', fields, sep='.', collapse=', ') )
+	query <- sprintf ('SELECT %s FROM',
+			  paste ('MESURE', fields, sep='.', collapse=', ') )
 	q <- list()
 	q$tables <- 'MESURE'
 
@@ -41,7 +44,8 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 			q$tables <- c(q$tables, 'RESEAUMES')
 			q$reseaux <- sprintf(
 				'MESURE.NOM_COURT_MES=RESEAUMES.NOM_COURT_MES AND RESEAUMES.NOM_COURT_RES IN (%s)',
-				paste ("'", q$reseaux, "'", sep = '', collapse = ", ") )
+				paste("'", q$reseaux, "'",
+				      sep = '', collapse = ", ") )
 		}
 	}
 
@@ -61,7 +65,8 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 			q$tables <- c(q$tables, 'STATION')
 			q$stations <- sprintf(
 				'MESURE.NOM_COURT_SIT=STATION.NOM_COURT_SIT AND STATION.NOM_COURT_SIT IN (%s)',
-				paste ("'", q$stations, "'", sep = '', collapse = ", ") )
+				paste ("'", q$stations, "'",
+				       sep = '', collapse = ", ") )
 		}
 	}
 
@@ -75,14 +80,16 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 			q$tables <- c(q$tables, 'NOM_MESURE')
 			q$polluants <- sprintf(
 				'MESURE.NOPOL=NOM_MESURE.NOPOL AND NOM_MESURE.NOPOL IN (%s)',
-				paste ("'", q$polluants, "'", sep = '', collapse = ", ") )
+				paste ("'", q$polluants, "'",
+				       sep = '', collapse = ", ") )
 		}
 	}
 
 	query <- sprintf ('%s %s', query, paste (q$tables, collapse=', ') )
 	q$tables <- NULL
 	if (length (q) > 0)
-		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
+		query <- sprintf ('%s WHERE %s', query,
+				  paste (q, collapse = collapse) )
 
 	unique (xrGetQuery (conn, query) )
 }

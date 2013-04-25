@@ -19,16 +19,19 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les sites trouvés.
 xrGetSitesPrelevement <- function(conn, pattern = NULL,
-			  search.fields = c('IDSITEP', 'LIBELLE'),
-			  campagnes = NULL, fields = NULL,
-			  collapse = c('AND', 'OR'), exact=FALSE, SP=FALSE,
-			  proj4string=CRS('+init=epsg:2154')) {
+		  search.fields = c('IDSITEP', 'LIBELLE'),
+		  campagnes = NULL, fields = NULL,
+		  collapse = c('AND', 'OR'), exact=FALSE,
+		  SP=FALSE, proj4string=CRS('+init=epsg:2154')) {
+
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
 	if (is.null (fields) ) fields <- '*'
 	
-	query <- sprintf ('SELECT %s FROM', paste ('SITE_PRELEVEMENT', fields, sep='.', collapse=', ') )
+	query <- sprintf ('SELECT %s FROM',
+		  paste ('SITE_PRELEVEMENT', fields,
+			 sep='.', collapse=', ') )
 	q <- list()
 	q$tables <- 'SITE_PRELEVEMENT'
 
@@ -46,14 +49,18 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL,
 			q$tables <- c(q$tables, 'CAMPMES_SITE_P')
 			q$campagnes <- sprintf(
 				'SITE_PRELEVEMENT.NSIT=CAMPMES_SITE_P.NSIT AND CAMPMES_SITE_P.NOM_COURT_CM IN (%s)',
-				paste ("'", q$campagnes, "'", sep = '', collapse = ", ") )
+				paste ("'", q$campagnes, "'",
+				       sep = '', collapse = ", ") )
 		}
 	}
 
 	query <- sprintf ('%s %s', query, paste (q$tables, collapse=', ') )
+
 	q$tables <- NULL
+
 	if (length (q) > 0)
-		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
+		query <- sprintf ('%s WHERE %s', query,
+				  paste (q, collapse = collapse) )
 
 	sites <- unique (xrGetQuery (conn, query) )
 
