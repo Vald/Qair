@@ -1,3 +1,14 @@
+----------  Qair v2.4.0
+* correction d'un bug concernant les rappatriements de dates : les dates pour 
+les prélèvements manuels ainsi que les dates récupérées directement dans XR via
+des requetes directes (xrGet*, xrGetQuery ou dbQuery, mais hors
+xrGetContinuousData) présentaient, selon le driver utilisé (ROracle ou 
+RODBC) des décalages de 1 ou 2 heures (RJDBC renvoyant des chaines de caractères,
+ce driver n'est pas concerné par le bug).
+* IMPORTANT : les mesures continues ne sont pas concernées par ce bug (la fonction
+xrGetContinuousData utilisant un algo spécifique, le type de driver utilisé 
+n'avait pas d'impact).
+
 ----------  Qair v2.3.0
 * la fonction indicesXR2R permet désormais de récupérer également les sous-indices
 * 'connection' a été remplacé par 'connexion'. C'est plus français ...
