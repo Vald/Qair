@@ -18,7 +18,12 @@ xrGetQuery <- function (conn, query) {
 	# execution normale de la requete
 
 	if(options()$Xair.drv == 'odbc') {
-		result <- sqlQuery(conn, query, stringsAsFactors=FALSE)
+		# note: 'as.is' permet de récupérer les dates directement au
+		# format 'character' et empeche que, lorsqu'une variable de type
+		# chaine de caractères ne contient que des entiers, cette variable
+		# soit convertie (exemple : c('03', '14') converti en c(3, 14) au
+		# de rester tel quel).
+		result <- sqlQuery(conn, query, stringsAsFactors=FALSE, as.is=TRUE)
 	} else if(options()$Xair.drv == 'oracle') {
 		result <- dbGetQuery(conn, query)
 	} else if(options()$Xair.drv == 'jdbc') {
