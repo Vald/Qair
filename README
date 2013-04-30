@@ -1,3 +1,14 @@
+----------  Qair v2.4.1
+* Une évolution du paquet RODBC (version 1.1 ?) à entrainer l'aparition possible
+d'un petit bug : lorsqu'une variable de type string est rappatriée de la base
+mais qu'elle ne contient que des valeurs représentant des valeurs numériques
+(par exemple : c('03, '14')), la variable est automatiquement convertie en 
+numeric (le résultat de la requête donne c(3, 14) au lieu de c('03', '14')).
+le Problème est corrigé.
+
+* Pour éviter ce genre de problème, les versions des modules externes dont dépend
+Qair sont désormais précisées dans le fichier DESCRIPTION.
+
 ----------  Qair v2.4.0
 * correction d'un bug concernant les rappatriements de dates : les dates pour 
 les prélèvements manuels ainsi que les dates récupérées directement dans XR via
