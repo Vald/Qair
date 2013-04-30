@@ -174,7 +174,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	# Les champs de donnees et la date, et le nom_court_mes
 	q$fields.l <- dbListFields (conn, q$table, schema='RSDBA')
 	q$fields.l <- lapply (c('DATE',
-				switch (period, qh = 'Q_', h = 'H_'
+				switch (period, qh = 'Q_', h = 'H_',
 				       	d = 'J_', m = 'M_', y = 'A_')),
     			      grep, dbListFields (conn, q$table, schema='RSDBA'),
 			      value=TRUE)
