@@ -146,7 +146,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	q$fields.l <- c('NOM_COURT_MES', setdiff (q$fields.l, 'Q_ETATB') )
 	q$fields.l <- unique (unlist (q$fields.l) )
 	q$fields.l <- q$fields.l[!grepl ('PV_', q$fields.l)]
-	q$fields <- q$felds.l
+	q$fields <- q$fields.l
 
 	q$date <- grep ('DATE', q$fields, value=TRUE)
 	
@@ -264,6 +264,14 @@ mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul)
 
 	dates <- unique (data[[grep ('DATE', names (data))]])
 	data <- data[-grep ('DATE', names (data))]
+
+	# ordonnage temporel des trucs au-dessus (bordel !!!)
+
+	ordre <- order(dates)
+	data <- data[ordre,,drop=FALSE]
+	etats <- etats[ordre]
+	dates <- dates[ordre]
+
 	tmp <- paste (rep (dates, each=length(data) ), names (data) )
 	if (period %in% c('Q_M01', 'H_M01') )
 		tmp <- c(paste (as.character(as.POSIXct(dates[1]) -
