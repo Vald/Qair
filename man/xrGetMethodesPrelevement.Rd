@@ -23,7 +23,7 @@
   différents critères de recherche indiqués.}
 
   \item{exact}{booléen indiquant si les mesures à
-  rappatrier doivent être exactement identiques à
+  rapatrier doivent être exactement identiques à
   \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
   dans une expression régulière.}
 }

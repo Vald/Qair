@@ -13,17 +13,17 @@
   \item{polluants}{chaînes de caractères utilisées pour la
   recherche}
 
-  \item{dated}{date initiale de la période à rappatrier (au
+  \item{dated}{date initiale de la période à rapatrier (au
   format \code{\link[base]{POSIXct}} ou character pouvant
   être converti en \code{\link[base]{POSIXct}}).}
 
-  \item{datef}{date de fin de la période à rappatrier (au
+  \item{datef}{date de fin de la période à rapatrier (au
   format \code{\link[base]{POSIXct}} ou character pouvant
   être converti en \code{\link[base]{POSIXct}}).  des
-  mesures à rappatrier.}
+  mesures à rapatrier.}
 
   \item{dt}{un des éléments suivant ('h', 'qh', 'd', 'm',
-  'y') précisant la période des données à rappatrier.}
+  'y') précisant la période des données à rapatrier.}
 
   \item{merging}{booléen. Si TRUE, les données sont
   récupérées dans la table normale de stockage de XR ; si
@@ -48,15 +48,15 @@
   égale à 6, FALSE sinon.}
 
   \item{reseaux}{chaînes de caractères correspondant aux
-  réseaux à rappatrier (optionnel) (utilisé via la
+  réseaux à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetReseaux}}).}
 
   \item{stations}{chaînes de caractères correspondant aux
-  stations à rappatrier (optionnel) (utilisé via la
+  stations à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetStations}}).}
 
   \item{campagnes}{chaînes de caractères correspondant aux
-  campagnes à rappatrier (optionnel) (utilisé via la
+  campagnes à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetCampagnes}}).}
 
   \item{dsn}{Nom de la base de données (cf le pilote

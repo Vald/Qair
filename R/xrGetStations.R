@@ -4,7 +4,7 @@
 #' base XR référencée par la connexion \code{conn}.
 #'
 #' @inheritParams xrGetContinuousData
-#' @param mesures chaînes de caractères correspondant aux mesures à rappatrier
+#' @param mesures chaînes de caractères correspondant aux mesures à rapatrier
 #' 	(optionnel) (utilisé via la fonction \code{\link{xrGetMesures}}).
 #' @param fields vecteurs indiquant les champs de la table à récupérer.
 #'	Tous par défaut.

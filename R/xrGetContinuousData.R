@@ -27,12 +27,12 @@
 #'
 #' @param conn une connexion valide telle que retournée par \code{\link{xrConnect}}.
 #' @param pattern chaînes de caractères utilisées pour la recherche (cf \sQuote{Details}).
-#' @param start date initiale de la période à rappatrier (au format \code{\link[base]{POSIXct}} ou character
+#' @param start date initiale de la période à rapatrier (au format \code{\link[base]{POSIXct}} ou character
 #'	pouvant être converti en \code{\link[base]{POSIXct}}).
-#' @param end date de fin de la période à rappatrier (au format \code{\link[base]{POSIXct}} ou character
+#' @param end date de fin de la période à rapatrier (au format \code{\link[base]{POSIXct}} ou character
 #'	pouvant être converti en \code{\link[base]{POSIXct}}).
 #' @param period un des éléments suivant ('h', 'qh', 'd', 'm', 'y') précisant la période
-#' 	des données à rappatrier.
+#' 	des données à rapatrier.
 #' @param validated booléen. Si TRUE, les données sont récupérées dans la table normale
 #'	de stockage de XR ; si FALSE, les données sont récupérées dans la table \code{BRUTE}.
 #' @param valid.states liste des codes états d'XR à considérer comme valide. Par défaut
@@ -40,17 +40,17 @@
 #'	les autres sont remplacées par NA.
 #' @param what un des éléments suivant ('value', 'state', 'both'). value : seules
 #'	les valeurs sont récupérées ; state : seuls les codes états sont récupérées ;
-#'	both : les deux sont rappatriés et un suffixe est ajouté au nom des séries pour
+#'	both : les deux sont rapatriés et un suffixe est ajouté au nom des séries pour
 #' 	les différencier.
 #' @param search.fields champ de la table dans lesquels \code{pattern} doit être
 #' 	recherché.
-#' @param campagnes chaînes de caractères correspondant aux campagnes à rappatrier
+#' @param campagnes chaînes de caractères correspondant aux campagnes à rapatrier
 #' 	(optionnel) (utilisé via la fonction\code{\link{xrGetCampagnes}}).
-#' @param reseaux chaînes de caractères correspondant aux réseaux à rappatrier
+#' @param reseaux chaînes de caractères correspondant aux réseaux à rapatrier
 #' 	(optionnel) (utilisé via la fonction\code{\link{xrGetReseaux}}).
-#' @param stations chaînes de caractères correspondant aux stations à rappatrier
+#' @param stations chaînes de caractères correspondant aux stations à rapatrier
 #' 	(optionnel) (utilisé via la fonction\code{\link{xrGetStations}}).
-#' @param polluants chaînes de caractères correspondant aux polluants à rappatrier
+#' @param polluants chaînes de caractères correspondant aux polluants à rapatrier
 #' 	(optionnel) (utilisé via la fonction\code{\link{xrGetPolluants}}).
 #' @param collapse conjonction à appliquer entre les différents critères de recherche
 #'	indiqués.
@@ -60,7 +60,7 @@
 #' @param cursor détermine le format de sortie des données : NULL pour un 
 #' 	TimeIntervalDataFrame (par défaut) une valeur entre 0 et 1 pour un 
 #' 	TimeInstantDataFrame (1 pour respecter les conventions XR).
-#' @param exact booléen indiquant si les mesures à rappatrier doivent être 
+#' @param exact booléen indiquant si les mesures à rapatrier doivent être 
 #' 	exactement identiques à \sQuote{pattern} ou si \sQuote{pattern} doit 
 #' 	être utilisé dans une expression régulière.
 #'
@@ -137,7 +137,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 				 m = 'MOIS', y = 'MOIS')
 	}
 
-	# quels champs faut-il rappatrier ? (depend de la table determinee juste avant)
+	# quels champs faut-il rapatrier ? (depend de la table determinee juste avant)
 	#	Les champs de donnees et la date, et le nom_court_mes
 	q$fields.l <- dbListFields (conn, q$table, schema='RSDBA')
 	q$fields.l <- lapply (c('DATE', switch (period, qh = 'Q_', h = 'H_', d = 'J_', m = 'M_', y = 'A_')),

@@ -1,6 +1,6 @@
 #' Fonction pour recuperer des donnees manuelles de XR
 #'
-#' @param polluants chaînes de caractères correspondant aux polluants à rappatrier
+#' @param polluants chaînes de caractères correspondant aux polluants à rapatrier
 #'   (optionnel) (utilisé via la fonction\code{\link{xrGetPolluants}}).
 #'  si c'est un vecteur, est directement utilisé comme pattern pour la fonction
 #'  xrGetPolluants. Si c'est une liste, les éléments doivent être nommés. Chaque
@@ -8,11 +8,11 @@
 #'   pattern doit alors est précisé :
 #'
 #'  \code{... list(pattern='DF', search.fields='NOPOL') ...}
-#' @param sites chaînes de caractères correspondant aux sites à rappatrier
+#' @param sites chaînes de caractères correspondant aux sites à rapatrier
 #'   (optionnel) (utilisé via la fonction\code{\link{xrGetSitesPrelevement}}).
-#' @param methodes chaînes de caractères correspondant aux campagnes à rappatrier
+#' @param methodes chaînes de caractères correspondant aux campagnes à rapatrier
 #'   (optionnel) (utilisé via la fonction\code{\link{xrGetMethodesPrelevement}}).
-#' @param categories vecteur indiquant les categories des mesures à rappatrier.
+#' @param categories vecteur indiquant les categories des mesures à rapatrier.
 #'   combinaison quelconques des valeurs '0', '1', '2', '3' ou '4' avec la
 #'   correspondance suivante (attention ce doit être des chaînes de caractères) :
 #'  \describe{
@@ -81,7 +81,7 @@ xrGetManualData <-
 	q$end	<- sprintf ("TO_DATE('%s', 'YYYY-MM-DD')", q$end)
 	q$valid.states <- paste ("'", valid.states, "'", sep='', collapse=', ')
 	
-	# création de LA requete de rappatriement
+	# création de LA requete de rapatriement
 	query <- sprintf (
 	"SELECT SITE_PRELEVEMENT.LIBELLE site, LONGI, LATI, LAMBERTX, LAMBERTY,
 		METH_PRELEVEMENT.LIBELLE methode,

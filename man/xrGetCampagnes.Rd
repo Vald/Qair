@@ -19,16 +19,16 @@
   \item{search.fields}{champ de la table dans lesquels
   \code{pattern} doit être recherché.}
 
-  \item{start}{date initiale de la période à rappatrier (au
+  \item{start}{date initiale de la période à rapatrier (au
   format \code{\link[base]{POSIXct}} ou character pouvant
   être converti en \code{\link[base]{POSIXct}}).}
 
-  \item{end}{date de fin de la période à rappatrier (au
+  \item{end}{date de fin de la période à rapatrier (au
   format \code{\link[base]{POSIXct}} ou character pouvant
   être converti en \code{\link[base]{POSIXct}}).}
 
   \item{exact}{booléen indiquant si les mesures à
-  rappatrier doivent être exactement identiques à
+  rapatrier doivent être exactement identiques à
   \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
   dans une expression régulière.}
 }

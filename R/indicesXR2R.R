@@ -1,16 +1,16 @@
 #' Recuperation des indices de qualite de l'air
 #'
-#' La fonction permet de rappatrier les indices de
+#' La fonction permet de rapatrier les indices de
 #' la qualité de l'air stocké dans une base XR. Pour 
 #' connaître la liste des réseaux d'indices definis,
 #' il suffit d'invoquer la fonction sans arguments.
 #'
 #' @param agglos chaîne de caractères indiquant les 
 #' 	les réseaux d'indices pour lesquels les donnée
-#' 	doivent être rappatriées (invoquer \code{indices2XR()}
+#' 	doivent être rapatriées (invoquer \code{indices2XR()}
 #' 	sans arguments pour connaître les valeurs possibles).
 #' @inheritParams xrGetContinuousData
-#' @param detail booleen indiquant si le détails des indices doit être rappatrié
+#' @param detail booleen indiquant si le détails des indices doit être rapatrié
 #' également. Autrement dit si les sous-indices doivent également être récupérés
 #' dans la base XR. Si TRUE, le paramètre \sQuote{format} permet de préciser
 #' l'agencement des données.

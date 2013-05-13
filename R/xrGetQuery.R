@@ -30,11 +30,11 @@ xrGetQuery <- function (conn, query) {
 		result <- dbGetQuery(conn, query)
 	} else stop ('Unrecognized driver.')
 
-	# par rapport au rappatriement des dates, c'est n'importe quoi :
+	# par rapport au rapatriement des dates, c'est n'importe quoi :
 	# elles sont stockées en CET/CEST et sont censées représentées des 
-	# dates en UTC, RODBC rappatrie correctement les dates en CET/CEST, 
+	# dates en UTC, RODBC rapatrie correctement les dates en CET/CEST, 
 	# mais comme ça doit être en UTC, ça décale, ROracle croit que c'est en
-	# CEST (et rien en CET), du coup il rappatrie tout comme si c'était 
+	# CEST (et rien en CET), du coup il rapatrie tout comme si c'était 
 	# du CEST et converti les dates d'été en CET. Et en plus rien ne dit
 	# que ça ne dépend pas de la plate-forme. RJDBC retourne pour les dates
 	# des strings alors que les 2 autres retournes des POSIXt. Note : 

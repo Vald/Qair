@@ -11,7 +11,7 @@
 }
 \arguments{
   \item{polluants}{chaînes de caractères correspondant aux
-  polluants à rappatrier (optionnel) (utilisé via la
+  polluants à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetPolluants}}).  si c'est un
   vecteur, est directement utilisé comme pattern pour la
   fonction xrGetPolluants. Si c'est une liste, les éléments
@@ -22,15 +22,15 @@
   \code{... list(pattern='DF', search.fields='NOPOL') ...}}
 
   \item{sites}{chaînes de caractères correspondant aux
-  sites à rappatrier (optionnel) (utilisé via la
+  sites à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetSitesPrelevement}}).}
 
   \item{methodes}{chaînes de caractères correspondant aux
-  campagnes à rappatrier (optionnel) (utilisé via la
+  campagnes à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetMethodesPrelevement}}).}
 
   \item{categories}{vecteur indiquant les categories des
-  mesures à rappatrier.  combinaison quelconques des
+  mesures à rapatrier.  combinaison quelconques des
   valeurs '0', '1', '2', '3' ou '4' avec la correspondance
   suivante (attention ce doit être des chaînes de
   caractères) : \describe{ \item{'0'}{analyse ;}
@@ -42,11 +42,11 @@
   \item{conn}{une connexion valide telle que retournée par
   \code{\link{xrConnect}}.}
 
-  \item{start}{date initiale de la période à rappatrier (au
+  \item{start}{date initiale de la période à rapatrier (au
   format \code{\link[base]{POSIXct}} ou character pouvant
   être converti en \code{\link[base]{POSIXct}}).}
 
-  \item{end}{date de fin de la période à rappatrier (au
+  \item{end}{date de fin de la période à rapatrier (au
   format \code{\link[base]{POSIXct}} ou character pouvant
   être converti en \code{\link[base]{POSIXct}}).}
 
@@ -58,11 +58,11 @@
   \item{what}{un des éléments suivant ('value', 'state',
   'both'). value : seules les valeurs sont récupérées ;
   state : seuls les codes états sont récupérées ; both :
-  les deux sont rappatriés et un suffixe est ajouté au nom
+  les deux sont rapatriés et un suffixe est ajouté au nom
   des séries pour les différencier.}
 
   \item{campagnes}{chaînes de caractères correspondant aux
-  campagnes à rappatrier (optionnel) (utilisé via la
+  campagnes à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetCampagnes}}).}
 
   \item{tz}{timezone dans laquelle les données doivent être

@@ -17,16 +17,16 @@
   \item{pattern}{chaînes de caractères utilisées pour la
   recherche (cf \sQuote{Details}).}
 
-  \item{start}{date initiale de la période à rappatrier (au
+  \item{start}{date initiale de la période à rapatrier (au
   format \code{\link[base]{POSIXct}} ou character pouvant
   être converti en \code{\link[base]{POSIXct}}).}
 
-  \item{end}{date de fin de la période à rappatrier (au
+  \item{end}{date de fin de la période à rapatrier (au
   format \code{\link[base]{POSIXct}} ou character pouvant
   être converti en \code{\link[base]{POSIXct}}).}
 
   \item{period}{un des éléments suivant ('h', 'qh', 'd',
-  'm', 'y') précisant la période des données à rappatrier.}
+  'm', 'y') précisant la période des données à rapatrier.}
 
   \item{validated}{booléen. Si TRUE, les données sont
   récupérées dans la table normale de stockage de XR ; si
@@ -41,26 +41,26 @@
   \item{what}{un des éléments suivant ('value', 'state',
   'both'). value : seules les valeurs sont récupérées ;
   state : seuls les codes états sont récupérées ; both :
-  les deux sont rappatriés et un suffixe est ajouté au nom
+  les deux sont rapatriés et un suffixe est ajouté au nom
   des séries pour les différencier.}
 
   \item{search.fields}{champ de la table dans lesquels
   \code{pattern} doit être recherché.}
 
   \item{campagnes}{chaînes de caractères correspondant aux
-  campagnes à rappatrier (optionnel) (utilisé via la
+  campagnes à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetCampagnes}}).}
 
   \item{reseaux}{chaînes de caractères correspondant aux
-  réseaux à rappatrier (optionnel) (utilisé via la
+  réseaux à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetReseaux}}).}
 
   \item{stations}{chaînes de caractères correspondant aux
-  stations à rappatrier (optionnel) (utilisé via la
+  stations à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetStations}}).}
 
   \item{polluants}{chaînes de caractères correspondant aux
-  polluants à rappatrier (optionnel) (utilisé via la
+  polluants à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetPolluants}}).}
 
   \item{collapse}{conjonction à appliquer entre les
@@ -79,7 +79,7 @@
   respecter les conventions XR).}
 
   \item{exact}{booléen indiquant si les mesures à
-  rappatrier doivent être exactement identiques à
+  rapatrier doivent être exactement identiques à
   \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
   dans une expression régulière.}
 }

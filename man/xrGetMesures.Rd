@@ -22,26 +22,26 @@
   \code{pattern} doit être recherché.}
 
   \item{campagnes}{chaînes de caractères correspondant aux
-  campagnes à rappatrier (optionnel) (utilisé via la
+  campagnes à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetCampagnes}}).}
 
   \item{reseaux}{chaînes de caractères correspondant aux
-  réseaux à rappatrier (optionnel) (utilisé via la
+  réseaux à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetReseaux}}).}
 
   \item{stations}{chaînes de caractères correspondant aux
-  stations à rappatrier (optionnel) (utilisé via la
+  stations à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetStations}}).}
 
   \item{polluants}{chaînes de caractères correspondant aux
-  polluants à rappatrier (optionnel) (utilisé via la
+  polluants à rapatrier (optionnel) (utilisé via la
   fonction\code{\link{xrGetPolluants}}).}
 
   \item{collapse}{conjonction à appliquer entre les
   différents critères de recherche indiqués.}
 
   \item{exact}{booléen indiquant si les mesures à
-  rappatrier doivent être exactement identiques à
+  rapatrier doivent être exactement identiques à
   \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
   dans une expression régulière.}
 }

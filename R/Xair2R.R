@@ -9,13 +9,13 @@
 #' avec les versions antérieures de Qair.
 #' 
 #' @param polluants chaînes de caractères utilisées pour la recherche
-#' @param dated date initiale de la période à rappatrier (au format \code{\link[base]{POSIXct}} ou character
+#' @param dated date initiale de la période à rapatrier (au format \code{\link[base]{POSIXct}} ou character
 #'	pouvant être converti en \code{\link[base]{POSIXct}}).
-#' @param datef date de fin de la période à rappatrier (au format \code{\link[base]{POSIXct}} ou character
+#' @param datef date de fin de la période à rapatrier (au format \code{\link[base]{POSIXct}} ou character
 #'	pouvant être converti en \code{\link[base]{POSIXct}}).
-#' 	des mesures à rappatrier.
+#' 	des mesures à rapatrier.
 #' @param dt un des éléments suivant ('h', 'qh', 'd', 'm', 'y') précisant la période
-#' 	des données à rappatrier.
+#' 	des données à rapatrier.
 #' @param merging booléen. Si TRUE, les données sont récupérées dans la table normale
 #'	de stockage de XR ; si FALSE, les données sont récupérées dans la table \code{BRUTE}.
 #' @param codeV liste des codes états d'XR à considérer comme valide. Par défaut
