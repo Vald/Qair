@@ -257,20 +257,30 @@ mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul)
 	mesure <- identifiant
 	ncm <- unique (data[[grep ('NOM_COURT_MES', names (data))]])
 	data <- data[setdiff (names (data), c('NOM_COURT_MES') )]
-	
-	etats <- data[[grep ('ETAT', names (data))]]
-	data <- data[-grep ('ETAT', names (data))]
-	etats <- unlist (strsplit (etats, ''))
 
+	# attention, l'ordre de récupération/affectation de chaque 'type' de 
+	# données est primordial. Sinon la mise en forme n'est pas correcte.
+	
+	# extraction des dates à partir de data, détermination de l'ordre
+	# temporel des données et ré-ordonnage des dates
 	dates <- unique (data[[grep ('DATE', names (data))]])
 	data <- data[-grep ('DATE', names (data))]
 
-	# ordonnage temporel des trucs au-dessus (bordel !!!)
-
 	ordre <- order(dates)
-	data <- data[ordre,,drop=FALSE]
-	etats <- etats[ordre]
+
 	dates <- dates[ordre]
+
+	# extraction des etats à partir de data et ré-ordonnage temporel
+	# à partir de l'ordre déterminé ci-dessus
+	etats <- data[[grep ('ETAT', names (data))]]
+	data <- data[-grep ('ETAT', names (data))]
+
+	etats <- etats[ordre]
+	etats <- unlist (strsplit (etats, ''))
+
+	# ordonnage temporel de data
+
+	data <- data[ordre,,drop=FALSE]
 
 	tmp <- paste (rep (dates, each=length(data) ), names (data) )
 	if (period %in% c('Q_M01', 'H_M01') )
