@@ -1,3 +1,7 @@
+----------  Qair v2.4.3
+* correction d'un bug : pour la récupération des données journalières, la mise
+en forme des données pouvaient introduire des NA injustifiés. Problèmes résolus.
+
 ----------  Qair v2.4.1
 * Une évolution du paquet RODBC (version 1.1 ?) à entrainer l'aparition possible
 d'un petit bug : lorsqu'une variable de type string est rapatriée de la base
