@@ -46,20 +46,24 @@ xrGetQuery <- function (conn, query) {
 	# la requete, mais uniquement sur les dates
 
 	if( any(sapply(result, inherits, 'POSIXt')) ) {
+		var.to.get <- names(result)
 		date.var <- names(result)[sapply(result, inherits, 'POSIXt')]
 		date.var <- sprintf("TO_CHAR(%s, 'YYYY-MM-DD HH24:MI:SS') %s",
 				    date.var, date.var)
-		date.var <- sprintf('SELECT %s FROM TATA',
-				    paste( date.var, collapse=", " ))
 
-		query <- sprintf("WITH TATA AS (%s) %s", query, date.var)
+		var.to.get[sapply(result, inherits, 'POSIXt')] <- date.var
+
+		var.to.get <- sprintf('SELECT %s FROM TATA',
+				    paste( var.to.get, collapse=", " ))
+
+		query <- sprintf("WITH TATA AS (%s) %s", query, var.to.get)
 
 		if(options()$Xair.drv == 'odbc') {
-			date.var <- sqlQuery(conn, query, stringsAsFactors=FALSE)
+			result <- sqlQuery(conn, query, stringsAsFactors=FALSE)
 		} else if(options()$Xair.drv == 'oracle') {
-			date.var <- dbGetQuery(conn, query)
+			result <- dbGetQuery(conn, query)
 		} else if(options()$Xair.drv == 'jdbc') {
-			date.var <- dbGetQuery(conn, query)
+			result <- dbGetQuery(conn, query)
 		} else stop ('Unrecognized driver.')
 
 		for( i in names(date.var) )
