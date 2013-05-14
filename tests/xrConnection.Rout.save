@@ -1,7 +1,6 @@
 
-R version 2.15.3 (2013-03-01) -- "Security Blanket"
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
 Copyright (C) 2013 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -203,52 +202,52 @@ Loading required package: rJava
 1           <NA>     <NA>        <NA>            NA        9010             NA
   CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN
 1           6        16           18            23        NA              93
-  NB_VEHICULE RAYON_ACTION MODEM_TEMPO MODEM_RELAIS    IDENTIFIANT   typologie
-1          NA           NA        <NA>         <NA> CHASSENEUIL_PO Périurbaine
+  NB_VEHICULE RAYON_ACTION MODEM_TEMPO MODEM_RELAIS typologie
+1          NA           NA        <NA>         <NA>      <NA>
 > xrGetStations(xr, campagnes='ANG12')[-colonnes]
   NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
-1 9036      16  16113 Lafarge site sud        ANG_13
-2 9035      16  16113    Lafarge Ouest        ANG_12
+1 9035      16  16113    Lafarge Ouest        ANG_12
+2 9036      16  16113 Lafarge site sud        ANG_13
 3 9033      16  16113     Lafarge nord        ANG_14
                                      AXE CODE_POSTAL NO_TELEPHONE NO_ZONE
-1         Enceinte Lafarge Ciments (Sud)       16000            0    <NA>
-2 Enceinte Lafarge ciments (transfo EDF)       16000   0608903988    <NA>
+1 Enceinte Lafarge ciments (transfo EDF)       16000   0608903988    <NA>
+2         Enceinte Lafarge Ciments (Sud)       16000            0    <NA>
 3               22 bis route de Bordeaux       16000   0684786560    <NA>
   NO_RTC  MPST MPST1_U MPST2_U MPST3_U MPST4_U MPST5_U MPST_SU_LOCAL
 1      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
 2      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
 3      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
   MPST_NOUVEAU       LONGI      LATI ALTI LAMBERTX LAMBERTY NOM_GESTION DENSITE
-1        simon 0.001816354 0.7960876   50   425867  2070485        <NA>      NA
-2        simon 0.001801083 0.7961494   50   425811  2070880        <NA>      NA
+1        simon 0.001801083 0.7961494   50   425811  2070880        <NA>      NA
+2        simon 0.001816354 0.7960876   50   425867  2070485        <NA>      NA
 3        simon 0.001831820 0.7961813   50   425954  2071079        <NA>      NA
   DATE_RECENS ZON_IMPLANT NBRE_SOURCES NTMS    FSTA TADC_NUM TADC_TYP TCPU VERS
-1        <NA>        <NA>           NA    5 Argopol     <NA>     <NA> <NA> <NA>
-2        <NA>        <NA>           NA   38 Argopol     <NA>     <NA> <NA> <NA>
+1        <NA>        <NA>           NA   38 Argopol     <NA>     <NA> <NA> <NA>
+2        <NA>        <NA>           NA    5 Argopol     <NA>     <NA> <NA> <NA>
 3        <NA>        <NA>           NA    5 Argopol     <NA>     <NA> <NA> <NA>
   VERA TCOM DERNIER_QH BCOM  VCOM COMP NTPC1 NTPC2    MPPC           TMAC
-1 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000001000
-2 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000000200
+1 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000000200
+2 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000001000
 3 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000003000
             TAAR           TAAC NMAP TRAA           TRAD           TMSD
-1 00000000000100 00000000000200    3 <NA> 00000000001000 00000000000100
-2 00000000000100 00000000000030    1 <NA> 00000000001500 00000000000100
+1 00000000000100 00000000000030    1 <NA> 00000000001500 00000000000100
+2 00000000000100 00000000000200    3 <NA> 00000000001000 00000000000100
 3 00000000000100 00000000000030    1 <NA> 00000000001500 00000000000100
          DATE_DEB_SCRUT PERIODE_SCRUT OFFSET_SCRUT WEEKEND_SCRUT NBRE_QH_MEM
-1 1997-11-06 00:00:00.0            12           93             1         480
-2 2004-05-17 01:00:00.0             4           96             1         480
+1 2004-05-17 01:00:00.0             4           96             1         480
+2 1997-11-06 00:00:00.0            12           93             1         480
 3 2009-05-17 01:00:00.0             4           95             1         480
   FLAG_FORCAGE FLAG_VALID DDMO          D_SUSP_ACTIV            D_FIN_SUSP
-1         <NA>          0 <NA> 1997-01-01 00:00:00.0 1997-01-01 00:00:00.0
-2         <NA>          0 <NA> 2004-05-17 00:00:00.0 2004-05-17 00:00:00.0
+1         <NA>          0 <NA> 2004-05-17 00:00:00.0 2004-05-17 00:00:00.0
+2         <NA>          0 <NA> 1997-01-01 00:00:00.0 1997-01-01 00:00:00.0
 3         <NA>          0 <NA> 2004-05-17 00:00:00.0 2004-05-17 00:00:00.0
              D_CREATION               D_ARRET NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46.0 2011-06-23 14:59:33.0      <NA>  <NA>  <NA>      <NA>
-2 2011-02-21 15:17:38.0 2011-06-23 14:59:33.0      <NA>  <NA>  <NA>      <NA>
+1 2011-02-21 15:17:38.0 2011-06-23 14:59:33.0      <NA>  <NA>  <NA>      <NA>
+2 2011-03-18 12:58:46.0 2011-06-23 14:59:33.0      <NA>  <NA>  <NA>      <NA>
 3 2011-03-18 13:10:32.0 2011-06-23 14:59:33.0      <NA>  <NA>  <NA>      <NA>
   ISIT_LONG MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE AN_FIN_FORCAGE
-1      <NA>    SAMEX54         2        8             NA             NA
-2      <NA>  SAMSK2V54         2        8             NA             NA
+1      <NA>  SAMSK2V54         2        8             NA             NA
+2      <NA>    SAMEX54         2        8             NA             NA
 3      <NA>  SAMSK2V54         2        8             NA             NA
   QH_DEB_FORCAGE QH_FIN_FORCAGE DERNIER_AN DER_TENT_SCRUT SCRUT_EN_COURS
 1             NA             NA         NA           <NA>             NA
@@ -263,51 +262,51 @@ Loading required package: rJava
 2         <NA>         <NA>           <NA>     <NA>        <NA>            NA
 3         <NA>         <NA>           <NA>     <NA>        <NA>            NA
   NSIT_PUBLIC SUPERVISION_TR CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE
-1        9036             NA           6        16           18            23
-2        9035             NA          NA        NA           NA            NA
+1        9035             NA          NA        NA           NA            NA
+2        9036             NA           6        16           18            23
 3        9033             NA          NA        NA           NA            NA
   TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION    MODEM_TEMPO
-1        NA              93          NA           NA 00000000030000
-2        NA              NA          NA           NA 00000000000000
+1        NA              NA          NA           NA 00000000000000
+2        NA              93          NA           NA 00000000030000
 3        NA              NA          NA           NA 00000000000000
-  MODEM_RELAIS IDENTIFIANT   typologie
-1           16      ANG_13 Périurbaine
-2         <NA>      ANG_12        <NA>
-3         <NA>      ANG_14        <NA>
+  MODEM_RELAIS typologie
+1         <NA>      <NA>
+2           16      <NA>
+3         <NA>      <NA>
 > xrGetStations(xr, campagnes='ANG12', mesures='24')[-colonnes]
   NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
-1 9036      16  16113 Lafarge site sud        ANG_13
-2 9035      16  16113    Lafarge Ouest        ANG_12
+1 9035      16  16113    Lafarge Ouest        ANG_12
+2 9036      16  16113 Lafarge site sud        ANG_13
                                      AXE CODE_POSTAL NO_TELEPHONE NO_ZONE
-1         Enceinte Lafarge Ciments (Sud)       16000            0    <NA>
-2 Enceinte Lafarge ciments (transfo EDF)       16000   0608903988    <NA>
+1 Enceinte Lafarge ciments (transfo EDF)       16000   0608903988    <NA>
+2         Enceinte Lafarge Ciments (Sud)       16000            0    <NA>
   NO_RTC  MPST MPST1_U MPST2_U MPST3_U MPST4_U MPST5_U MPST_SU_LOCAL
 1      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
 2      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
   MPST_NOUVEAU       LONGI      LATI ALTI LAMBERTX LAMBERTY NOM_GESTION DENSITE
-1        simon 0.001816354 0.7960876   50   425867  2070485        <NA>      NA
-2        simon 0.001801083 0.7961494   50   425811  2070880        <NA>      NA
+1        simon 0.001801083 0.7961494   50   425811  2070880        <NA>      NA
+2        simon 0.001816354 0.7960876   50   425867  2070485        <NA>      NA
   DATE_RECENS ZON_IMPLANT NBRE_SOURCES NTMS    FSTA TADC_NUM TADC_TYP TCPU VERS
-1        <NA>        <NA>           NA    5 Argopol     <NA>     <NA> <NA> <NA>
-2        <NA>        <NA>           NA   38 Argopol     <NA>     <NA> <NA> <NA>
+1        <NA>        <NA>           NA   38 Argopol     <NA>     <NA> <NA> <NA>
+2        <NA>        <NA>           NA    5 Argopol     <NA>     <NA> <NA> <NA>
   VERA TCOM DERNIER_QH BCOM  VCOM COMP NTPC1 NTPC2    MPPC           TMAC
-1 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000001000
-2 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000000200
+1 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000000200
+2 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000001000
             TAAR           TAAC NMAP TRAA           TRAD           TMSD
-1 00000000000100 00000000000200    3 <NA> 00000000001000 00000000000100
-2 00000000000100 00000000000030    1 <NA> 00000000001500 00000000000100
+1 00000000000100 00000000000030    1 <NA> 00000000001500 00000000000100
+2 00000000000100 00000000000200    3 <NA> 00000000001000 00000000000100
          DATE_DEB_SCRUT PERIODE_SCRUT OFFSET_SCRUT WEEKEND_SCRUT NBRE_QH_MEM
-1 1997-11-06 00:00:00.0            12           93             1         480
-2 2004-05-17 01:00:00.0             4           96             1         480
+1 2004-05-17 01:00:00.0             4           96             1         480
+2 1997-11-06 00:00:00.0            12           93             1         480
   FLAG_FORCAGE FLAG_VALID DDMO          D_SUSP_ACTIV            D_FIN_SUSP
-1         <NA>          0 <NA> 1997-01-01 00:00:00.0 1997-01-01 00:00:00.0
-2         <NA>          0 <NA> 2004-05-17 00:00:00.0 2004-05-17 00:00:00.0
+1         <NA>          0 <NA> 2004-05-17 00:00:00.0 2004-05-17 00:00:00.0
+2         <NA>          0 <NA> 1997-01-01 00:00:00.0 1997-01-01 00:00:00.0
              D_CREATION               D_ARRET NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46.0 2011-06-23 14:59:33.0      <NA>  <NA>  <NA>      <NA>
-2 2011-02-21 15:17:38.0 2011-06-23 14:59:33.0      <NA>  <NA>  <NA>      <NA>
+1 2011-02-21 15:17:38.0 2011-06-23 14:59:33.0      <NA>  <NA>  <NA>      <NA>
+2 2011-03-18 12:58:46.0 2011-06-23 14:59:33.0      <NA>  <NA>  <NA>      <NA>
   ISIT_LONG MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE AN_FIN_FORCAGE
-1      <NA>    SAMEX54         2        8             NA             NA
-2      <NA>  SAMSK2V54         2        8             NA             NA
+1      <NA>  SAMSK2V54         2        8             NA             NA
+2      <NA>    SAMEX54         2        8             NA             NA
   QH_DEB_FORCAGE QH_FIN_FORCAGE DERNIER_AN DER_TENT_SCRUT SCRUT_EN_COURS
 1             NA             NA         NA           <NA>             NA
 2             NA             NA         NA           <NA>             NA
@@ -318,14 +317,14 @@ Loading required package: rJava
 1         <NA>         <NA>           <NA>     <NA>        <NA>            NA
 2         <NA>         <NA>           <NA>     <NA>        <NA>            NA
   NSIT_PUBLIC SUPERVISION_TR CLASSE_SITE SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE
-1        9036             NA           6        16           18            23
-2        9035             NA          NA        NA           NA            NA
+1        9035             NA          NA        NA           NA            NA
+2        9036             NA           6        16           18            23
   TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION    MODEM_TEMPO
-1        NA              93          NA           NA 00000000030000
-2        NA              NA          NA           NA 00000000000000
-  MODEM_RELAIS IDENTIFIANT   typologie
-1           16      ANG_13 Périurbaine
-2         <NA>      ANG_12        <NA>
+1        NA              NA          NA           NA 00000000000000
+2        NA              93          NA           NA 00000000030000
+  MODEM_RELAIS typologie
+1         <NA>      <NA>
+2           16      <NA>
 > 
 > summary(xrGetSitesPrelevement(xr, 'TLAROC_L'))
     NRESSURV      NSIT         IDSITEP            LIBELLE         
@@ -648,4 +647,4 @@ Loading required package: rJava
 > 
 > proc.time()
    user  system elapsed 
-  9.270   0.380   8.811 
+  8.810   0.510   8.717 
