@@ -48,6 +48,12 @@
 #' 	(optionnel) (utilisé via la fonction\code{\link{xrGetCampagnes}}).
 #' @param reseaux chaînes de caractères correspondant aux réseaux à rapatrier
 #' 	(optionnel) (utilisé via la fonction\code{\link{xrGetReseaux}}).
+#'  si c'est un vecteur, est directement utilisé comme pattern pour la fonction
+#'  xrGetResaux. Si c'est une liste, les éléments doivent être nommés. Chaque
+#'  élément est alors utilisé comme argument pour la fonction xrGetPolluants.
+#'   pattern doit alors est précisé :
+#'
+#'  \code{... list(pattern='R-O3', search.fields=...) ...}
 #' @param stations chaînes de caractères correspondant aux stations à rapatrier
 #' 	(optionnel) (utilisé via la fonction\code{\link{xrGetStations}}).
 #' @param polluants chaînes de caractères correspondant aux polluants à rapatrier
