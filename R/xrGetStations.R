@@ -41,7 +41,9 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 					type=ifelse(exact, 'IN', 'LIKE'))
 
 	if (!is.null (campagnes) ) {
-		q$campagnes <- unique (xrGetCampagnes (conn, pattern = campagnes)$NOM_COURT_CM)
+		if( !is.list(campagnes) )
+			q$campagnes <- unique (xrGetCampagnes (conn, pattern = campagnes)$NOM_COURT_CM) else
+			q$campagnes <- unique(do.call(xrGetCampagnes, c(conn=conn, campagnes))$NOM_COURT_CM)
 		if (length(q$campagnes) == 0) q$campagnes <- NULL else {
 			q$tables <- c(q$tables, 'CAMPMES_STATION')
 			q$campagnes <- sprintf(
