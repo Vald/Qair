@@ -1,3 +1,12 @@
+----------  Qair v2.5.0
+* Les fonctions xrGetContinuousData, xrGetMesures et xrGetStations font appel aux
+fonctions xrGetReseaux et/ou xrGetCampagnes avec les arguments par défaut et
+éventuellement l'argument "pattern" qui peut être modifié (via l'arguement 
+initial "reseaux" ou "campagnes").
+Désormais, si "reseaux" et/ou "camapgnes" est une liste, les éléments nommées
+de cette liste permettent de préciser directement les arguments des fonctions
+xrGetReseaux/xrGetCampagnes.
+
 ----------  Qair v2.4.4
 * correction de dysfonctionnements introduits par les modifications précédentes
 
