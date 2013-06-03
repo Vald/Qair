@@ -78,7 +78,7 @@ function (conn, agglos, start, end, detail=FALSE,
 		names(ss.indices)[names(ss.indices) == 'C_SS_INDICE_DIFF'] <-
 			'C_IND_DIFFUSE'
 
-		pols <- xrGetPolluants(xr, unique(ss.indices$NOPOL),
+		pols <- xrGetPolluants(conn, unique(ss.indices$NOPOL),
 			      search.fields='NOPOL')[c('NOPOL', 'CCHIM')]
 
 		ss.indices$NOPOL <- pols$CCHIM[match(ss.indices$NOPOL, pols$NOPOL)]
