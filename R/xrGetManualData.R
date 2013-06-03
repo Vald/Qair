@@ -67,7 +67,7 @@ xrGetManualData <-
 	if (!is.null (polluants) ) {
 		if( !is.list(polluants) )
 			polluants <- xrGetPolluants (conn, polluants) else
-			polluants <- do.call(xrGetPolluants, c(conn=conn, polluants))
+			polluants <- do.call(xrGetPolluants, c(list(conn=conn), polluants))
 		q$polluants <- paste ("'", polluants$NOPOL, "'", sep='', collapse=', ')
 	}
 	if (!is.null (methodes) ) {

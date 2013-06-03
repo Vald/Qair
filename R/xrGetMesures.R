@@ -35,7 +35,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	if (!is.null (reseaux) ) {
 		if( !is.list(reseaux) )
 			q$reseaux <- unique (xrGetReseaux (conn, pattern = reseaux)$NOM_COURT_RES) else
-			q$reseaux <- unique(do.call(xrGetReseaux, c(conn=conn, reseaux))$NOM_COURT_RES)
+			q$reseaux <- unique(do.call(xrGetReseaux, c(list(conn=conn), reseaux))$NOM_COURT_RES)
 
 		if (length(q$reseaux) == 0) q$reseaux <- NULL else {
 			q$tables <- c(q$tables, 'RESEAUMES')
