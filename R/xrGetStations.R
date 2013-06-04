@@ -66,11 +66,10 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
 
 	stations <- unique (xrGetQuery (conn, query) )
-	names (stations)[length(stations)] <- 'tada'
 
 	temp <- xrGetQuery (conn, "SELECT CLE, LIBELLE FROM LISTE_META_DONNEES WHERE CODE_ID_LISTE='CL_SITE'")
 	names (temp)[2] <- 'typologie'
-	stations <- merge (stations, temp, by.x='tada', by.y='CLE', all.x=TRUE, all.y=FALSE)
+	stations <- merge (stations, temp, by.x='CLASSE_SITE', by.y='CLE', all.x=TRUE, all.y=FALSE)
 	stations[setdiff(names(stations), 'tada')]
 }
 
