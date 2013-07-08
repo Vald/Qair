@@ -220,10 +220,19 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	result$start <- result$end <- NULL
 	rm (data)
 
-	for (i in setdiff(mesures$NOM_COURT_MES, names(result) ) )
+	for (i in setdiff(mesures$NOM_COURT_MES, names(result) ) ) {
 		result[[i]] <- NA
-	result <- result[mesures$NOM_COURT_MES]
-	names (result) <- mesures[[id.field]][match(names(result), mesures$NOM_COURT_MES)]
+		if( what == 'both' )
+			result[[paste(i, 'state', sep='.')]] <- NA
+	}
+
+	result <- result[paste(rep(mesures$NOM_COURT_MES, each=switch(what, both=2, 1)),
+			       switch(what, both=c('', '.state')), sep='')]
+
+	names( result ) <- paste(
+		rep(mesures[[id.field]], each=switch(what, both=2, 1)),
+  		switch(what, both=c('', '.state')), sep='')
+		
 
 	# recuperation des infos
 	q$stations <- xrGetStations (conn, pattern=mesures$NOM_COURT_SIT, search.fields='NOM_COURT_SIT')

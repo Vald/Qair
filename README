@@ -1,3 +1,6 @@
+----------  Qair v2.5.3
+integration de correction mineur depuis la version 2.4.7
+
 ----------  Qair v2.5.1,v2.5.2
 corrections de bugs mineurs
 
@@ -10,6 +13,13 @@ Désormais, si "reseaux" et/ou "camapgnes" est une liste, les éléments nommées
 de cette liste permettent de préciser directement les arguments des fonctions
 xrGetReseaux/xrGetCampagnes.
 
+----------  Qair v2.4.7
+reglage d'un bug sur l'argument what='both' de la fonction xrgetContinuousData
+
+----------  Qair v2.4.6
+reglage d'un bug sur la typologie des stations (xrGetStations)
+
+>>>>>>> master
 ----------  Qair v2.4.5
 * correction d'un bug mineur dans la fonction indicesXR2R
 
