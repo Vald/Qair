@@ -1,3 +1,9 @@
+----------  Qair v2.4.7
+reglage d'un bug sur l'argument what='both' de la fonction xrgetContinuousData
+
+----------  Qair v2.4.6
+reglage d'un bug sur la typologie des stations (xrGetStations)
+
 ----------  Qair v2.4.5
 * correction d'un bug mineur dans la fonction indicesXR2R
 
