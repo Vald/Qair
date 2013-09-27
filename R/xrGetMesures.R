@@ -46,9 +46,17 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	}
 
 	if (!is.null (stations) | !is.null (campagnes) | !is.null(reseaux) ) {
-		q$stations <- unique (xrGetStations (conn, collapse = gsub (' ', '', collapse),
+		if(!is.list(stations)) {
+			q$stations <- unique (xrGetStations (
+						     conn, collapse = gsub (' ', '', collapse),
 						     pattern = stations,
 						     reseaux=reseaux, campagnes=campagnes)$NOM_COURT_SIT)
+		} else {
+			stations$reseaux <- unique(c(stations$reseaux, reseaux))
+			stations$campagnes <- unique(c(stations$campagnes, campagnes))
+			stations$collapse <- gsub(' ', '', collapse)
+			q$stations <- unique(do.call(xrGetStations, c(list(conn=conn), stations))$NOM_COURT_SIT)
+		}
 		if (length(q$stations) == 0) q$stations <- NULL else {
 			q$tables <- c(q$tables, 'STATION')
 			q$stations <- sprintf(

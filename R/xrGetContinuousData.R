@@ -49,7 +49,7 @@
 #'  si c'est un vecteur, est directement utilisé comme pattern pour la fonction
 #'  xrGetCampagnes Si c'est une liste, les éléments doivent être nommés. Chaque
 #'  élément est alors utilisé comme argument pour la fonction xrGetCampagnes
-#'   pattern doit alors est précisé :
+#'   pattern doit alors être précisé :
 #'
 #'  \code{... list(pattern='POITIERS_003', search.fields='NOM_COURT_CM') ...}
 #' @param reseaux chaînes de caractères correspondant aux réseaux à rapatrier
@@ -62,6 +62,12 @@
 #'  \code{... list(pattern='R-O3', search.fields='NOM_COURT_RES') ...}
 #' @param stations chaînes de caractères correspondant aux stations à rapatrier
 #' 	(optionnel) (utilisé via la fonction\code{\link{xrGetStations}}).
+#'  si c'est un vecteur, est directement utilisé comme pattern pour la fonction
+#'  xrGetStations. Si C'est une liste, les éléments doivent être nommés. Chaque
+#'  élément est alors utilisé comme argument pour la fonction xrGetStations.
+#'  pattern doit alors être précisé :
+#' 
+#'  \code{... list(pattern = 'VERDUN', search.fields = 'IDENTIFIANT') ...}
 #' @param polluants chaînes de caractères correspondant aux polluants à rapatrier
 #' 	(optionnel) (utilisé via la fonction\code{\link{xrGetPolluants}}).
 #' @param collapse conjonction à appliquer entre les différents critères de recherche
