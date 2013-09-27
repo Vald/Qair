@@ -6,6 +6,12 @@
 #' @inheritParams xrGetContinuousData
 #' @param mesures chaînes de caractères correspondant aux mesures à rapatrier
 #' 	(optionnel) (utilisé via la fonction \code{\link{xrGetMesures}}).
+#'  si c'est un vecteur, est directement utilisé comme pattern pour la fonction
+#'  xrGetMesures Si C'est une liste, les éléments doivent être nommés. Chaque
+#'  élément est alors utilisé comme argument pour la fonction xrGetMesures
+#'  pattern doit alors être précisé :
+#' 
+#'  \code{... list(pattern = 'N2_VER', search.fields = 'IDENTIFIANT') ...}
 #' @param fields vecteurs indiquant les champs de la table à récupérer.
 #'	Tous par défaut.
 #'
@@ -31,7 +37,9 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 	q$tables <- 'STATION'
 
 	if (!is.null (mesures) ) {
-		q$mesures <- unique (xrGetMesures (conn, pattern = mesures)$NOM_COURT_SIT)
+		if( !is.list(mesures) )
+			q$mesures <- unique (xrGetMesures (conn, pattern = mesures)$NOM_COURT_SIT) else
+			q$mesures <- unique(do.call(xrGetMesures, c(list(conn=conn), mesures))$NOM_COURT_SIT)
 		q$mesures <- match.pattern.fields (q$mesures, 'STATION.NOM_COURT_SIT', 'IN')
 	}
 

@@ -28,7 +28,10 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = c('IDSIT
 					type=ifelse(exact, 'IN', 'LIKE'))
 
 	if (!is.null (campagnes) ) {
-		q$campagnes <- unique (xrGetCampagnes (conn, pattern = campagnes)$NOM_COURT_CM)
+		if( !is.list(campagnes) )
+			q$campagnes <- unique (xrGetCampagnes (conn, pattern = campagnes)$NOM_COURT_CM) else
+			q$campagnes <- unique(do.call(xrGetCampagnes, c(list(conn=conn), campagnes))$NOM_COURT_CM)
+
 		if (length(q$campagnes) == 0) q$campagnes <- NULL else {
 			q$tables <- c(q$tables, 'CAMPMES_SITE_P')
 			q$campagnes <- sprintf(

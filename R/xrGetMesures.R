@@ -66,7 +66,10 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	}
 
 	if (!is.null (polluants) ) {
-		q$polluants <- unique (xrGetPolluants (conn, pattern = polluants)$NOPOL)
+		if( !is.list(polluants) )
+			polluants <- xrGetPolluants (conn, polluants) else
+			polluants <- do.call(xrGetPolluants, c(list(conn=conn), polluants))
+		q$polluants <- unique(polluants$NOPOL)
 
 		if (length(q$polluants) == 0) q$polluants <- NULL else {
 			q$tables <- c(q$tables, 'NOM_MESURE')
