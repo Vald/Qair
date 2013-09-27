@@ -11,7 +11,15 @@
 \arguments{
   \item{mesures}{chaînes de caractères correspondant aux
   mesures à rapatrier (optionnel) (utilisé via la fonction
-  \code{\link{xrGetMesures}}).}
+  \code{\link{xrGetMesures}}).  si c'est un vecteur, est
+  directement utilisé comme pattern pour la fonction
+  xrGetMesures Si C'est une liste, les éléments doivent
+  être nommés. Chaque élément est alors utilisé comme
+  argument pour la fonction xrGetMesures pattern doit alors
+  être précisé :
+
+  \code{... list(pattern = 'N2_VER', search.fields =
+  'IDENTIFIANT') ...}}
 
   \item{fields}{vecteurs indiquant les champs de la table à
   récupérer.  Tous par défaut.}

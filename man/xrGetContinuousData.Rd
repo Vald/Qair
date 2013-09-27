@@ -85,7 +85,15 @@
 
   \item{polluants}{chaînes de caractères correspondant aux
   polluants à rapatrier (optionnel) (utilisé via la
-  fonction\code{\link{xrGetPolluants}}).}
+  fonction\code{\link{xrGetPolluants}}).  si c'est un
+  vecteur, est directement utilisé comme pattern pour la
+  fonction xrGetPolluants. Si C'est une liste, les éléments
+  doivent être nommés. Chaque élément est alors utilisé
+  comme argument pour la fonction xrGetPolluants.  pattern
+  doit alors être précisé :
+
+  \code{... list(pattern = 'O3', search.fields = 'CCHIM')
+  ...}}
 
   \item{collapse}{conjonction à appliquer entre les
   différents critères de recherche indiqués.}
