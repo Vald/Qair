@@ -1,3 +1,10 @@
+----------  Qair v2.5.4
+Les fonctions xrGetContinuousData et xrGetMesures font appel à la fonction
+xrGetStations avec les arguements par défaut et éventuellement l'argument
+pattern qui peut être modifié (via l'argument initial 'stations').
+Désormais, si 'stations' est une list, les éléments nommés de cette liste
+permettent de préciser directement les arguements de la fonction xrGetStations.
+
 ----------  Qair v2.5.3
 integration de correction mineur depuis la version 2.4.7
 
@@ -9,7 +16,7 @@ corrections de bugs mineurs
 fonctions xrGetReseaux et/ou xrGetCampagnes avec les arguments par défaut et
 éventuellement l'argument "pattern" qui peut être modifié (via l'arguement 
 initial "reseaux" ou "campagnes").
-Désormais, si "reseaux" et/ou "camapgnes" est une liste, les éléments nommées
+Désormais, si "reseaux" et/ou "camapgnes" est une liste, les éléments nommés
 de cette liste permettent de préciser directement les arguments des fonctions
 xrGetReseaux/xrGetCampagnes.
 
@@ -19,7 +26,6 @@ reglage d'un bug sur l'argument what='both' de la fonction xrgetContinuousData
 ----------  Qair v2.4.6
 reglage d'un bug sur la typologie des stations (xrGetStations)
 
->>>>>>> master
 ----------  Qair v2.4.5
 * correction d'un bug mineur dans la fonction indicesXR2R
 
