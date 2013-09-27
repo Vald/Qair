@@ -54,10 +54,10 @@
   contenant les indices pour la période demandée.
 }
 \description{
-  La fonction permet de rapatrier les indices de la
-  qualité de l'air stocké dans une base XR. Pour connaître
-  la liste des réseaux d'indices definis, il suffit
-  d'invoquer la fonction sans arguments.
+  La fonction permet de rapatrier les indices de la qualité
+  de l'air stocké dans une base XR. Pour connaître la liste
+  des réseaux d'indices definis, il suffit d'invoquer la
+  fonction sans arguments.
 }
 \author{
   Fabrice Caïni, Vladislav Navel

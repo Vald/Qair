@@ -49,15 +49,39 @@
 
   \item{reseaux}{chaînes de caractères correspondant aux
   réseaux à rapatrier (optionnel) (utilisé via la
-  fonction\code{\link{xrGetReseaux}}).}
+  fonction\code{\link{xrGetReseaux}}).  si c'est un
+  vecteur, est directement utilisé comme pattern pour la
+  fonction xrGetResaux. Si c'est une liste, les éléments
+  doivent être nommés. Chaque élément est alors utilisé
+  comme argument pour la fonction xrGetReseaux.  pattern
+  doit alors est précisé :
+
+  \code{... list(pattern='R-O3',
+  search.fields='NOM_COURT_RES') ...}}
 
   \item{stations}{chaînes de caractères correspondant aux
   stations à rapatrier (optionnel) (utilisé via la
-  fonction\code{\link{xrGetStations}}).}
+  fonction\code{\link{xrGetStations}}).  si c'est un
+  vecteur, est directement utilisé comme pattern pour la
+  fonction xrGetStations. Si C'est une liste, les éléments
+  doivent être nommés. Chaque élément est alors utilisé
+  comme argument pour la fonction xrGetStations.  pattern
+  doit alors être précisé :
+
+  \code{... list(pattern = 'VERDUN', search.fields =
+  'IDENTIFIANT') ...}}
 
   \item{campagnes}{chaînes de caractères correspondant aux
   campagnes à rapatrier (optionnel) (utilisé via la
-  fonction\code{\link{xrGetCampagnes}}).}
+  fonction\code{\link{xrGetCampagnes}}).  si c'est un
+  vecteur, est directement utilisé comme pattern pour la
+  fonction xrGetCampagnes Si c'est une liste, les éléments
+  doivent être nommés. Chaque élément est alors utilisé
+  comme argument pour la fonction xrGetCampagnes pattern
+  doit alors être précisé :
+
+  \code{... list(pattern='POITIERS_003',
+  search.fields='NOM_COURT_CM') ...}}
 
   \item{dsn}{Nom de la base de données (cf le pilote
   concerné, JDBC, ODBC ou Oracle).  optionnel : sera

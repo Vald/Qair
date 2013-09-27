@@ -30,14 +30,13 @@
   fonction\code{\link{xrGetMethodesPrelevement}}).}
 
   \item{categories}{vecteur indiquant les categories des
-  mesures à rapatrier.  combinaison quelconques des
-  valeurs '0', '1', '2', '3' ou '4' avec la correspondance
-  suivante (attention ce doit être des chaînes de
-  caractères) : \describe{ \item{'0'}{analyse ;}
-  \item{'1'}{contrôle ;} \item{'2'}{blanc terrain ;}
-  \item{'3'}{blanc laboratoire ;} \item{'4'}{blanc
-  transport.} } Par défaut, toutes les catégories de
-  mesures sont récupérées.}
+  mesures à rapatrier.  combinaison quelconques des valeurs
+  '0', '1', '2', '3' ou '4' avec la correspondance suivante
+  (attention ce doit être des chaînes de caractères) :
+  \describe{ \item{'0'}{analyse ;} \item{'1'}{contrôle ;}
+  \item{'2'}{blanc terrain ;} \item{'3'}{blanc laboratoire
+  ;} \item{'4'}{blanc transport.} } Par défaut, toutes les
+  catégories de mesures sont récupérées.}
 
   \item{conn}{une connexion valide telle que retournée par
   \code{\link{xrConnect}}.}
@@ -63,7 +62,15 @@
 
   \item{campagnes}{chaînes de caractères correspondant aux
   campagnes à rapatrier (optionnel) (utilisé via la
-  fonction\code{\link{xrGetCampagnes}}).}
+  fonction\code{\link{xrGetCampagnes}}).  si c'est un
+  vecteur, est directement utilisé comme pattern pour la
+  fonction xrGetCampagnes Si c'est une liste, les éléments
+  doivent être nommés. Chaque élément est alors utilisé
+  comme argument pour la fonction xrGetCampagnes pattern
+  doit alors être précisé :
+
+  \code{... list(pattern='POITIERS_003',
+  search.fields='NOM_COURT_CM') ...}}
 
   \item{tz}{timezone dans laquelle les données doivent être
   retournées. Si les dates debut et fin sont des chaînes de

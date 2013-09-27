@@ -19,10 +19,10 @@
   \item{search.fields}{champ de la table dans lesquels
   \code{pattern} doit être recherché.}
 
-  \item{exact}{booléen indiquant si les mesures à
-  rapatrier doivent être exactement identiques à
-  \sQuote{pattern} ou si \sQuote{pattern} doit être utilisé
-  dans une expression régulière.}
+  \item{exact}{booléen indiquant si les mesures à rapatrier
+  doivent être exactement identiques à \sQuote{pattern} ou
+  si \sQuote{pattern} doit être utilisé dans une expression
+  régulière.}
 }
 \value{
   une data.frame correspondant au contenu de la table pour
