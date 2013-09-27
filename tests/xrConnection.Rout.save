@@ -242,9 +242,9 @@ Loading required package: rJava
 2         <NA>          0 <NA> 2004-05-17 00:00:00.0 2004-05-17 00:00:00.0
 3         <NA>          0 <NA> 2004-05-17 00:00:00.0 2004-05-17 00:00:00.0
              D_CREATION             D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46.0 2013-03-12 08:45:33.0      <NA>  <NA>  <NA>      <NA>
+1 2011-03-18 12:58:46.0 2013-09-24 12:18:33.0      <NA>  <NA>  <NA>      <NA>
 2 2011-02-21 15:17:38.0 2013-02-19 08:07:23.0      <NA>  <NA>  <NA>      <NA>
-3 2011-03-18 13:10:32.0 2013-02-25 15:16:38.0      <NA>  <NA>  <NA>      <NA>
+3 2011-03-18 13:10:32.0 2013-07-25 14:06:36.0      <NA>  <NA>  <NA>      <NA>
      D_SYNCHRO_CRITIQUE MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE
 1 2011-03-22 11:37:51.0    SAMEX54         2        8             NA
 2 2011-03-22 13:52:00.0  SAMSK2V54         2        8             NA
@@ -302,7 +302,7 @@ Loading required package: rJava
 1         <NA>          0 <NA> 1997-01-01 00:00:00.0 1997-01-01 00:00:00.0
 2         <NA>          0 <NA> 2004-05-17 00:00:00.0 2004-05-17 00:00:00.0
              D_CREATION             D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46.0 2013-03-12 08:45:33.0      <NA>  <NA>  <NA>      <NA>
+1 2011-03-18 12:58:46.0 2013-09-24 12:18:33.0      <NA>  <NA>  <NA>      <NA>
 2 2011-02-21 15:17:38.0 2013-02-19 08:07:23.0      <NA>  <NA>  <NA>      <NA>
      D_SYNCHRO_CRITIQUE MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE
 1 2011-03-22 11:37:51.0    SAMEX54         2        8             NA
@@ -647,4 +647,4 @@ Loading required package: rJava
 > 
 > proc.time()
    user  system elapsed 
- 10.080   0.450   9.181 
+ 11.280   0.580  12.377 
