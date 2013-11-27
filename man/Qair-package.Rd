@@ -37,8 +37,8 @@
 \tabular{ll}{
 Package: \tab Qair\cr
 Type: \tab Package\cr
-Version: \tab 2.6\cr
-Date: \tab 2013-11-22\cr
+Version: \tab 3.0.0\cr
+Date: \tab 2013-11-27\cr
 License: \tab GPL\cr
 }
 }
