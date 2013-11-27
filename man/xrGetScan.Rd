@@ -1,0 +1,113 @@
+\name{xrGetScan}
+\alias{xrGetScan}
+\title{Fonction pour recuperer des donnees scan de XR}
+\usage{
+  xrGetScan(conn, pattern = NULL, start, end,
+    search.fields, campagnes = NULL, reseaux = NULL,
+    stations = NULL, polluants = NULL,
+    collapse = c("AND", "OR"), XR6 = TRUE, tz = "UTC",
+    cursor = NULL, exact = FALSE)
+}
+\arguments{
+  \item{conn}{une connexion valide telle que retournée par
+  \code{\link{xrConnect}}.}
+
+  \item{pattern}{chaînes de caractères utilisées pour la
+  recherche (cf \sQuote{Details}).}
+
+  \item{start}{date initiale de la période à rapatrier (au
+  format \code{\link[base]{POSIXct}} ou character pouvant
+  être converti en \code{\link[base]{POSIXct}}).}
+
+  \item{end}{date de fin de la période à rapatrier (au
+  format \code{\link[base]{POSIXct}} ou character pouvant
+  être converti en \code{\link[base]{POSIXct}}).}
+
+  \item{search.fields}{champ de la table dans lesquels
+  \code{pattern} doit être recherché.}
+
+  \item{campagnes}{chaînes de caractères correspondant aux
+  campagnes à rapatrier (optionnel) (utilisé via la
+  fonction\code{\link{xrGetCampagnes}}).  si c'est un
+  vecteur, est directement utilisé comme pattern pour la
+  fonction xrGetCampagnes Si c'est une liste, les éléments
+  doivent être nommés. Chaque élément est alors utilisé
+  comme argument pour la fonction xrGetCampagnes pattern
+  doit alors être précisé :
+
+  \code{... list(pattern='POITIERS_003',
+  search.fields='NOM_COURT_CM') ...}}
+
+  \item{reseaux}{chaînes de caractères correspondant aux
+  réseaux à rapatrier (optionnel) (utilisé via la
+  fonction\code{\link{xrGetReseaux}}).  si c'est un
+  vecteur, est directement utilisé comme pattern pour la
+  fonction xrGetResaux. Si c'est une liste, les éléments
+  doivent être nommés. Chaque élément est alors utilisé
+  comme argument pour la fonction xrGetReseaux.  pattern
+  doit alors est précisé :
+
+  \code{... list(pattern='R-O3',
+  search.fields='NOM_COURT_RES') ...}}
+
+  \item{stations}{chaînes de caractères correspondant aux
+  stations à rapatrier (optionnel) (utilisé via la
+  fonction\code{\link{xrGetStations}}).  si c'est un
+  vecteur, est directement utilisé comme pattern pour la
+  fonction xrGetStations. Si C'est une liste, les éléments
+  doivent être nommés. Chaque élément est alors utilisé
+  comme argument pour la fonction xrGetStations.  pattern
+  doit alors être précisé :
+
+  \code{... list(pattern = 'VERDUN', search.fields =
+  'IDENTIFIANT') ...}}
+
+  \item{polluants}{chaînes de caractères correspondant aux
+  polluants à rapatrier (optionnel) (utilisé via la
+  fonction\code{\link{xrGetPolluants}}).  si c'est un
+  vecteur, est directement utilisé comme pattern pour la
+  fonction xrGetPolluants. Si C'est une liste, les éléments
+  doivent être nommés. Chaque élément est alors utilisé
+  comme argument pour la fonction xrGetPolluants.  pattern
+  doit alors être précisé :
+
+  \code{... list(pattern = 'O3', search.fields = 'CCHIM')
+  ...}}
+
+  \item{collapse}{conjonction à appliquer entre les
+  différents critères de recherche indiqués.}
+
+  \item{XR6}{TRUE si la version de XR est supérieure ou
+  égale à 6, FALSE sinon.}
+
+  \item{tz}{timezone dans laquelle les données doivent être
+  retournées. Si les dates debut et fin sont des chaînes de
+  caractères, tz est utilisé pour les définir.}
+
+  \item{cursor}{détermine le format de sortie des données :
+  NULL pour un TimeIntervalDataFrame (par défaut) une
+  valeur entre 0 et 1 pour un TimeInstantDataFrame (1 pour
+  respecter les conventions XR).}
+
+  \item{exact}{booléen indiquant si les mesures à rapatrier
+  doivent être exactement identiques à \sQuote{pattern} ou
+  si \sQuote{pattern} doit être utilisé dans une expression
+  régulière.}
+}
+\value{
+  un objet de classe
+  \code{\link[timetools]{TimeIntervalDataFrame-class}}
+  contenant les données demandées.
+}
+\description{
+  Fonction pour recuperer des donnees scan de XR
+}
+\seealso{
+  \code{\link{xrGetContinuousData}},
+  \code{\link{xrGetSitesPrelevement}},
+  \code{\link{xrGetMethodesPrelevement}},
+  \code{\link{xrGetCampagnes}},
+  \code{\link{xrGetPolluants}}
+  \code{\link[timetools]{TimeIntervalDataFrame-class}}
+}
+
