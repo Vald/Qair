@@ -1,5 +1,5 @@
 
-R version 3.0.1 (2013-05-16) -- "Good Sport"
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
 Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -36,7 +36,7 @@ Loading required package: rJava
 > 
 > summary(xrGetPolluants(xr))
     NOPOL              CCHIM               NCON           CODE_COMPLEMENTAIRE
- Length:341         Length:341         Length:341         Length:341         
+ Length:345         Length:345         Length:345         Length:345         
  Class :character   Class :character   Class :character   Class :character   
  Mode  :character   Mode  :character   Mode  :character   Mode  :character   
                                                                              
@@ -44,45 +44,45 @@ Loading required package: rJava
                                                                              
                                                                              
    TYPE_AGR              FCON        ECHELLE_MIN      ECHELLE_MAX     
- Length:341         Min.   :0.665   Min.   :-10.00   Min.   :   0.01  
+ Length:345         Min.   :0.665   Min.   :-10.00   Min.   :   0.01  
  Class :character   1st Qu.:1.000   1st Qu.:  0.00   1st Qu.:   5.00  
  Mode  :character   Median :1.000   Median :  0.00   Median :  15.00  
-                    Mean   :1.260   Mean   : 25.26   Mean   : 159.01  
+                    Mean   :1.257   Mean   : 25.26   Mean   : 159.01  
                     3rd Qu.:1.000   3rd Qu.:  0.00   3rd Qu.:  50.00  
                     Max.   :5.929   Max.   :980.00   Max.   :2000.00  
-                                    NA's   :303      NA's   :303      
+                                    NA's   :307      NA's   :307      
   TIMESTAMP         CCHIM_COURT        LIB_ECHELLE         ECHELLE2_MIN    
- Length:341         Length:341         Length:341         Min.   :-30.000  
+ Length:345         Length:345         Length:345         Min.   :-30.000  
  Class :character   Class :character   Class :character   1st Qu.:  0.000  
  Mode  :character   Mode  :character   Mode  :character   Median :  0.000  
                                                           Mean   : -2.333  
                                                           3rd Qu.:  0.000  
                                                           Max.   :  0.000  
-                                                          NA's   :326      
+                                                          NA's   :330      
   ECHELLE2_MAX    LIB_ECHELLE2        ECHELLE3_MIN       ECHELLE3_MAX    
- Min.   :  0.00   Length:341         Min.   :-100.000   Min.   :    0.0  
+ Min.   :  0.00   Length:345         Min.   :-100.000   Min.   :    0.0  
  1st Qu.: 20.00   Class :character   1st Qu.:   0.000   1st Qu.:  100.0  
  Median :100.00   Mode  :character   Median :   0.000   Median :  250.0  
  Mean   : 70.33                      Mean   :  -8.333   Mean   :  830.3  
  3rd Qu.:100.00                      3rd Qu.:   0.000   3rd Qu.:  250.0  
  Max.   :150.00                      Max.   :   0.000   Max.   :10000.0  
- NA's   :326                         NA's   :326        NA's   :326      
+ NA's   :330                         NA's   :330        NA's   :330      
  LIB_ECHELLE3        ECHELLE4_MIN  ECHELLE4_MAX   LIB_ECHELLE4      
- Length:341         Min.   :0     Min.   :    4   Length:341        
+ Length:345         Min.   :0     Min.   :    4   Length:345        
  Class :character   1st Qu.:0     1st Qu.:  500   Class :character  
  Mode  :character   Median :0     Median :  500   Mode  :character  
                     Mean   :0     Mean   : 1543                     
                     3rd Qu.:0     3rd Qu.:  500                     
                     Max.   :0     Max.   :15000                     
-                    NA's   :328   NA's   :328                       
+                    NA's   :332   NA's   :332                       
   ECHELLE5_MIN  ECHELLE5_MAX   LIB_ECHELLE5         NO_CHRONO     
- Min.   :0     Min.   :    5   Length:341         Min.   :  1.00  
- 1st Qu.:0     1st Qu.: 1000   Class :character   1st Qu.: 18.25  
- Median :0     Median : 1000   Mode  :character   Median : 35.50  
- Mean   :0     Mean   : 2685                      Mean   : 50.87  
- 3rd Qu.:0     3rd Qu.: 1000                      3rd Qu.: 88.75  
- Max.   :0     Max.   :25000                      Max.   :106.00  
- NA's   :328   NA's   :328                        NA's   :271     
+ Min.   :0     Min.   :    5   Length:345         Min.   :  1.00  
+ 1st Qu.:0     1st Qu.: 1000   Class :character   1st Qu.: 19.25  
+ Median :0     Median : 1000   Mode  :character   Median : 41.50  
+ Mean   :0     Mean   : 2685                      Mean   : 54.12  
+ 3rd Qu.:0     3rd Qu.: 1000                      3rd Qu.: 91.75  
+ Max.   :0     Max.   :25000                      Max.   :113.00  
+ NA's   :332   NA's   :332                        NA's   :271     
   SEUIL_30MIN   SEUIL_10MIN    SEUIL_24H        SEUIL_MAX       SEUIL_MIN  
  Min.   : 20   Min.   :150   Min.   : 10.00   Min.   : 10.0   Min.   : NA  
  1st Qu.: 30   1st Qu.:325   1st Qu.: 10.00   1st Qu.: 17.5   1st Qu.: NA  
@@ -90,7 +90,7 @@ Loading required package: rJava
  Mean   :120   Mean   :500   Mean   : 88.33   Mean   : 82.5   Mean   :NaN  
  3rd Qu.:150   3rd Qu.:675   3rd Qu.: 50.00   3rd Qu.:150.0   3rd Qu.: NA  
  Max.   :400   Max.   :850   Max.   :400.00   Max.   :150.0   Max.   : NA  
- NA's   :334   NA's   :339   NA's   :335      NA's   :337     NA's   :341  
+ NA's   :338   NA's   :343   NA's   :339      NA's   :341     NA's   :345  
 > xrGetPolluants(xr, 'N2')
   NOPOL    CCHIM                        NCON CODE_COMPLEMENTAIRE TYPE_AGR FCON
 1    N2 PM2.5FNV Fraction non volatile PM2.5                <NA>        N    1
@@ -151,6 +151,7 @@ Loading required package: rJava
 28         220      PRELEVEMENT 30 m3/h SUR FILTRE ET MOUSSE      <NA>
 29         910                                       LEGUMES      <NA>
 30         911                                          LAIT      <NA>
+31         912              Prélèvement 0.18 m3/h sur filtre      <NA>
 > 
 > xrGetCampagnes(xr, 'LARO', end='2011-01-01')
   NRESSURV NOM_COURT_CM                                         LIBELLE
@@ -202,8 +203,8 @@ Loading required package: rJava
 1 127.0.0.1:9010        9010             NA        16           18
   ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION MODEM_TEMPO
 1            23        NA              93          NA           NA        <NA>
-  MODEM_RELAIS    IDENTIFIANT   typologie
-1         <NA> CHASSENEUIL_PO Périurbaine
+  MODEM_RELAIS    IDENTIFIANT TIME_MANAGEMENT   typologie
+1         <NA> CHASSENEUIL_PO            <NA> Périurbaine
 > xrGetStations(xr, campagnes='ANG12')[-colonnes]
   CLASSE_SITE NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
 1           6 9036      16  16113 Lafarge site sud        ANG_13
@@ -269,10 +270,10 @@ Loading required package: rJava
 1            23        NA              93          NA           NA
 2            NA        NA              NA          NA           NA
 3            NA        NA              NA          NA           NA
-     MODEM_TEMPO MODEM_RELAIS IDENTIFIANT   typologie
-1 00000000030000           16      ANG_13 Périurbaine
-2 00000000000000         <NA>      ANG_12        <NA>
-3 00000000000000         <NA>      ANG_14        <NA>
+     MODEM_TEMPO MODEM_RELAIS IDENTIFIANT TIME_MANAGEMENT   typologie
+1 00000000030000           16      ANG_13            <NA> Périurbaine
+2 00000000000000         <NA>      ANG_12            <NA>        <NA>
+3 00000000000000         <NA>      ANG_14            <NA>        <NA>
 > xrGetStations(xr, campagnes='ANG12', mesures='24')[-colonnes]
   CLASSE_SITE NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
 1           6 9036      16  16113 Lafarge site sud        ANG_13
@@ -322,9 +323,9 @@ Loading required package: rJava
   ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION
 1            23        NA              93          NA           NA
 2            NA        NA              NA          NA           NA
-     MODEM_TEMPO MODEM_RELAIS IDENTIFIANT   typologie
-1 00000000030000           16      ANG_13 Périurbaine
-2 00000000000000         <NA>      ANG_12        <NA>
+     MODEM_TEMPO MODEM_RELAIS IDENTIFIANT TIME_MANAGEMENT   typologie
+1 00000000030000           16      ANG_13            <NA> Périurbaine
+2 00000000000000         <NA>      ANG_12            <NA>        <NA>
 > 
 > summary(xrGetSitesPrelevement(xr, 'TLAROC_L'))
     NRESSURV      NSIT         IDSITEP            LIBELLE         
@@ -647,4 +648,4 @@ Loading required package: rJava
 > 
 > proc.time()
    user  system elapsed 
- 11.280   0.580  12.377 
+ 10.530   0.490  11.581 
