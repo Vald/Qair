@@ -123,7 +123,7 @@ dupliqués. L'association entre les différentes mesures risque d'être arbitrai
 paste (names(valeurs)[sapply (valeurs, nrow) > 1]) ) )
 		
 			for (i in which (sapply (valeurs, nrow) > 1))
-			for (j in nrow (valeurs[[i]]) )
+			for (j in 1:nrow (valeurs[[i]]) )
 				valeurs[[paste(names(valeurs)[i], j, sep='.')]] <-
 						valeurs[[i]][j, , drop=FALSE]
 			valeurs[which (sapply (valeurs, nrow) > 1)] <- NULL
