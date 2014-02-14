@@ -1,3 +1,11 @@
+----------  Qair v2.7.0
+
+correction d'un bug dans xrGetManualData
+
+Lorsque plusieurs analyses d'un même composé sont définies sur
+un même bulletin, une seule valeur (aléatoirement) était
+rappatriée.
+
 ----------  Qair v2.6.0
 ajout de la fonction xrGetScan
 
