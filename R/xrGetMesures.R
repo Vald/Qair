@@ -84,7 +84,9 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 
 	if (length (q) > 0)
 		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
 
-	unique (xrGetQuery (conn, query) )
+	res <- xrGetQuery (conn, query)
+	res$FMUL <- as.numeric(res$FMUL)
+	unique( res )
 }
 
 

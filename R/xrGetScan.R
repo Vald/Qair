@@ -60,6 +60,10 @@ xrGetScan <- function (conn, pattern=NULL, start, end,
 
 	donnees <- xrGetQuery (conn, query)
 
+	# conversion (au cas où)
+	a.convertir <- grep('S_M', names(donnees))
+	donnees[a.convertir] <- lapply(donnees[a.convertir], as.numeric)
+
 	# mise en forme des donnees
 	names(donnees)[1:2] <- c("nom_court_mes", "date")
 	donnees[1:2] <- lapply(donnees[1:2], as.character)

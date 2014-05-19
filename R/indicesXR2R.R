@@ -61,7 +61,10 @@ function (conn, agglos, start, end, detail=FALSE,
 			       		TO_DATE ('%s', 'YYYY-MM-DD') AND
 					TO_DATE ('%s', 'YYYY-MM-DD')",
 		paste (agglos, collapse="', '"), start, end)
+
 	indices <- xrGetQuery (conn, query)
+	# forçage
+	indices$C_IND_DIFFUSE <- as.numeric( indices$C_IND_DIFFUSE )
 
 	if( detail ) {
 		indices$NOPOL <- 'indice'
@@ -74,7 +77,11 @@ function (conn, agglos, start, end, detail=FALSE,
 						TO_DATE ('%s', 'YYYY-MM-DD') AND
 						TO_DATE ('%s', 'YYYY-MM-DD')", 
 			paste(agglos, collapse = "', '"), start, end)
+
 		ss.indices <- xrGetQuery(conn, query)
+		# forçage
+		ss.indices$C_SS_INDICE_DIFF <-
+			as.numeric( ss.indices$C_SS_INDICE_DIFF )
 		names(ss.indices)[names(ss.indices) == 'C_SS_INDICE_DIFF'] <-
 			'C_IND_DIFFUSE'
 

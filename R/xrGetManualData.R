@@ -107,6 +107,13 @@ xrGetManualData <-
 
 	# recuperation des données
 	result <- xrGetQuery (conn, query)
+
+	# pour être sûr
+	result$VALEUR <- as.numeric( result$VALEUR )
+	result$LAMBERTX <- as.numeric( result$LAMBERTX )
+	result$LAMBERTY <- as.numeric( result$LAMBERTY )
+	result$LONGI <- as.numeric( result$LONGI )
+	result$LATI <- as.numeric( result$LATI )
 	
 	# mise en forme des données
 	result <- split (result, paste (result$DATE_DEB, result$DATE_FIN) )

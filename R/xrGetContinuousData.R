@@ -166,6 +166,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	q$fields.l <- dbListFields (conn, q$table, schema='RSDBA')
 	q$fields.l <- lapply (c('DATE', switch (period, qh = 'Q_', h = 'H_', d = 'J_', m = 'M_', y = 'A_')),
 			  grep, dbListFields (conn, q$table, schema='RSDBA'), value=TRUE)
+	# pour la possible conversion plus bas on sauvegarde à part les noms Q_, H_, etc.
+	a.convertir <- q$fields.l[[2]]
+	a.convertir <- a.convertir[!grepl('_ETAT', a.convertir)]
 	q$fields.l <- unique (unlist (q$fields.l) )
 	q$fields.l <- c('NOM_COURT_MES', setdiff (q$fields.l, 'Q_ETATB') )
 	q$fields.l <- unique (unlist (q$fields.l) )
@@ -189,6 +192,10 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	data <- xrGetQuery (conn, query)
 	names (data)[2] <- 'DATE'
+
+	# à priori pour airparif, les Q_, H_, etc. sont rappatriés sous forme de char, donc conversion
+	if( !XR6 )
+		data[a.convertir] <- lapply(data[a.convertir], as.numeric)
 
 	# mise en forme des donnees
 	#q$period <- eval (parse (text = period) )	# period est evaluee au sens lubridate
