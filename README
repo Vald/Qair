@@ -1,3 +1,7 @@
+----------  Qair v2.7.2
+correction pour version XR antérieur à la 6
+(les données étaient en character et non en numeric)
+
 ----------  Qair v2.7.0
 
 correction d'un bug dans xrGetManualData
