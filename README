@@ -1,3 +1,6 @@
+----------  Qair v2.7.3
+adapatation de la fonction validation.reglementaire à un évolution de R-3.1
+
 ----------  Qair v2.7.2
 correction pour version XR antérieur à la 6
 (les données étaient en character et non en numeric)
