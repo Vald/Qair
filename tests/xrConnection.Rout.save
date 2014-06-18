@@ -1,6 +1,6 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -36,7 +36,7 @@ Loading required package: rJava
 > 
 > summary(xrGetPolluants(xr))
     NOPOL              CCHIM               NCON           CODE_COMPLEMENTAIRE
- Length:345         Length:345         Length:345         Length:345         
+ Length:346         Length:346         Length:346         Length:346         
  Class :character   Class :character   Class :character   Class :character   
  Mode  :character   Mode  :character   Mode  :character   Mode  :character   
                                                                              
@@ -44,45 +44,45 @@ Loading required package: rJava
                                                                              
                                                                              
    TYPE_AGR              FCON        ECHELLE_MIN      ECHELLE_MAX     
- Length:345         Min.   :0.665   Min.   :-10.00   Min.   :   0.01  
+ Length:346         Min.   :0.665   Min.   :-10.00   Min.   :   0.01  
  Class :character   1st Qu.:1.000   1st Qu.:  0.00   1st Qu.:   5.00  
  Mode  :character   Median :1.000   Median :  0.00   Median :  15.00  
-                    Mean   :1.257   Mean   : 25.26   Mean   : 159.01  
+                    Mean   :1.256   Mean   : 25.26   Mean   : 159.01  
                     3rd Qu.:1.000   3rd Qu.:  0.00   3rd Qu.:  50.00  
                     Max.   :5.929   Max.   :980.00   Max.   :2000.00  
-                                    NA's   :307      NA's   :307      
+                                    NA's   :308      NA's   :308      
   TIMESTAMP         CCHIM_COURT        LIB_ECHELLE         ECHELLE2_MIN    
- Length:345         Length:345         Length:345         Min.   :-30.000  
+ Length:346         Length:346         Length:346         Min.   :-30.000  
  Class :character   Class :character   Class :character   1st Qu.:  0.000  
  Mode  :character   Mode  :character   Mode  :character   Median :  0.000  
                                                           Mean   : -2.333  
                                                           3rd Qu.:  0.000  
                                                           Max.   :  0.000  
-                                                          NA's   :330      
+                                                          NA's   :331      
   ECHELLE2_MAX    LIB_ECHELLE2        ECHELLE3_MIN       ECHELLE3_MAX    
- Min.   :  0.00   Length:345         Min.   :-100.000   Min.   :    0.0  
+ Min.   :  0.00   Length:346         Min.   :-100.000   Min.   :    0.0  
  1st Qu.: 20.00   Class :character   1st Qu.:   0.000   1st Qu.:  100.0  
  Median :100.00   Mode  :character   Median :   0.000   Median :  250.0  
  Mean   : 70.33                      Mean   :  -8.333   Mean   :  830.3  
  3rd Qu.:100.00                      3rd Qu.:   0.000   3rd Qu.:  250.0  
  Max.   :150.00                      Max.   :   0.000   Max.   :10000.0  
- NA's   :330                         NA's   :330        NA's   :330      
+ NA's   :331                         NA's   :331        NA's   :331      
  LIB_ECHELLE3        ECHELLE4_MIN  ECHELLE4_MAX   LIB_ECHELLE4      
- Length:345         Min.   :0     Min.   :    4   Length:345        
+ Length:346         Min.   :0     Min.   :    4   Length:346        
  Class :character   1st Qu.:0     1st Qu.:  500   Class :character  
  Mode  :character   Median :0     Median :  500   Mode  :character  
                     Mean   :0     Mean   : 1543                     
                     3rd Qu.:0     3rd Qu.:  500                     
                     Max.   :0     Max.   :15000                     
-                    NA's   :332   NA's   :332                       
+                    NA's   :333   NA's   :333                       
   ECHELLE5_MIN  ECHELLE5_MAX   LIB_ECHELLE5         NO_CHRONO     
- Min.   :0     Min.   :    5   Length:345         Min.   :  1.00  
+ Min.   :0     Min.   :    5   Length:346         Min.   :  1.00  
  1st Qu.:0     1st Qu.: 1000   Class :character   1st Qu.: 19.25  
  Median :0     Median : 1000   Mode  :character   Median : 41.50  
  Mean   :0     Mean   : 2685                      Mean   : 54.12  
  3rd Qu.:0     3rd Qu.: 1000                      3rd Qu.: 91.75  
  Max.   :0     Max.   :25000                      Max.   :113.00  
- NA's   :332   NA's   :332                        NA's   :271     
+ NA's   :333   NA's   :333                        NA's   :272     
   SEUIL_30MIN   SEUIL_10MIN    SEUIL_24H        SEUIL_MAX       SEUIL_MIN  
  Min.   : 20   Min.   :150   Min.   : 10.00   Min.   : 10.0   Min.   : NA  
  1st Qu.: 30   1st Qu.:325   1st Qu.: 10.00   1st Qu.: 17.5   1st Qu.: NA  
@@ -90,7 +90,7 @@ Loading required package: rJava
  Mean   :120   Mean   :500   Mean   : 88.33   Mean   : 82.5   Mean   :NaN  
  3rd Qu.:150   3rd Qu.:675   3rd Qu.: 50.00   3rd Qu.:150.0   3rd Qu.: NA  
  Max.   :400   Max.   :850   Max.   :400.00   Max.   :150.0   Max.   : NA  
- NA's   :338   NA's   :343   NA's   :339      NA's   :341     NA's   :345  
+ NA's   :339   NA's   :344   NA's   :340      NA's   :342     NA's   :346  
 > xrGetPolluants(xr, 'N2')
   NOPOL    CCHIM                        NCON CODE_COMPLEMENTAIRE TYPE_AGR FCON
 1    N2 PM2.5FNV Fraction non volatile PM2.5                <NA>        N    1
@@ -120,38 +120,39 @@ Loading required package: rJava
 1          NA        NA        NA        NA
 > 
 > xrGetMethodesPrelevement(xr)
-   CODE_METH_P                                       LIBELLE TIMESTAMP
-1          905 PRELEVEMENT 0.6 m3/h sur LANZONI pour pollens      <NA>
-2          906              PRELEVEMENT 0.72 m3/h SUR FILTRE      <NA>
-3          903                                           903      <NA>
-4          218            PRELEVEMENT SUR FILTRE A 2 m3/jour      <NA>
-5          219           BARBOTAGE DANS SOLUTION A 2 m3/jour      <NA>
-6          907               PRELEVEMENT 0.6 m3/h SUR FILTRE      <NA>
-7          221      PRELEVEMENT 15 m3/h SUR FILTRE ET MOUSSE      <NA>
-8          201                                      CANISTER      <NA>
-9          202                 CANISTER DEPRESSURISE (AVOCS)      <NA>
-10         203                   COLLECTEUR DE PRECIPITATION      <NA>
-11         204                        JAUGE DE SEDIMENTATION      <NA>
-12         205                           PLAQUETTES DE DEPOT      <NA>
-13         206                                   PLUVIOMETRE      <NA>
-14         207                 PRELEVEMENT 1 m3/h SUR FILTRE      <NA>
-15         208           PRELEVEMENT 1 m3/h SUR MOUSSE (PUF)      <NA>
-16         209               PRELEVEMENT 2,3 m3/h SUR FILTRE      <NA>
-17         210         PRELEVEMENT 2,3 m3/h SUR MOUSSE (PUF)      <NA>
-18         211                PRELEVEMENT 30 m3/h SUR FILTRE      <NA>
-19         212          PRELEVEMENT 30 m3/h SUR MOUSSE (PUF)      <NA>
-20         213                    PRELEVEMENT SUR FILTERPACK      <NA>
-21         214              PRELEVEMENT SUR FILTRE DEROULANT      <NA>
-22         215                                    TUBE ACTIF      <NA>
-23         216                                   TUBE PASSIF      <NA>
-24         217                                CARTOUCHE DNPH      <NA>
-25         902       PRELEVEMENT 1 m3/h SUR FILTRE ET MOUSSE      <NA>
-26         908               PRELEVEMENT 0,3 m3/h SUR FILTRE      <NA>
-27         909                                       LICHENS      <NA>
-28         220      PRELEVEMENT 30 m3/h SUR FILTRE ET MOUSSE      <NA>
-29         910                                       LEGUMES      <NA>
-30         911                                          LAIT      <NA>
-31         912              Prélèvement 0.18 m3/h sur filtre      <NA>
+   CODE_METH_P                                               LIBELLE TIMESTAMP
+1          905         PRELEVEMENT 0.6 m3/h sur LANZONI pour pollens      <NA>
+2          906                      PRELEVEMENT 0.72 m3/h SUR FILTRE      <NA>
+3          903                                                   903      <NA>
+4          218                    PRELEVEMENT SUR FILTRE A 2 m3/jour      <NA>
+5          219                   BARBOTAGE DANS SOLUTION A 2 m3/jour      <NA>
+6          907                       PRELEVEMENT 0.6 m3/h SUR FILTRE      <NA>
+7          221              PRELEVEMENT 15 m3/h SUR FILTRE ET MOUSSE      <NA>
+8          201                                              CANISTER      <NA>
+9          202                         CANISTER DEPRESSURISE (AVOCS)      <NA>
+10         203                           COLLECTEUR DE PRECIPITATION      <NA>
+11         204                                JAUGE DE SEDIMENTATION      <NA>
+12         205                                   PLAQUETTES DE DEPOT      <NA>
+13         206                                           PLUVIOMETRE      <NA>
+14         207                         PRELEVEMENT 1 m3/h SUR FILTRE      <NA>
+15         208                   PRELEVEMENT 1 m3/h SUR MOUSSE (PUF)      <NA>
+16         209                       PRELEVEMENT 2,3 m3/h SUR FILTRE      <NA>
+17         210                 PRELEVEMENT 2,3 m3/h SUR MOUSSE (PUF)      <NA>
+18         211                        PRELEVEMENT 30 m3/h SUR FILTRE      <NA>
+19         212                  PRELEVEMENT 30 m3/h SUR MOUSSE (PUF)      <NA>
+20         213                            PRELEVEMENT SUR FILTERPACK      <NA>
+21         214                      PRELEVEMENT SUR FILTRE DEROULANT      <NA>
+22         215                                            TUBE ACTIF      <NA>
+23         216                                           TUBE PASSIF      <NA>
+24         217                                        CARTOUCHE DNPH      <NA>
+25         902               PRELEVEMENT 1 m3/h SUR FILTRE ET MOUSSE      <NA>
+26         908                       PRELEVEMENT 0,3 m3/h SUR FILTRE      <NA>
+27         909                                               LICHENS      <NA>
+28         220              PRELEVEMENT 30 m3/h SUR FILTRE ET MOUSSE      <NA>
+29         910                                               LEGUMES      <NA>
+30         911                                                  LAIT      <NA>
+31         912                      Prélèvement 0.18 m3/h sur filtre      <NA>
+32         913 Ensemble mesures pour calcul de indice de confinement      <NA>
 > 
 > xrGetCampagnes(xr, 'LARO', end='2011-01-01')
   NRESSURV NOM_COURT_CM                                         LIBELLE
@@ -648,4 +649,4 @@ Loading required package: rJava
 > 
 > proc.time()
    user  system elapsed 
- 10.530   0.490  11.581 
+ 10.460   0.550  11.541 
