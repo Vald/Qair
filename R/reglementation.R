@@ -685,7 +685,8 @@ validation.reglementaire <- function (x, seuils,
 		}
 
 	if ('preparation.calcul' %in% etapes) {
-		prepas.cal <- lapply (seuils, '[', c('base.calcul', 'rep.b.calcul', 'precision'))
+		prepas.cal <- lapply(seuils, '[', c('base.calcul', 'rep.b.calcul', 'precision'))
+#		prepas.cal <- lapply(prepas.cal, function(x){ names(x) <- c('base.calcul', 'rep.b.calcul', 'precision') ; x })
 		prepas.cal.unique <- unique (prepas.cal)
 		x <- lapply (prepas.cal.unique, preparation.base, x=x, base='calcul', check.720=check.720)
 		names (x) <- sapply (lapply (prepas.cal.unique, as.character), paste, collapse='-')
@@ -730,11 +731,13 @@ validation.reglementaire <- function (x, seuils,
 				n.prepa.cal <- which (sapply(lapply(
 							attributes(x)$prepas.cal,
 							all.equal,
-							seuil[c('base.calcul', 'rep.b.calcul', 'precision')]), isTRUE))
+							seuil[c('base.calcul', 'rep.b.calcul', 'precision')],
+							use.names=FALSE), isTRUE))
 				n.prepa.comp <- which (sapply(lapply(
 							attributes(x[[n.prepa.cal]])$prepas.comp,
 							all.equal,
-							seuil[c('base.comparaison', 'rep.b.comparaison', 'precision', seuil$MORE.b.comparaison)]), isTRUE))
+							seuil[c('base.comparaison', 'rep.b.comparaison', 'precision', seuil$MORE.b.comparaison)],
+							use.names=FALSE), isTRUE))
 				z <- x[[n.prepa.cal]][[n.prepa.comp]]
 			} else if (any (c('preparation.calcul', 'preparation.comparaison') %in% etapes) ){
 				n.prepa <- list (setdiff (names(attributes(x)), 'names'),
@@ -745,7 +748,8 @@ validation.reglementaire <- function (x, seuils,
 							all.equal,
 							seuil[c(sprintf('base.%s', n.prepa[[2]]),
 							sprintf('rep.b.%s', n.prepa[[2]]),
-							'precision')]), isTRUE))
+							'precision')],
+							use.names=FALSE), isTRUE))
 				z <- x[[n.prepa]]
 			} else {
 				z <- x
