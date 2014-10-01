@@ -41,3 +41,9 @@ slide <- function(x, fenetre, pas, pc=0.75, FUN=c("mean", 'min', 'max', "var")){
 		resultat = as.double(rep(NA, ceiling(length(x) / pas))), as.integer(nbOk), as.character(FUN),
 		NAOK=TRUE, PACKAGE="Qair")$resultat
 	}
+
+#rollapply <- function(X, width, step, FUN, ...)
+#	.External("rollapply", environment(), X, width, step, FUN, ...,
+#		  PACKAGE = 'Qair')
+test <- function(X, width, step, FUN, ...)
+	.External("test", environment(), X, width, step, FUN, ..., PACKAGE='Qair')

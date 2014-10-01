@@ -13,6 +13,9 @@ export (xrGetQuery, xrConnect,
 # outils divers
 export (slide, qh, h, estimation_sondage)
 
+# pour test
+export( test )
+
 # fonctions specifiques a certaines 'normes' ademe
 export (round.a, quantile.a)
 

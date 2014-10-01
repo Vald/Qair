@@ -2,6 +2,61 @@
 #include <math.h>
 #include <string.h>
 
+#include <Rinternals.h>
+
+SEXP test(SEXP args)
+{
+	PROTECT_INDEX px;
+
+	SEXP rho, X, XX, FUN, idx, tmp, R_fcall;
+	int width, step, id0, idn, lans, k;
+	rho = CADR(args);
+	PROTECT_WITH_INDEX(X=CADDR(args), &px);
+	XX = PROTECT(eval(CADDR(args), rho));
+	width = asInteger(CADDDR(args));
+	step = asInteger(CAD4R(args));
+	FUN = CAD4R(CDR(args));
+	R_xlen_t n = xlength(XX);  // a vector, so will be valid.
+	Rboolean realIndx = n > INT_MAX;
+	lans = (int) ceil((double) n / (double) step);
+
+	SEXP ans = PROTECT(allocVector(VECSXP, lans));
+
+	for(R_xlen_t i = 0; i < lans; i++) {
+		id0 = (i + 1) * step - width;
+		idn = id0 + width;
+		if(id0 < 0) id0 = 0;
+		if(idn > n) idn = n;
+
+		idx = PROTECT(allocVector(realIndx ? REALSXP : INTSXP, idn-id0));
+
+		for(R_xlen_t j = 0; j < idn - id0; j++){
+			k  = j+id0+1;
+			if (realIndx) REAL(idx)[j] = (double)k;
+			else INTEGER(idx)[j] = (int)k;
+		}
+
+		if(isVectorAtomic(XX))
+			tmp = PROTECT(tmp = LCONS(R_BracketSymbol,
+				LCONS(XX, LCONS(idx, R_NilValue))));
+		else
+			tmp = PROTECT(LCONS(R_BracketSymbol,
+				LCONS(X, LCONS(idx, R_NilValue))));
+		R_fcall = PROTECT(LCONS(FUN,
+				LCONS(tmp, LCONS(R_DotsSymbol, R_NilValue))));
+
+		tmp = eval(R_fcall, rho);
+
+		if (MAYBE_REFERENCED(tmp)) tmp = lazy_duplicate(tmp);
+		SET_VECTOR_ELT(ans, i, tmp);
+		UNPROTECT(3);
+	}
+
+
+	UNPROTECT(3);
+	return ans;
+}
+
 double max(double * values, int start, int window, int nbOk )
 {
 	int i, n = 0;
