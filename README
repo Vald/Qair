@@ -1,3 +1,7 @@
+----------  Qair v2.8.0
+modification de xrConnect, pour la rendre compatible avec RODBC sous 
+windows 64 bits
+
 ----------  Qair v2.7.3
 adapatation de la fonction validation.reglementaire à un évolution de R-3.1
 
