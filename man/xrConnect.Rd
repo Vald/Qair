@@ -8,7 +8,8 @@
 \title{Initialisation d'une connexion a une base XR.}
 \usage{
   xrConnect(dsn = NULL, uid = NULL, pwd = NULL,
-    host = NULL, ojdbc = NULL, drv.type = NULL)
+    host = NULL, ojdbc = NULL, drv.type = NULL,
+    believeNRows = TRUE)
 }
 \arguments{
   \item{dsn}{Nom de la base de données (cf le pilote
@@ -36,6 +37,11 @@
   'jdbc' ou 'odbc'. Par défault, la valeur utilisée est
   'jdbc' pour les systèmes type 'unix' et 'odbc' pour
   windows.}
+
+  \item{believeNRows}{logical.  Is the number of rows returned by the ODBC
+  connection believable?  Not true for some Oracle and Sybase
+  drivers, apparently, nor for Actual Technologies' SQLite
+  driver for Mac OS X.}
 }
 \value{
   Une connexion à la base XR (le type exact dépend du

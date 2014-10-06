@@ -45,7 +45,7 @@
 #' # la ligne suivante ne demandera que le mot de passe.
 #' xrConnect()
 #'}
-xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.type=NULL) {
+xrConnect <- function(dsn=NULL, uid=NULL, pwd=NULL, host=NULL, ojdbc=NULL, drv.type=NULL, believeNRows=TRUE) {
 	# host et ojdbc sont a specifier uniquement dans le cas de l'utilisation de RJDBC
 
 	# définition du pilote à utiliser
@@ -130,7 +130,7 @@ utiliser ('jdbc', 'odbc' ou 'oracle')\n")
 		conxair <- try (odbcConnect (getOption('Xair.dsn'),
 					     uid = getOption('Xair.uid'),
 					     pwd = getOption('Xair.pwd'),
-					     case = 'nochange', believeNRows = TRUE) )
+					     case = 'nochange', believeNRows = believeNRows) )
 		if(inherits(conxair, 'try-error'))
 			stop('echec de la connexion a la base Xair.')
 	} else if(getOption('Xair.drv') == 'jdbc') {
