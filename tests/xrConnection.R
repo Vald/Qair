@@ -3,8 +3,7 @@ options(Xair.host = '172.16.19.33',
 	Xair.dsn = 'N09',
 	Xair.uid = 'vlad',
 	Xair.pwd = 'vlad',
-	Xair.ojdbc.file = '/usr/share/java/ojdbc14.jar',
-	Xair.drv='jdbc')
+	Xair.drv='oracle')
 
 # test de la connexion  à XR
 #============================
