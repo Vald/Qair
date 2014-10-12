@@ -1,6 +1,6 @@
 Package: Qair
 Type: Package
-Title: Traitement de donnees, domaine de la qualite de l'air
+Title: Qualite de l'Air, Seuils Europeens et Traitement de donnees
 Version: 2.8.0
 Date: 2014-10-06
 Depends: timetools,DBI,methods
