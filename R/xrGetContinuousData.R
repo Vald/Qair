@@ -194,8 +194,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	names (data)[2] <- 'DATE'
 
 	# à priori pour airparif, les Q_, H_, etc. sont rappatriés sous forme de char, donc conversion
-	if( !XR6 )
-		data[a.convertir] <- lapply(data[a.convertir], as.numeric)
+	# conversion systématique (sans impact si pas nécessaire, corrige à priori non pour XR < 6 mais pour
+	# windows >= 7)
+	data[a.convertir] <- lapply(data[a.convertir], as.numeric)
 
 	# mise en forme des donnees
 	#q$period <- eval (parse (text = period) )	# period est evaluee au sens lubridate

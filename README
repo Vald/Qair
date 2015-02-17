@@ -1,3 +1,6 @@
+----------  Qair v2.8.1
+modification de xrGetContinuousData ... à priori problème avec RODBC/windows 7
+
 ----------  Qair v2.8.0
 modification de xrConnect, pour la rendre compatible avec RODBC sous 
 windows 64 bits
