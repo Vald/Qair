@@ -164,11 +164,11 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	# quels champs faut-il rapatrier ? (depend de la table determinee juste avant)
 	#	Les champs de donnees et la date, et le nom_court_mes
 	q$fields.l <- dbListFields (conn, q$table, schema='RSDBA')
-	q$fields.l <- lapply (c('DATE', switch (period, qh = 'Q_', h = 'H_', d = 'J_', m = 'M_', y = 'A_')),
+	q$fields.l <- lapply (c('DATE', switch (period, qh = '^Q_', h = '^H_', d = '^J_', m = '^M_', y = '^A_')),
 			  grep, dbListFields (conn, q$table, schema='RSDBA'), value=TRUE)
 	# pour la possible conversion plus bas on sauvegarde à part les noms Q_, H_, etc.
 	a.convertir <- q$fields.l[[2]]
-	a.convertir <- a.convertir[!grepl('_ETAT', a.convertir)]
+	a.convertir <- a.convertir[!grepl('_ETAT', a.convertir) & !grepl('_DATE', a.convertir)]
 	q$fields.l <- unique (unlist (q$fields.l) )
 	q$fields.l <- c('NOM_COURT_MES', setdiff (q$fields.l, 'Q_ETATB') )
 	q$fields.l <- unique (unlist (q$fields.l) )

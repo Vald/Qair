@@ -1,8 +1,8 @@
 Package: Qair
 Type: Package
 Title: Traitement de donnees, domaine de la qualite de l'air
-Version: 2.8.1
-Date: 2015-02-17
+Version: 2.8.2
+Date: 2015-03-20
 Depends: timetools,DBI,methods
 Suggests: RODBC (>= 1.3.6), RJDBC (>= 0.2-1), ROracle (>= 1.1-8)
 LazyData: true
