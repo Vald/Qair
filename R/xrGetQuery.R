@@ -23,7 +23,7 @@ xrGetQuery <- function (conn, query) {
 		# chaine de caractères ne contient que des entiers, cette variable
 		# soit convertie (exemple : c('03', '14') converti en c(3, 14) au
 		# de rester tel quel).
-		result <- sqlQuery(conn, query, stringsAsFactors=FALSE, as.is=TRUE)
+		result <- RODBC::sqlQuery(conn, query, stringsAsFactors=FALSE, as.is=TRUE)
 	} else if(options()$Xair.drv == 'oracle') {
 		result <- dbGetQuery(conn, query)
 	} else if(options()$Xair.drv == 'jdbc') {
@@ -59,7 +59,7 @@ xrGetQuery <- function (conn, query) {
 		query <- sprintf("WITH TATA AS (%s) %s", query, var.to.get)
 
 		if(options()$Xair.drv == 'odbc') {
-			result <- sqlQuery(conn, query, stringsAsFactors=FALSE)
+			result <- RODBC::sqlQuery(conn, query, stringsAsFactors=FALSE)
 		} else if(options()$Xair.drv == 'oracle') {
 			result <- dbGetQuery(conn, query)
 		} else if(options()$Xair.drv == 'jdbc') {

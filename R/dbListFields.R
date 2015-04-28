@@ -6,7 +6,7 @@
 dbListFields <- function(conn, name, ...) UseMethod('dbListFields')
 #' @rdname dbListFields
 setMethod('dbListFields', signature ('RODBC', 'character'),
-	  function(conn, name, ...) unique(sqlColumns(conn, name)$COLUMN_NAME))
+	  function(conn, name, ...) unique(RODBC::sqlColumns(conn, name)$COLUMN_NAME))
 
 #' @rdname dbListFields
 #' @aliases dbDisconnect
@@ -14,4 +14,4 @@ setMethod('dbListFields', signature ('RODBC', 'character'),
 dbDisconnect <- function(conn, ...) UseMethod('dbListFields')
 #' @rdname dbListFields
 setMethod('dbDisconnect', signature ('RODBC'),
-	  function(conn, ...) odbcClose( conn ))
+	  function(conn, ...) RODBC::odbcClose( conn ))
