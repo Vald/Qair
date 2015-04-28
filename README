@@ -1,3 +1,8 @@
+----------  Qair v2.9.0
+Contournement d'un pbm avec ODBC sur windows (paramètre du séparateur de décimales "," au lieu de ".").
+Ajustement des imports de packages externes pour être conforme aux nouvelles règles.
+Export de chek.na.consecutifs.
+
 ----------  Qair v2.8.2
 la modification précédente introduisait (généralisait ..) un bug si les données
 récupérées étaient d'un type différent du QH ou du H.
