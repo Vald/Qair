@@ -2,9 +2,9 @@
 #'
 #' @section Details: Cette fonction permet d'initialiser une connexion avec une base XR.
 #' Sous windows, le pilote utilisé par défaut est ODBC (nécessite d'avoir
-#' installer le paquet \code{\link[RODBC]{RODBC}}), sous linux JDBC
-#' (nécessite d'avoir installer le paquet \code{\link[RJDBC:JDBC]{RJDBC}}).
-#' Il est également possible d'utiliser le paquet \code{\link[ROracle:Oracle]{ROracle}}).
+#' installer le paquet \code{\link[RODBC]{RODBC}}), sous linux Oracle
+#' (nécessite d'avoir installer le paquet \code{\link[ROracle:Oracle]{ROracle}}).
+#' Il est également possible d'utiliser le paquet \code{\link[RJDBC:JDBC]{RJDBC}}).
 #'
 #' Une fois définis, les arguments sont définis pour la session entière.
 
@@ -22,15 +22,13 @@
 #' @param pwd Mot de passe pour initialiser la connexion.
 #'	optionnel : sera demandé si nécessaire.
 #' @param host Adresse de l'hôte hébergeant la base de données. Uniquement
-#'	pour les systèmes type unix, utilisant le pilote JDBC.
+#'	pour les systèmes type unix, utilisant le pilote JDBC ou Oracle.
 #'	optionnel : sera demandé si nécessaire.
 #' @param ojdbc Emplacement de la librairie contenant la définition des classes
-#'	nécessaires à RJDBC. Uniquement 
-#'	dans le cas où jdbc est choisi comme driver (par défaut pour les systèmes
-#' 	type 'unix')
+#'	nécessaires à RJDBC. Uniquement dans le cas où jdbc est choisi comme driver.
 #' @param drv.type chaine de caractere indiquant le driver de base de données à utiliser.
-#' 	peut prendre les valeurs 'jdbc' ou 'odbc'. Par défault, la valeur utilisée
-#' 	est 'jdbc' pour les systèmes type 'unix' et 'odbc' pour windows.
+#' 	peut prendre les valeurs 'oracle', 'jdbc' ou 'odbc'. Par défault, la valeur utilisée
+#' 	est 'oracle' pour les systèmes type 'unix' et 'odbc' pour windows.
 #' @inheritParams RODBC::odbcConnect
 #' @return Une connexion à la base XR (le type exact dépend du pilote utilisé).
 #'
