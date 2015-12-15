@@ -108,13 +108,20 @@ xrGetManualData <-
 	# recuperation des données
 	result <- xrGetQuery (conn, query)
 
-	# pour être sûr
-	result$VALEUR <- as.numeric( result$VALEUR )
-	result$LAMBERTX <- as.numeric( result$LAMBERTX )
-	result$LAMBERTY <- as.numeric( result$LAMBERTY )
-	result$LONGI <- as.numeric( result$LONGI )
-	result$LATI <- as.numeric( result$LATI )
-	
+	# à priori pour airparif, les Q_, H_, etc. sont rappatriés sous forme de
+	# char, donc conversion
+	# conversion systématique (sans impact si pas nécessaire, corrige à
+	# priori non pour XR < 6 mais pour windows >= 7)
+	a.convertir <- c('VALEUR', 'LAMBERTX', 'LAMBERTY', 'LONGI', 'LATI')
+	result[a.convertir] <- lapply(result[a.convertir], function(x)
+		{
+			if (is.character(x)) {
+				wv <- grepl(',', x)
+				x[wv] <- sub(',', '.', x[wv])
+			}
+			as.numeric(x)
+		} )
+
 	# mise en forme des données
 	result <- split (result, paste (result$DATE_DEB, result$DATE_FIN) )
 	fun.tmp <- function(x, what) {
