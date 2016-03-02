@@ -24,6 +24,16 @@
 #' Si plusieurs de ces arguments sont renseignés, la conjonction entre les
 #' différents critères est précisée par l'argument \code{collapse}.
 #'
+#' La timezone des dates de début et de fin (paramètres debut et fin)
+#' est prise en compte dans le rappatriement des données. Il faut donc être
+#' attentif à la bonne cohésion entre ces dates et les données attendues. Par
+#' exemple les données journalières sont stockées en 'UTC' dans XR. Le fait
+#' de mettre des dates en 'CET' risque d'aboutir à la récupération inappropriée
+#' des données : si fin = POSIXct('2016-02-01', 'CET'), les dernières
+#' valeurs récupérées seront celles qui s'arrêtent avant cette date (soit
+#' POSIXct('2016-01-01 23:00:00', 'UTC'), c'est-à-dire celles qui s'arrêtent
+#' au POSIXct('2016-01-01', 'UTC') alors qu'on peut penser que 
+#' seraient attendues celles qui s'arrêtent au POSIXct('2016-02-01', 'UTC').
 #'
 #' @param conn une connexion valide telle que retournée par \code{\link{xrConnect}}.
 #' @param pattern chaînes de caractères utilisées pour la recherche (cf \sQuote{Details}).
