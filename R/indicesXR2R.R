@@ -103,24 +103,30 @@ function (conn, agglos, start, end, detail=FALSE,
 	# brute d'indice (directement extrait d'XR et un TimeIntervalDataFrame
 	# qui va bien
 	mef <- function(indices, group.by) {
-		temp <- split(indices[c("date", "C_IND_DIFFUSE")],
-			      indices[[group.by]])
-	
-		indices <- temp[[1]]
-		names (indices)[2] <- names (temp)[1]
-		if (length (temp) > 1)
-		for (i in 2:length(temp)) {
-			names (temp[[i]])[2] <- names (temp)[i]
-			indices <- merge (indices, temp[[i]],
-					  all=TRUE, by='date')
-		}
-		rm(temp)
-		indices$date <- as.POSIXct(indices$date, 'UTC')
+		if (nrow(indices) == 0) {
+			indices <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
 
-		indices <- new ('TimeIntervalDataFrame',
-			start=indices$date, end=indices$date+d,
-			timezone='UTC',
-			data=indices[setdiff(names(indices), 'date')])
+		} else {
+			temp <- split(indices[c("date", "C_IND_DIFFUSE")],
+						  indices[[group.by]])
+
+			indices <- temp[[1]]
+			names (indices)[2] <- names (temp)[1]
+			if (length (temp) > 1)
+				for (i in 2:length(temp)) {
+					names (temp[[i]])[2] <- names (temp)[i]
+					indices <- merge (indices, temp[[i]],
+									  all=TRUE, by='date')
+				}
+			rm(temp)
+			indices$date <- as.POSIXct(indices$date, 'UTC')
+
+			indices <- new ('TimeIntervalDataFrame',
+							start=indices$date, end=indices$date+d,
+							timezone='UTC',
+							data=indices[setdiff(names(indices), 'date')])
+		}
+
 		return( indices )
 	}
 

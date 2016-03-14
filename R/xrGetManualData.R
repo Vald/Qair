@@ -168,12 +168,18 @@ paste (names(valeurs)[sapply (valeurs, nrow) > 1]) ) )
 		result[[1]] <- merge (result[[1]], result[[2]], all=TRUE)
 		result[[2]] <- NULL
 	}
-	result <- result[[1]]
 
-	result <- new ('TimeIntervalDataFrame',
-		       start=as.POSIXct(result$start, 'UTC'),
-		       end=as.POSIXct(result$end, 'UTC'),
-		       timezone='UTC', data=result[-(1:2)])
+	if (length(result) == 0) {
+		result <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
+
+	} else {
+		result <- result[[1]]
+
+		result <- new ('TimeIntervalDataFrame',
+				   start=as.POSIXct(result$start, 'UTC'),
+				   end=as.POSIXct(result$end, 'UTC'),
+				   timezone='UTC', data=result[-(1:2)])
+	}
 
 	if( !is.null(cursor) )
 		result <- as.TimeInstantDataFrame(result, cursor)

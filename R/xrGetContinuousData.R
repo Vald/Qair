@@ -156,6 +156,10 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	mesures <- xrGetMesures(conn=conn, pattern=pattern, search.fields=search.fields,
 				campagnes=campagnes, reseaux=reseaux, stations=stations,
 				polluants=polluants, collapse=collapse, exact=exact)
+
+	if (nrow(mesures)==0)
+		result <- TimeIntervalDataFrame(character(0), character(0), 'UTC') else {
+
 	q$mesures <- paste ("'", mesures$NOM_COURT_MES, "'", sep='', collapse=', ')
 
 	# donnees brutes ou pas ? Et quelle table aller taper ?
@@ -304,6 +308,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		      data=result)
 	
 	result <- result[start(result) >= real.start & end(result) <= real.end,]
+	} # fin de if sur la création d'un tableau vide ou non
+
 	if( !is.null(cursor) )
 		result <- as.TimeInstantDataFrame(result, cursor)
 	timezone(result) <- tz
