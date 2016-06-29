@@ -1,6 +1,11 @@
 # import des dependances
 import (timetools, methods)
 importMethodsFrom(DBI, dbListFields, dbDisconnect, dbConnect, dbGetQuery)
+
+importFrom("grDevices", "colorRampPalette", "colors", "hsv")
+importFrom("graphics", "box", "par", "plot", "polygon", "segments", "text")
+importFrom("stats", "end", "start")
+
 exportMethods (dbListFields, dbDisconnect)
 
 # liens avec une base XR
