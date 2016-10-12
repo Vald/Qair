@@ -28,6 +28,7 @@
 #' \item{aucun}{Un simple TimeIntervalDataFrame est retourné. Les noms des
 #' colonnes sont formés sur le schéma AGGLO.POLLUANT}
 #' }
+#' @param type Quels indices récupérer : Complets ou Partiels.
 #'
 #' @seealso \code{\link{xrConnect}}, \code{\link{plot.indice}},
 #' \code{\link[timetools]{TimeIntervalDataFrame-class}}
@@ -44,46 +45,49 @@
 #' @author Fabrice Caïni, Vladislav Navel
 'indicesXR2R' <-
 function (conn, agglos, start, end, detail=FALSE,
-	  format=c('type', 'agglo', 'aucun')) {
+	  format=c('type', 'agglo', 'aucun'), type=c('C', 'P')) {
 	if (missing (agglos) ) {
 		query <- 'SELECT NOM_AGGLO FROM GROUPE_ATMO'
 		return (xrGetQuery (conn, query))
 	}
 
 	format <- match.arg(format)
+	type <- match.arg(type)
 
 	query <- sprintf (
-		"SELECT NOM_AGGLO, J_DATE, C_IND_DIFFUSE
+		"SELECT NOM_AGGLO, J_DATE, %s_IND_DIFFUSE
 			FROM	RESULTAT_INDICE JOIN
 				GROUPE_ATMO USING (NOM_COURT_GRP)
 			WHERE	NOM_AGGLO IN('%s') AND
 				J_DATE BETWEEN
 			       		TO_DATE ('%s', 'YYYY-MM-DD') AND
 					TO_DATE ('%s', 'YYYY-MM-DD')",
-		paste (agglos, collapse="', '"), start, end)
+		type, paste (agglos, collapse="', '"), start, end)
 
 	indices <- xrGetQuery (conn, query)
+	names(indices)[3] <- 'IND_DIFFUSE'
 	# forçage
-	indices$C_IND_DIFFUSE <- as.numeric( indices$C_IND_DIFFUSE )
+	indices$IND_DIFFUSE <- as.numeric( indices$IND_DIFFUSE )
 
 	if( detail ) {
 		indices$NOPOL <- 'indice'
 
-		query <- sprintf("SELECT NOM_AGGLO, J_DATE, C_SS_INDICE_DIFF, NOPOL
+		query <- sprintf("SELECT NOM_AGGLO, J_DATE, %s_SS_INDICE_DIFF, NOPOL
 			FROM	RESULTAT_SS_INDICE JOIN
 					GROUPE_ATMO USING (NOM_COURT_GRP)
 				WHERE	NOM_AGGLO IN('%s') AND
 					J_DATE BETWEEN
 						TO_DATE ('%s', 'YYYY-MM-DD') AND
 						TO_DATE ('%s', 'YYYY-MM-DD')", 
-			paste(agglos, collapse = "', '"), start, end)
+			type, paste(agglos, collapse = "', '"), start, end)
 
 		ss.indices <- xrGetQuery(conn, query)
+		names(ss.indices)[3] <- 'SS_INDICE_DIFF'
 		# forçage
-		ss.indices$C_SS_INDICE_DIFF <-
-			as.numeric( ss.indices$C_SS_INDICE_DIFF )
-		names(ss.indices)[names(ss.indices) == 'C_SS_INDICE_DIFF'] <-
-			'C_IND_DIFFUSE'
+		ss.indices$SS_INDICE_DIFF <-
+			as.numeric( ss.indices$SS_INDICE_DIFF )
+		names(ss.indices)[names(ss.indices) == 'SS_INDICE_DIFF'] <-
+			'IND_DIFFUSE'
 
 		pols <- xrGetPolluants(conn, unique(ss.indices$NOPOL),
 			      search.fields='NOPOL')[c('NOPOL', 'CCHIM')]
@@ -97,7 +101,7 @@ function (conn, agglos, start, end, detail=FALSE,
 	indices$J_DATE <- substr (as.character (indices$J_DATE), 1, 10)
 	names (indices)[names (indices) == 'J_DATE'] <- 'date'
 
-	indices$C_IND_DIFFUSE[indices$C_IND_DIFFUSE == 0] <- NA
+	indices$IND_DIFFUSE[indices$IND_DIFFUSE == 0] <- NA
 
 	# définition d'un fonction interne qui transformet un tableau
 	# brute d'indice (directement extrait d'XR et un TimeIntervalDataFrame
@@ -107,7 +111,7 @@ function (conn, agglos, start, end, detail=FALSE,
 			indices <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
 
 		} else {
-			temp <- split(indices[c("date", "C_IND_DIFFUSE")],
+			temp <- split(indices[c("date", "IND_DIFFUSE")],
 						  indices[[group.by]])
 
 			indices <- temp[[1]]
