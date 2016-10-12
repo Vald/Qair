@@ -1,14 +1,20 @@
 Package: Qair
 Type: Package
 Title: Qualite de l'Air, Seuils Europeens et Traitement de donnees
-Version: 2.10.0
-Date: 2016-03-14
-Depends: timetools,DBI,methods
-Suggests: RODBC (>= 1.3.6), RJDBC (>= 0.2-1), ROracle (>= 1.1-8)
+Version: 2.11.0
+Date: 2016-10-12
+Depends:
+    timetools,DBI,methods
+Suggests:
+    RODBC (>= 1.3.6),
+    RJDBC (>= 0.2-1),
+    ROracle (>= 1.1-8)
 LazyData: true
 Author: Vladislav Navel
 Maintainer: Vladislav Navel <vnavel@yahoo.fr>
-Description: Interface avec une base de données XR, outils de traitement des données de vent et de calculs réglementaires (niveaux Europe et France).
+Description: Interface avec une base de données XR, outils de traitement des
+    données de vent et de calculs réglementaires (niveaux Europe et France).
 License: GPL
 URL: http://sourceforge.net/projects/packagerqair/
 Encoding: UTF-8
+RoxygenNote: 5.0.1
