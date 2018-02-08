@@ -33,4 +33,3 @@ base XR référencée par la connexion \code{conn}.
 \seealso{
 \code{\link{xrGetContinuousData}}
 }
-

@@ -2,10 +2,10 @@
 % Please edit documentation in R/zzz.R
 \docType{data}
 \name{qh}
-\alias{d}
-\alias{h}
-\alias{m}
 \alias{qh}
+\alias{h}
+\alias{d}
+\alias{m}
 \alias{y}
 \title{definition d'un raccourci pour les heures et les quart-d'heures}
 \format{An object of class \code{POSIXctp} of length 1.}
@@ -29,4 +29,3 @@ les années etc. dans \code{\link[lubridate:seconds]{lubridate}}.
 \code{\link[lubridate]{seconds}}
 }
 \keyword{datasets}
-

@@ -18,8 +18,6 @@
 de valeurs disponibles pour calculer le (les) quantile(s). La fonction
 retournera NA si ce pourcentage n'est pas atteint.}
 
-\item{...}{further arguments passed to or from other methods.}
-
 \item{\dots}{arguments pour d'autres méthodes.}
 }
 \value{
@@ -35,4 +33,3 @@ la qualité de l'air.
 \seealso{
 \code{\link[stats]{quantile}}, \code{\link{round.a}}
 }
-

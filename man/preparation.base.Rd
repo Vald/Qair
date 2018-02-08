@@ -56,4 +56,3 @@ application des seuils.
 \code{\link{validation.reglementaire}}, \code{\link{seuils}},
 \code{\link{comparaison}}
 }
-

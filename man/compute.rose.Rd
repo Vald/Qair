@@ -88,4 +88,3 @@ compute.rose (sample (10, 50, TRUE),
 \seealso{
 \code{\link{plot.rose}}, \code{\link{rosepol}}, \code{\link{compute.rosevent}}, \code{\link{rosevent}}
 }
-

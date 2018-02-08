@@ -20,13 +20,6 @@ doivent être mise en forme}
     ou non (cette règle apparaît dans un guide \sQuote{ADEME} mais
 dans aucun texte réglementaire).}
 
-\item{...}{arguments supplémentaires pouvant être transmis aux 
-    fonctions appelées dans le cadre du calcul. Le plus souvent, 
-    il peut s'agir de l'argument \code{use.marges} (TRUE ou FALSE)
-    qui précise si le calcul doit être réalisé en prenant comme 
-    seuil sa valeur définitive, ou bien cette valeur \sQuote{réhaussée}
-de la marge de dépassement applicable (lorsque cela est pertinent).}
-
 \item{\dots}{arguments supplémentaires éventuellement
 utilisés lorsqu'une fonction spécifique est utilisée
 pour la comparaison avec le seuil (cf \code{\link{validation.reglementaire}}
@@ -61,4 +54,3 @@ fonction \code{\link{comparaison}}.
 \code{\link{validation.reglementaire}}, \code{\link{seuils}},
 \code{\link{preparation.base}}
 }
-

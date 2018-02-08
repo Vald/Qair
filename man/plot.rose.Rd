@@ -136,4 +136,3 @@ Pour les autres paramètres, voir la description détaillée.
 \seealso{
 \code{\link{compute.rose}}, \code{\link{rosepol}}, \code{\link{plot.rosevent}}, \code{\link{rosevent}}
 }
-

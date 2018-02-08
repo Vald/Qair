@@ -80,4 +80,3 @@ Les vents calmes sont définis à l'aide du paramètre \code{vlims}.
 \seealso{
 \code{\link{plot.rosevent}}, \code{\link{rosevent}}, \code{\link{compute.rose}}, \code{\link{rosepol}}
 }
-

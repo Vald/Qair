@@ -58,6 +58,7 @@ autre que celle identifiée par \sQuote{strate}, aucun redressement n'est effect
 Si plusieurs variables d'intérêt et/ou auxiliaires sont fournies, les estimations sont
 calculées pour toutes les combinaisons (intérêt , auxiliaire) possible.
 }
+
 \references{
 guide ADEME pour l'élaboration d'un plan
 d'échantillonnage temporel et la reconstitution de données :
@@ -67,4 +68,3 @@ Pour les utilisateurs dotés d'un compte sur le site du LCSQA (\url{http://www.l
 est également disponible avec ses annexes à cette adresse :
 \url{http://www.lcsqa.org/echantillonnage-reconstitution-donnees/documentation/guide-pratique-elaboration-plans-echantillonnag}.
 }
-

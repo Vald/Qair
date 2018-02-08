@@ -137,4 +137,3 @@ seraient attendues celles qui s'arrêtent au POSIXct('2016-02-01', 'UTC').
  \code{\link{xrGetStations}}, \code{\link{xrGetPolluants}}, \code{\link[timetools]{TimeIntervalDataFrame-class}}
 \code{\link{xrGetManualData}}
 }
-

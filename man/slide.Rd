@@ -47,4 +47,3 @@ le calcul est directement réalisé en 'C').
 slide (1:10, 2, 1, 0)
 slide (1:10, 2, 4, 0)
 }
-

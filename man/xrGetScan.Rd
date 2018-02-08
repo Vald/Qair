@@ -87,4 +87,3 @@ Fonction pour recuperer des donnees scan de XR
  \code{\link{xrGetCampagnes}}, \code{\link{xrGetPolluants}}
 	\code{\link[timetools]{TimeIntervalDataFrame-class}}
 }
-

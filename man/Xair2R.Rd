@@ -93,4 +93,3 @@ avec les versions antérieures de Qair.
 \seealso{
 \code{\link{xrGetContinuousData}}
 }
-

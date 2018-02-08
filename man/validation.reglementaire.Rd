@@ -30,13 +30,6 @@ des calculs, juste le bilan, ou les deux (voir \sQuote{Value}).}
     ou non (cette règle apparaît dans un guide \sQuote{ADEME} mais
 dans aucun texte réglementaire).}
 
-\item{...}{arguments supplémentaires pouvant être transmis aux 
-    fonctions appelées dans le cadre du calcul. Le plus souvent, 
-    il peut s'agir de l'argument \code{use.marges} (TRUE ou FALSE)
-    qui précise si le calcul doit être réalisé en prenant comme 
-    seuil sa valeur définitive, ou bien cette valeur \sQuote{réhaussée}
-de la marge de dépassement applicable (lorsque cela est pertinent).}
-
 \item{\dots}{tout argument pouvant être transmis aux autres fonctions
     \sQuote{use.marges} par exemple (cf \code{\link{comparaison}} et
     \code{\link{preparation.base}}).
@@ -310,6 +303,7 @@ le remplacement du calcul de la valeur maximale journalière
 de la moyenne glissante sur 8 heures par un AOT pourrait avoir 
 des conséquences inattendues (ou pas).
 }
+
 \examples{
 # création d'un jeu de données 'bidon'
 #-------------------------------------
@@ -348,4 +342,3 @@ validation.reglementaire(donnees, seuil, resultat='comparaison', rep.comparaison
 \code{\link{comparaison}}, \code{\link{seuils}},
 \code{\link{preparation.base}}
 }
-

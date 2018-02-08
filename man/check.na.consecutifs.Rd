@@ -20,4 +20,3 @@ Le vecteur est considéré valide si le nombre de NA consécutifs
 qui le constitue est inférieur ou égal à \code{na.consecutif.max}.
 Si le vecteur est valide, la valeur retournée est TRUE, FALSE sinon.
 }
-

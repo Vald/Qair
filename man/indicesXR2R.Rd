@@ -59,11 +59,10 @@ la qualité de l'air stocké dans une base XR. Pour
 connaître la liste des réseaux d'indices definis,
 il suffit d'invoquer la fonction sans arguments.
 }
-\author{
-Fabrice Caïni, Vladislav Navel
-}
 \seealso{
 \code{\link{xrConnect}}, \code{\link{plot.indice}},
 \code{\link[timetools]{TimeIntervalDataFrame-class}}
 }
-
+\author{
+Fabrice Caïni, Vladislav Navel
+}

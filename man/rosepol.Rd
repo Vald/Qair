@@ -99,8 +99,6 @@ Utile uniquement lorsque la rose est ajoutée à un graphique pré-existant pour
 
 \item{add}{logical indiquant si la rose doit être ajoutée à un graphique pré-existant.}
 
-\item{...}{arguments supplémentaires pour la fonction FUN.}
-
 \item{\dots}{arguments supplémentaires pour la fonction FUN.}
 }
 \value{
@@ -119,4 +117,3 @@ Cette fonction est un raccourci pour utiliser simultanément les fonctions
 \seealso{
 \code{\link{compute.rose}}, \code{\link{plot.rose}}
 }
-

@@ -2,10 +2,11 @@
 % Please edit documentation in R/dbListFields.R
 \docType{methods}
 \name{dbListFields}
-\alias{dbDisconnect}
-\alias{dbDisconnect,RODBC-method}
 \alias{dbListFields}
 \alias{dbListFields,RODBC,character-method}
+\alias{dbListFields,RODBC,character-method}
+\alias{dbDisconnect}
+\alias{dbDisconnect,RODBC-method}
 \title{extends dbListFields for RODBC objects}
 \usage{
 dbListFields(conn, name, ...)
@@ -17,12 +18,10 @@ dbDisconnect(conn, ...)
 \S4method{dbDisconnect}{RODBC}(conn, ...)
 }
 \arguments{
-\item{conn}{A \code{\linkS4class{DBIConnection}} object, as produced by
-\code{\link{dbConnect}}.}
+\item{conn}{A \linkS4class{DBIConnection} object, as returned by
+\code{\link[=dbConnect]{dbConnect()}}.}
 
 \item{name}{a character string with the name of the remote table.}
-
-\item{...}{Other parameters passed on to methods.}
 
 \item{\dots}{pour compatibiltié avec la méthode générique}
 }
@@ -32,4 +31,3 @@ extends dbListFields for RODBC objects
 \seealso{
 \code{\link[DBI]{dbListFields}}, \code{\link[RODBC]{sqlColumns}}
 }
-

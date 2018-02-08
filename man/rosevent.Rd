@@ -57,8 +57,6 @@ Utile uniquement lorsque la rose est ajoutée à un graphique pré-existant pour
 
 \item{add}{logical indiquant si la rose doit être ajoutée à un graphique pré-existant.}
 
-\item{...}{arguments supplémentaires transmis à la fonction \code{\link{plot.rose}}.}
-
 \item{\dots}{arguments supplémentaires pour la fonction \code{\link{plot.rosevent}}.}
 }
 \value{
@@ -82,4 +80,3 @@ Cette fonction est un raccourci pour utiliser simultanément les fonctions
 \seealso{
 \code{\link{compute.rosevent}}, \code{\link{plot.rosevent}}
 }
-

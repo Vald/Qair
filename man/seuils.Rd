@@ -145,4 +145,3 @@ Décret 2010-1250 du 21 octobre 2010, Directive 2008/50/CE du 21 mai 2008, Direc
 \code{\link{typologies}} \code{\link{validation.reglementaire}},
 \code{\link{comparaison}}, \code{\link{preparation.base}}, \code{\link{format.seuil}}
 }
-

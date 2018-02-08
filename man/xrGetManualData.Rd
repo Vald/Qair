@@ -5,9 +5,9 @@
 \title{Fonction pour recuperer des donnees manuelles de XR}
 \usage{
 xrGetManualData(conn, start, end, sites = NULL, polluants = NULL,
-  methodes = NULL, valid.states = c("A", "R", "O", "W", "P"),
-  what = c("value", "state", "both"), campagnes = NULL, tz = "UTC",
-  cursor = NULL, categories = as.character(0:4))
+  methodes = NULL, valid.states = c("A", "L", "U"), what = c("value",
+  "state", "both"), campagnes = NULL, tz = "UTC", cursor = NULL,
+  categories = as.character(0:4))
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}
@@ -34,8 +34,9 @@ pouvant être converti en \code{\link[base]{POSIXct}}).}
 (optionnel) (utilisé via la fonction\code{\link{xrGetMethodesPrelevement}}).}
 
 \item{valid.states}{liste des codes états d'XR à considérer comme valide. Par défaut
-les données dont le code état est'A', 'R', 'O', 'W' ou 'P' sont considérées comme valides.
-les autres sont remplacées par NA.}
+les données dont le code état est 'A', 'L', 'U' sont considérées comme valides
+ et sont intégrées au tableau de données pour les données manuelles.
+ Les codes 'I', 'l' et 'u' correspondent aux données 'invalides'.}
 
 \item{what}{un des éléments suivant ('value', 'state', 'both'). value : seules
 les valeurs sont récupérées ; state : seuls les codes états sont récupérées ;
@@ -82,4 +83,3 @@ Fonction pour recuperer des donnees manuelles de XR
  \code{\link{xrGetCampagnes}}, \code{\link{xrGetPolluants}}
 	\code{\link[timetools]{TimeIntervalDataFrame-class}}
 }
-

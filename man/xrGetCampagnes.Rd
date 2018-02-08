@@ -43,4 +43,3 @@ ou des dates entre lesquelles la station a fonctionné.
 \seealso{
 \code{\link{xrGetContinuousData}}
 }
-

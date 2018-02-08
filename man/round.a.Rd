@@ -23,4 +23,3 @@ la qualité de l'air.
 \seealso{
 \code{\link[base]{round}}, \code{\link{quantile.a}}
 }
-

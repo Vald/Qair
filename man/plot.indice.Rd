@@ -23,4 +23,3 @@ de l'air de manière rigoulotte :)
 \seealso{
 \code{\link{indicesXR2R}}
 }
-

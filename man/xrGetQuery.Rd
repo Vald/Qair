@@ -25,7 +25,7 @@ Sous windows, le pilote utilisé est ODBC (nécessite d'avoir
 installer le paquet \code{\link[RODBC]{RODBC}}), sous linux JDBC
 (nécessite d'avoir installer le paquet \code{\link[RJDBC]{JDBC}}).
 }
+
 \seealso{
 \code{\link{xrConnect}}, \code{\link[RODBC]{RODBC}}, \code{\link[RJDBC]{JDBC}}
 }
-

@@ -26,4 +26,3 @@ la somme des dépassements du seuil indiqué, sous réserve que le nombre
 de données valides dans le vecteur soit supérieur au pourcentage
 indiqué par rep.min.
 }
-
