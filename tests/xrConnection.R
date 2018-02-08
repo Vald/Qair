@@ -1,5 +1,5 @@
 library (Qair)
-options(Xair.host = '172.16.19.33',
+options(Xair.host = '172.16.16.16',
 	Xair.dsn = 'N09',
 	Xair.uid = 'vlad',
 	Xair.pwd = 'vlad',

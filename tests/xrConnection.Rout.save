@@ -1,7 +1,7 @@
 
-R version 3.1.3 (2015-03-09) -- "Smooth Sidewalk"
-Copyright (C) 2015 The R Foundation for Statistical Computing
-Platform: x86_64-unknown-linux-gnu (64-bit)
+R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
+Copyright (C) 2017 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -18,7 +18,7 @@ Type 'q()' to quit R.
 > library (Qair)
 Loading required package: timetools
 Loading required package: DBI
-> options(Xair.host = '172.16.19.33',
+> options(Xair.host = '172.16.16.16',
 + 	Xair.dsn = 'N09',
 + 	Xair.uid = 'vlad',
 + 	Xair.pwd = 'vlad',
@@ -34,53 +34,53 @@ Loading required package: DBI
 > 
 > summary(xrGetPolluants(xr))
     NOPOL              CCHIM               NCON           CODE_COMPLEMENTAIRE
- Length:356         Length:356         Length:356         Length:356         
+ Length:410         Length:410         Length:410         Length:410         
  Class :character   Class :character   Class :character   Class :character   
  Mode  :character   Mode  :character   Mode  :character   Mode  :character   
                                                                              
                                                                              
                                                                              
                                                                              
-   TYPE_AGR              FCON        ECHELLE_MIN      ECHELLE_MAX     
- Length:356         Min.   :0.665   Min.   :-10.00   Min.   :   0.01  
- Class :character   1st Qu.:1.000   1st Qu.:  0.00   1st Qu.:   5.00  
- Mode  :character   Median :1.000   Median :  0.00   Median :  15.00  
-                    Mean   :1.249   Mean   : 20.43   Mean   : 129.16  
-                    3rd Qu.:1.000   3rd Qu.:  0.00   3rd Qu.:  50.00  
-                    Max.   :5.929   Max.   :980.00   Max.   :2000.00  
-                                    NA's   :309      NA's   :309      
+   TYPE_AGR              FCON           ECHELLE_MIN     ECHELLE_MAX     
+ Length:410         Min.   :   0.665   Min.   :-20.0   Min.   :   0.01  
+ Class :character   1st Qu.:   1.000   1st Qu.:  0.0   1st Qu.:   5.00  
+ Mode  :character   Median :   1.000   Median :  0.0   Median :  15.00  
+                    Mean   :   3.655   Mean   : 12.9   Mean   : 106.94  
+                    3rd Qu.:   1.000   3rd Qu.:  0.0   3rd Qu.:  50.00  
+                    Max.   :1000.000   Max.   :900.0   Max.   :2000.00  
+                                       NA's   :329     NA's   :329      
   TIMESTAMP         CCHIM_COURT        LIB_ECHELLE         ECHELLE2_MIN    
- Length:356         Length:356         Length:356         Min.   :-30.000  
+ Length:410         Length:410         Length:410         Min.   :-30.000  
  Class :character   Class :character   Class :character   1st Qu.:  0.000  
  Mode  :character   Mode  :character   Mode  :character   Median :  0.000  
-                                                          Mean   : -1.458  
+                                                          Mean   : -1.806  
                                                           3rd Qu.:  0.000  
                                                           Max.   :  0.000  
-                                                          NA's   :332      
-  ECHELLE2_MAX    LIB_ECHELLE2        ECHELLE3_MIN       ECHELLE3_MAX    
- Min.   :  0.00   Length:356         Min.   :-100.000   Min.   :    0.0  
- 1st Qu.:  2.00   Class :character   1st Qu.:   0.000   1st Qu.:    5.0  
- Median : 20.00   Mode  :character   Median :   0.000   Median :  100.0  
- Mean   : 46.29                      Mean   :  -5.208   Mean   :  523.1  
- 3rd Qu.:100.00                      3rd Qu.:   0.000   3rd Qu.:  250.0  
- Max.   :150.00                      Max.   :   0.000   Max.   :10000.0  
- NA's   :332                         NA's   :332        NA's   :332      
+                                                          NA's   :374      
+  ECHELLE2_MAX    LIB_ECHELLE2        ECHELLE3_MIN       ECHELLE3_MAX  
+ Min.   :  0.00   Length:410         Min.   :-100.000   Min.   :    0  
+ 1st Qu.:  4.25   Class :character   1st Qu.:   0.000   1st Qu.:    5  
+ Median : 35.00   Mode  :character   Median :   0.000   Median :  100  
+ Mean   : 45.44                      Mean   :  -3.571   Mean   :  383  
+ 3rd Qu.:100.00                      3rd Qu.:   0.000   3rd Qu.:  200  
+ Max.   :150.00                      Max.   :   0.000   Max.   :10000  
+ NA's   :374                         NA's   :375        NA's   :375    
  LIB_ECHELLE3        ECHELLE4_MIN  ECHELLE4_MAX     LIB_ECHELLE4      
- Length:356         Min.   :0     Min.   :    4.0   Length:356        
+ Length:410         Min.   :0     Min.   :    4.0   Length:410        
  Class :character   1st Qu.:0     1st Qu.:   10.0   Class :character  
- Mode  :character   Median :0     Median :  275.0   Mode  :character  
-                    Mean   :0     Mean   :  918.8                     
+ Mode  :character   Median :0     Median :  100.0   Mode  :character  
+                    Mean   :0     Mean   :  767.2                     
                     3rd Qu.:0     3rd Qu.:  500.0                     
                     Max.   :0     Max.   :15000.0                     
-                    NA's   :334   NA's   :334                         
+                    NA's   :383   NA's   :383                         
   ECHELLE5_MIN     ECHELLE5_MAX   LIB_ECHELLE5         NO_CHRONO     
- Min.   :0.0000   Min.   :    5   Length:356         Min.   :  1.00  
- 1st Qu.:0.0000   1st Qu.:   20   Class :character   1st Qu.: 19.25  
- Median :0.0000   Median :  450   Mode  :character   Median : 41.50  
- Mean   :0.0455   Mean   : 1598                      Mean   : 54.12  
- 3rd Qu.:0.0000   3rd Qu.: 1000                      3rd Qu.: 91.75  
+ Min.   :0.0000   Min.   :    5   Length:410         Min.   :  1.00  
+ 1st Qu.:0.0000   1st Qu.:   20   Class :character   1st Qu.: 19.50  
+ Median :0.0000   Median :  450   Mode  :character   Median : 42.00  
+ Mean   :0.0455   Mean   : 1598                      Mean   : 54.23  
+ 3rd Qu.:0.0000   3rd Qu.: 1000                      3rd Qu.: 91.50  
  Max.   :1.0000   Max.   :25000                      Max.   :113.00  
- NA's   :334      NA's   :334                        NA's   :282     
+ NA's   :388      NA's   :388                        NA's   :335     
   SEUIL_30MIN   SEUIL_10MIN    SEUIL_24H        SEUIL_MAX       SEUIL_MIN  
  Min.   : 20   Min.   :150   Min.   : 10.00   Min.   : 10.0   Min.   : NA  
  1st Qu.: 30   1st Qu.:325   1st Qu.: 10.00   1st Qu.: 17.5   1st Qu.: NA  
@@ -88,7 +88,15 @@ Loading required package: DBI
  Mean   :120   Mean   :500   Mean   : 88.33   Mean   : 82.5   Mean   :NaN  
  3rd Qu.:150   3rd Qu.:675   3rd Qu.: 50.00   3rd Qu.:150.0   3rd Qu.: NA  
  Max.   :400   Max.   :850   Max.   :400.00   Max.   :150.0   Max.   : NA  
- NA's   :349   NA's   :354   NA's   :350      NA's   :352     NA's   :356  
+ NA's   :403   NA's   :408   NA's   :404      NA's   :406     NA's   :410  
+  SEUIL_60MIN 
+ Min.   : NA  
+ 1st Qu.: NA  
+ Median : NA  
+ Mean   :NaN  
+ 3rd Qu.: NA  
+ Max.   : NA  
+ NA's   :410  
 > xrGetPolluants(xr, 'N2')
   NOPOL    CCHIM                        NCON CODE_COMPLEMENTAIRE TYPE_AGR FCON
 1    N2 PM2.5FNV Fraction non volatile PM2.5                <NA>        N    1
@@ -102,9 +110,9 @@ Loading required package: DBI
   ECHELLE4_MAX LIB_ECHELLE4 ECHELLE5_MIN ECHELLE5_MAX LIB_ECHELLE5 NO_CHRONO
 1           NA         <NA>           NA           NA         <NA>        88
 2           NA         <NA>           NA           NA         <NA>       100
-  SEUIL_30MIN SEUIL_10MIN SEUIL_24H SEUIL_MAX SEUIL_MIN
-1          NA          NA        NA        NA        NA
-2          NA          NA        NA        NA        NA
+  SEUIL_30MIN SEUIL_10MIN SEUIL_24H SEUIL_MAX SEUIL_MIN SEUIL_60MIN
+1          NA          NA        NA        NA        NA          NA
+2          NA          NA        NA        NA        NA          NA
 > xrGetPolluants(xr, 'und', 'NCON')
   NOPOL  CCHIM       NCON CODE_COMPLEMENTAIRE TYPE_AGR FCON ECHELLE_MIN
 1    WX C11H24 n-undecane                <NA>        N    1          NA
@@ -114,8 +122,8 @@ Loading required package: DBI
 1         <NA>           NA           NA         <NA>           NA           NA
   LIB_ECHELLE4 ECHELLE5_MIN ECHELLE5_MAX LIB_ECHELLE5 NO_CHRONO SEUIL_30MIN
 1         <NA>           NA           NA         <NA>        NA          NA
-  SEUIL_10MIN SEUIL_24H SEUIL_MAX SEUIL_MIN
-1          NA        NA        NA        NA
+  SEUIL_10MIN SEUIL_24H SEUIL_MAX SEUIL_MIN SEUIL_60MIN
+1          NA        NA        NA        NA          NA
 > 
 > xrGetMethodesPrelevement(xr)
    CODE_METH_P                                               LIBELLE TIMESTAMP
@@ -155,9 +163,9 @@ Loading required package: DBI
 > 
 > xrGetCampagnes(xr, 'LARO', end='2011-01-01')
   NRESSURV NOM_COURT_CM                                         LIBELLE
-1        9   TLAROC2008                    La Rochelle - Tubes NO2 2008
-2        9   TLAROC2009              La Rochelle - Vaugoin - Habitation
-3        9   TLAROC0807 La Rochelle - Ecoles et creches - Air interieur
+1       44   TLAROC2008                    La Rochelle - Tubes NO2 2008
+2       44   TLAROC2009              La Rochelle - Vaugoin - Habitation
+3       44   TLAROC0807 La Rochelle - Ecoles et creches - Air interieur
               DATEDEB             DATEFIN COMMENTAIRE TIMESTAMP NO_CAMP
 1 2008-01-01 00:00:00 2008-12-30 11:20:00        <NA>      <NA>      89
 2 2009-02-16 00:00:00 2009-11-03 09:52:00        <NA>      <NA>     110
@@ -171,8 +179,8 @@ Loading required package: DBI
 > 
 > colonnes <- c(63, 64, 70, 92)
 > xrGetStations(xr, 'Chas')[-colonnes]
-  CLASSE_SITE NSIT NDEPART NINSEE              ISIT NOM_COURT_SIT       AXE
-1           6 9010      86  86062 Chasseneuil du P.        Chasse Leclanche
+  CLASSE_SITE  NSIT NDEPART NINSEE                 ISIT NOM_COURT_SIT       AXE
+1           6 44110      86  86062 Poitiers - Chasseneu        Chasse Leclanche
   CODE_POSTAL NO_TELEPHONE NO_ZONE NO_RTC  MPST MPST1_U MPST2_U MPST3_U MPST4_U
 1       86360   0549889285    <NA>      4 simon    <NA>    <NA>    <NA>    <NA>
   MPST5_U MPST_SU_LOCAL MPST_NOUVEAU       LONGI      LATI ALTI LAMBERTX
@@ -203,13 +211,13 @@ Loading required package: DBI
 1 127.0.0.1:9010        9010             NA        16           18
   ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION MODEM_TEMPO
 1            23        NA              93          NA           NA        <NA>
-  MODEM_RELAIS    IDENTIFIANT TIME_MANAGEMENT   typologie
-1         <NA> CHASSENEUIL_PO            <NA> Periurbaine
+  MODEM_RELAIS     IDENTIFIANT TIME_MANAGEMENT   typologie
+1         <NA> D86POI_CHASSENE            <NA> Periurbaine
 > xrGetStations(xr, campagnes='ANG12')[-colonnes]
-  CLASSE_SITE NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
-1           6 9036      16  16113 Lafarge site sud        ANG_13
-2          NA 9035      16  16113    Lafarge Ouest        ANG_12
-3          NA 9033      16  16113     Lafarge nord        ANG_14
+  CLASSE_SITE  NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
+1           6 44008      16  16113 Lafarge site sud        ANG_13
+2          NA 44007      16  16113    Lafarge Ouest        ANG_12
+3          NA 44005      16  16113     Lafarge nord        ANG_14
                                      AXE CODE_POSTAL NO_TELEPHONE NO_ZONE
 1         Enceinte Lafarge Ciments (Sud)       16000            0    <NA>
 2 Enceinte Lafarge ciments (transfo EDF)       16000   0608903988    <NA>
@@ -243,7 +251,7 @@ Loading required package: DBI
 2         <NA>          0 <NA> 2004-05-17 00:00:00 2004-05-17 00:00:00
 3         <NA>          0 <NA> 2004-05-17 00:00:00 2004-05-17 00:00:00
            D_CREATION           D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46 2015-04-28 09:14:28      <NA>  <NA>  <NA>      <NA>
+1 2011-03-18 12:58:46 2018-01-11 14:35:57      <NA>  <NA>  <NA>      <NA>
 2 2011-02-21 15:17:38 2013-02-19 08:07:23      <NA>  <NA>  <NA>      <NA>
 3 2011-03-18 13:10:32 2014-10-08 07:36:54      <NA>  <NA>  <NA>      <NA>
    D_SYNCHRO_CRITIQUE MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE
@@ -254,14 +262,18 @@ Loading required package: DBI
 1             NA             NA             NA         NA           <NA>
 2             NA             NA             NA         NA           <NA>
 3             NA             NA             NA         NA           <NA>
-  SCRUT_EN_COURS N_ESSAIS_SCRUT DER_LECT_QH DER_LECT_HIS DER_LECT_DEF
-1             NA             NA        <NA>         <NA>         <NA>
-2             NA             NA        <NA>         <NA>         <NA>
-3             NA             NA        <NA>         <NA>         <NA>
-  DER_LECT_ALR DER_LECT_SCN DER_LECT_CAL DER_ESSAI_COMM DER_ETAT ETAT_ALARME
-1         <NA>         <NA>         <NA>           <NA>     <NA>        <NA>
-2         <NA>         <NA>         <NA>           <NA>     <NA>        <NA>
-3         <NA>         <NA>         <NA>           <NA>     <NA>        <NA>
+  SCRUT_EN_COURS N_ESSAIS_SCRUT         DER_LECT_QH        DER_LECT_HIS
+1             NA             NA 2018-02-08 14:00:00 2018-02-08 13:01:36
+2             NA             NA                <NA>                <NA>
+3             NA             NA                <NA>                <NA>
+         DER_LECT_DEF        DER_LECT_ALR        DER_LECT_SCN
+1 2018-02-08 13:01:36 2018-02-08 13:01:35 2018-02-08 13:01:37
+2                <NA>                <NA>                <NA>
+3                <NA>                <NA>                <NA>
+         DER_LECT_CAL      DER_ESSAI_COMM DER_ETAT ETAT_ALARME
+1 2018-02-08 13:01:36 2018-02-08 13:01:35     <NA>        <NA>
+2                <NA>                <NA>     <NA>        <NA>
+3                <NA>                <NA>     <NA>        <NA>
           ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR SITE_TYPE TYPE_SECTEUR
 1 90.84.183.156:3005        9036             NA        16           18
 2 90.84.166.254:3005        9035             NA        NA           NA
@@ -275,9 +287,9 @@ Loading required package: DBI
 2 00000000000000         <NA>      ANG_12            <NA>        <NA>
 3 00000000000000         <NA>      ANG_14            <NA>        <NA>
 > xrGetStations(xr, campagnes='ANG12', mesures='24')[-colonnes]
-  CLASSE_SITE NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
-1           6 9036      16  16113 Lafarge site sud        ANG_13
-2          NA 9035      16  16113    Lafarge Ouest        ANG_12
+  CLASSE_SITE  NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
+1           6 44008      16  16113 Lafarge site sud        ANG_13
+2          NA 44007      16  16113    Lafarge Ouest        ANG_12
                                      AXE CODE_POSTAL NO_TELEPHONE NO_ZONE
 1         Enceinte Lafarge Ciments (Sud)       16000            0    <NA>
 2 Enceinte Lafarge ciments (transfo EDF)       16000   0608903988    <NA>
@@ -303,7 +315,7 @@ Loading required package: DBI
 1         <NA>          0 <NA> 1997-01-01 00:00:00 1997-01-01 00:00:00
 2         <NA>          0 <NA> 2004-05-17 00:00:00 2004-05-17 00:00:00
            D_CREATION           D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46 2015-04-28 09:14:28      <NA>  <NA>  <NA>      <NA>
+1 2011-03-18 12:58:46 2018-01-11 14:35:57      <NA>  <NA>  <NA>      <NA>
 2 2011-02-21 15:17:38 2013-02-19 08:07:23      <NA>  <NA>  <NA>      <NA>
    D_SYNCHRO_CRITIQUE MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE
 1 2011-03-22 11:37:51    SAMEX54         2        8             NA
@@ -311,12 +323,15 @@ Loading required package: DBI
   AN_FIN_FORCAGE QH_DEB_FORCAGE QH_FIN_FORCAGE DERNIER_AN DER_TENT_SCRUT
 1             NA             NA             NA         NA           <NA>
 2             NA             NA             NA         NA           <NA>
-  SCRUT_EN_COURS N_ESSAIS_SCRUT DER_LECT_QH DER_LECT_HIS DER_LECT_DEF
-1             NA             NA        <NA>         <NA>         <NA>
-2             NA             NA        <NA>         <NA>         <NA>
-  DER_LECT_ALR DER_LECT_SCN DER_LECT_CAL DER_ESSAI_COMM DER_ETAT ETAT_ALARME
-1         <NA>         <NA>         <NA>           <NA>     <NA>        <NA>
-2         <NA>         <NA>         <NA>           <NA>     <NA>        <NA>
+  SCRUT_EN_COURS N_ESSAIS_SCRUT         DER_LECT_QH        DER_LECT_HIS
+1             NA             NA 2018-02-08 14:00:00 2018-02-08 13:01:36
+2             NA             NA                <NA>                <NA>
+         DER_LECT_DEF        DER_LECT_ALR        DER_LECT_SCN
+1 2018-02-08 13:01:36 2018-02-08 13:01:35 2018-02-08 13:01:37
+2                <NA>                <NA>                <NA>
+         DER_LECT_CAL      DER_ESSAI_COMM DER_ETAT ETAT_ALARME
+1 2018-02-08 13:01:36 2018-02-08 13:01:35     <NA>        <NA>
+2                <NA>                <NA>     <NA>        <NA>
           ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR SITE_TYPE TYPE_SECTEUR
 1 90.84.183.156:3005        9036             NA        16           18
 2 90.84.166.254:3005        9035             NA        NA           NA
@@ -328,32 +343,32 @@ Loading required package: DBI
 2 00000000000000         <NA>      ANG_12            <NA>        <NA>
 > 
 > summary(xrGetSitesPrelevement(xr, 'TLAROC_L'))
-    NRESSURV      NSIT         IDSITEP            LIBELLE         
- Min.   :9   Min.   :168.0   Length:77          Length:77         
- 1st Qu.:9   1st Qu.:187.0   Class :character   Class :character  
- Median :9   Median :206.0   Mode  :character   Mode  :character  
- Mean   :9   Mean   :302.7                                        
- 3rd Qu.:9   3rd Qu.:225.0                                        
- Max.   :9   Max.   :817.0                                        
-                                                                  
+    NRESSURV       NSIT          IDSITEP            LIBELLE         
+ Min.   :44   Min.   : 168.0   Length:99          Length:99         
+ 1st Qu.:44   1st Qu.: 192.5   Class :character   Class :character  
+ Median :44   Median : 217.0   Mode  :character   Mode  :character  
+ Mean   :44   Mean   : 488.0                                        
+ 3rd Qu.:44   3rd Qu.: 814.5                                        
+ Max.   :44   Max.   :1147.0                                        
+                                                                    
    DATE_DEB           DATE_FIN             LONGI               LATI       
- Length:77          Length:77          Min.   :-0.02121   Min.   :0.8042  
- Class :character   Class :character   1st Qu.:-0.02024   1st Qu.:0.8056  
- Mode  :character   Mode  :character   Median :-0.01987   Median :0.8057  
-                                       Mean   :-0.01976   Mean   :0.8058  
-                                       3rd Qu.:-0.01926   3rd Qu.:0.8060  
+ Length:99          Length:99          Min.   :-0.02121   Min.   :0.8042  
+ Class :character   Class :character   1st Qu.:-0.02014   1st Qu.:0.8056  
+ Mode  :character   Mode  :character   Median :-0.01998   Median :0.8057  
+                                       Mean   :-0.01982   Mean   :0.8057  
+                                       3rd Qu.:-0.01951   3rd Qu.:0.8059  
                                        Max.   :-0.01762   Max.   :0.8072  
                                                                           
       ALTI      LAMBERTX         LAMBERTY         NDEPART              NINSEE 
- Min.   :2   Min.   :325759   Min.   :2125346   Length:77          Min.   :0  
- 1st Qu.:2   1st Qu.:330184   1st Qu.:2134209   Class :character   1st Qu.:0  
- Median :2   Median :331824   Median :2135407   Mode  :character   Median :0  
- Mean   :2   Mean   :332230   Mean   :2135464                      Mean   :0  
- 3rd Qu.:2   3rd Qu.:334695   3rd Qu.:2137416                      3rd Qu.:0  
+ Min.   :2   Min.   :325759   Min.   :2125346   Length:99          Min.   :0  
+ 1st Qu.:2   1st Qu.:330500   1st Qu.:2134512   Class :character   1st Qu.:0  
+ Median :2   Median :331162   Median :2135221   Mode  :character   Median :0  
+ Mean   :2   Mean   :331946   Mean   :2135388                      Mean   :0  
+ 3rd Qu.:2   3rd Qu.:333320   3rd Qu.:2136322                      3rd Qu.:0  
  Max.   :2   Max.   :341746   Max.   :2144720                      Max.   :0  
                                                                               
      AXE            CODE_POSTAL         TIMESTAMP           INDIVIDUEL
- Length:77          Length:77          Length:77          Min.   :0   
+ Length:99          Length:99          Length:99          Min.   :0   
  Class :character   Class :character   Class :character   1st Qu.:0   
  Mode  :character   Mode  :character   Mode  :character   Median :0   
                                                           Mean   :0   
@@ -361,17 +376,17 @@ Loading required package: DBI
                                                           Max.   :0   
                                                                       
  COMMENTAIRE          NSIT_LOCAL  PRELV_FLAG_EMEP   
- Length:77          Min.   : NA   Length:77         
+ Length:99          Min.   : NA   Length:99         
  Class :character   1st Qu.: NA   Class :character  
  Mode  :character   Median : NA   Mode  :character  
                     Mean   :NaN                     
                     3rd Qu.: NA                     
                     Max.   : NA                     
-                    NA's   :77                      
+                    NA's   :99                      
 > xrGetSitesPrelevement(xr, campagnes='TLAROC2009')
   NRESSURV NSIT    IDSITEP                                   LIBELLE
-1        9  236 TVAUGO_IN1 La Rochelle - Vaugoin n?6 - Air interieur
-2        9  237 TVAUGO_EX1 La Rochelle - Vaugoin n?6 - Air exterieur
+1       44  236 TVAUGO_IN1 La Rochelle - Vaugoin n?6 - Air interieur
+2       44  237 TVAUGO_EX1 La Rochelle - Vaugoin n?6 - Air exterieur
              DATE_DEB            DATE_FIN       LONGI      LATI ALTI LAMBERTX
 1 2009-03-17 00:00:00 2030-12-31 00:00:00 -0.02069573 0.8057279   NA       NA
 2 2009-03-17 00:00:00 2030-12-31 00:00:00 -0.02069524 0.8057275   NA       NA
@@ -645,4 +660,4 @@ Loading required package: DBI
 > 
 > proc.time()
    user  system elapsed 
-  1.704   0.041   3.603 
+  1.280   0.060  13.557 
