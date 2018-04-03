@@ -207,6 +207,10 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	data <- xrGetQuery (conn, query)
 	names (data)[2] <- 'DATE'
 
+	# correctif bug suite malformation table après import de Polair
+	etat <- grep('ETAT', names(data), value=TRUE)
+	data <- data[!is.na(data[[etat]]), ]
+
 	# à priori pour airparif, les Q_, H_, etc. sont rappatriés sous forme de char, donc conversion
 	# conversion systématique (sans impact si pas nécessaire, corrige à priori non pour XR < 6 mais pour
 	# windows >= 7)

@@ -1,3 +1,6 @@
+----------  Qair v2.13.0
+adaptation de xrGetContinuousData à un défaut de la base XR suite à l'import des données de Polair
+
 ----------  Qair v2.10.0
 La fonction xrGetManualData retourne désormais un "tableau sans colonne" si aucune valeur
 n'est trouvée (remplace le comportement précédent : plantage).
