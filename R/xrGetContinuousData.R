@@ -231,10 +231,13 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	data <- split (data, data$NOM_COURT_MES)
 
 	m <- match (names (data), mesures$NOM_COURT_MES)
-	data <- mapply (mef.mesure, data, mesures[[id.field]][m], fmul=mesures$FMUL[m], SIMPLIFY = FALSE,
+	data <- mapply (mef.mesure, data, fmul=mesures$FMUL[m], SIMPLIFY = FALSE,
 			MoreArgs = list (period=q$periodb, valid.states=valid.states, what=what, XR6=XR6))
-	# ncm <- unlist (lapply (data, attr, 'NOM_COURT_MES') ) # ? a quoi ca sert ? À rien ?
-	for (i in names(data) ) names (data[[i]])[3] <- i
+
+	for (i in names(data) ) {
+		names (data[[i]])[3] <- i
+		if(length(data[[i]]) == 4) names (data[[i]])[4] <- paste(sep='.', i, 'state')
+	}
 	
 	tmp <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
 		    as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
@@ -321,8 +324,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 }
 
 
-mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul) {
-	mesure <- identifiant
+mef.mesure <- function(data, period, valid.states, what, XR6, fmul) {
 	ncm <- unique (data[[grep ('NOM_COURT_MES', names (data))]])
 	data <- data[setdiff (names (data), c('NOM_COURT_MES') )]
 
@@ -372,14 +374,11 @@ mef.mesure <- function(data, identifiant, period, valid.states, what, XR6, fmul)
 		values[!etats %in% valid.states] <- NA
 		values <- data.frame (values)
 		if (!XR6) values <- values*10^fmul
-		names (values) <- mesure
 	}
 	if (what == 'state') {
 		values <- data.frame (etats)
-		names (values) <- mesure
 	} else if (what == 'both') {
 		values <- data.frame (values, etats)
-		names (values) <- paste (mesure, c('value', 'state'), sep= '.')
 	}
 	values <- data.frame (dates, values)
 	attributes(values)$NOM_COURT_MES <- ncm
