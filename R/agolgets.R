@@ -21,11 +21,14 @@
 #'                        where="date%20IN%20('2018-09-17','2018-09-18','2018-09-19')",
 #'                        getGeometry=FALSE)
 agolGetData <- function(aasqa, flux, where='1=1', outFields='*', getGeometry=TRUE) {
+    loadNamespace('rgdal')
+    loadNamespace('RCurl')
 
     if(getGeometry) {
         returnGeometry <- 'true'
         f <- 'geojson'
     } else {
+        loadNamespace('rjson')
         returnGeometry <- 'false'
         f <- 'json'
     }
@@ -36,10 +39,10 @@ agolGetData <- function(aasqa, flux, where='1=1', outFields='*', getGeometry=TRU
 
     message(url)
 
-    if(getGeometry) data <- readOGR(url, stringsAsFactors=FALSE) else {
+    if(getGeometry) data <- rgdal::readOGR(url, stringsAsFactors=FALSE) else {
 
-        data <- getURL  (url)
-        data <- fromJSON(data)
+        data <- RCurl::getURL  (url)
+        data <- rjson::fromJSON(data)
 
         ndata<- sapply(data$fields, '[[', 'name')
 
@@ -58,14 +61,17 @@ agolGetData <- function(aasqa, flux, where='1=1', outFields='*', getGeometry=TRU
 #' @examples
 #' agolListFields(aasqa='AQwB7zFo5jNpvM0X', flux='ind_nouvelle_aquitaine')
 agolListFields <- function(aasqa, flux) {
+    loadNamespace('RCurl')
+    loadNamespace('XML')
+
     url <- 'https://dservices1.arcgis.com/%s/arcgis/services/%s/WFSServer?service=wfs&request=describefeaturetype'
     url <- sprintf(url, aasqa, flux)
 
     message(url)
 
-    infos  <- xmlTreeParse(getURL(url))
+    infos  <- XML::xmlTreeParse(RCurl::getURL(url))
     fields <- infos[[1]]$children[[1]][[3]][[1]][[1]][[1]]
-    fields <- xmlSApply(fields, xmlGetAttr, 'name')
+    fields <- XML::xmlSApply(fields, XML::xmlGetAttr, 'name')
     names(fields) <- NULL
 
     return(fields)
