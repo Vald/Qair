@@ -1,3 +1,6 @@
+----------  Qair v2.14.0
+Ajout des fonctions indicesXR2Rlong, agolGetData et agolListFields
+
 ----------  Qair v2.13.0
 adaptation de xrGetContinuousData à un défaut de la base XR suite à l'import des données de Polair
 

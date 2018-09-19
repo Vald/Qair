@@ -37,12 +37,12 @@
 \tabular{ll}{
 Package: \tab Qair\cr
 Type: \tab Package\cr
-Version: \tab 2.13.1\cr
-Date: \tab 2018-04-10\cr
+Version: \tab 2.14.0\cr
+Date: \tab 2018-09-19\cr
 License: \tab GPL\cr
 }
 }
 \author{
-Responsable : Vladislav Navel <vladislav.navel@atmopc.org>
+Responsable : Vladislav Navel <vladislav.navel@atmo-na.org>
 }
 \keyword{ package }
