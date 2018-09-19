@@ -1,3 +1,6 @@
+# DynLib
+useDynLib(Qair, .registration = TRUE, .fixes = "C_")
+
 # import des dependances
 import (timetools, methods)
 importMethodsFrom(DBI, dbListFields, dbDisconnect, dbConnect, dbGetQuery)

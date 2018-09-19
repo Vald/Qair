@@ -15,7 +15,3 @@ m <- POSIXctp (1, 'month')
 #' @rdname qh
 y <- POSIXctp (1, 'year')
 
-# .First.lib <-function (lib, pkg) { 
-.onLoad <- function (lib, pkg) {
-library.dynam("Qair", pkg, lib) 
-} 
