@@ -4,7 +4,6 @@
 \name{dbListFields}
 \alias{dbListFields}
 \alias{dbListFields,RODBC,character-method}
-\alias{dbListFields,RODBC,character-method}
 \alias{dbDisconnect}
 \alias{dbDisconnect,RODBC-method}
 \title{extends dbListFields for RODBC objects}

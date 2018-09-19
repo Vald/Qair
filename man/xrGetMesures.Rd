@@ -5,9 +5,9 @@
 \title{Recuperation des mesures definies dans une base XR}
 \usage{
 xrGetMesures(conn, pattern = NULL, search.fields = c("IDENTIFIANT",
-  "NOM_COURT_MES"), campagnes = NULL, reseaux = NULL, stations = NULL,
-  polluants = NULL, fields = NULL, collapse = c("AND", "OR"),
-  exact = FALSE)
+  "NOM_COURT_MES"), campagnes = NULL, reseaux = NULL,
+  stations = NULL, polluants = NULL, fields = NULL,
+  collapse = c("AND", "OR"), exact = FALSE)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

@@ -4,8 +4,8 @@
 \alias{xrGetPolluants}
 \title{Recuperation des polluants definis dans une base XR}
 \usage{
-xrGetPolluants(conn, pattern = NULL, search.fields = c("NOPOL", "CCHIM",
-  "NCON"), fields = NULL, exact = FALSE)
+xrGetPolluants(conn, pattern = NULL, search.fields = c("NOPOL",
+  "CCHIM", "NCON"), fields = NULL, exact = FALSE)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

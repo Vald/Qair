@@ -4,11 +4,12 @@
 \alias{xrGetContinuousData}
 \title{Recuperation de mesure continue dans une base XR}
 \usage{
-xrGetContinuousData(conn, pattern = NULL, start, end, period = c("h", "qh",
-  "d", "m", "y"), validated = TRUE, valid.states = c("A", "R", "O", "W",
-  "P"), what = c("value", "state", "both"), search.fields, campagnes = NULL,
-  reseaux = NULL, stations = NULL, polluants = NULL, collapse = c("AND",
-  "OR"), XR6 = TRUE, tz = "UTC", cursor = NULL, exact = FALSE)
+xrGetContinuousData(conn, pattern = NULL, start, end, period = c("h",
+  "qh", "d", "m", "y"), validated = TRUE, valid.states = c("A", "R",
+  "O", "W", "P"), what = c("value", "state", "both"), search.fields,
+  campagnes = NULL, reseaux = NULL, stations = NULL,
+  polluants = NULL, collapse = c("AND", "OR"), XR6 = TRUE,
+  tz = "UTC", cursor = NULL, exact = FALSE)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

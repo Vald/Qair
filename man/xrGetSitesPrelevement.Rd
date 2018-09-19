@@ -4,9 +4,9 @@
 \alias{xrGetSitesPrelevement}
 \title{Recuperation des sites de prelevement manuels definis dans une base XR}
 \usage{
-xrGetSitesPrelevement(conn, pattern = NULL, search.fields = c("IDSITEP",
-  "LIBELLE"), campagnes = NULL, fields = NULL, collapse = c("AND", "OR"),
-  exact = FALSE)
+xrGetSitesPrelevement(conn, pattern = NULL,
+  search.fields = c("IDSITEP", "LIBELLE"), campagnes = NULL,
+  fields = NULL, collapse = c("AND", "OR"), exact = FALSE)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

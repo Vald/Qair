@@ -4,10 +4,11 @@
 \alias{Xair2R}
 \title{Recuperation de mesure continue dans une base XR}
 \usage{
-Xair2R(polluants, dated, datef, dt = c("qh", "heure", "jour", "mois", "an"),
-  merging, codeV = c("A", "R", "O", "W"), dsn = NULL, uid = NULL,
-  pwd = NULL, brute = FALSE, reseaux = NULL, stations = NULL,
-  campagnes = NULL, host = NULL, keep.state = FALSE, XR6 = TRUE)
+Xair2R(polluants, dated, datef, dt = c("qh", "heure", "jour", "mois",
+  "an"), merging, codeV = c("A", "R", "O", "W"), dsn = NULL,
+  uid = NULL, pwd = NULL, brute = FALSE, reseaux = NULL,
+  stations = NULL, campagnes = NULL, host = NULL,
+  keep.state = FALSE, XR6 = TRUE)
 }
 \arguments{
 \item{polluants}{chaînes de caractères utilisées pour la recherche}

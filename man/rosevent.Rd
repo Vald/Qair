@@ -5,8 +5,8 @@
 \title{Calcul et affichage de roses des vents}
 \usage{
 rosevent(dv, fv, breaks = 0:17 * 22.5 + 22.5/2, vlims, col, border,
-  density = -1, rlim = NULL, centre = list(x = 0, y = 0), pas.rose = 1,
-  facteur = 1, add = FALSE, ...)
+  density = -1, rlim = NULL, centre = list(x = 0, y = 0),
+  pas.rose = 1, facteur = 1, add = FALSE, ...)
 }
 \arguments{
 \item{dv}{vecteur \sQuote{numeric} contenant les directions du vent en degrés
