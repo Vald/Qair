@@ -5,11 +5,21 @@
 #' cela permet un gain de temps significatif quand seules quelques valeurs sont
 #' recherchées.
 #'
-#' @param aasqa identifiant 'codé' de l'AASQA correspondant à ses urls ArcGIS
-#' @param flux le nom du flux à interroger ('ind_nouvelle_aquitaine' par exemple)
-#' @param where une requête à faire sur la table du flux. Attention les espaces
-#'  (' ') doivent être remplacés par la chaîne de caractères '%20', sinon ça
-#'  fonctionne comme une requête SQL.
+#' @param aasqa identifiant 'codé' de l'AASQA correspondant à ses URLs ArcGIS.
+#'  Le code en question est la suite de caractères sans signification évidente
+#'  qui apparaît systématiquement dans les URLs des flux WFS. Par exemple
+#'  'AQwB7zFo5jNpvM0X' dans :
+#'  "https://dservices1.arcgis.com/AQwB7zFo5jNpvM0X/arcgis/services/ind_nouvelle_aquitaine/WFSSe..."
+#' @param flux le nom du flux à interroger.
+#'  Il ne s'agit pas exactement du nom du flux mais de celui de la FeatureLayer
+#'  qui peut être trouvée sur la page suivante dans l'encadré "URL de requête".
+#'  Il s'agit de la partie entre "services/" et "/FeatureServer" (donc
+#'  'ind_nouvelle_aquitaine' dans l'exemple).
+#'  https://data-atmo-na.opendata.arcgis.com/datasets/ind-nouvelle-aquitaine/geoservice.
+#'  Si les FeatureLayer et les flux WFS ont été nommés de la même façon, il 
+#'  s'agit tout simplement du nom du flux.
+#' @param where une requête à faire sur la table du flux. Ça fonctionne comme
+#'  une requête SQL.
 #' @param outFields Vecteurs de chaînes de caractères indiquant les champs à
 #'  récupérer. La valeur par défaut '*' signifie 'tous'.
 #' @param getGeometry Si TRUE, un Spatial*DataFrame est retourné, sinon une data.frame.
@@ -23,6 +33,7 @@
 agolGetData <- function(aasqa, flux, where='1=1', outFields='*', getGeometry=TRUE) {
     loadNamespace('rgdal')
     loadNamespace('RCurl')
+    loadNamespace('utils')
 
     if(getGeometry) {
         returnGeometry <- 'true'
@@ -36,6 +47,7 @@ agolGetData <- function(aasqa, flux, where='1=1', outFields='*', getGeometry=TRU
     url <- "https://services1.arcgis.com/%s/arcgis/rest/services/%s/FeatureServer/0/query?outFields=%s&where=%s&returnGeometry=%s&f=%s"
     url <- sprintf(url, aasqa, flux, paste(outFields, collapse=","),
                    where, returnGeometry, f)
+    url <- URLencode(url)
 
     message(url)
 
@@ -57,15 +69,22 @@ agolGetData <- function(aasqa, flux, where='1=1', outFields='*', getGeometry=TRU
 
 #' Fonction pour lister les champs d'un flux
 #'
+#' @param flux le nom du flux à interroger ('ind_nouvelle_aquitaine' par exemple).
+#'  Contrairement à celui utilisé pour la fonction agolGetData, il s'agit effectivement
+#'  du nom du flux tel qu'il apparaît dans les URLs des flux WFS. Par exemple
+#'  'ind_nouvelle_aquitaine' dans :
+#'  "https://dservices1.arcgis.com/AQwB7zFo5jNpvM0X/arcgis/services/ind_nouvelle_aquitaine/WFSSe..."
 #' @inheritParams agolGetData
 #' @examples
 #' agolListFields(aasqa='AQwB7zFo5jNpvM0X', flux='ind_nouvelle_aquitaine')
 agolListFields <- function(aasqa, flux) {
     loadNamespace('RCurl')
     loadNamespace('XML')
+    loadNamespace('utils')
 
     url <- 'https://dservices1.arcgis.com/%s/arcgis/services/%s/WFSServer?service=wfs&request=describefeaturetype'
     url <- sprintf(url, aasqa, flux)
+    url <- URLencode(url)
 
     message(url)
 

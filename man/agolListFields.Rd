@@ -7,9 +7,17 @@
 agolListFields(aasqa, flux)
 }
 \arguments{
-\item{aasqa}{identifiant 'codé' de l'AASQA correspondant à ses urls ArcGIS}
+\item{aasqa}{identifiant 'codé' de l'AASQA correspondant à ses URLs ArcGIS.
+Le code en question est la suite de caractères sans signification évidente
+qui apparaît systématiquement dans les URLs des flux WFS. Par exemple
+'AQwB7zFo5jNpvM0X' dans :
+"https://dservices1.arcgis.com/AQwB7zFo5jNpvM0X/arcgis/services/ind_nouvelle_aquitaine/WFSSe..."}
 
-\item{flux}{le nom du flux à interroger ('ind_nouvelle_aquitaine' par exemple)}
+\item{flux}{le nom du flux à interroger ('ind_nouvelle_aquitaine' par exemple).
+Contrairement à celui utilisé pour la fonction agolGetData, il s'agit effectivement
+du nom du flux tel qu'il apparaît dans les URLs des flux WFS. Par exemple
+'ind_nouvelle_aquitaine' dans :
+"https://dservices1.arcgis.com/AQwB7zFo5jNpvM0X/arcgis/services/ind_nouvelle_aquitaine/WFSSe..."}
 }
 \description{
 Fonction pour lister les champs d'un flux

@@ -1,3 +1,11 @@
+Note :
+Sur windows, pour les utilisateurs d'une version de R >= 3.5, il faut utiliser
+le fichier Qair_2.14.0.zip ;
+pour les utilisateurs d'une version de R < 3.5 (3.4.3 par exemple), il faut
+técharger le fichier winbin-R3.4.4-Qair_2.14.1.zip et le renommmer en
+Qair_2.14.0.zip avant de l'installer.
+
+
 ----------  Qair v2.14.0
 Ajout des fonctions indicesXR2Rlong, agolGetData et agolListFields
 

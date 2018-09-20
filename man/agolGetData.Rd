@@ -8,13 +8,23 @@ agolGetData(aasqa, flux, where = "1=1", outFields = "*",
   getGeometry = TRUE)
 }
 \arguments{
-\item{aasqa}{identifiant 'codé' de l'AASQA correspondant à ses urls ArcGIS}
+\item{aasqa}{identifiant 'codé' de l'AASQA correspondant à ses URLs ArcGIS.
+Le code en question est la suite de caractères sans signification évidente
+qui apparaît systématiquement dans les URLs des flux WFS. Par exemple
+'AQwB7zFo5jNpvM0X' dans :
+"https://dservices1.arcgis.com/AQwB7zFo5jNpvM0X/arcgis/services/ind_nouvelle_aquitaine/WFSSe..."}
 
-\item{flux}{le nom du flux à interroger ('ind_nouvelle_aquitaine' par exemple)}
+\item{flux}{le nom du flux à interroger.
+Il ne s'agit pas exactement du nom du flux mais de celui de la FeatureLayer
+qui peut être trouvée sur la page suivante dans l'encadré "URL de requête".
+Il s'agit de la partie entre "services/" et "/FeatureServer" (donc
+'ind_nouvelle_aquitaine' dans l'exemple).
+https://data-atmo-na.opendata.arcgis.com/datasets/ind-nouvelle-aquitaine/geoservice.
+Si les FeatureLayer et les flux WFS ont été nommés de la même façon, il 
+s'agit tout simplement du nom du flux.}
 
-\item{where}{une requête à faire sur la table du flux. Attention les espaces
-(' ') doivent être remplacés par la chaîne de caractères '%20', sinon ça
-fonctionne comme une requête SQL.}
+\item{where}{une requête à faire sur la table du flux. Ça fonctionne comme
+une requête SQL.}
 
 \item{outFields}{Vecteurs de chaînes de caractères indiquant les champs à
 récupérer. La valeur par défaut '*' signifie 'tous'.}
