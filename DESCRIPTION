@@ -1,8 +1,8 @@
 Package: Qair
 Type: Package
 Title: Qualite de l'Air, Seuils Europeens et Traitement de donnees
-Version: 2.16.1
-Date: 2019-06-18
+Version: 3.0.0
+Date: 2019-01-10
 Depends:
     timetools,DBI,methods
 Suggests:
