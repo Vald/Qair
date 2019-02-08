@@ -5,8 +5,10 @@ pour les utilisateurs d'une version de R < 3.5 (3.4.3 par exemple), il faut
 télécharger le fichier winbin-R3.4.4-Qair_2.14.*.zip et le renommmer en
 Qair_2.14.*.zip avant de l'installer.
 
+----------  Qair v2.15.0
+Correction de l'arrondi 'a' pour les valeurs négatives
 
-----------  Qair v2.14.0
+----------  Qair v2.14
 Ajout des fonctions indicesXR2Rlong, agolGetData et agolListFields
 
 ----------  Qair v2.13.0
