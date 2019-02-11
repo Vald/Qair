@@ -1,6 +1,6 @@
 
-R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
-Copyright (C) 2017 The R Foundation for Statistical Computing
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -60,58 +60,58 @@ Simplified splitting algorithm
 Simplified splitting algorithm
 [1] "Dioxyde d'azote"
 [[1]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA      0      0      0     NA
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         0          NA     NA      0          0
 
 [[2]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC      0      0      0      0      0
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         0           0      0      0          0
 
 [[3]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC      0      0      0      0      0
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         0           0      0      0          0
 
 [[4]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC      0      0      0      0      0
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         0           0      0      0          0
 
 [[5]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA  FALSE  FALSE  FALSE     NA
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC     FALSE          NA     NA  FALSE      FALSE
 
 [[6]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA  FALSE  FALSE  FALSE     NA
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC     FALSE          NA     NA  FALSE      FALSE
 
 [[7]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA  FALSE   TRUE  FALSE     NA
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC     FALSE          NA     NA  FALSE       TRUE
 
 [[8]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA  FALSE  FALSE  FALSE     NA
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC     FALSE          NA     NA  FALSE      FALSE
 
 [[9]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA      0      0      0     NA
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         0          NA     NA      0          0
 
 [[10]]
-           start            end N2_VA2 N2_AYT N2_VER N2_VAU N2_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA      0      0      0     NA
+           start            end NO2_AYTRE NO2_2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         0          NA     NA      0          0
 
 Simplified splitting algorithm
 [1] "Oxydes d azote"
 [[1]]
-           start            end NX_VA2 NX_AYT NX_VER NX_VAU NX_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA      0      1      0     NA
+           start            end NOX_AYTRE NOX_2_AYTRE NX_VA2 NX_VAU NOX_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         0          NA     NA      0          1
 
 [[2]]
-           start            end NX_VA2 NX_AYT NX_VER NX_VAU NX_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA      0      1      0     NA
+           start            end NOX_AYTRE NOX_2_AYTRE NX_VA2 NX_VAU NOX_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         0          NA     NA      0          1
 
 [[3]]
-           start            end NX_VA2 NX_AYT NX_VER NX_VAU NX_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA      0      1      0     NA
+           start            end NOX_AYTRE NOX_2_AYTRE NX_VA2 NX_VAU NOX_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         0          NA     NA      0          1
 
 Simplified splitting algorithm
 Simplified splitting algorithm
@@ -120,80 +120,80 @@ Simplified splitting algorithm
 Simplified splitting algorithm
 [1] "PM10"
 [[1]]
-           start            end X24_VER X24_VAU PS_VER PS_VAU PM10_AYTRE
-1 2011-01-01 UTC 2012-01-01 UTC       0       0     NA     NA         NA
-  X24FVAU X24FVER
-1       0       0
+           start            end PM10_AYTRE X24_VAU PS_VAU X24FVAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         NA       0     NA       0             0
+  PM10NC_VERDUN PM10_VERDUN
+1            NA           0
 
 [[2]]
-           start            end X24_VER X24_VAU PS_VER PS_VAU PM10_AYTRE
-1 2011-01-01 UTC 2012-01-01 UTC      10      10      0      0          0
-  X24FVAU X24FVER
-1      10      10
+           start            end PM10_AYTRE X24_VAU PS_VAU X24FVAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          0      10      0      10            10
+  PM10NC_VERDUN PM10_VERDUN
+1             0          10
 
 [[3]]
-           start            end X24_VER X24_VAU PS_VER PS_VAU PM10_AYTRE
-1 2011-01-01 UTC 2012-01-01 UTC       1       1      0      0          0
-  X24FVAU X24FVER
-1       1       1
+           start            end PM10_AYTRE X24_VAU PS_VAU X24FVAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          0       1      0       1             1
+  PM10NC_VERDUN PM10_VERDUN
+1             0           1
 
 [[4]]
-           start            end X24_VER X24_VAU PS_VER PS_VAU PM10_AYTRE
-1 2011-01-01 UTC 2012-01-01 UTC   FALSE   FALSE     NA     NA         NA
-  X24FVAU X24FVER
-1   FALSE   FALSE
+           start            end PM10_AYTRE X24_VAU PS_VAU X24FVAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         NA   FALSE     NA   FALSE         FALSE
+  PM10NC_VERDUN PM10_VERDUN
+1            NA       FALSE
 
 [[5]]
-           start            end X24_VER X24_VAU PS_VER PS_VAU PM10_AYTRE
-1 2011-01-01 UTC 2012-01-01 UTC       0       0     NA     NA         NA
-  X24FVAU X24FVER
-1       0       0
+           start            end PM10_AYTRE X24_VAU PS_VAU X24FVAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         NA       0     NA       0             0
+  PM10NC_VERDUN PM10_VERDUN
+1            NA           0
 
 [[6]]
-           start            end X24_VER X24_VAU PS_VER PS_VAU PM10_AYTRE
-1 2011-01-01 UTC 2012-01-01 UTC    TRUE    TRUE     NA     NA         NA
-  X24FVAU X24FVER
-1    TRUE    TRUE
+           start            end PM10_AYTRE X24_VAU PS_VAU X24FVAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         NA    TRUE     NA    TRUE          TRUE
+  PM10NC_VERDUN PM10_VERDUN
+1            NA        TRUE
 
 [[7]]
-           start            end X24_VER X24_VAU PS_VER PS_VAU PM10_AYTRE
-1 2011-01-01 UTC 2012-01-01 UTC       1       1     NA     NA         NA
-  X24FVAU X24FVER
-1       1       1
+           start            end PM10_AYTRE X24_VAU PS_VAU X24FVAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         NA       1     NA       1             1
+  PM10NC_VERDUN PM10_VERDUN
+1            NA           1
 
 [[8]]
-           start            end X24_VER X24_VAU PS_VER PS_VAU PM10_AYTRE
-1 2011-01-01 UTC 2012-01-01 UTC   FALSE   FALSE     NA     NA         NA
-  X24FVAU X24FVER
-1   FALSE   FALSE
+           start            end PM10_AYTRE X24_VAU PS_VAU X24FVAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         NA   FALSE     NA   FALSE         FALSE
+  PM10NC_VERDUN PM10_VERDUN
+1            NA       FALSE
 
 [[9]]
-           start            end X24_VER X24_VAU PS_VER PS_VAU PM10_AYTRE
-1 2011-01-01 UTC 2012-01-01 UTC       0       0     NA     NA         NA
-  X24FVAU X24FVER
-1       0       0
+           start            end PM10_AYTRE X24_VAU PS_VAU X24FVAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC         NA       0     NA       0             0
+  PM10NC_VERDUN PM10_VERDUN
+1            NA           0
 
 Simplified splitting algorithm
 [1] "PM2.5"
 [[1]]
-           start            end P2_VAU X39_VER
-1 2011-01-01 UTC 2012-01-01 UTC     NA       1
+           start            end P2_VAU PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD
+1 2011-01-01 UTC 2012-01-01 UTC     NA           1           NA           NA
 
 [[2]]
-           start            end P2_VAU X39_VER
-1 2011-01-01 UTC 2012-01-01 UTC     NA       0
+           start            end P2_VAU PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD
+1 2011-01-01 UTC 2012-01-01 UTC     NA           0           NA           NA
 
 [[3]]
-           start            end P2_VAU X39_VER
-1 2011-01-01 UTC 2012-01-01 UTC     NA   FALSE
+           start            end P2_VAU PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD
+1 2011-01-01 UTC 2012-01-01 UTC     NA       FALSE           NA           NA
 
 [[4]]
-           start            end P2_VAU X39_VER
-1 2011-01-01 UTC 2012-01-01 UTC     NA       0
+           start            end P2_VAU PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD
+1 2011-01-01 UTC 2012-01-01 UTC     NA           0           NA           NA
 
 [[5]]
-           start            end P2_VAU X39_VER
-1 2011-01-01 UTC 2012-01-01 UTC     NA       0
+           start            end P2_VAU PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD
+1 2011-01-01 UTC 2012-01-01 UTC     NA           0           NA           NA
 
 Simplified splitting algorithm
 Simplified splitting algorithm
@@ -201,58 +201,58 @@ Simplified splitting algorithm
 Simplified splitting algorithm
 [1] "Ozone"
 [[1]]
-           start            end O3_VA2 O3_AY1 O3_AYT O3_VER O3_VAU O3_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA   TRUE   TRUE   TRUE     NA
-  O3_VE2
-1     NA
+           start            end O3_2_AYTRE O3_AYTRE O3_3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC         NA     TRUE         NA     NA   TRUE
+  O3_VERDUN O3_2_VERDUN
+1      TRUE          NA
 
 [[2]]
-           start            end O3_VA2 O3_AY1 O3_AYT O3_VER O3_VAU O3_AY2
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA     NA      1      1     NA
-  O3_VE2
-1     NA
+           start            end O3_2_AYTRE O3_AYTRE O3_3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC         NA       NA         NA     NA      1
+  O3_VERDUN O3_2_VERDUN
+1         1          NA
 
 [[3]]
-           start            end O3_VA2 O3_AY1 O3_AYT O3_VER O3_VAU O3_AY2
-1 2009-01-01 UTC 2012-01-01 UTC     NA     NA     NA      0      0     NA
-  O3_VE2
-1     NA
+           start            end O3_2_AYTRE O3_AYTRE O3_3_AYTRE O3_VA2 O3_VAU
+1 2009-01-01 UTC 2012-01-01 UTC         NA       NA         NA     NA      0
+  O3_VERDUN O3_2_VERDUN
+1         0          NA
 
 [[4]]
-           start            end O3_VA2 O3_AY1 O3_AYT O3_VER O3_VAU O3_AY2
-1 2007-01-01 UTC 2012-01-01 UTC     NA     NA     NA     NA     NA     NA
-  O3_VE2
-1     NA
+           start            end O3_2_AYTRE O3_AYTRE O3_3_AYTRE O3_VA2 O3_VAU
+1 2007-01-01 UTC 2012-01-01 UTC         NA       NA         NA     NA     NA
+  O3_VERDUN O3_2_VERDUN
+1        NA          NA
 
 [[5]]
-           start            end O3_VA2 O3_AY1 O3_AYT O3_VER O3_VAU O3_AY2
-1 2011-01-01 UTC 2012-01-01 UTC      0      0      0      0      0      0
-  O3_VE2
-1      0
+           start            end O3_2_AYTRE O3_AYTRE O3_3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0        0          0      0      0
+  O3_VERDUN O3_2_VERDUN
+1         0           0
 
 [[6]]
-           start            end O3_VA2 O3_AY1 O3_AYT O3_VER O3_VAU O3_AY2
-1 2011-01-01 UTC 2012-01-01 UTC      0      0      0      0      0      0
-  O3_VE2
-1      0
+           start            end O3_2_AYTRE O3_AYTRE O3_3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0        0          0      0      0
+  O3_VERDUN O3_2_VERDUN
+1         0           0
 
 [[7]]
-           start            end O3_VA2 O3_AY1 O3_AYT O3_VER O3_VAU O3_AY2
-1 2011-01-01 UTC 2012-01-01 UTC      0      0      0      0      0      0
-  O3_VE2
-1      0
+           start            end O3_2_AYTRE O3_AYTRE O3_3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0        0          0      0      0
+  O3_VERDUN O3_2_VERDUN
+1         0           0
 
 [[8]]
-           start            end O3_VA2 O3_AY1 O3_AYT O3_VER O3_VAU O3_AY2
-1 2011-01-01 UTC 2012-01-01 UTC      0      0      0      0      0      0
-  O3_VE2
-1      0
+           start            end O3_2_AYTRE O3_AYTRE O3_3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0        0          0      0      0
+  O3_VERDUN O3_2_VERDUN
+1         0           0
 
 [[9]]
-           start            end O3_VA2 O3_AY1 O3_AYT O3_VER O3_VAU O3_AY2
-1 2011-01-01 UTC 2012-01-01 UTC      0      0      0      0      0      0
-  O3_VE2
-1      0
+           start            end O3_2_AYTRE O3_AYTRE O3_3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0        0          0      0      0
+  O3_VERDUN O3_2_VERDUN
+1         0           0
 
 Simplified splitting algorithm
 Simplified splitting algorithm
@@ -263,48 +263,48 @@ Simplified splitting algorithm
 Simplified splitting algorithm
 [1] "Dioxyde de soufre"
 [[1]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA   NA          NA
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC     NA          NA         NA   NA
 
 [[2]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC      0      0    0           0
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC      0           0          0    0
 
 [[3]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC      0      0    0           0
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC      0           0          0    0
 
 [[4]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA   NA          NA
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC     NA          NA         NA   NA
 
 [[5]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA   NA          NA
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC     NA          NA         NA   NA
 
 [[6]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA   NA          NA
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC     NA          NA         NA   NA
 
 [[7]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2010-10-01 UTC 2012-04-01 UTC      0      0    0           0
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2010-10-01 UTC 2012-04-01 UTC      0           0          0    0
 
 [[8]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA   NA          NA
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC     NA          NA         NA   NA
 
 [[9]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA   NA          NA
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC     NA          NA         NA   NA
 
 [[10]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA   NA          NA
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC     NA          NA         NA   NA
 
 [[11]]
-           start            end S2_VER S2_VAU test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC     NA     NA   NA          NA
+           start            end S2_VAU SO2_VAUGOIN SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC     NA          NA         NA   NA
 
 > 
 > # le monoxyde de carbone CO
@@ -325,16 +325,16 @@ Simplified splitting algorithm
 [1] "Monoxyde de carbone"
 > print(tmp)
 [[1]]
-           start            end CO_VER CO_VAUGOUIN CO_VE2 CO_A_VAUGOUIN
-1 2004-01-01 UTC 2005-01-01 UTC  FALSE          NA     NA            NA
+           start            end CO_VAUGOUIN CO_A_VAUGOUIN CO_VERDUN CO_2_VERDUN
+1 2004-01-01 UTC 2005-01-01 UTC          NA            NA     FALSE          NA
 
 [[2]]
-           start            end CO_VER CO_VAUGOUIN CO_VE2 CO_A_VAUGOUIN
-1 2004-01-01 UTC 2005-01-01 UTC  FALSE          NA     NA            NA
+           start            end CO_VAUGOUIN CO_A_VAUGOUIN CO_VERDUN CO_2_VERDUN
+1 2004-01-01 UTC 2005-01-01 UTC          NA            NA     FALSE          NA
 
 [[3]]
-           start            end CO_VER CO_VAUGOUIN CO_VE2 CO_A_VAUGOUIN
-1 2004-01-01 UTC 2005-01-01 UTC  FALSE          NA     NA            NA
+           start            end CO_VAUGOUIN CO_A_VAUGOUIN CO_VERDUN CO_2_VERDUN
+1 2004-01-01 UTC 2005-01-01 UTC          NA            NA     FALSE          NA
 
 > 
 > # les polluants manuels
@@ -362,129 +362,89 @@ Simplified splitting algorithm
 + }
 [1] "Plomb"
 [[1]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
-1                                                                9.82
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
+1 2011-01-01 UTC 2012-01-01 UTC                                            9.82
 
 [[2]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
-1                                                                9.82
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
+1 2011-01-01 UTC 2012-01-01 UTC                                            9.82
 
 [[3]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
-1                                                                9.82
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
+1 2011-01-01 UTC 2012-01-01 UTC                                            9.82
 
 [[4]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
-1                                                                9.82
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
+1 2011-01-01 UTC 2012-01-01 UTC                                            9.82
 
 [1] "Benzene"
 [[1]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.TUBE.ACTIF.V4
-1                                              1.7
+           start            end D17LAR_STLOUIS.TUBE.ACTIF.V4
+1 2011-01-01 UTC 2012-01-01 UTC                          1.7
 
 [[2]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.TUBE.ACTIF.V4
-1                                              1.7
+           start            end D17LAR_STLOUIS.TUBE.ACTIF.V4
+1 2011-01-01 UTC 2012-01-01 UTC                          1.7
 
 [[3]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.TUBE.ACTIF.V4
-1                                              1.7
+           start            end D17LAR_STLOUIS.TUBE.ACTIF.V4
+1 2011-01-01 UTC 2012-01-01 UTC                          1.7
 
 [[4]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.TUBE.ACTIF.V4
-1                                              1.7
+           start            end D17LAR_STLOUIS.TUBE.ACTIF.V4
+1 2011-01-01 UTC 2012-01-01 UTC                          1.7
 
 [1] "Arsenic particulaire"
 [[1]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
-1                                                                0.81
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
+1 2011-01-01 UTC 2012-01-01 UTC                                            0.81
 
 [[2]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
-1                                                                0.81
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
+1 2011-01-01 UTC 2012-01-01 UTC                                            0.81
 
 [[3]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
-1                                                                0.81
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
+1 2011-01-01 UTC 2012-01-01 UTC                                            0.81
 
 [1] "Cadmium particulaire"
 [[1]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
-1                                                                0.08
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
+1 2011-01-01 UTC 2012-01-01 UTC                                            0.08
 
 [[2]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
-1                                                                0.08
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
+1 2011-01-01 UTC 2012-01-01 UTC                                            0.08
 
 [[3]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
-1                                                                0.08
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
+1 2011-01-01 UTC 2012-01-01 UTC                                            0.08
 
 [1] "Nickel particulaire"
 [[1]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
-1                                                                1.29
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
+1 2011-01-01 UTC 2012-01-01 UTC                                            1.29
 
 [[2]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
-1                                                                1.29
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
+1 2011-01-01 UTC 2012-01-01 UTC                                            1.29
 
 [[3]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
-1                                                                1.29
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
+1 2011-01-01 UTC 2012-01-01 UTC                                            1.29
 
 [1] "Benzo(a)pyrene particulaire"
 [[1]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.P6
-1                                                                 0.2
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.P6
+1 2011-01-01 UTC 2012-01-01 UTC                                             0.2
 
 [[2]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.P6
-1                                                                 0.2
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.P6
+1 2011-01-01 UTC 2012-01-01 UTC                                             0.2
 
 [[3]]
-           start            end
-1 2011-01-01 UTC 2012-01-01 UTC
-  La.Rochelle...Saint.Louis...Trafic.PRELEVEMENT.1.m3.h.SUR.FILTRE.P6
-1                                                                 0.2
+           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.P6
+1 2011-01-01 UTC 2012-01-01 UTC                                             0.2
 
 > 
 > # On ferme
@@ -495,4 +455,4 @@ Simplified splitting algorithm
 > 
 > proc.time()
    user  system elapsed 
- 19.632   0.136  35.873 
+ 18.075   0.251  36.369 

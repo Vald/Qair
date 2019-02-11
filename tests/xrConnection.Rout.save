@@ -1,6 +1,6 @@
 
-R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
-Copyright (C) 2017 The R Foundation for Statistical Computing
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -34,7 +34,7 @@ Loading required package: DBI
 > 
 > summary(xrGetPolluants(xr))
     NOPOL              CCHIM               NCON           CODE_COMPLEMENTAIRE
- Length:410         Length:410         Length:410         Length:410         
+ Length:433         Length:433         Length:433         Length:433         
  Class :character   Class :character   Class :character   Class :character   
  Mode  :character   Mode  :character   Mode  :character   Mode  :character   
                                                                              
@@ -42,45 +42,45 @@ Loading required package: DBI
                                                                              
                                                                              
    TYPE_AGR              FCON           ECHELLE_MIN     ECHELLE_MAX     
- Length:410         Min.   :   0.665   Min.   :-20.0   Min.   :   0.01  
+ Length:433         Min.   :   0.665   Min.   :-20.0   Min.   :   0.01  
  Class :character   1st Qu.:   1.000   1st Qu.:  0.0   1st Qu.:   5.00  
  Mode  :character   Median :   1.000   Median :  0.0   Median :  15.00  
-                    Mean   :   3.655   Mean   : 12.9   Mean   : 106.94  
+                    Mean   :   3.525   Mean   : 12.9   Mean   : 112.50  
                     3rd Qu.:   1.000   3rd Qu.:  0.0   3rd Qu.:  50.00  
                     Max.   :1000.000   Max.   :900.0   Max.   :2000.00  
-                                       NA's   :329     NA's   :329      
+                                       NA's   :352     NA's   :352      
   TIMESTAMP         CCHIM_COURT        LIB_ECHELLE         ECHELLE2_MIN    
- Length:410         Length:410         Length:410         Min.   :-30.000  
+ Length:433         Length:433         Length:433         Min.   :-30.000  
  Class :character   Class :character   Class :character   1st Qu.:  0.000  
  Mode  :character   Mode  :character   Mode  :character   Median :  0.000  
                                                           Mean   : -1.806  
                                                           3rd Qu.:  0.000  
                                                           Max.   :  0.000  
-                                                          NA's   :374      
+                                                          NA's   :397      
   ECHELLE2_MAX    LIB_ECHELLE2        ECHELLE3_MIN       ECHELLE3_MAX  
- Min.   :  0.00   Length:410         Min.   :-100.000   Min.   :    0  
+ Min.   :  0.00   Length:433         Min.   :-100.000   Min.   :    0  
  1st Qu.:  4.25   Class :character   1st Qu.:   0.000   1st Qu.:    5  
  Median : 35.00   Mode  :character   Median :   0.000   Median :  100  
  Mean   : 45.44                      Mean   :  -3.571   Mean   :  383  
  3rd Qu.:100.00                      3rd Qu.:   0.000   3rd Qu.:  200  
  Max.   :150.00                      Max.   :   0.000   Max.   :10000  
- NA's   :374                         NA's   :375        NA's   :375    
+ NA's   :397                         NA's   :398        NA's   :398    
  LIB_ECHELLE3        ECHELLE4_MIN  ECHELLE4_MAX     LIB_ECHELLE4      
- Length:410         Min.   :0     Min.   :    4.0   Length:410        
+ Length:433         Min.   :0     Min.   :    4.0   Length:433        
  Class :character   1st Qu.:0     1st Qu.:   10.0   Class :character  
  Mode  :character   Median :0     Median :  100.0   Mode  :character  
                     Mean   :0     Mean   :  767.2                     
                     3rd Qu.:0     3rd Qu.:  500.0                     
                     Max.   :0     Max.   :15000.0                     
-                    NA's   :383   NA's   :383                         
+                    NA's   :406   NA's   :406                         
   ECHELLE5_MIN     ECHELLE5_MAX   LIB_ECHELLE5         NO_CHRONO     
- Min.   :0.0000   Min.   :    5   Length:410         Min.   :  1.00  
+ Min.   :0.0000   Min.   :    5   Length:433         Min.   :  1.00  
  1st Qu.:0.0000   1st Qu.:   20   Class :character   1st Qu.: 19.50  
  Median :0.0000   Median :  450   Mode  :character   Median : 42.00  
  Mean   :0.0455   Mean   : 1598                      Mean   : 54.23  
  3rd Qu.:0.0000   3rd Qu.: 1000                      3rd Qu.: 91.50  
  Max.   :1.0000   Max.   :25000                      Max.   :113.00  
- NA's   :388      NA's   :388                        NA's   :335     
+ NA's   :411      NA's   :411                        NA's   :358     
   SEUIL_30MIN   SEUIL_10MIN    SEUIL_24H        SEUIL_MAX       SEUIL_MIN  
  Min.   : 20   Min.   :150   Min.   : 10.00   Min.   : 10.0   Min.   : NA  
  1st Qu.: 30   1st Qu.:325   1st Qu.: 10.00   1st Qu.: 17.5   1st Qu.: NA  
@@ -88,7 +88,7 @@ Loading required package: DBI
  Mean   :120   Mean   :500   Mean   : 88.33   Mean   : 82.5   Mean   :NaN  
  3rd Qu.:150   3rd Qu.:675   3rd Qu.: 50.00   3rd Qu.:150.0   3rd Qu.: NA  
  Max.   :400   Max.   :850   Max.   :400.00   Max.   :150.0   Max.   : NA  
- NA's   :403   NA's   :408   NA's   :404      NA's   :406     NA's   :410  
+ NA's   :426   NA's   :431   NA's   :427      NA's   :429     NA's   :433  
   SEUIL_60MIN 
  Min.   : NA  
  1st Qu.: NA  
@@ -96,7 +96,7 @@ Loading required package: DBI
  Mean   :NaN  
  3rd Qu.: NA  
  Max.   : NA  
- NA's   :410  
+ NA's   :433  
 > xrGetPolluants(xr, 'N2')
   NOPOL    CCHIM                        NCON CODE_COMPLEMENTAIRE TYPE_AGR FCON
 1    N2 PM2.5FNV Fraction non volatile PM2.5                <NA>        N    1
@@ -160,6 +160,7 @@ Loading required package: DBI
 31         912                      Prelevement 0.18 m3/h sur filtre      <NA>
 32         913 Ensemble mesures pour calcul de indice de confinement      <NA>
 33         914                         PRELEVEMENT 3 m3/h SUR FILTRE      <NA>
+34         915                                                  MIEL      <NA>
 > 
 > xrGetCampagnes(xr, 'LARO', end='2011-01-01')
   NRESSURV NOM_COURT_CM                                         LIBELLE
@@ -211,8 +212,10 @@ Loading required package: DBI
 1 127.0.0.1:9010        9010             NA        16           18
   ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION MODEM_TEMPO
 1            23        NA              93          NA           NA        <NA>
-  MODEM_RELAIS     IDENTIFIANT TIME_MANAGEMENT   typologie
-1         <NA> D86POI_CHASSENE            <NA> Periurbaine
+  MODEM_RELAIS     IDENTIFIANT TIME_MANAGEMENT MQTT_FREQ_DATA MQTT_FREQ_STATE
+1         <NA> D86POI_CHASSENE            <NA>             NA              NA
+  MQTT_SCAN HTTP_ADDR_NORM HTTP_ADDR_SEC   typologie
+1      <NA>           <NA>          <NA> Periurbaine
 > xrGetStations(xr, campagnes='ANG12')[-colonnes]
   CLASSE_SITE  NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
 1           6 44008      16  16113 Lafarge site sud        ANG_13
@@ -251,7 +254,7 @@ Loading required package: DBI
 2         <NA>          0 <NA> 2004-05-17 00:00:00 2004-05-17 00:00:00
 3         <NA>          0 <NA> 2004-05-17 00:00:00 2004-05-17 00:00:00
            D_CREATION           D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46 2018-01-11 14:35:57      <NA>  <NA>  <NA>      <NA>
+1 2011-03-18 12:58:46 2018-10-02 05:49:41      <NA>  <NA>  <NA>      <NA>
 2 2011-02-21 15:17:38 2013-02-19 08:07:23      <NA>  <NA>  <NA>      <NA>
 3 2011-03-18 13:10:32 2014-10-08 07:36:54      <NA>  <NA>  <NA>      <NA>
    D_SYNCHRO_CRITIQUE MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE
@@ -263,15 +266,15 @@ Loading required package: DBI
 2             NA             NA             NA         NA           <NA>
 3             NA             NA             NA         NA           <NA>
   SCRUT_EN_COURS N_ESSAIS_SCRUT         DER_LECT_QH        DER_LECT_HIS
-1             NA             NA 2018-02-08 14:00:00 2018-02-08 13:01:36
+1             NA             NA 2018-10-10 10:00:00 2018-10-10 10:01:13
 2             NA             NA                <NA>                <NA>
 3             NA             NA                <NA>                <NA>
          DER_LECT_DEF        DER_LECT_ALR        DER_LECT_SCN
-1 2018-02-08 13:01:36 2018-02-08 13:01:35 2018-02-08 13:01:37
+1 2018-10-10 10:01:12 2018-10-10 10:01:12 2018-10-10 10:01:13
 2                <NA>                <NA>                <NA>
 3                <NA>                <NA>                <NA>
          DER_LECT_CAL      DER_ESSAI_COMM DER_ETAT ETAT_ALARME
-1 2018-02-08 13:01:36 2018-02-08 13:01:35     <NA>        <NA>
+1 2018-10-10 10:01:13 2018-10-10 10:01:12     <NA>        <NA>
 2                <NA>                <NA>     <NA>        <NA>
 3                <NA>                <NA>     <NA>        <NA>
           ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR SITE_TYPE TYPE_SECTEUR
@@ -282,10 +285,14 @@ Loading required package: DBI
 1            23        NA              93          NA           NA
 2            NA        NA              NA          NA           NA
 3            NA        NA              NA          NA           NA
-     MODEM_TEMPO MODEM_RELAIS IDENTIFIANT TIME_MANAGEMENT   typologie
-1 00000000030000           16      ANG_13            <NA> Periurbaine
-2 00000000000000         <NA>      ANG_12            <NA>        <NA>
-3 00000000000000         <NA>      ANG_14            <NA>        <NA>
+     MODEM_TEMPO MODEM_RELAIS     IDENTIFIANT TIME_MANAGEMENT MQTT_FREQ_DATA
+1 00000000030000           16  D16ANG_LAF_SUD            <NA>             NA
+2 00000000000000         <NA>  D16ANG_LAF_EDF            <NA>             NA
+3 00000000000000         <NA> D16ANG_LAF_BORD            <NA>             NA
+  MQTT_FREQ_STATE MQTT_SCAN HTTP_ADDR_NORM HTTP_ADDR_SEC   typologie
+1              NA      <NA>           <NA>          <NA> Periurbaine
+2              NA      <NA>           <NA>          <NA>        <NA>
+3              NA      <NA>           <NA>          <NA>        <NA>
 > xrGetStations(xr, campagnes='ANG12', mesures='24')[-colonnes]
   CLASSE_SITE  NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
 1           6 44008      16  16113 Lafarge site sud        ANG_13
@@ -315,7 +322,7 @@ Loading required package: DBI
 1         <NA>          0 <NA> 1997-01-01 00:00:00 1997-01-01 00:00:00
 2         <NA>          0 <NA> 2004-05-17 00:00:00 2004-05-17 00:00:00
            D_CREATION           D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46 2018-01-11 14:35:57      <NA>  <NA>  <NA>      <NA>
+1 2011-03-18 12:58:46 2018-10-02 05:49:41      <NA>  <NA>  <NA>      <NA>
 2 2011-02-21 15:17:38 2013-02-19 08:07:23      <NA>  <NA>  <NA>      <NA>
    D_SYNCHRO_CRITIQUE MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE
 1 2011-03-22 11:37:51    SAMEX54         2        8             NA
@@ -324,13 +331,13 @@ Loading required package: DBI
 1             NA             NA             NA         NA           <NA>
 2             NA             NA             NA         NA           <NA>
   SCRUT_EN_COURS N_ESSAIS_SCRUT         DER_LECT_QH        DER_LECT_HIS
-1             NA             NA 2018-02-08 14:00:00 2018-02-08 13:01:36
+1             NA             NA 2018-10-10 10:00:00 2018-10-10 10:01:13
 2             NA             NA                <NA>                <NA>
          DER_LECT_DEF        DER_LECT_ALR        DER_LECT_SCN
-1 2018-02-08 13:01:36 2018-02-08 13:01:35 2018-02-08 13:01:37
+1 2018-10-10 10:01:12 2018-10-10 10:01:12 2018-10-10 10:01:13
 2                <NA>                <NA>                <NA>
          DER_LECT_CAL      DER_ESSAI_COMM DER_ETAT ETAT_ALARME
-1 2018-02-08 13:01:36 2018-02-08 13:01:35     <NA>        <NA>
+1 2018-10-10 10:01:13 2018-10-10 10:01:12     <NA>        <NA>
 2                <NA>                <NA>     <NA>        <NA>
           ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR SITE_TYPE TYPE_SECTEUR
 1 90.84.183.156:3005        9036             NA        16           18
@@ -338,9 +345,12 @@ Loading required package: DBI
   ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION
 1            23        NA              93          NA           NA
 2            NA        NA              NA          NA           NA
-     MODEM_TEMPO MODEM_RELAIS IDENTIFIANT TIME_MANAGEMENT   typologie
-1 00000000030000           16      ANG_13            <NA> Periurbaine
-2 00000000000000         <NA>      ANG_12            <NA>        <NA>
+     MODEM_TEMPO MODEM_RELAIS    IDENTIFIANT TIME_MANAGEMENT MQTT_FREQ_DATA
+1 00000000030000           16 D16ANG_LAF_SUD            <NA>             NA
+2 00000000000000         <NA> D16ANG_LAF_EDF            <NA>             NA
+  MQTT_FREQ_STATE MQTT_SCAN HTTP_ADDR_NORM HTTP_ADDR_SEC   typologie
+1              NA      <NA>           <NA>          <NA> Periurbaine
+2              NA      <NA>           <NA>          <NA>        <NA>
 > 
 > summary(xrGetSitesPrelevement(xr, 'TLAROC_L'))
     NRESSURV       NSIT          IDSITEP            LIBELLE         
@@ -401,207 +411,49 @@ Loading required package: DBI
 > # tests sur la fonction xrGetContinuousData
 > 
 > xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01')
-                     start                     end N2_VER
-1  2012-09-30 00:00:00 UTC 2012-09-30 01:00:00 UTC      7
-2  2012-09-30 01:00:00 UTC 2012-09-30 02:00:00 UTC      5
-3  2012-09-30 02:00:00 UTC 2012-09-30 03:00:00 UTC      6
-4  2012-09-30 03:00:00 UTC 2012-09-30 04:00:00 UTC      5
-5  2012-09-30 04:00:00 UTC 2012-09-30 05:00:00 UTC      7
-6  2012-09-30 05:00:00 UTC 2012-09-30 06:00:00 UTC      8
-7  2012-09-30 06:00:00 UTC 2012-09-30 07:00:00 UTC      8
-8  2012-09-30 07:00:00 UTC 2012-09-30 08:00:00 UTC      7
-9  2012-09-30 08:00:00 UTC 2012-09-30 09:00:00 UTC      9
-10 2012-09-30 09:00:00 UTC 2012-09-30 10:00:00 UTC     11
-11 2012-09-30 10:00:00 UTC 2012-09-30 11:00:00 UTC      9
-12 2012-09-30 11:00:00 UTC 2012-09-30 12:00:00 UTC      6
-13 2012-09-30 12:00:00 UTC 2012-09-30 13:00:00 UTC      5
-14 2012-09-30 13:00:00 UTC 2012-09-30 14:00:00 UTC      6
-15 2012-09-30 14:00:00 UTC 2012-09-30 15:00:00 UTC      7
-16 2012-09-30 15:00:00 UTC 2012-09-30 16:00:00 UTC      8
-17 2012-09-30 16:00:00 UTC 2012-09-30 17:00:00 UTC     10
-18 2012-09-30 17:00:00 UTC 2012-09-30 18:00:00 UTC     10
-19 2012-09-30 18:00:00 UTC 2012-09-30 19:00:00 UTC     10
-20 2012-09-30 19:00:00 UTC 2012-09-30 20:00:00 UTC      8
-21 2012-09-30 20:00:00 UTC 2012-09-30 21:00:00 UTC      8
-22 2012-09-30 21:00:00 UTC 2012-09-30 22:00:00 UTC      7
-23 2012-09-30 22:00:00 UTC 2012-09-30 23:00:00 UTC      6
-24 2012-09-30 23:00:00 UTC 2012-10-01 00:00:00 UTC      6
+[1] start end  
+<0 rows> (or 0-length row.names)
 > xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='UTC')
-                     start                     end N2_VER
-1  2012-09-30 00:00:00 UTC 2012-09-30 01:00:00 UTC      7
-2  2012-09-30 01:00:00 UTC 2012-09-30 02:00:00 UTC      5
-3  2012-09-30 02:00:00 UTC 2012-09-30 03:00:00 UTC      6
-4  2012-09-30 03:00:00 UTC 2012-09-30 04:00:00 UTC      5
-5  2012-09-30 04:00:00 UTC 2012-09-30 05:00:00 UTC      7
-6  2012-09-30 05:00:00 UTC 2012-09-30 06:00:00 UTC      8
-7  2012-09-30 06:00:00 UTC 2012-09-30 07:00:00 UTC      8
-8  2012-09-30 07:00:00 UTC 2012-09-30 08:00:00 UTC      7
-9  2012-09-30 08:00:00 UTC 2012-09-30 09:00:00 UTC      9
-10 2012-09-30 09:00:00 UTC 2012-09-30 10:00:00 UTC     11
-11 2012-09-30 10:00:00 UTC 2012-09-30 11:00:00 UTC      9
-12 2012-09-30 11:00:00 UTC 2012-09-30 12:00:00 UTC      6
-13 2012-09-30 12:00:00 UTC 2012-09-30 13:00:00 UTC      5
-14 2012-09-30 13:00:00 UTC 2012-09-30 14:00:00 UTC      6
-15 2012-09-30 14:00:00 UTC 2012-09-30 15:00:00 UTC      7
-16 2012-09-30 15:00:00 UTC 2012-09-30 16:00:00 UTC      8
-17 2012-09-30 16:00:00 UTC 2012-09-30 17:00:00 UTC     10
-18 2012-09-30 17:00:00 UTC 2012-09-30 18:00:00 UTC     10
-19 2012-09-30 18:00:00 UTC 2012-09-30 19:00:00 UTC     10
-20 2012-09-30 19:00:00 UTC 2012-09-30 20:00:00 UTC      8
-21 2012-09-30 20:00:00 UTC 2012-09-30 21:00:00 UTC      8
-22 2012-09-30 21:00:00 UTC 2012-09-30 22:00:00 UTC      7
-23 2012-09-30 22:00:00 UTC 2012-09-30 23:00:00 UTC      6
-24 2012-09-30 23:00:00 UTC 2012-10-01 00:00:00 UTC      6
+[1] start end  
+<0 rows> (or 0-length row.names)
 > xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='CET')
-                      start                      end N2_VER
-23 2012-09-30 00:00:00 CEST 2012-09-30 01:00:00 CEST      7
-24 2012-09-30 01:00:00 CEST 2012-09-30 02:00:00 CEST      6
-25 2012-09-30 02:00:00 CEST 2012-09-30 03:00:00 CEST      7
-26 2012-09-30 03:00:00 CEST 2012-09-30 04:00:00 CEST      5
-27 2012-09-30 04:00:00 CEST 2012-09-30 05:00:00 CEST      6
-28 2012-09-30 05:00:00 CEST 2012-09-30 06:00:00 CEST      5
-29 2012-09-30 06:00:00 CEST 2012-09-30 07:00:00 CEST      7
-30 2012-09-30 07:00:00 CEST 2012-09-30 08:00:00 CEST      8
-31 2012-09-30 08:00:00 CEST 2012-09-30 09:00:00 CEST      8
-32 2012-09-30 09:00:00 CEST 2012-09-30 10:00:00 CEST      7
-33 2012-09-30 10:00:00 CEST 2012-09-30 11:00:00 CEST      9
-34 2012-09-30 11:00:00 CEST 2012-09-30 12:00:00 CEST     11
-35 2012-09-30 12:00:00 CEST 2012-09-30 13:00:00 CEST      9
-36 2012-09-30 13:00:00 CEST 2012-09-30 14:00:00 CEST      6
-37 2012-09-30 14:00:00 CEST 2012-09-30 15:00:00 CEST      5
-38 2012-09-30 15:00:00 CEST 2012-09-30 16:00:00 CEST      6
-39 2012-09-30 16:00:00 CEST 2012-09-30 17:00:00 CEST      7
-40 2012-09-30 17:00:00 CEST 2012-09-30 18:00:00 CEST      8
-41 2012-09-30 18:00:00 CEST 2012-09-30 19:00:00 CEST     10
-42 2012-09-30 19:00:00 CEST 2012-09-30 20:00:00 CEST     10
-43 2012-09-30 20:00:00 CEST 2012-09-30 21:00:00 CEST     10
-44 2012-09-30 21:00:00 CEST 2012-09-30 22:00:00 CEST      8
-45 2012-09-30 22:00:00 CEST 2012-09-30 23:00:00 CEST      8
-46 2012-09-30 23:00:00 CEST 2012-10-01 00:00:00 CEST      7
+[1] start end  
+<0 rows> (or 0-length row.names)
 > xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', cursor=1)
-                      when N2_VER
-1  2012-09-30 01:00:00 UTC      7
-2  2012-09-30 02:00:00 UTC      5
-3  2012-09-30 03:00:00 UTC      6
-4  2012-09-30 04:00:00 UTC      5
-5  2012-09-30 05:00:00 UTC      7
-6  2012-09-30 06:00:00 UTC      8
-7  2012-09-30 07:00:00 UTC      8
-8  2012-09-30 08:00:00 UTC      7
-9  2012-09-30 09:00:00 UTC      9
-10 2012-09-30 10:00:00 UTC     11
-11 2012-09-30 11:00:00 UTC      9
-12 2012-09-30 12:00:00 UTC      6
-13 2012-09-30 13:00:00 UTC      5
-14 2012-09-30 14:00:00 UTC      6
-15 2012-09-30 15:00:00 UTC      7
-16 2012-09-30 16:00:00 UTC      8
-17 2012-09-30 17:00:00 UTC     10
-18 2012-09-30 18:00:00 UTC     10
-19 2012-09-30 19:00:00 UTC     10
-20 2012-09-30 20:00:00 UTC      8
-21 2012-09-30 21:00:00 UTC      8
-22 2012-09-30 22:00:00 UTC      7
-23 2012-09-30 23:00:00 UTC      6
-24 2012-10-01 00:00:00 UTC      6
+[1] when
+<0 rows> (or 0-length row.names)
 > xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='UTC', cursor=1)
-                      when N2_VER
-1  2012-09-30 01:00:00 UTC      7
-2  2012-09-30 02:00:00 UTC      5
-3  2012-09-30 03:00:00 UTC      6
-4  2012-09-30 04:00:00 UTC      5
-5  2012-09-30 05:00:00 UTC      7
-6  2012-09-30 06:00:00 UTC      8
-7  2012-09-30 07:00:00 UTC      8
-8  2012-09-30 08:00:00 UTC      7
-9  2012-09-30 09:00:00 UTC      9
-10 2012-09-30 10:00:00 UTC     11
-11 2012-09-30 11:00:00 UTC      9
-12 2012-09-30 12:00:00 UTC      6
-13 2012-09-30 13:00:00 UTC      5
-14 2012-09-30 14:00:00 UTC      6
-15 2012-09-30 15:00:00 UTC      7
-16 2012-09-30 16:00:00 UTC      8
-17 2012-09-30 17:00:00 UTC     10
-18 2012-09-30 18:00:00 UTC     10
-19 2012-09-30 19:00:00 UTC     10
-20 2012-09-30 20:00:00 UTC      8
-21 2012-09-30 21:00:00 UTC      8
-22 2012-09-30 22:00:00 UTC      7
-23 2012-09-30 23:00:00 UTC      6
-24 2012-10-01 00:00:00 UTC      6
+[1] when
+<0 rows> (or 0-length row.names)
 > xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='CET', cursor=1)
-                       when N2_VER
-23 2012-09-30 01:00:00 CEST      7
-24 2012-09-30 02:00:00 CEST      6
-25 2012-09-30 03:00:00 CEST      7
-26 2012-09-30 04:00:00 CEST      5
-27 2012-09-30 05:00:00 CEST      6
-28 2012-09-30 06:00:00 CEST      5
-29 2012-09-30 07:00:00 CEST      7
-30 2012-09-30 08:00:00 CEST      8
-31 2012-09-30 09:00:00 CEST      8
-32 2012-09-30 10:00:00 CEST      7
-33 2012-09-30 11:00:00 CEST      9
-34 2012-09-30 12:00:00 CEST     11
-35 2012-09-30 13:00:00 CEST      9
-36 2012-09-30 14:00:00 CEST      6
-37 2012-09-30 15:00:00 CEST      5
-38 2012-09-30 16:00:00 CEST      6
-39 2012-09-30 17:00:00 CEST      7
-40 2012-09-30 18:00:00 CEST      8
-41 2012-09-30 19:00:00 CEST     10
-42 2012-09-30 20:00:00 CEST     10
-43 2012-09-30 21:00:00 CEST     10
-44 2012-09-30 22:00:00 CEST      8
-45 2012-09-30 23:00:00 CEST      8
-46 2012-10-01 00:00:00 CEST      7
+[1] when
+<0 rows> (or 0-length row.names)
 > 
 > #======================================
 > # tests sur la fonction xrGetManualData
 > 
 > xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6')
-                    start                     end
-1 2011-06-21 09:57:00 UTC 2011-06-28 08:11:00 UTC
-2 2011-08-23 08:30:00 UTC 2011-08-30 09:26:00 UTC
-3 2011-09-20 09:43:00 UTC 2011-09-27 08:00:00 UTC
-4 2011-09-27 09:14:00 UTC 2011-10-04 08:15:00 UTC
-5 2011-10-04 10:45:00 UTC 2011-10-11 07:40:00 UTC
-6 2011-10-18 07:35:00 UTC 2011-10-25 08:22:00 UTC
-7 2011-11-08 09:36:00 UTC 2011-11-15 09:25:00 UTC
-8 2011-12-06 10:00:00 UTC 2011-12-13 09:12:00 UTC
-9 2011-12-20 09:45:00 UTC 2011-12-27 09:53:00 UTC
-  Niort...Largeau...Trafic.TUBE.ACTIF.V4
-1                                   1.40
-2                                   1.27
-3                                   2.39
-4                                   2.55
-5                                   1.22
-6                                   1.98
-7                                   2.58
-8                                   1.47
-9                                   1.91
+                    start                     end D79NIO_LARGEAU.TUBE.ACTIF.V4
+1 2011-06-21 09:57:00 UTC 2011-06-28 08:11:00 UTC                         1.40
+2 2011-08-23 08:30:00 UTC 2011-08-30 09:26:00 UTC                         1.27
+3 2011-09-20 09:43:00 UTC 2011-09-27 08:00:00 UTC                         2.39
+4 2011-09-27 09:14:00 UTC 2011-10-04 08:15:00 UTC                         2.55
+5 2011-10-04 10:45:00 UTC 2011-10-11 07:40:00 UTC                         1.22
+6 2011-10-18 07:35:00 UTC 2011-10-25 08:22:00 UTC                         1.98
+7 2011-11-08 09:36:00 UTC 2011-11-15 09:25:00 UTC                         2.58
+8 2011-12-06 10:00:00 UTC 2011-12-13 09:12:00 UTC                         1.47
+9 2011-12-20 09:45:00 UTC 2011-12-27 09:53:00 UTC                         1.91
 > xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', tz='UTC')
-                    start                     end
-1 2011-06-21 09:57:00 UTC 2011-06-28 08:11:00 UTC
-2 2011-08-23 08:30:00 UTC 2011-08-30 09:26:00 UTC
-3 2011-09-20 09:43:00 UTC 2011-09-27 08:00:00 UTC
-4 2011-09-27 09:14:00 UTC 2011-10-04 08:15:00 UTC
-5 2011-10-04 10:45:00 UTC 2011-10-11 07:40:00 UTC
-6 2011-10-18 07:35:00 UTC 2011-10-25 08:22:00 UTC
-7 2011-11-08 09:36:00 UTC 2011-11-15 09:25:00 UTC
-8 2011-12-06 10:00:00 UTC 2011-12-13 09:12:00 UTC
-9 2011-12-20 09:45:00 UTC 2011-12-27 09:53:00 UTC
-  Niort...Largeau...Trafic.TUBE.ACTIF.V4
-1                                   1.40
-2                                   1.27
-3                                   2.39
-4                                   2.55
-5                                   1.22
-6                                   1.98
-7                                   2.58
-8                                   1.47
-9                                   1.91
+                    start                     end D79NIO_LARGEAU.TUBE.ACTIF.V4
+1 2011-06-21 09:57:00 UTC 2011-06-28 08:11:00 UTC                         1.40
+2 2011-08-23 08:30:00 UTC 2011-08-30 09:26:00 UTC                         1.27
+3 2011-09-20 09:43:00 UTC 2011-09-27 08:00:00 UTC                         2.39
+4 2011-09-27 09:14:00 UTC 2011-10-04 08:15:00 UTC                         2.55
+5 2011-10-04 10:45:00 UTC 2011-10-11 07:40:00 UTC                         1.22
+6 2011-10-18 07:35:00 UTC 2011-10-25 08:22:00 UTC                         1.98
+7 2011-11-08 09:36:00 UTC 2011-11-15 09:25:00 UTC                         2.58
+8 2011-12-06 10:00:00 UTC 2011-12-13 09:12:00 UTC                         1.47
+9 2011-12-20 09:45:00 UTC 2011-12-27 09:53:00 UTC                         1.91
 > xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', tz='CET')
                      start                      end
 1 2011-06-21 11:57:00 CEST 2011-06-28 10:11:00 CEST
@@ -613,51 +465,51 @@ Loading required package: DBI
 7  2011-11-08 10:36:00 CET  2011-11-15 10:25:00 CET
 8  2011-12-06 11:00:00 CET  2011-12-13 10:12:00 CET
 9  2011-12-20 10:45:00 CET  2011-12-27 10:53:00 CET
-  Niort...Largeau...Trafic.TUBE.ACTIF.V4
-1                                   1.40
-2                                   1.27
-3                                   2.39
-4                                   2.55
-5                                   1.22
-6                                   1.98
-7                                   2.58
-8                                   1.47
-9                                   1.91
+  D79NIO_LARGEAU.TUBE.ACTIF.V4
+1                         1.40
+2                         1.27
+3                         2.39
+4                         2.55
+5                         1.22
+6                         1.98
+7                         2.58
+8                         1.47
+9                         1.91
 > xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', cursor=0.5)
-                     when Niort...Largeau...Trafic.TUBE.ACTIF.V4
-1 2011-06-24 21:04:00 UTC                                   1.40
-2 2011-08-26 20:58:00 UTC                                   1.27
-3 2011-09-23 20:51:30 UTC                                   2.39
-4 2011-09-30 20:44:30 UTC                                   2.55
-5 2011-10-07 21:12:30 UTC                                   1.22
-6 2011-10-21 19:58:30 UTC                                   1.98
-7 2011-11-11 21:30:30 UTC                                   2.58
-8 2011-12-09 21:36:00 UTC                                   1.47
-9 2011-12-23 21:49:00 UTC                                   1.91
+                     when D79NIO_LARGEAU.TUBE.ACTIF.V4
+1 2011-06-24 21:04:00 UTC                         1.40
+2 2011-08-26 20:58:00 UTC                         1.27
+3 2011-09-23 20:51:30 UTC                         2.39
+4 2011-09-30 20:44:30 UTC                         2.55
+5 2011-10-07 21:12:30 UTC                         1.22
+6 2011-10-21 19:58:30 UTC                         1.98
+7 2011-11-11 21:30:30 UTC                         2.58
+8 2011-12-09 21:36:00 UTC                         1.47
+9 2011-12-23 21:49:00 UTC                         1.91
 > xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', tz='UTC', cursor=0.5)
-                     when Niort...Largeau...Trafic.TUBE.ACTIF.V4
-1 2011-06-24 21:04:00 UTC                                   1.40
-2 2011-08-26 20:58:00 UTC                                   1.27
-3 2011-09-23 20:51:30 UTC                                   2.39
-4 2011-09-30 20:44:30 UTC                                   2.55
-5 2011-10-07 21:12:30 UTC                                   1.22
-6 2011-10-21 19:58:30 UTC                                   1.98
-7 2011-11-11 21:30:30 UTC                                   2.58
-8 2011-12-09 21:36:00 UTC                                   1.47
-9 2011-12-23 21:49:00 UTC                                   1.91
+                     when D79NIO_LARGEAU.TUBE.ACTIF.V4
+1 2011-06-24 21:04:00 UTC                         1.40
+2 2011-08-26 20:58:00 UTC                         1.27
+3 2011-09-23 20:51:30 UTC                         2.39
+4 2011-09-30 20:44:30 UTC                         2.55
+5 2011-10-07 21:12:30 UTC                         1.22
+6 2011-10-21 19:58:30 UTC                         1.98
+7 2011-11-11 21:30:30 UTC                         2.58
+8 2011-12-09 21:36:00 UTC                         1.47
+9 2011-12-23 21:49:00 UTC                         1.91
 > xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', tz='CET', cursor=0.5)
-                      when Niort...Largeau...Trafic.TUBE.ACTIF.V4
-1 2011-06-24 23:04:00 CEST                                   1.40
-2 2011-08-26 22:58:00 CEST                                   1.27
-3 2011-09-23 22:51:30 CEST                                   2.39
-4 2011-09-30 22:44:30 CEST                                   2.55
-5 2011-10-07 23:12:30 CEST                                   1.22
-6 2011-10-21 21:58:30 CEST                                   1.98
-7  2011-11-11 22:30:30 CET                                   2.58
-8  2011-12-09 22:36:00 CET                                   1.47
-9  2011-12-23 22:49:00 CET                                   1.91
+                      when D79NIO_LARGEAU.TUBE.ACTIF.V4
+1 2011-06-24 23:04:00 CEST                         1.40
+2 2011-08-26 22:58:00 CEST                         1.27
+3 2011-09-23 22:51:30 CEST                         2.39
+4 2011-09-30 22:44:30 CEST                         2.55
+5 2011-10-07 23:12:30 CEST                         1.22
+6 2011-10-21 21:58:30 CEST                         1.98
+7  2011-11-11 22:30:30 CET                         2.58
+8  2011-12-09 22:36:00 CET                         1.47
+9  2011-12-23 22:49:00 CET                         1.91
 > 
 > 
 > proc.time()
    user  system elapsed 
-  1.280   0.060  13.557 
+  1.091   0.095   9.619 
