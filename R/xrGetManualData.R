@@ -10,6 +10,12 @@
 #'  \code{... list(pattern='DF', search.fields='NOPOL') ...}
 #' @param sites chaînes de caractères correspondant aux sites à rapatrier
 #'   (optionnel) (utilisé via la fonction\code{\link{xrGetSitesPrelevement}}).
+#'  si c'est un vecteur, est directement utilisé comme pattern pour la fonction
+#'  xrGetSitesPrelevement. Si C'est une liste, les éléments doivent être nommés. Chaque
+#'  élément est alors utilisé comme argument pour la fonction xrGetSitesPrelevement.
+#'  pattern doit alors être précisé :
+#' 
+#'  \code{... list(pattern = 618, search.fields = 'NSIT') ...}
 #' @param methodes chaînes de caractères correspondant aux campagnes à rapatrier
 #'   (optionnel) (utilisé via la fonction\code{\link{xrGetMethodesPrelevement}}).
 #' @param categories vecteur indiquant les categories des mesures à rapatrier.
@@ -62,7 +68,11 @@ xrGetManualData <-
 	q <- list ()
 	
 	if (!is.null (sites) ) {
-		sites <- xrGetSitesPrelevement (conn, sites, campagnes=campagnes)
+		if( !is.list(sites) )
+			sites <- xrGetSitesPrelevement (conn, sites, campagnes=campagnes) else {
+				sites$campagnes <- unique(c(sites$campagnes, campagnes))
+				sites <- do.call(xrGetSitesPrelevement, c(list(conn=conn), sites))
+			}
 		q$sites <- paste ("'", sites$NSIT, "'", sep='', collapse=', ')
 	} else if (!is.null(campagnes)) {
 		sites <- xrGetSitesPrelevement (conn, campagnes=campagnes)
@@ -114,7 +124,7 @@ xrGetManualData <-
 
 	# à priori pour airparif, les Q_, H_, etc. sont rappatriés sous forme de
 	# char, donc conversion
-	# conversion systématique (sans impact si pas nécessaire, corrige à
+	# conversion systématique (sans impact si pas nécessaire, corrige à
 	# priori non pour XR < 6 mais pour windows >= 7)
 	a.convertir <- c('VALEUR', 'LAMBERTX', 'LAMBERTY', 'LONGI', 'LATI')
 	result[a.convertir] <- lapply(result[a.convertir], function(x)

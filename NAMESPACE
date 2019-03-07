@@ -8,6 +8,7 @@ importMethodsFrom(DBI, dbListFields, dbDisconnect, dbConnect, dbGetQuery)
 importFrom("grDevices", "colorRampPalette", "colors", "hsv")
 importFrom("graphics", "box", "par", "plot", "polygon", "segments", "text")
 importFrom("stats", "end", "start")
+importFrom("utils", "URLencode")
 
 exportMethods (dbListFields, dbDisconnect)
 

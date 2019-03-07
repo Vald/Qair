@@ -19,7 +19,13 @@ pouvant être converti en \code{\link[base]{POSIXct}}).}
 pouvant être converti en \code{\link[base]{POSIXct}}).}
 
 \item{sites}{chaînes de caractères correspondant aux sites à rapatrier
-(optionnel) (utilisé via la fonction\code{\link{xrGetSitesPrelevement}}).}
+  (optionnel) (utilisé via la fonction\code{\link{xrGetSitesPrelevement}}).
+ si c'est un vecteur, est directement utilisé comme pattern pour la fonction
+ xrGetSitesPrelevement. Si C'est une liste, les éléments doivent être nommés. Chaque
+ élément est alors utilisé comme argument pour la fonction xrGetSitesPrelevement.
+ pattern doit alors être précisé :
+
+ \code{... list(pattern = 618, search.fields = 'NSIT') ...}}
 
 \item{polluants}{chaînes de caractères correspondant aux polluants à rapatrier
   (optionnel) (utilisé via la fonction\code{\link{xrGetPolluants}}).
