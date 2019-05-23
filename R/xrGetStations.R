@@ -19,12 +19,12 @@
 #'
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les stations trouvées.
+#' @export
 xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NOM_COURT_SIT'),
 			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL,
-			  collapse = c('AND', 'OR'), exact=FALSE) {
+			  exact=FALSE) {
 
-	collapse <- match.arg (collapse)
-	collapse <- sprintf (' %s ', collapse)
+	query <- sprintf('%ssites?', xrGetUrl(conn))
 
 	fields.tmp <- dbListFields (conn, 'STATION', schema='RSDBA')
 	search.fields <- intersect (search.fields, fields.tmp)
@@ -77,10 +77,10 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 
 	stations <- unique (xrGetQuery (conn, query) )
 
-	temp <- xrGetQuery (conn, "SELECT CLE, LIBELLE FROM LISTE_META_DONNEES WHERE CODE_ID_LISTE='CL_SITE'")
-	names (temp)[2] <- 'typologie'
-	stations <- merge (stations, temp, by.x='CLASSE_SITE', by.y='CLE', all.x=TRUE, all.y=FALSE)
-	stations[setdiff(names(stations), 'tada')]
+	# TODO: typologie ?
+	#temp <- xrGetQuery (conn, "SELECT CLE, LIBELLE FROM LISTE_META_DONNEES WHERE CODE_ID_LISTE='CL_SITE'")
+	#names (temp)[2] <- 'typologie'
+	return(xrGetQuery(conn, query))
 }
 
 

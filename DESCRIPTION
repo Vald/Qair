@@ -4,7 +4,7 @@ Title: Qualite de l'Air, Seuils Europeens et Traitement de donnees
 Version: 3.0.0
 Date: 2019-01-10
 Depends:
-    timetools,DBI,methods
+    timetools,methods
 Suggests:
     RODBC (>= 1.3.6),
     RJDBC (>= 0.2-1),
