@@ -2,7 +2,7 @@
 useDynLib(Qair, .registration = TRUE, .fixes = "C_")
 
 # import des dependances
-import (timetools, rjson)
+import (timetools, jsonlite, httr)
 # a supprimer
 importMethodsFrom(DBI, dbListFields, dbDisconnect, dbConnect, dbGetQuery)
 # probablement a supprimer

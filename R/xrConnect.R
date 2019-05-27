@@ -66,8 +66,7 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL) {
 	class(xr) <- 'xr'
 
 
-	# TODO: faire une requete sur un site inexistant et afficher si la 
-	# connexion est ok
+	if(nrow(xrGetStations(conn, )))
 
 	return (xr)
 }
