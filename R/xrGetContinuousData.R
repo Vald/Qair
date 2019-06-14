@@ -96,7 +96,8 @@
 #' 	TimeInstantDataFrame (1 pour respecter les conventions XR).
 #' @param exact booléen indiquant si les mesures à rapatrier doivent être 
 #' 	exactement identiques à \sQuote{pattern} ou si \sQuote{pattern} doit 
-#' 	être utilisé dans une expression régulière.
+#' 	être utilisé dans une expression régulière. Utilisé uniquement si la connexion
+#'  à XR est en v2. Sinon il faut utiliser les % et ?.
 #'
 #' @return un objet de classe \code{\link[timetools]{TimeIntervalDataFrame-class}}
 #' 	contenant les données demandées.

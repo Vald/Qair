@@ -25,12 +25,21 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les stations trouvées.
 #' @export
-xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NOM_COURT_SIT'),
+xrGetStations <- function(conn, pattern = NULL, search.fields = c('id', 'NOM_COURT_SITnv3'),
 			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL,
 			  collapse=c('AND', 'OR'), exact=FALSE, resv3=FALSE) {
 
-	nv    <- paste0('nv', xr[['version']])
-	query <- sprintf('sites?')
+	# récupération de la version avec laquelle on bosse et initialisation de
+	# la requête
+
+	nv     <- paste0('nv', xr[['version']])
+	bquery <- sprintf('sites?')
+
+	# récupération des champs possibles de recherches (dépend de la version de
+	# Qair)
+	# si nv3, on bosse directement avec, sinon on récupére les champs nv2, 
+	# on les 'traduit' en nv3, on fait tout le travail en nv3 et à la fin 
+	# de la fonction on revient éventuellement en nv2.
 
 	xrfields <- xrListFields ('sites')
 	if(conn[['version']] == 2) {
@@ -46,12 +55,32 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT',
 	# --> agregation des différents tests en fonction de collapse...
 	# TODO: si search.fields contient id, on adapte la requete, 
 
+	# FIXME:1 comme la recherche % et ? ne marche pas sur id, on prend toutes
+	# les stations et on cherche dedans
+	all.stations <- xrGetQuery(conn, bquery)
+
 	# recherche sur idsite si idsite in search.fields / IDENTIFIANT
 	# faire de même sur ref / NSIT
 
 	if ('id' %in% search.fields){
-		idsites <- 1 # TODO: HERE
-		# faire la recherche
+		# FIXME:1 en attendant que la recherche % et ? fonctionne
+		#if(conn[['version']] == 2 & !exact)
+		#	query <- paste0('%', pattern, '%', collapse=',') else
+		#	query <- paste0(pattern, collapse=',')
+
+		if(conn[['version']] == 2){
+			if(exact)
+				selection <- match(pattern, all.stations[['id']]) else
+				selection <- sapply(pattern, grep, all.stations[['id']])
+		} else {
+			selection <- gsub('\\%', '.*', pattern)
+			selection <- gsub('\\?', '.', selection)
+			selection <- paste0('^', selection, '$')
+			selection <- sapply(selection, grep, all.stations[['id']])
+		}
+		stations <- all.stations[unique(unlist(selection))]
+		# TODO:HERE le point précédent est à vérifier
+
 		search.fields <- setdiff(search.fields, 'id')
 	} else idsites <- character()
 
