@@ -20,14 +20,14 @@ xrListFields <- function(name=c('sites')){
 		# TODO: il manque des champs cf correspondance commentées
 		return(data.frame(
 			nv2  = c('IDENTIFIANT', 'NSIT', 'ISIT', 'typologie', 'LATI', 'LONGI',
-					 'class', 'area'
+					 'area', 'type'
 					 # 'NSIT_PUBLIC', 'NOM_COURT_SIT', 'AXE', 'CODE', 'LAMBERTX', 
 					 # 'LAMBERTY', 'CLASSE_SITE'
 					 ),
-			nv3  = c('id', 'ref', 'label', 'typologie', 'latitude', 'longitude',
-					 'class', 'area'),
+			nv3  = c('id', 'ref', 'label', 'class', 'latitude', 'longitude',
+					 'area', 'type'),
 			type = c('character()', 'character()', 'character()', 'numeric()',
-					 'numeric()', 'character()', 'character()', 'character()'
+					 'numeric()', 'character()', 'character()', 'numeric()'
 					 # 'character()', 'character()', 'character()', 'numeric()',
 					 # 'numeric()', 'numeric()', 'numeric()'
 					 )
@@ -44,13 +44,18 @@ xrListFields <- function(name=c('sites')){
 #' 
 #' @param conn une connexion à une base XR (cf \code{\link{xrConnect}})
 #' @param query chaîne de caractères contenant la reqûete
+#' @param resv3 Booléen : faut-il forcer le retour au format v3 ? Par défaut
+#'  non, donc si la connexion à XR est en v2, les noms correspondront à la v2.
+#'  Seul le résultat est affecté : si la connexion est en v2, les noms des
+#'  champs de recherches doivent être spécifiés en v2. Son utilisation devrait
+#'  être réservée à des fins de développement.
 #'
 #' @return une data.frame avec le résultat de la requête ou 
 #' 	une erreur si la requête n'a pas abouti.
 #' 
 #' @seealso \code{\link{xrConnect}}, \code{\link[RODBC]{RODBC}}, \code{\link[RJDBC]{JDBC}}
 #' @export
-xrGetQuery <- function (conn, query) {
+xrGetQuery <- function (conn, query, resv3=FALSE) {
 	osaf   <- getOption('stringsAsFactors')
 	options(stringsAsFactors = FALSE)
 
@@ -75,16 +80,13 @@ xrGetQuery <- function (conn, query) {
 	# traitement des cas specifiques ------------------------------------------
 
 	if(type == 'sites'){
-
-		# ajout de champs recalculés
-		result[['typologie']] <- paste(result[['class']], result[['area']])
-
+		#aucun pour l'instant
 	#}else if(type == ''){
 	}
 
 	# gestion si compatibilité v2 et fin --------------------------------------
 
-	if(conn[['version']] == 2)
+	if(!resv3 & conn[['version']] == 2)
 		names(result) <- fields[['nv2']][match(names(result), fields[['nv3']])]
 
 	options(stringsAsFactors = osaf)

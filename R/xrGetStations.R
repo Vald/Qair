@@ -19,20 +19,24 @@
 #'  Seul le résultat est affecté : si la connexion est en v2, les noms des
 #'  champs de recherches doivent être spécifiés en v2. Son utilisation devrait
 #'  être réservée à des fins de développement.
+#' @param validOnly (v3) La recherche doit-elle porter uniquement sur les
+#'  stations ouvertes ?
 #'
 #' @seealso \code{\link{xrGetContinuousData}}
 #'
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les stations trouvées.
 #' @export
-xrGetStations <- function(conn, pattern = NULL, search.fields = c('id', 'NOM_COURT_SITnv3'),
+xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL,
-			  collapse=c('AND', 'OR'), exact=FALSE, resv3=FALSE) {
+			  collapse=c('AND', 'OR'), exact=FALSE, resv3=FALSE, validOnly=FALSE){#,
+			  #startDate=NULL, stopDate=NULL) {
+	collapse <- match.arg(collapse)
 
 	# récupération de la version avec laquelle on bosse et initialisation de
 	# la requête
 
-	nv     <- paste0('nv', xr[['version']])
+	nv     <- paste0('nv', conn[['version']])
 	bquery <- sprintf('sites?')
 
 	# récupération des champs possibles de recherches (dépend de la version de
@@ -42,117 +46,124 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('id', 'NOM_COU
 	# de la fonction on revient éventuellement en nv2.
 
 	xrfields <- xrListFields ('sites')
-	if(conn[['version']] == 2) {
-		search.fields <- intersect(search.fields, xrfields[['nv2']])
-		search.fields <- xrfields[['nv3']][match(search.fields, xrfields[['nv2']])]
-	} else 
-		search.fields <- intersect(search.fields, xrfields[['nv3']])
+	if(is.null(search.fields)){
+		search.fields <- c('id')#TODO: mettre le remplacant de NOM_COURT_SIT en plus
+	}else{
+		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
+		if(conn[['version']] == 2)
+			search.fields <- xrfields[['nv3']][match(search.fields, xrfields[['nv2']])]
+	}
 
 	# algo:
-	# récupération des sites sur la base de search.fields (si id), de campagne et de reseaux 
+	# récupération des sites sur la base de search.fields, de campagne et de reseaux 
 	# puis recherche de mesure si != NULL et récup. de id site
 	# puis refiltre ssi search.fields contient autre chose que juste id
 	# --> agregation des différents tests en fonction de collapse...
-	# TODO: si search.fields contient id, on adapte la requete, 
 
 	# FIXME:1 comme la recherche % et ? ne marche pas sur id, on prend toutes
 	# les stations et on cherche dedans
-	all.stations <- xrGetQuery(conn, bquery)
+	all.stations <- xrGetQuery(conn, bquery, resv3=TRUE)
 
 	# recherche sur idsite si idsite in search.fields / IDENTIFIANT
 	# faire de même sur ref / NSIT
-
-	if ('id' %in% search.fields){
-		# FIXME:1 en attendant que la recherche % et ? fonctionne
+	# FIXME:1 en attendant que la recherche % et ? fonctionne 'id' et 'ref'
+	# sont gérés comme les autres champs.
+	# if('id' in search.fields)
+	# if('ref' in search.fields)
 		#if(conn[['version']] == 2 & !exact)
 		#	query <- paste0('%', pattern, '%', collapse=',') else
 		#	query <- paste0(pattern, collapse=',')
 
+	idsites <- NULL
+	for (sf in search.fields){
 		if(conn[['version']] == 2){
 			if(exact)
-				selection <- match(pattern, all.stations[['id']]) else
-				selection <- sapply(pattern, grep, all.stations[['id']])
+				selection <- match(pattern, all.stations[[sf]]) else
+				selection <- sapply(pattern, grep, all.stations[[sf]])
 		} else {
 			selection <- gsub('\\%', '.*', pattern)
 			selection <- gsub('\\?', '.', selection)
 			selection <- paste0('^', selection, '$')
-			selection <- sapply(selection, grep, all.stations[['id']])
+			selection <- sapply(selection, grep, all.stations[[sf]])
 		}
-		stations <- all.stations[unique(unlist(selection))]
-		# TODO:HERE le point précédent est à vérifier
+		ist <- all.stations[['id']][unique(unlist(selection))]
 
-		search.fields <- setdiff(search.fields, 'id')
-	} else idsites <- character()
+		if(is.null(idsites)){
+			idsites <- ist
+		}else if (collapse == 'AND'){
+			idsites <- intersect(ist, idsites)
+		}else
+			idsites <- unique(c(ist, idsites))
+	}
 
 	# récupération d'idsite sur la base de mesures
 
 	if (!is.null (mesures) ) {
 		if( !is.list(mesures) )
 			mesures <- xrGetMesures(conn, pattern = mesures, resv3=TRUE) else{
-			mesures[['v3']] <- TRUE
+			mesures[['resv3']] <- TRUE
 			mesures <- do.call(xrGetMesures, c(list(conn=conn), mesures))
 			}
-		# TODO: gérer si collapse = AND ou OR
-		idsites <- unique(mesures[['id_site']])
+		ist <- unique(mesures[['id_site']])
+
+		if(is.null(idsites)){
+			idsites <- ist
+		}else if (collapse == 'AND'){
+			idsites <- intersect(ist, idsites)
+		}else
+			idsites <- unique(c(ist, idsites))
 	}
 
-	# récupération d'idcampaignes (quel champ ?)
-	# TODO: gérer si collapse = AND ou OR
+	# récupération d'idcampaignes
 	if (!is.null (campagnes) ) {
-	#<<<<<<<<<<
+		# FIXME: il manque une requete qui permettrait d'accéder à CAMPMES_STATION
 		if( !is.list(campagnes) )
-			campagnes <- unique (xrGetCampagnes (conn, pattern = campagnes)$NOM_COURT_CM) else
-			campagnes <- unique(do.call(xrGetCampagnes, c(list(conn=conn), campagnes))$NOM_COURT_CM)
-		campagnes <- unique(campagnes[['']])
-		if (length(campagnes) != 0)
-			if(length(idsites) == 0) idsites <- campagnes {
-			idsites <- if( == 'AND') else
-		}
-	#>>>>>>>>>>
+			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
+			campagnes[['resv3']] <- TRUE
+			campagnes <- do.call(xrGetCampagnes, c(list(conn=conn), campagnes))
+			}
+		ist <- unique(campagnes[['id_site']])
+
+		if(is.null(idsites)){
+			idsites <- ist
+		}else if (collapse == 'AND'){
+			idsites <- intersect(ist, idsites)
+		}else
+			idsites <- unique(c(ist, idsites))
 	}
 
-	# récupération d'idgroups (quel champ ?)
-	# TODO: gérer si collapse = AND ou OR
+	# récupération d'idgroups
 	if (!is.null (reseaux) ) {
-	#<<<<<<<<<<
-		q$reseaux <- unique (xrGetReseaux (conn, pattern = reseaux)$NOM_COURT_RES)
-		if (length(q$reseaux) == 0) q$reseaux <- NULL else {
-			q$tables <- c(q$tables, 'RESEAUSTA')
-			q$reseaux <- sprintf(
-				'STATION.NOM_COURT_SIT=RESEAUSTA.NOM_COURT_SIT AND RESEAUSTA.NOM_COURT_RES IN (%s)',
-				paste ("'", q$reseaux, "'", sep = '', collapse = ", ") )
-		}
-	#>>>>>>>>>>
+		# FIXME: il manque une requete qui permettrait d'accéder à RESEAUSTA
+		if( !is.list(reseaux) )
+			reseaux <- xrGetReseaux(conn, pattern = reseaux, resv3=TRUE) else{
+			reseaux[['resv3']] <- TRUE
+			reseaux <- do.call(xrGetReseaux, c(list(conn=conn), reseaux))
+			}
+		ist <- unique(reseaux[['id_site']])
+
+
+		if(is.null(idsites)){
+			idsites <- ist
+		}else if (collapse == 'AND'){
+			idsites <- intersect(ist, idsites)
+		}else
+			idsites <- unique(c(ist, idsites))
 	}
 
+	# création et exécution de la requête
 
-	# TODO: lancement de la requete avec filtre sur sites, campaigns, groups
-	# ajouter stopDate, startDate, validOnly
-	#<<<<<<<<<<
-	query <- sprintf ('%s %s', query, paste (q$tables, collapse=', ') )
-	q$tables <- NULL
-	if (length (q) > 0)
-		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
+	query <- bquery
+	query <- sprintf('%svalidOnly=%s', query, if(validOnly) 'TRUE' else 'FALSE')
+	if(!is.null(idsites))
+		query <- sprintf('%s&sites=%s', query, paste(idsites, collapse=','))
 
-	stations <- unique (xrGetQuery (conn, query) )
-	#>>>>>>>>>>
+	# TODO:  ajouter filtre stopDate, startDate
 
-	# TODO: filtre sur les autres champs que id_site
-	if (!is.null (pattern) & length (search.fields) > 0)
-	#<<<<<<<<<<
-		q$pattern <- match.pattern.fields (
-					pattern, sprintf('STATION.%s', search.fields),
-					type=ifelse(exact, 'IN', 'LIKE'))
-	#>>>>>>>>>>
-
-
-
-	# TODO: typologie : vérifier que les valeurs sont compatibles ...
-	#temp <- xrGetQuery (conn, "SELECT CLE, LIBELLE FROM LISTE_META_DONNEES WHERE CODE_ID_LISTE='CL_SITE'")
-	#names (temp)[2] <- 'typologie'
+	stations <- xrGetQuery(conn, query, resv3=TRUE)
 
 	if(!resv3 & nv == 'nv2')
-		names(result) <- xrfields[['nv2']][match(names(result), xrfields[['nv3']])]
+		names(stations) <- xrfields[['nv2']][match(names(stations), xrfields[['nv3']])]
 
 	if (is.null(fields)) fields <- xrfields[[nv]]
 	# TODO: à compléter quand on aura l'équivalent du champ classe_site dans
@@ -160,7 +171,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = c('id', 'NOM_COU
 	#fields <- union(fields, 'CLASSE_SITE')
 	fields <- intersect(fields, xrfields[[nv]])
 
-	return(result[fields])
+	return(stations[fields])
 }
 
 
