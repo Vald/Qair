@@ -17,20 +17,31 @@ xrGetUrl <- function(conn){
 xrListFields <- function(name=c('sites')){
 	name <- match.arg(name)
 	if(name == 'sites'){
-		# TODO: il manque des champs cf correspondance commentées
+		# FIXME: il manque des champs cf correspondance commentées
 		return(data.frame(
 			nv2  = c('IDENTIFIANT', 'NSIT', 'ISIT', 'typologie', 'LATI', 'LONGI',
-					 'area', 'type'
-					 # 'NSIT_PUBLIC', 'NOM_COURT_SIT', 'AXE', 'CODE', 'LAMBERTX', 
-					 # 'LAMBERTY', 'CLASSE_SITE'
-					 ),
+					 'area', 'type'),
+			# 'AXE', 'CODE_POSTAL', 'labelCommune', 'D_CREATION', 'D_ARRET'
+			# en plus 'NSIT_PUBLIC', 'NOM_COURT_SIT', 'LAMBERTX', 'LAMBERTY',
+			# 'CLASSE_SITE', 'CODE', 'ISIT', 'ISIT_LONG'
 			nv3  = c('id', 'ref', 'label', 'class', 'latitude', 'longitude',
 					 'area', 'type'),
+			#, 'street', 'postCode', 'labelCommune', 'startDate', 'stopDate'),
 			type = c('character()', 'character()', 'character()', 'numeric()',
-					 'numeric()', 'character()', 'character()', 'numeric()'
-					 # 'character()', 'character()', 'character()', 'numeric()',
-					 # 'numeric()', 'numeric()', 'numeric()'
-					 )
+					 'numeric()', 'character()', 'character()', 'numeric()')
+		  ))
+	}else if(name == 'measures'){
+		return(data.frame(
+			nv2  = c('IDENTIFIANT', 'NOM_MES', 'id_site', 'UNITE', 'phy_name'),
+			# 'phy_comp_code', 'NOPOL', 'campaigns', 'DERNIER_QH', 'D_VALIDATION',
+			# 'D_VALIDATION_ENV', 'D_CREATION', 'D_ARRET'
+			# en plus 'NSIT', 'NOM_COURT_SIT', 'CMET'
+			nv3  = c('id', 'label', 'id_site', 'unite', 'phy_name'),
+			# 'phy_comp_code', 'id_phy', 'campaigns','lastDataDate', 
+			# 'techValidationDate', 'envValidationDate', 'startDate', 
+			# 'stopDate'),
+			type = c('character()', 'character()', 'character()', 'character()',
+					 'character()')
 		  ))
 	#}else if(name == ''){
 	}

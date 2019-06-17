@@ -6,18 +6,36 @@
 #' @inheritParams xrGetContinuousData
 #' @param fields vecteurs indiquant les champs de la table à récupérer.
 #'	Tous par défaut.
+#' @param resv3 Booléen : faut-il forcer le retour au format v3 ? Par défaut
+#'  non, donc si la connexion à XR est en v2, les noms correspondront à la v2.
+#'  Seul le résultat est affecté : si la connexion est en v2, les noms des
+#'  champs de recherches doivent être spécifiés en v2. Son utilisation devrait
+#'  être réservée à des fins de développement.
 #'
 #' @seealso \code{\link{xrGetContinuousData}}
 #'
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les mesures trouvées.
-xrGetMesures <- function(conn, pattern = NULL, search.fields = c('IDENTIFIANT', 'NOM_COURT_MES'),
+xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			  campagnes = NULL, reseaux = NULL, stations=NULL, polluants = NULL,
-			  fields = NULL, collapse = c('AND', 'OR'), exact=FALSE) {
+			  fields = NULL, collapse = c('AND', 'OR'), exact=FALSE, resv3=FALSE) {
+	collapse <- match.arg(collapse)
 
-	collapse <- match.arg (collapse)
-	collapse <- sprintf (' %s ', collapse)
+	# récupération de la version avec laquelle on bosse et initialisation de
+	# la requête
 
+	nv     <- paste0('nv', conn[['version']])
+	bquery <- sprintf('measures?')
+
+	# récupération des champs possibles de recherches (dépend de la version de
+	# Qair)
+	# si nv3, on bosse directement avec, sinon on récupére les champs nv2, 
+	# on les 'traduit' en nv3, on fait tout le travail en nv3 et à la fin 
+	# de la fonction on revient éventuellement en nv2.
+
+	xrfields <- xrListFields ('measures')
+
+c('IDENTIFIANT', 'NOM_COURT_MES')
 	fields.tmp <- dbListFields (conn, 'MESURE', schema='RSDBA')
 	search.fields <- intersect (search.fields, fields.tmp)
 	if (is.null (fields) ) fields <- fields.tmp

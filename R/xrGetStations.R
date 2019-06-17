@@ -47,7 +47,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	xrfields <- xrListFields ('sites')
 	if(is.null(search.fields)){
-		search.fields <- c('id')#TODO: mettre le remplacant de NOM_COURT_SIT en plus
+		search.fields <- c('id')#FIXME: mettre le remplacant de NOM_COURT_SIT en plus
 	}else{
 		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
 		if(conn[['version']] == 2)
@@ -116,7 +116,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	# récupération d'idcampaignes
 	if (!is.null (campagnes) ) {
-		# FIXME: il manque une requete qui permettrait d'accéder à CAMPMES_STATION
+		# TODO: info récupérable sur les mesures plutôt que le sites ...
 		if( !is.list(campagnes) )
 			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
 			campagnes[['resv3']] <- TRUE
@@ -158,7 +158,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	if(!is.null(idsites))
 		query <- sprintf('%s&sites=%s', query, paste(idsites, collapse=','))
 
-	# TODO:  ajouter filtre stopDate, startDate
+	# FIXME:  ajouter filtre stopDate, startDate
 
 	stations <- xrGetQuery(conn, query, resv3=TRUE)
 
@@ -166,7 +166,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 		names(stations) <- xrfields[['nv2']][match(names(stations), xrfields[['nv3']])]
 
 	if (is.null(fields)) fields <- xrfields[[nv]]
-	# TODO: à compléter quand on aura l'équivalent du champ classe_site dans
+	# FIXME: à compléter quand on aura l'équivalent du champ classe_site dans
 	# l'API (remplacer 'CLASSE_SITE par sa valeur dans l'API
 	#fields <- union(fields, 'CLASSE_SITE')
 	fields <- intersect(fields, xrfields[[nv]])
