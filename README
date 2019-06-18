@@ -5,6 +5,9 @@ pour les utilisateurs d'une version de R < 3.5 (3.4.3 par exemple), il faut
 télécharger le fichier winbin-R3.4.4-Qair_2.14.*.zip et le renommmer en
 Qair_2.14.*.zip avant de l'installer.
 
+----------  Qair v2.16.1
+agolGetData : si données manquantes, la fonction pouvait planter. Bug corrigé
+
 ----------  Qair v2.16.0
 fonctionnement de l'argument sites de xrGetManualData modifié pour fonctionner comme stations de xrGetContinuousData
 

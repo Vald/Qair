@@ -60,6 +60,10 @@ agolGetData <- function(aasqa, flux, where='1=1', outFields='*', getGeometry=TRU
 
         data <- lapply(ndata, function(n)
                        sapply(data$features, function(x) x$attributes[[n]]))
+		data <- lapply(data, function(clm){
+			if(!is.list(clm)) return(clm)
+			sapply(data[[3]], function(elmt) return(if(is.null(elmt)) NA else elmt))
+		})
         data <- as.data.frame(data)
         names(data) <- ndata
     }
