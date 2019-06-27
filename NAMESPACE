@@ -16,7 +16,7 @@ exportMethods (dbListFields, dbDisconnect)
 export (xrGetQuery, xrConnect,
 	xrGetCampagnes, xrGetReseaux, xrGetStations, xrGetMesures, xrGetPolluants,
 	xrGetSitesPrelevement, xrGetMethodesPrelevement,
-	xrGetContinuousData, xrGetManualData,
+	xrGetContinuousData, xrGetManualData, xrGetScan,
 	Xair2R, indicesXR2R, plot.indice, indicesXR2Rlong,
     agolGetData, agolListFields)
 
