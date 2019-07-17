@@ -57,15 +57,15 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	# algo:
 	# récupération des sites sur la base de search.fields, de campagne et de reseaux 
 	# puis recherche de mesure si != NULL et récup. de id site
-	# puis refiltre ssi search.fields contient autre chose que juste id
+	# puis refiltre si search.fields contient autre chose que juste id
 	# --> agregation des différents tests en fonction de collapse...
 
 	# FIXME:1 comme la recherche % et ? ne marche pas sur id, on prend toutes
 	# les stations et on cherche dedans
 	all.stations <- xrGetQuery(conn, bquery, resv3=TRUE)
 
-	# recherche sur idsite si idsite in search.fields / IDENTIFIANT
-	# faire de même sur ref / NSIT
+	# recherche sur id si id in search.fields / IDENTIFIANT / sites
+	# faire de même sur ref / NSIT / refSites
 	# FIXME:1 en attendant que la recherche % et ? fonctionne 'id' et 'ref'
 	# sont gérés comme les autres champs.
 	# if('id' in search.fields)
@@ -86,14 +86,8 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			selection <- paste0('^', selection, '$')
 			selection <- sapply(selection, grep, all.stations[[sf]])
 		}
-		ist <- all.stations[['id']][unique(unlist(selection))]
-
-		if(is.null(idsites)){
-			idsites <- ist
-		}else if (collapse == 'AND'){
-			idsites <- intersect(ist, idsites)
-		}else
-			idsites <- unique(c(ist, idsites))
+		ist     <- all.stations[['id']][unique(unlist(selection))]
+		idsites <- collapseIds(ist, idsites, collapse)
 	}
 
 	# récupération d'idsite sur la base de mesures
@@ -104,14 +98,8 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			mesures[['resv3']] <- TRUE
 			mesures <- do.call(xrGetMesures, c(list(conn=conn), mesures))
 			}
-		ist <- unique(mesures[['id_site']])
-
-		if(is.null(idsites)){
-			idsites <- ist
-		}else if (collapse == 'AND'){
-			idsites <- intersect(ist, idsites)
-		}else
-			idsites <- unique(c(ist, idsites))
+		ist     <- unique(mesures[['id_site']])
+		idsites <- collapseIds(ist, idsites, collapse)
 	}
 
 	# récupération d'idcampaignes
@@ -122,14 +110,8 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			campagnes[['resv3']] <- TRUE
 			campagnes <- do.call(xrGetCampagnes, c(list(conn=conn), campagnes))
 			}
-		ist <- unique(campagnes[['id_site']])
-
-		if(is.null(idsites)){
-			idsites <- ist
-		}else if (collapse == 'AND'){
-			idsites <- intersect(ist, idsites)
-		}else
-			idsites <- unique(c(ist, idsites))
+		ist     <- unique(campagnes[['id_site']])
+		idsites <- collapseIds(ist, idsites, collapse)
 	}
 
 	# récupération d'idgroups
@@ -140,15 +122,8 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			reseaux[['resv3']] <- TRUE
 			reseaux <- do.call(xrGetReseaux, c(list(conn=conn), reseaux))
 			}
-		ist <- unique(reseaux[['id_site']])
-
-
-		if(is.null(idsites)){
-			idsites <- ist
-		}else if (collapse == 'AND'){
-			idsites <- intersect(ist, idsites)
-		}else
-			idsites <- unique(c(ist, idsites))
+		ist     <- unique(reseaux[['id_site']])
+		idsites <- collapseIds(ist, idsites, collapse)
 	}
 
 	# création et exécution de la requête
@@ -162,14 +137,16 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	stations <- xrGetQuery(conn, query, resv3=TRUE)
 
+	# selection des champs de retour
+
 	if(!resv3 & nv == 'nv2')
 		names(stations) <- xrfields[['nv2']][match(names(stations), xrfields[['nv3']])]
 
-	if (is.null(fields)) fields <- xrfields[[nv]]
+	if (is.null(fields)) fields <- xrfields[[ifelse(resv3, 'nv3', nv)]]
 	# FIXME: à compléter quand on aura l'équivalent du champ classe_site dans
 	# l'API (remplacer 'CLASSE_SITE par sa valeur dans l'API
 	#fields <- union(fields, 'CLASSE_SITE')
-	fields <- intersect(fields, xrfields[[nv]])
+	fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
 
 	return(stations[fields])
 }

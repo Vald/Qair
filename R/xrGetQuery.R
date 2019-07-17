@@ -18,6 +18,25 @@ xrGetUrl <- function(conn, auth=FALSE){
 				   conn[['host']], conn[['port']], conn[['access']]))
 }
 
+#' Fonction interne pour coller deux jeux d'ids en fonction d'un collapse
+#'
+#' Pour un usage interne uniquement
+#'
+#' @param x Premier vecteur d'ids
+#' @param y Second vecteur d'ids
+#' @param collapse AND ou OR
+#' @return les ids fusionner selon collapse
+collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
+	collapse <- match.arg(collapse)
+	if(is.null(idsites)){
+		idsites <- ist
+	}else if (collapse == 'AND'){
+		idsites <- intersect(ist, idsites)
+	}else
+		idsites <- unique(c(ist, idsites))
+	return(idsites)
+}
+
 #' Listes des champs (Qair v2 et v3) par type de requête
 #'
 #' @param 
