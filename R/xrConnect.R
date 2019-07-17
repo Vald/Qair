@@ -22,10 +22,10 @@
 #' @param version Version de Qair avec laquelle doivent être compatibles les résultats
 #'  des requêtes : 2 -> avec Qair_2* (rétro-compatibilité), 3 sinon.
 #'	optionnel : sera demandé si nécessaire.
-#' @param uid Identifiant pour la connexion. Optionnel, sera demandé si nécessaire. Voir
-#'  détails.
-#' @param pwd Mot de passe pour la connexion. Optionnel, sera demandé si nécessaire. Voir
-#'  détails.
+#' @param uid Identifiant utilisé pour la connexion.
+#'	optionnel : sera demandé si nécessaire. Voir détails.
+#' @param pwd Mot de passe pour initialiser la connexion.
+#'	optionnel : sera demandé si nécessaire. Voir détails.
 #' @return Une connexion à la base XR (il s'agit en fait d'une liste avec 'host' et
 #'  'port'. Cela permet de gérer plusieurs 'connexion' simultanément et de mimer
 #'  le comportement de Qair2).
@@ -70,21 +70,51 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, uid=NULL, pwd=NULL) {
 		stop("Les versions de Qair acceptées sont uniquement 2 ou 3")
 
 	if(!is.null(uid)) {
-		options(Xair.=host)
-	} else if(is.null(getOption('Xair.host'))) {
-		cat('hote hebergeant la base de donnees :\n')
-		options(Xair.host=scan(what='character', nlines=1))
+		options(Xair.uid=uid)
+	} else if(is.null(getOption('Xair.uid'))) {
+		cat('identifiant pour la connexion :\n')
+		options(Xair.uid=scan(what='character', nlines=1))
 		cat('\n')
 	}
 
+	if(!is.null(pwd)) {
+		options(Xair.pwd=pwd)
+	} else if(is.null(getOption('Xair.pwd'))) {
+		cat('mot de passe pour la connexion :\n')
+		options(Xair.pwd=scan(what='character', nlines=1))
+		cat('\n')
+	}
 
-	xr <- list(host   = options()[['Xair.host']],
-			   port   = options()[['Xair.port']],
-			   version= options()[['Xair.version']])
+	xr <- list(host   = getOption('Xair.host'),
+			   port   = getOption('Xair.port'),
+			   version= getOption('Xair.version'),
+			   access = 'public')
 	class(xr) <- 'xr'
 
 
-	if(nrow(xrGetStations(conn, )))
+	if(xor(is.null(getOption('Xair.uid')), is.null(getOption('Xair.pwd'))))
+		stop("pour réaliser une authentification, un uid et un pwd doivent être renseignés.")
+
+	# tentative d'authentification auprès d'XR
+
+	if(!is.null(getOption('Xair.uid'))){
+		res <- httr::POST(
+			url    = xrGetUrl(xr, TRUE),
+			config = httr::config(ssl_verifypeer=FALSE, ssl_verifyhost=FALSE),
+			body   = list(username = getOption('Xair.uid'),
+						  password = getOption('Xair.pwd')),
+			encode = 'form')
+
+		# FIXME: vérifier que c'est bien 200 en cas de réussite
+		if(status_code(res) == 200)
+			xr[['access']] <- 'restricted' else
+			message('erreur ', httr::status_code(res),
+					' ', httr::content(res, 'text'),
+					"\néchec de la connexion, l'accès aux données sera limité ",
+					"vous pouvez retentez une connexion")
+	}
+
+	xrGetQuery(xr, "sites?sites=QairV3")
 
 	return (xr)
 }

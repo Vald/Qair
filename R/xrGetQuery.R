@@ -3,11 +3,19 @@
 #' Pour un usage interne uniquement
 #'
 #' @param conn Un objet de type 'xr' (\code{\link{xrConnect}})
+#' @param auth Booléen : l'url à récupérer doit-elle être celle d'authentification ?
+#'  FALSE par défaut.
 #' @return une chaîne de caractères correspondant à la base de l'URL à requêter
-xrGetUrl <- function(conn){
-	return(sprintf('http%s://%s:%s/dms-api/public/v1/',
+xrGetUrl <- function(conn, auth=FALSE){
+	if(auth){
+		if(conn[['port']] != 8443)
+			stop("pour l'authentification, le port doit être 8443")
+		return(sprintf('https://%s:8443/dms-api/authentification/login',
+					   conn[['host']]))
+
+	} else return(sprintf('http%s://%s:%s/dms-api/%s/v1/',
 				   if(conn[['port']] == 8443) 's' else '',
-				   conn[['host']], conn[['port']]))
+				   conn[['host']], conn[['port']], conn[['access']]))
 }
 
 #' Listes des champs (Qair v2 et v3) par type de requête
