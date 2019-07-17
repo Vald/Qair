@@ -4,13 +4,7 @@
 #' base XR référencée par la connexion \code{conn}.
 #'
 #' @inheritParams xrGetContinuousData
-#' @param fields vecteurs indiquant les champs de la table à récupérer.
-#'	Tous par défaut.
-#' @param resv3 Booléen : faut-il forcer le retour au format v3 ? Par défaut
-#'  non, donc si la connexion à XR est en v2, les noms correspondront à la v2.
-#'  Seul le résultat est affecté : si la connexion est en v2, les noms des
-#'  champs de recherches doivent être spécifiés en v2. Son utilisation devrait
-#'  être réservée à des fins de développement.
+#' @inheritParams xrGetStations
 #'
 #' @seealso \code{\link{xrGetContinuousData}}
 #'
@@ -18,7 +12,9 @@
 #'	pour les mesures trouvées.
 xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			  campagnes = NULL, reseaux = NULL, stations=NULL, polluants = NULL,
-			  fields = NULL, collapse = c('AND', 'OR'), exact=FALSE, resv3=FALSE) {
+			  fields = NULL,
+			  collapse = c('AND', 'OR'), exact=FALSE, resv3=FALSE, validOnly=FALSE){#,
+			  #startDate=NULL, stopDate=NULL) {
 	collapse <- match.arg(collapse)
 
 	# récupération de la version avec laquelle on bosse et initialisation de
@@ -34,21 +30,50 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# de la fonction on revient éventuellement en nv2.
 
 	xrfields <- xrListFields ('measures')
+	if(is.null(search.fields)){
+		search.fields <- c('id')#FIXME: mettre le remplacant de NOM_COURT_MES en plus
+	}else{
+		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
+		if(conn[['version']] == 2)
+			search.fields <- xrfields[['nv3']][match(search.fields, xrfields[['nv2']])]
+	}
 
-c('IDENTIFIANT', 'NOM_COURT_MES')
-	fields.tmp <- dbListFields (conn, 'MESURE', schema='RSDBA')
-	search.fields <- intersect (search.fields, fields.tmp)
-	if (is.null (fields) ) fields <- fields.tmp
+	# algo:
+	# récupération des mesures sur la base de search.fields, de campagne, de reseaux 
+	# de stations et de polluants
+	# puis refiltre si search.fields contient autre chose que juste id/NJOM_COUR_MEs
+	# --> agregation des différents tests en fonction de collapse...
 
-	query <- sprintf ('SELECT %s FROM', paste ('MESURE', fields, sep='.', collapse=', ') )
-	q <- list()
-	q$tables <- 'MESURE'
+	# FIXME:1 comme la recherche % et ? ne marche pas sur id, on prend toutes
+	# les mesures et on cherche dedans
+	all.mesures <- xrGetQuery(conn, bquery, resv3=TRUE)
 
-	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (
-			pattern,
-			paste ('MESURE', search.fields, sep='.'),
-			type=ifelse(exact, 'IN', 'LIKE'))
+	# recherche sur id si id in search.fields / IDENTIFIANT / measures
+	# FIXME:1 en attendant que la recherche % et ? fonctionne 'id' et 'ref'
+	# sont gérés comme les autres champs.
+	# if('id' in search.fields)
+		#if(conn[['version']] == 2 & !exact)
+		#	query <- paste0('%', pattern, '%', collapse=',') else
+		#	query <- paste0(pattern, collapse=',')
+
+	idmesures <- NULL
+	for (sf in search.fields){
+		if(conn[['version']] == 2){
+			if(exact)
+				selection <- match(pattern, all.mesures[[sf]]) else
+				selection <- sapply(pattern, grep, all.mesures[[sf]])
+		} else {
+			selection <- gsub('\\%', '.*', pattern)
+			selection <- gsub('\\?', '.', selection)
+			selection <- paste0('^', selection, '$')
+			selection <- sapply(selection, grep, all.mesures[[sf]])
+		}
+		ist       <- all.mesures[['id']][unique(unlist(selection))]
+		idmesures <- collapseIds(ist, idmesures, collapse)
+	}
+
+ 
+	######################## OLD
 
 	if (!is.null (reseaux) ) {
 		if( !is.list(reseaux) )
@@ -105,6 +130,30 @@ c('IDENTIFIANT', 'NOM_COURT_MES')
 	res <- xrGetQuery (conn, query)
 	res$FMUL <- as.numeric(res$FMUL)
 	unique( res )
+
+	###############" FIN de OLD
+
+	# création et exécution de la requête
+
+	query <- bquery
+	query <- sprintf('%svalidOnly=%s', query, if(validOnly) 'TRUE' else 'FALSE')
+	if(!is.null(idmesures))
+		query <- sprintf('%s&measures=%s', query, paste(idmesures, collapse=','))
+
+	# FIXME:  ajouter filtre stopDate, startDate
+
+	mesures <- xrGetQuery(conn, query, resv3=TRUE)
+
+	# selection des champs de retour
+
+	if(!resv3 & nv == 'nv2')
+		names(mesures) <- xrfields[['nv2']][match(names(mesures), xrfields[['nv3']])]
+
+	if (is.null(fields)) fields <- xrfields[[ifelse(resv3, 'nv3', nv)]]
+	fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
+
+	return(mesures[fields])
+
 }
 
 
