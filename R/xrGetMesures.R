@@ -153,18 +153,18 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 		idmesures <- collapseIds(ist, idmesures, collapse)
 	}
 
-	# création et exécution de la requête
+	# création et exécution de la requête -------------------------------------
 
 	query <- bquery
 	query <- sprintf('%svalidOnly=%s', query, if(validOnly) 'TRUE' else 'FALSE')
 	if(!is.null(idmesures))
 		query <- sprintf('%s&measures=%s', query, paste(idmesures, collapse=','))
 
-	# FIXME:  ajouter filtre stopDate, startDate
+	# TODO:  ajouter filtre stopDate, startDate
 
 	mesures <- xrGetQuery(conn, query, resv3=TRUE)
 
-	# selection des champs de retour
+	# selection des champs de retour ------------------------------------------
 
 	if(!resv3 & nv == 'nv2')
 		names(mesures) <- xrfields[['nv2']][match(names(mesures), xrfields[['nv3']])]

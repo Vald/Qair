@@ -20,7 +20,7 @@ xrGetUrl <- function(conn){
 #' @return les ids fusionner selon collapse
 collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
 	collapse <- match.arg(collapse)
-	if(is.null(idsites)){
+	if(is.null(idsites) || length(idsites) == 0){
 		idsites <- ist
 	}else if (collapse == 'AND'){
 		idsites <- intersect(ist, idsites)
@@ -40,27 +40,30 @@ xrListFields <- function(name=c('sites' ,'measures')){
 		# FIXME: il manque des champs cf correspondance commentées
 		return(data.frame(
 			nv2  = c('IDENTIFIANT', 'NSIT', 'ISIT', 'typologie', 'LATI', 'LONGI',
-					 'area', 'type'),
-			# 'AXE', 'CODE_POSTAL', 'labelCommune', 'D_CREATION', 'D_ARRET'
+					 'area', 'type', 'D_CREATION', 'D_ARRET', 'labelCommune', 
+					 'AXE', 'CODE_POSTAL'),
 			# en plus 'NSIT_PUBLIC', 'NOM_COURT_SIT', 'LAMBERTX', 'LAMBERTY',
 			# 'CLASSE_SITE', 'CODE', 'ISIT', 'ISIT_LONG'
 			nv3  = c('id', 'ref', 'label', 'class', 'latitude', 'longitude',
-					 'area', 'type'),
-			#, 'street', 'postCode', 'labelCommune', 'startDate', 'stopDate'),
+					 'area', 'type', 'startDate', 'stopDate', 'labelCommune',
+					 'street', 'postCode'),
 			type = c('character()', 'character()', 'character()', 'numeric()',
-					 'numeric()', 'character()', 'character()', 'numeric()')
+					 'numeric()', 'character()', 'character()', 'numeric()',
+					 'character()', 'character()', 'character()', 'character()',
+					 'numeric()')
 		  ))
 	}else if(name == 'measures'){
 		return(data.frame(
-			nv2  = c('IDENTIFIANT', 'NOM_MES', 'id_site', 'UNITE', 'phy_name'),
-			# 'phy_comp_code', 'NOPOL', 'campaigns', 'DERNIER_QH', 'D_VALIDATION',
-			# 'D_VALIDATION_ENV', 'D_CREATION', 'D_ARRET'
+			nv2  = c('IDENTIFIANT', 'NOM_MES', 'id_site', 'UNITE', 'phy_name',
+					 'phy_comp_code', 'NOPOL', 'DERNIER_QH', 'D_VALIDATION',
+					 'D_VALIDATION_ENV', 'D_CREATION', 'D_ARRET', 'campaigns'),
 			# en plus 'NSIT', 'NOM_COURT_SIT', 'CMET'
-			nv3  = c('id', 'label', 'id_site', 'unite', 'phy_name'),
-			# 'phy_comp_code', 'id_phy', 'campaigns','lastDataDate', 
-			# 'techValidationDate', 'envValidationDate', 'startDate', 
-			# 'stopDate'),
+			nv3  = c('id', 'label', 'id_site', 'unit', 'phy_name',
+					 'phy_comp_code', 'idPhy', 'lastDataDate', 'techValidationDate',
+					 'envValidationDate', 'startDate', 'stopDate', 'campaigns'),
 			type = c('character()', 'character()', 'character()', 'character()',
+					 'character()', 'character()', 'character()', 'character()',
+					 'character()', 'character()', 'character()', 'character()',
 					 'character()')
 		  ))
 	#}else if(name == ''){
@@ -92,7 +95,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	# récupération de la requete brute
 
-	url    <- URLencode(sprintf('%s%s', xrGetUrl(conn), query))
+	url    <- sprintf('%s%s', xrGetUrl(conn), query)
 	result <- httr::GET(url, httr::config(ssl_verifypeer=FALSE, ssl_verifyhost=FALSE))
 	result <- jsonlite::fromJSON(httr::content(result, 'text'))
 
