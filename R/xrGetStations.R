@@ -31,6 +31,8 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL,
 			  collapse=c('AND', 'OR'), exact=FALSE, resv3=FALSE, validOnly=FALSE){#,
 			  #startDate=NULL, stopDate=NULL) {
+	osaf     <- getOption('stringsAsFactors')
+	options(stringsAsFactors = FALSE)
 	collapse <- match.arg(collapse)
 
 	# récupération de la version avec laquelle on bosse et initialisation de
@@ -49,7 +51,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	if(is.null(search.fields)){
 		search.fields <- c('id')#FIXME: mettre le remplacant de NOM_COURT_SIT en plus
 	}else{
-		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
+		search.fields <- as.character(match.arg(search.fields, xrfields[[nv]], TRUE))
 		if(conn[['version']] == 2)
 			search.fields <- xrfields[['nv3']][match(search.fields, xrfields[['nv2']])]
 	}
@@ -60,39 +62,61 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	# puis refiltre si search.fields contient autre chose que juste id
 	# --> agregation des différents tests en fonction de collapse...
 
-	# FIXME:1 comme la recherche % et ? ne marche pas sur id, on prend toutes
-	# les stations et on cherche dedans
-	all.stations <- xrGetQuery(conn, bquery, resv3=TRUE)
-
-	# recherche sur id si id in search.fields / IDENTIFIANT / sites
-	# faire de même sur ref / NSIT / refSites
-	# FIXME:1 en attendant que la recherche % et ? fonctionne 'id' et 'ref'
-	# sont gérés comme les autres champs.
-	# if('id' in search.fields)
-	# if('ref' in search.fields)
-		#if(conn[['version']] == 2 & !exact)
-		#	query <- paste0('%', pattern, '%', collapse=',') else
-		#	query <- paste0(pattern, collapse=',')
-
 	idsites <- NULL
-	for (sf in search.fields){
-		if(conn[['version']] == 2){
-			if(exact)
-				selection <- match(pattern, all.stations[[sf]]) else
-				selection <- sapply(pattern, grep, all.stations[[sf]])
-		} else {
-			selection <- gsub('\\%', '.*', pattern)
-			selection <- gsub('\\?', '.', selection)
-			selection <- paste0('^', selection, '$')
-			selection <- sapply(selection, grep, all.stations[[sf]])
+
+	# recherche sur search.fields ---------------------------------------------
+	# si on a que id ou ref comme champ de recherche, on utilise directement
+	# l'API d'XR, sinon on charge toutes les stations d'XR et ces deux
+	# champs sont traités comme les autres (puisqu'on est de toute façon 
+	# obligé de charger toutes les stations pour les autres champs)
+
+	#if(all(search.fields %in% c('id', 'ref'))){
+	if(!is.null(pattern))
+	if(FALSE){
+		# recherche sur id / IDENTIFIANT / sites
+		#  sur ref / NSIT / refSites
+		# FIXME: recherche sur ? ne marche pas ... c'est grave ?
+		# et rechercher % sur ref ne marche pas donc pour l'instant on ne garde 
+		# que l'approche 'global'
+
+		if(conn[['version']] == 2 & !exact)
+			query <- paste0('%', pattern, '%', collapse=',') else
+			query <- paste0(pattern, collapse=',')
+		if('id' %in% search.fields){
+			query   <- paste0(bquery, 'sites=', query)
+			ist     <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idsites <- collapseIds(ist, idsites, collapse)
 		}
-		ist     <- all.stations[['id']][unique(unlist(selection))]
-		idsites <- collapseIds(ist, idsites, collapse)
+		if('ref' %in% search.fields){
+			query   <- paste0(bquery, 'refSites=', query)
+			ist     <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idsites <- collapseIds(ist, idsites, collapse)
+		}
+	} else {
+		# sinon recherche sur la base de toutes les stations
+		# Cette partie a été validée le 06/11/2019
+
+		all.stations <- xrGetQuery(conn, bquery, resv3=TRUE)
+		for (sf in search.fields){
+			if(conn[['version']] == 2){
+				if(exact)
+					selection <- match(pattern, all.stations[[sf]]) else
+					selection <- sapply(pattern, grep, all.stations[[sf]])
+			} else {
+				selection <- gsub('\\%', '.*', pattern)
+				selection <- gsub('\\?', '.', selection)
+				selection <- paste0('^', selection, '$')
+				selection <- sapply(selection, grep, all.stations[[sf]])
+			}
+			ist     <- all.stations[['id']][unique(unlist(selection))]
+			idsites <- collapseIds(ist, idsites, collapse)
+		}
 	}
 
-	# récupération d'idsite sur la base de mesures
+	# récupération d'idsite sur la base de mesures ----------------------------
 
 	if (!is.null (mesures) ) {
+		# FIXME: à tester quand xrGetMesures ok
 		if( !is.list(mesures) )
 			mesures <- xrGetMesures(conn, pattern = mesures, resv3=TRUE) else{
 			mesures[['resv3']] <- TRUE
@@ -102,42 +126,48 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 		idsites <- collapseIds(ist, idsites, collapse)
 	}
 
-	# récupération d'idcampaignes
+	# récupération d'idcampaignes ---------------------------------------------
+
 	if (!is.null (campagnes) ) {
-		# TODO: info récupérable sur les mesures plutôt que le sites ...
+		# FIXME: à tester quand xrGetCampagnes ok
 		if( !is.list(campagnes) )
 			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
 			campagnes[['resv3']] <- TRUE
 			campagnes <- do.call(xrGetCampagnes, c(list(conn=conn), campagnes))
 			}
-		ist     <- unique(campagnes[['id_site']])
+		query   <- paste0(campagnes[['id']], collapse=',')
+		query   <- paste0(bquery, 'campaigns=', query)
+		ist     <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
 		idsites <- collapseIds(ist, idsites, collapse)
 	}
 
-	# récupération d'idgroups
+	# récupération d'idgroups -------------------------------------------------
+
 	if (!is.null (reseaux) ) {
-		# FIXME: il manque une requete qui permettrait d'accéder à RESEAUSTA
+		# FIXME: à tester quand xrGetReseaux ok
 		if( !is.list(reseaux) )
 			reseaux <- xrGetReseaux(conn, pattern = reseaux, resv3=TRUE) else{
 			reseaux[['resv3']] <- TRUE
 			reseaux <- do.call(xrGetReseaux, c(list(conn=conn), reseaux))
 			}
-		ist     <- unique(reseaux[['id_site']])
+		query   <- paste0(reseaux[['id']], collapse=',')
+		query   <- paste0(bquery, 'groups=', query)
+		ist     <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
 		idsites <- collapseIds(ist, idsites, collapse)
 	}
 
-	# création et exécution de la requête
+	# création et exécution de la requête -------------------------------------
 
 	query <- bquery
 	query <- sprintf('%svalidOnly=%s', query, if(validOnly) 'TRUE' else 'FALSE')
 	if(!is.null(idsites))
 		query <- sprintf('%s&sites=%s', query, paste(idsites, collapse=','))
 
-	# FIXME:  ajouter filtre stopDate, startDate
+	# TODO:  ajouter filtre stopDate, startDate
 
 	stations <- xrGetQuery(conn, query, resv3=TRUE)
 
-	# selection des champs de retour
+	# selection des champs de retour ------------------------------------------
 
 	if(!resv3 & nv == 'nv2')
 		names(stations) <- xrfields[['nv2']][match(names(stations), xrfields[['nv3']])]
@@ -148,6 +178,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	#fields <- union(fields, 'CLASSE_SITE')
 	fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
 
+	options(stringsAsFactors = osaf)
 	return(stations[fields])
 }
 
