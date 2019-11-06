@@ -34,7 +34,8 @@ collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
 #' @param name nom du type de données pour lequel on veut la correspondance
 #'  des noms de champs entre Qair v2 et l'API (Qair v3 donc)
 #' @export
-xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals')){
+xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
+								'measure-groups')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# FIXME: il manque des champs cf correspondance commentées
@@ -85,8 +86,44 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals')){
 			# 'SEUIL_MIN', 'SEUIL_60MIN'),
 			nv3  = c('id', 'chemicalSymbol', 'label'),
 			type = c('character()', 'character()', 'character()')
-		  ))	
-	#}else if(name == ''){
+		  ))
+	}else if(name == 'measure-groups'){
+		return(data.frame(
+			nv2  = c('NOM_COURT_RES', 'NOM_RES', 'FLAG_RESEAURES'),
+			# , 'NRESSURV', 'R_CREATEUR', 'R_TYPE',
+			# 'TYPEVALIDATION', 'TYPESUIVICAL', 'TYPESAISIEIMPORT', 'TYPESCRUTATION',
+			# 'TYPEEXPLOITATION', 'TYPECONSULTATION', 'TYPEEXPORT', 'TYPEADEME',
+			# 'TYPEALERTE', 'TYPEPERMANENT', 'TYPESPECIFIQUE1', 'TYPESPECIFIQUE2',
+			# 'TYPESPECIFIQUE3', 'DIFFUSIONPUBLIQUE', 'NCARTE', 'NOM_COURT_ALERTE',
+			# 'MAIL', 'STEP', 'D_CREATION', 'MOT_PASSE', 'TIMESTAMP',
+			# 'FLAG_CONTROL_R', 'EVT_ALR_DIR', 'SORTIE_ALR_DIR', 'EVT_ALR_INTER',
+			# 'SORTIE_ALR_INTER', 'EVT_ALR_FINALE', 'SORTIE_ALR_FINALE',
+			# 'APP_DEP_SEUIL_MAX', 'DISP_DEP_SEUIL_MAX', 'SORTIE_SEUIL_MAX',
+			# 'EVT_APP_ARRET_4H', 'EVT_DISP_ARRET_4H', 'SORTIE_ARRET_4H',
+			# 'EVT_APP_ARRET_JOUR', 'EVT_DISP_ARRET_JOUR', 'SORTIE_ARRET_JOUR',
+			# 'EVT_APP_ARRET_T2S', 'EVT_DISP_ARRET_T2S', 'SORTIE_ARRET_T2S',
+			# 'FLAG_CONTROL_4H', 'FLAG_CONTROL_60H', 'FLAG_INVAL_JOUR', 'FLAG_INVAL_AN',
+			# 'FLAG_CONTROL_MAX', 'SEUIL_ALR_INTER', 'FLAG_10H_UNAVAIL_CONT',
+			# 'FLAG_60H_YEAR_UNAVAIL', 'FLAG_T2S', 'D_START_MONTH_DAY', 'D_START_CTRL',
+			# 'EVT_APP_LAST_AVG_INV', 'EVT_DISP_LAST_AVG_INV', 'SORTIE_LAST_AVG_INV',
+			# 'EVT_APP_STOP_FEED', 'EVT_DISP_STOP_FEED', 'SORTIE_STOP_FEED',
+			# 'EVT_APP_60H_OVERRUN', 'EVT_DISP_60H_OVERRUN', 'SORTIE_60H_OVERRUN',
+			# 'EVT_APP_60H_YEAR_UNAVAIL', 'EVT_DISP_60H_YEAR_UNAVAIL', 'SORTIE_60H_YEAR_UNAVAIL',
+			# 'EVT_APP_10H_UNAVAIL_CONT', 'EVT_DISP_10H_UNAVAIL_CONT', 'SORTIE_10H_UNAVAIL_CONT',
+			# 'EVT_APP_T2S_LAST', 'EVT_DISP_T2S_LAST', 'SORTIE_T2S_LAST',
+			# 'EVT_APP_LIMIT_MAX_LAST', 'EVT_DISP_LIMIT_MAX_LAST', 'SORTIE_LIMIT_MAX_LAST',
+			# 'EVT_APP_10_DAYS_INVALID', 'EVT_DISP_10_DAYS_INVALID', 'SORTIE_10_DAYS_INVALID',
+			# 'EVT_DISP_DIR', 'EVT_DISP_INTER', 'EVT_DISP_FINALE', 'EVT_APP_4H_OVERRUN_CONT',
+			# 'EVT_DISP_4H_OVERRUN_CONT', 'SORTIE_4H_OVERRUN_CONT'
+			nv3  = c('id', 'label', 'isNetworkGroup'),
+			type = c('character()', 'character()', 'numeric()')
+		  ))
+#	}else if(name == ''){
+#		return(data.frame(
+#			nv2  = c(),
+#			nv3  = c(),
+#			type = c()
+#		  ))
 	}
 }
 
@@ -126,6 +163,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	fields <- xrListFields(type)
 
 	# FIXME: mettre des types POSXIct pour les dates et traiter le cas ici
+	# FIXME: mettre des types boolean pour le isNetworkGroup 
 	if (is.null(names(result))){
 		f        <- lapply(fields[['type']], function(x) eval(parse(text=x)))
 		names(f) <- fields[['nv3']]

@@ -4,32 +4,103 @@
 #' base XR référencée par la connexion \code{conn}.
 #'
 #' @inheritParams xrGetContinuousData
-#' @param fields vecteurs indiquant les champs de la table à récupérer.
-#'	Tous par défaut.
+#' @inheritParams xrGetStations
 #'
 #' @seealso \code{\link{xrGetContinuousData}}
 #'
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les réseaux trouvés.
-xrGetReseaux <- function(conn, pattern=NULL, search.fields=c('NOM_COURT_RES', 'NOM_RES'),
-			   fields = NULL, exact=FALSE) {
-	if (is.null (fields) )
-		fields <- dbListFields (conn, 'RESEAUDEF', schema='RSDBA')
+xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
+						 fields = NULL, exact = FALSE , collapse = c('AND', 'OR'),
+						 resv3 = FALSE) {
+	collapse <- match.arg(collapse)
 
-	query <- sprintf ('SELECT %s FROM RESEAUDEF', paste ('RESEAUDEF', fields, sep='.', collapse=', ') )
-	q <- list()
+	# récupération de la version avec laquelle on bosse et initialisation de
+	# la requête
 
-	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (
-					pattern, search.fields,
-					type=ifelse(exact, 'IN', 'LIKE'))
+	nv     <- paste0('nv', conn[['version']])
+	bquery <- sprintf('measure-groups?')
 
+	# récupération des champs possibles de recherches (dépend de la version de
+	# Qair)
+	# si nv3, on bosse directement avec, sinon on récupére les champs nv2, 
+	# on les 'traduit' en nv3, on fait tout le travail en nv3 et à la fin 
+	# de la fonction on revient éventuellement en nv2.
 
-	if (length (q) > 0)
-		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = ' AND ') )
+	xrfields <- xrListFields ('measure-groups')
+	if(is.null(search.fields)){
+		search.fields <- c('id', 'label')
+	}else{
+		search.fields <- as.character(match.arg(search.fields, xrfields[[nv]], TRUE))
+		if(conn[['version']] == 2)
+			search.fields <- xrfields[['nv3']][match(search.fields, xrfields[['nv2']])]
+	}
 
-	reseaux <- xrGetQuery (conn, query)
-	return (reseaux)
+	# algo:
+	# récupération des sites sur la base de search.fields
+	# puis recherche de mesure si != NULL et récup. de id site
+	# --> agregation des différents tests en fonction de collapse...
+
+	idreseaux <- NULL
+
+	# recherche sur search.fields ---------------------------------------------
+	# si on a que id  comme champ de recherche, on utilise directement
+	# l'API d'XR, sinon on charge toutes les stations d'XR et ce
+	# champ est traité comme les autres (puisqu'on est de toute façon 
+	# obligé de charger toutes les stations pour les autres champs)
+
+	if(!is.null(pattern))
+	if(all(search.fields == 'id')){
+	#if(FALSE){
+		# recherche sur id / NOM_COURT_RES / measureGroups
+
+		if(conn[['version']] == 2 & !exact)
+			query <- paste0('%', pattern, '%', collapse=',') else
+			query <- paste0(pattern, collapse=',')
+		if('id' %in% search.fields){
+			query     <- paste0(bquery, 'measureGroups=', query)
+			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idreseaux <- collapseIds(ist, idreseaux, collapse)
+		}
+	} else {
+		# sinon recherche sur la base de toutes les stations
+		# Cette partie a été validée le 06/11/2019
+
+		all.reseaux <- xrGetQuery(conn, bquery, resv3=TRUE)
+		for (sf in search.fields){
+			if(conn[['version']] == 2){
+				if(exact)
+					selection <- match(pattern, all.reseaux[[sf]]) else
+					selection <- sapply(pattern, grep, all.reseaux[[sf]])
+			} else {
+				selection <- gsub('\\%', '.*', pattern)
+				selection <- gsub('\\?', '.', selection)
+				selection <- paste0('^', selection, '$')
+				selection <- sapply(selection, grep, all.reseaux[[sf]])
+			}
+			ist       <- all.reseaux[['id']][unique(unlist(selection))]
+			idreseaux <- collapseIds(ist, idreseaux, collapse)
+		}
+	}
+
+	# création et exécution de la requête -------------------------------------
+
+	query <- bquery
+	if(!is.null(idreseaux))
+		query <- sprintf('%s&measureGroups=%s', query, paste(idreseaux, collapse=','))
+
+	reseaux <- xrGetQuery(conn, query, resv3=TRUE)
+
+	# selection des champs de retour ------------------------------------------
+
+	if(!resv3 & nv == 'nv2')
+		names(reseaux) <- xrfields[['nv2']][match(names(reseaux), xrfields[['nv3']])]
+
+	if (is.null(fields))
+		fields <- xrfields[[ifelse(resv3, 'nv3', nv)]] else
+		fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
+
+	return(reseaux[fields])
 }
 
 
