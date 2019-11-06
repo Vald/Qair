@@ -93,7 +93,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	# récupération de la requete brute
 
 	url    <- URLencode(sprintf('%s%s', xrGetUrl(conn), query))
-	result <- httr::POST(url, httr::config(ssl_verifypeer=FALSE, ssl_verifyhost=FALSE))
+	result <- httr::GET(url, httr::config(ssl_verifypeer=FALSE, ssl_verifyhost=FALSE))
 	result <- jsonlite::fromJSON(httr::content(result, 'text'))
 
 	# traitement du cas générique ---------------------------------------------
