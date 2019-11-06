@@ -15,7 +15,6 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 					resv3 = FALSE) {
 
 	# Fonction validée le 06/11/2019
-	#startDate=NULL, stopDate=NULL) {}
 	if(!is.null(search.fields))
 		warning("'search.fields' est obsolète, sa valeur n'est pas prise en compte")
 
@@ -40,6 +39,8 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 
 		query     <- paste0(bquery, 'campaigns=', query)
 		campagnes <- xrGetQuery(conn, query, resv3=TRUE)
+		# FIXME: intégrer dans les champs de recherche le LIBELLE et 
+		# son futur remplaçant --> réactiver le search.fields
 	} else campagnes <- xrGetQuery(conn, bquery, resv3=TRUE)
 
 	# TODO:  ajouter filtre stopDate, startDate / start - end dans le cadre de

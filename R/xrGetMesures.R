@@ -71,6 +71,8 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			idmesures <- collapseIds(ist, idmesures, collapse)
 		}
 		if('NOM_COURT_MES???' %in% search.fields){
+			# FIXME: à laisser là si champ de recherche spécifique dans API
+			# sinon à supprimer et à laisser le cas suivant prendre la main
 			query     <- paste0(bquery, 'NOM_COURT_MES???=', query)
 			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
 			idmesures <- collapseIds(ist, idmesures, collapse)
