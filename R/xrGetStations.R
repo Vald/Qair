@@ -129,7 +129,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	# récupération d'idcampaignes ---------------------------------------------
 
 	if (!is.null (campagnes) ) {
-		# FIXME: à tester quand xrGetCampagnes ok
+		# Cette partie a été validée le 06/11/2019
 		if( !is.list(campagnes) )
 			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
 			campagnes[['resv3']] <- TRUE
@@ -172,11 +172,12 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	if(!resv3 & nv == 'nv2')
 		names(stations) <- xrfields[['nv2']][match(names(stations), xrfields[['nv3']])]
 
-	if (is.null(fields)) fields <- xrfields[[ifelse(resv3, 'nv3', nv)]]
 	# FIXME: à compléter quand on aura l'équivalent du champ classe_site dans
 	# l'API (remplacer 'CLASSE_SITE par sa valeur dans l'API
 	#fields <- union(fields, 'CLASSE_SITE')
-	fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
+	if (is.null(fields))
+		fields <- xrfields[[ifelse(resv3, 'nv3', nv)]] else
+		fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
 
 	options(stringsAsFactors = osaf)
 	return(stations[fields])

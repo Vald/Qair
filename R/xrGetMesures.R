@@ -47,7 +47,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	idmesures <- NULL
 
 	# recherche sur search.fields ---------------------------------------------
-	# si on a que id ou ref comme champ de recherche, on utilise directement
+	# si on a que id ou NOM_COURT_MES??? comme champ de recherche, on utilise directement
 	# l'API d'XR, sinon on charge toutes les stations d'XR et ces deux
 	# champs sont traités comme les autres (puisqu'on est de toute façon 
 	# obligé de charger toutes les stations pour les autres champs)
@@ -96,7 +96,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# recherche sur campagnes -------------------------------------------------
 
 	if (!is.null (campagnes) ) {
-		# FIXME: à tester quand xrGetCampagnes ok
+		# Cette partie a été validée le 06/11/2019
 		if( !is.list(campagnes) )
 			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
 			campagnes[['resv3']] <- TRUE
@@ -169,8 +169,9 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	if(!resv3 & nv == 'nv2')
 		names(mesures) <- xrfields[['nv2']][match(names(mesures), xrfields[['nv3']])]
 
-	if (is.null(fields)) fields <- xrfields[[ifelse(resv3, 'nv3', nv)]]
-	fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
+	if (is.null(fields))
+		fields <- xrfields[[ifelse(resv3, 'nv3', nv)]] else 
+		fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
 
 	return(mesures[fields])
 

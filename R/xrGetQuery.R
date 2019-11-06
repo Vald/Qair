@@ -34,7 +34,7 @@ collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
 #' @param name nom du type de données pour lequel on veut la correspondance
 #'  des noms de champs entre Qair v2 et l'API (Qair v3 donc)
 #' @export
-xrListFields <- function(name=c('sites' ,'measures')){
+xrListFields <- function(name=c('sites' ,'measures', 'campaigns')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# FIXME: il manque des champs cf correspondance commentées
@@ -65,6 +65,13 @@ xrListFields <- function(name=c('sites' ,'measures')){
 					 'character()', 'character()', 'character()', 'character()',
 					 'character()', 'character()', 'character()', 'character()',
 					 'character()')
+		  ))
+	}else if(name == 'campaigns'){
+		return(data.frame(
+			nv2  = c('NOM_COURT_CM', 'DATEDEB', 'DATEFIN'),
+			# en plus 'LIBELLE'
+			nv3  = c('id', 'startDate', 'stopDate'),
+			type = c('character()', 'character()', 'character()')
 		  ))
 	#}else if(name == ''){
 	}
@@ -105,6 +112,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	result <- result[[type]]
 	fields <- xrListFields(type)
 
+	# FIXME: mettre des types POSXIct pour les dates et traiter le cas ici
 	if (is.null(names(result))){
 		f        <- lapply(fields[['type']], function(x) eval(parse(text=x)))
 		names(f) <- fields[['nv3']]
