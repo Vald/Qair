@@ -34,7 +34,7 @@ collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
 #' @param name nom du type de données pour lequel on veut la correspondance
 #'  des noms de champs entre Qair v2 et l'API (Qair v3 donc)
 #' @export
-xrListFields <- function(name=c('sites' ,'measures', 'campaigns')){
+xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# FIXME: il manque des champs cf correspondance commentées
@@ -73,6 +73,19 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns')){
 			nv3  = c('id', 'startDate', 'stopDate'),
 			type = c('character()', 'character()', 'character()')
 		  ))
+	}else if(name == 'physicals'){
+		return(data.frame(
+			nv2  = c('NOPOL', 'CCHIM', 'NCON'),
+			# , 'CODE_COMPLEMENTAIRE', 'TYPE_AGR', 'FCON', 'ECHELLE_MIN',
+			# 'ECHELLE_MAX', 'TIMESTAMP', 'CCHIM_COURT', 'LIB_ECHELLE',
+			# 'ECHELLE2_MIN', 'ECHELLE2_MAX', 'LIB_ECHELLE2', 'ECHELLE3_MIN',
+			# 'ECHELLE3_MAX', 'LIB_ECHELLE3', 'ECHELLE4_MIN', 'ECHELLE4_MAX',
+			# 'LIB_ECHELLE4', 'ECHELLE5_MIN', 'ECHELLE5_MAX', 'LIB_ECHELLE5',
+			# 'NO_CHRONO', 'SEUIL_30MIN', 'SEUIL_10MIN', 'SEUIL_24H', 'SEUIL_MAX',
+			# 'SEUIL_MIN', 'SEUIL_60MIN'),
+			nv3  = c('id', 'chemicalSymbol', 'label'),
+			type = c('character()', 'character()', 'character()')
+		  ))	
 	#}else if(name == ''){
 	}
 }
@@ -100,7 +113,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	osaf   <- getOption('stringsAsFactors')
 	options(stringsAsFactors = FALSE)
 
-	# récupération de la requete brute
+	# récupération de la requete brute ----------------------------------------
 
 	url    <- sprintf('%s%s', xrGetUrl(conn), query)
 	result <- httr::GET(url, httr::config(ssl_verifypeer=FALSE, ssl_verifyhost=FALSE))
@@ -121,10 +134,9 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	# traitement des cas specifiques ------------------------------------------
 
-	if(type == 'sites'){
-		#aucun pour l'instant
+	#if(type == 'sites'){
 	#}else if(type == ''){
-	}
+	#}
 
 	# gestion si compatibilité v2 et fin --------------------------------------
 

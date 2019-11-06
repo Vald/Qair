@@ -4,30 +4,99 @@
 #' base XR référencée par la connexion \code{conn}.
 #'
 #' @inheritParams xrGetContinuousData
-#' @param fields vecteurs indiquant les champs de la table à récupérer.
-#'	Tous par défaut.
+#' @inheritParams xrGetStations
 #'
 #' @seealso \code{\link{xrGetContinuousData}}
 #'
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les polluants trouvés.
-xrGetPolluants <- function(conn, pattern=NULL, search.fields=c('NOPOL', 'CCHIM', 'NCON'),
-			   fields = NULL, exact=FALSE) {
-	if (is.null (fields) )
-		fields <- dbListFields (conn, 'NOM_MESURE', schema='RSDBA')
+xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
+			   fields = NULL, exact = FALSE, resv3 = FALSE) {
 
-	query <- sprintf ('SELECT %s FROM NOM_MESURE', paste ('NOM_MESURE', fields, sep='.', collapse=', ') )
-	q <- list()
+	# Fonction validée le 06/11/2019
 
-	if (!is.null (pattern) & length (search.fields) > 0)
-		q$pattern <- match.pattern.fields (
-					pattern, search.fields,
-					type=ifelse(exact, 'IN', 'LIKE'))
+	# récupération de la version avec laquelle on bosse et initialisation de
+	# la requête
 
-	if (length (q) > 0)
-		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = ' AND ') )
+	nv     <- paste0('nv', conn[['version']])
+	bquery <- sprintf('physicals?')
 
-	xrGetQuery (conn, query)
+	# récupération des champs possibles de recherches (dépend de la version de
+	# Qair)
+	# si nv3, on bosse directement avec, sinon on récupére les champs nv2, 
+	# on les 'traduit' en nv3, on fait tout le travail en nv3 et à la fin 
+	# de la fonction on revient éventuellement en nv2.
+
+	xrfields <- xrListFields ('physicals')
+	if(is.null(search.fields))
+		search.fields <- c('id', 'chemicalSymbol', 'label') else {
+		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
+		if(conn[['version']] == 2)
+			search.fields <- xrfields[['nv3']][match(search.fields, xrfields[['nv2']])]
+	}
+
+	# algo:
+	# récupération des mesures sur la base de search.fields
+	# puis refiltre si search.fields contient autre chose que juste id/NJOM_COUR_MEs
+	# --> agregation des différents tests en fonction de collapse...
+
+	idpolluants <- NULL
+
+	# recherche sur search.fields ---------------------------------------------
+	# si on a que id  comme champ de recherche, on utilise directement
+	# l'API d'XR, sinon on charge toutes les stations d'XR et ces deux
+	# champs sont traités comme les autres (puisqu'on est de toute façon 
+	# obligé de charger toutes les stations pour les autres champs)
+
+	if(!is.null(pattern))
+	#if(all(search.fields == 'id')) {}
+	# FIXME: recherche % ne marche pas sur physicals
+	if(FALSE){
+		# recherche sur id / NOPOL / physicals
+		if(conn[['version']] == 2 & !exact)
+			query <- paste0('%', pattern, '%', collapse=',') else
+			query <- paste0(pattern, collapse=',')
+		if('id' %in% search.fields){
+			query       <- paste0(bquery, 'physicals=', query)
+			ist         <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idpolluants <- collapseIds(ist, idpolluants, collapse)
+		}
+	} else {
+		all.polluants <- xrGetQuery(conn, bquery, resv3=TRUE)
+		for (sf in search.fields){
+			if(conn[['version']] == 2){
+				if(exact)
+					selection <- match(pattern, all.polluants[[sf]]) else
+					selection <- sapply(pattern, grep, all.polluants[[sf]])
+			} else {
+				selection <- gsub('\\%', '.*', pattern)
+				selection <- gsub('\\?', '.', selection)
+				selection <- paste0('^', selection, '$')
+				selection <- sapply(selection, grep, all.polluants[[sf]])
+			}
+			ist         <- all.polluants[['id']][unique(unlist(selection))]
+			idpolluants <- collapseIds(ist, idpolluants, collapse)
+		}
+	}
+
+	# création et exécution de la requête -------------------------------------
+
+	query <- bquery
+	if(!is.null(idpolluants))
+		query <- sprintf('%s&physicals=%s', query, paste(idpolluants, collapse=','))
+
+	polluants <- xrGetQuery(conn, query, resv3=TRUE)
+
+	# selection des champs de retour ------------------------------------------
+
+	if(!resv3 & nv == 'nv2')
+		names(polluants) <- xrfields[['nv2']][match(names(polluants), xrfields[['nv3']])]
+
+	if (is.null(fields))
+		fields <- xrfields[[ifelse(resv3, 'nv3', nv)]] else
+		fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
+
+	return(polluants[fields])
 }
 
 
