@@ -66,7 +66,7 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL) {
 	class(xr) <- 'xr'
 
 
-	if(nrow(xrGetStations(conn, )))
+	if(nrow(xrGetStations(xr)) == 0) stop('Problème de connexion')
 
 	return (xr)
 }
