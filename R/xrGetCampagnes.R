@@ -10,13 +10,14 @@
 #'
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les campagnes trouvées.
-xrGetCampagnes <- function(conn, pattern = NULL, search.fields = 'id',
+xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 					start = NULL, end = NULL, fields = NULL, exact = FALSE,
 					resv3 = FALSE) {
 
 	# Fonction validée le 06/11/2019
 	#startDate=NULL, stopDate=NULL) {}
-	search.fields <- match.arg(search.fields)
+	if(!is.null(search.fields))
+		warning("'search.fields' est obsolète, sa valeur n'est pas prise en compte")
 
 	# récupération de la version avec laquelle on bosse et initialisation de
 	# la requête
