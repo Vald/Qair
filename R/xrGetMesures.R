@@ -14,7 +14,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			  campagnes = NULL, reseaux = NULL, stations=NULL, polluants = NULL,
 			  fields = NULL,
 			  collapse = c('AND', 'OR'), exact=FALSE, resv3=FALSE, validOnly=FALSE){#,
-			  #startDate=NULL, stopDate=NULL) {
+			  #startDate=NULL, stopDate=NULL) {}
 	collapse <- match.arg(collapse)
 
 	# récupération de la version avec laquelle on bosse et initialisation de
@@ -44,94 +44,114 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# puis refiltre si search.fields contient autre chose que juste id/NJOM_COUR_MEs
 	# --> agregation des différents tests en fonction de collapse...
 
-	# FIXME:1 comme la recherche % et ? ne marche pas sur id, on prend toutes
-	# les mesures et on cherche dedans
-	all.mesures <- xrGetQuery(conn, bquery, resv3=TRUE)
-
-	# recherche sur id si id in search.fields / IDENTIFIANT / measures
-	# FIXME:1 en attendant que la recherche % et ? fonctionne 'id' et 'ref'
-	# sont gérés comme les autres champs.
-	# if('id' in search.fields)
-		#if(conn[['version']] == 2 & !exact)
-		#	query <- paste0('%', pattern, '%', collapse=',') else
-		#	query <- paste0(pattern, collapse=',')
-
 	idmesures <- NULL
-	for (sf in search.fields){
-		if(conn[['version']] == 2){
-			if(exact)
-				selection <- match(pattern, all.mesures[[sf]]) else
-				selection <- sapply(pattern, grep, all.mesures[[sf]])
-		} else {
-			selection <- gsub('\\%', '.*', pattern)
-			selection <- gsub('\\?', '.', selection)
-			selection <- paste0('^', selection, '$')
-			selection <- sapply(selection, grep, all.mesures[[sf]])
+
+	# recherche sur search.fields ---------------------------------------------
+	# si on a que id ou ref comme champ de recherche, on utilise directement
+	# l'API d'XR, sinon on charge toutes les stations d'XR et ces deux
+	# champs sont traités comme les autres (puisqu'on est de toute façon 
+	# obligé de charger toutes les stations pour les autres champs)
+
+	# FIXME: vérifier au moment de l'jout de NOM_COURT_MES que la recherche en %
+	# fonctionne. Sino on se reporte sur la version globale
+	#if(all(search.fields %in% c('id', 'NOM_COURT_MES???'))){}
+	# Cette partie a été validée le 06/11/2019
+	if(!is.null(pattern))
+	if(all(search.fields %in% 'id')) {
+	#if(FALSE){}
+		# recherche sur id / IDENTIFIANT / measures
+		#  sur ? / NOM_COURT_MES / ?
+
+		if(conn[['version']] == 2 & !exact)
+			query <- paste0('%', pattern, '%', collapse=',') else
+			query <- paste0(pattern, collapse=',')
+		if('id' %in% search.fields){
+			query     <- paste0(bquery, 'measures=', query)
+			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idmesures <- collapseIds(ist, idmesures, collapse)
 		}
-		ist       <- all.mesures[['id']][unique(unlist(selection))]
+		if('NOM_COURT_MES???' %in% search.fields){
+			query     <- paste0(bquery, 'NOM_COURT_MES???=', query)
+			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idmesures <- collapseIds(ist, idmesures, collapse)
+		}
+	} else {
+		all.mesures <- xrGetQuery(conn, bquery, resv3=TRUE)
+		for (sf in search.fields){
+			if(conn[['version']] == 2){
+				if(exact)
+					selection <- match(pattern, all.mesures[[sf]]) else
+					selection <- sapply(pattern, grep, all.mesures[[sf]])
+			} else {
+				selection <- gsub('\\%', '.*', pattern)
+				selection <- gsub('\\?', '.', selection)
+				selection <- paste0('^', selection, '$')
+				selection <- sapply(selection, grep, all.mesures[[sf]])
+			}
+			ist       <- all.mesures[['id']][unique(unlist(selection))]
+			idmesures <- collapseIds(ist, idmesures, collapse)
+		}
+	}
+
+	# recherche sur campagnes -------------------------------------------------
+
+	if (!is.null (campagnes) ) {
+		# FIXME: à tester quand xrGetCampagnes ok
+		if( !is.list(campagnes) )
+			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
+			campagnes[['resv3']] <- TRUE
+			campagnes <- do.call(xrGetCampagnes, c(list(conn=conn), campagnes))
+			}
+		query     <- paste0(campagnes[['id']], collapse=',')
+		query     <- paste0(bquery, 'campaigns=', query)
+		ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
 		idmesures <- collapseIds(ist, idmesures, collapse)
 	}
 
- 
-	######################## OLD
+	# recherche sur reseaux ---------------------------------------------------
 
 	if (!is.null (reseaux) ) {
+		# FIXME: à tester quand xrGetReseaux ok
 		if( !is.list(reseaux) )
-			q$reseaux <- unique (xrGetReseaux (conn, pattern = reseaux)$NOM_COURT_RES) else
-			q$reseaux <- unique(do.call(xrGetReseaux, c(list(conn=conn), reseaux))$NOM_COURT_RES)
-
-		if (length(q$reseaux) == 0) q$reseaux <- NULL else {
-			q$tables <- c(q$tables, 'RESEAUMES')
-			q$reseaux <- sprintf(
-				'MESURE.NOM_COURT_MES=RESEAUMES.NOM_COURT_MES AND RESEAUMES.NOM_COURT_RES IN (%s)',
-				paste ("'", q$reseaux, "'", sep = '', collapse = ", ") )
-		}
+			reseaux <- xrGetReseaux(conn, pattern = reseaux, resv3=TRUE) else{
+			reseaux[['resv3']] <- TRUE
+			reseaux <- do.call(xrGetReseaux, c(list(conn=conn), reseaux))
+			}
+		query     <- paste0(reseaux[['id']], collapse=',')
+		query     <- paste0(bquery, 'groups=', query)
+		ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
+		idmesures <- collapseIds(ist, idmesures, collapse)
 	}
 
-	if (!is.null (stations) | !is.null (campagnes) | !is.null(reseaux) ) {
-		if(!is.list(stations)) {
-			q$stations <- unique (xrGetStations (
-						     conn, collapse = gsub (' ', '', collapse),
-						     pattern = stations,
-						     reseaux=reseaux, campagnes=campagnes)$NOM_COURT_SIT)
-		} else {
-			stations$reseaux <- unique(c(stations$reseaux, reseaux))
-			stations$campagnes <- unique(c(stations$campagnes, campagnes))
-			stations$collapse <- gsub(' ', '', collapse)
-			q$stations <- unique(do.call(xrGetStations, c(list(conn=conn), stations))$NOM_COURT_SIT)
-		}
-		if (length(q$stations) == 0) q$stations <- NULL else {
-			q$tables <- c(q$tables, 'STATION')
-			q$stations <- sprintf(
-				'MESURE.NOM_COURT_SIT=STATION.NOM_COURT_SIT AND STATION.NOM_COURT_SIT IN (%s)',
-				paste ("'", q$stations, "'", sep = '', collapse = ", ") )
-		}
+	# recherche sur stations --------------------------------------------------
+
+	if (!is.null (stations) ) {
+		# Cette partie a été validée le 06/11/2019
+		if( !is.list(stations) )
+			stations <- xrGetStations(conn, pattern = stations, resv3=TRUE) else{
+			stations[['resv3']] <- TRUE
+			stations <- do.call(xrGetStations, c(list(conn=conn), stations))
+			}
+		query     <- paste0(stations[['ref']], collapse=',')
+		query     <- paste0(bquery, 'refSites=', query)
+		ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
+		idmesures <- collapseIds(ist, idmesures, collapse)
 	}
+
+	# recherche sur polluants -------------------------------------------------
 
 	if (!is.null (polluants) ) {
+		# FIXME: à tester quand xrGetPolluants ok
 		if( !is.list(polluants) )
-			polluants <- xrGetPolluants (conn, polluants) else
+			polluants <- xrGetPolluants(conn, pattern = polluants, resv3=TRUE) else{
+			polluants[['resv3']] <- TRUE
 			polluants <- do.call(xrGetPolluants, c(list(conn=conn), polluants))
-		q$polluants <- unique(polluants$NOPOL)
-
-		if (length(q$polluants) == 0) q$polluants <- NULL else {
-			q$tables <- c(q$tables, 'NOM_MESURE')
-			q$polluants <- sprintf(
-				'MESURE.NOPOL=NOM_MESURE.NOPOL AND NOM_MESURE.NOPOL IN (%s)',
-				paste ("'", q$polluants, "'", sep = '', collapse = ", ") )
-		}
+			}
+		query     <- paste0(polluants[['id']], collapse=',')
+		query     <- paste0(bquery, 'physicals=', query)
+		ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
+		idmesures <- collapseIds(ist, idmesures, collapse)
 	}
-
-	query <- sprintf ('%s %s', query, paste (q$tables, collapse=', ') )
-	q$tables <- NULL
-	if (length (q) > 0)
-		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
-
-	res <- xrGetQuery (conn, query)
-	res$FMUL <- as.numeric(res$FMUL)
-	unique( res )
-
-	###############" FIN de OLD
 
 	# création et exécution de la requête
 
