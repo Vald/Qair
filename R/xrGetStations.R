@@ -141,7 +141,6 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	# récupération d'idgroups -------------------------------------------------
 
 	if (!is.null (reseaux) ) {
-		# FIXME: à tester quand xrGetReseaux ok
 		if( !is.list(reseaux) )
 			reseaux <- xrGetReseaux(conn, pattern = reseaux, resv3=TRUE) else{
 			reseaux[['resv3']] <- TRUE

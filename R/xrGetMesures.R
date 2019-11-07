@@ -3,6 +3,8 @@
 #' La fonction permet de lister les mesures existantes dans la 
 #' base XR référencée par la connexion \code{conn}.
 #'
+#' @param validOnly (v3) La recherche doit-elle porter uniquement sur les
+#'  mesures ouvertes ?
 #' @inheritParams xrGetContinuousData
 #' @inheritParams xrGetStations
 #'

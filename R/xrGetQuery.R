@@ -35,7 +35,7 @@ collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
 #'  des noms de champs entre Qair v2 et l'API (Qair v3 donc)
 #' @export
 xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
-								'measure-groups')){
+								'measure-groups', 'data')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# FIXME: il manque des champs cf correspondance commentées

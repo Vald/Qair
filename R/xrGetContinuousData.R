@@ -48,10 +48,12 @@
 #' @param valid.states liste des codes états d'XR à considérer comme valide. Par défaut
 #'	les données dont le code état est'A', 'R', 'O', 'W' ou 'P' sont considérées comme valides.
 #'	les autres sont remplacées par NA.
-#' @param what un des éléments suivant ('value', 'state', 'both'). value : seules
-#'	les valeurs sont récupérées ; state : seuls les codes états sont récupérées ;
-#'	both : les deux sont rapatriés et un suffixe est ajouté au nom des séries pour
-#' 	les différencier.
+#' @param what un des éléments suivant ('value', 'state', 'validated'). value : seules
+#'	les valeurs sont récupérées ; state : seuls les codes états sont récupérés ;
+#'	validated : seuls les codes validation sont récupérés ; un mélange des trois :
+#'  les infos correspondantes sont récupérées. Pour assurer une rétrocompatiblité 
+#'  avec la v2 de Qair, 'both' est également accepté. Il est équivalent à mettre
+#'  'value' et 'state'.
 #' @param search.fields champ de la table dans lesquels \code{pattern} doit être
 #' 	recherché.
 #' @param campagnes chaînes de caractères correspondant aux campagnes à rapatrier
@@ -89,6 +91,7 @@
 #' @param collapse conjonction à appliquer entre les différents critères de recherche
 #'	indiqués.
 #' @param XR6 TRUE si la version de XR est supérieure ou égale à 6, FALSE sinon.
+#'  Obsolète : n'est plus utilisé.
 #' @param tz timezone dans laquelle les données doivent être retournées. Si les dates
 #' 	debut et fin sont des chaînes de caractères, tz est utilisé pour les définir.
 #' @param cursor détermine le format de sortie des données : NULL pour un 
@@ -98,6 +101,8 @@
 #' 	exactement identiques à \sQuote{pattern} ou si \sQuote{pattern} doit 
 #' 	être utilisé dans une expression régulière. Utilisé uniquement si la connexion
 #'  à XR est en v2. Sinon il faut utiliser les % et ?.
+#' @param validOnly (v3) La recherche doit-elle porter uniquement sur les
+#'  mesures ouvertes ?
 #'
 #' @return un objet de classe \code{\link[timetools]{TimeIntervalDataFrame-class}}
 #' 	contenant les données demandées.
@@ -108,29 +113,37 @@
 
 xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		       period = c('h', 'qh', 'd', 'm', 'y'),
-		       validated = TRUE, valid.states = c("A", "R", "O", "W", "P"), what = c('value', 'state', 'both'),
-		       search.fields, campagnes = NULL, reseaux = NULL, stations = NULL, polluants = NULL,
+		       validated = TRUE, valid.states = c("A", "R", "O", "W", "P"),
+			   what = c('value', 'state', 'both', 'validated'),
+		       search.fields=NULL, campagnes = NULL, reseaux = NULL, stations = NULL,
+			   polluants = NULL,
 		       collapse = c('AND', 'OR'), XR6 = TRUE,
-		       tz='UTC', cursor=NULL, exact=FALSE) {
-	# period est un periode au sens lubridate
-	# start et end doivent être des POSIXt (pour la prise en compte des timezones).
-	period <- match.arg (period)
-	what <- match.arg (what)
+		       tz='UTC', cursor=NULL, exact=FALSE, validOnly=FALSE) {
+
+	# initialisation ----------------------------------------------------------
+	osaf     <- getOption('stringsAsFactors')
+	options(stringsAsFactors = FALSE)
+
+	period   <- match.arg (period)
 	collapse <- match.arg (collapse)
 
-	# champ de recherche par défaut selonc que l'on est en V6 ou non
-	if (XR6) {
-		id.field <- 'IDENTIFIANT'
-		if (missing (search.fields))
-			search.fields <- 'IDENTIFIANT'
-	} else {
-		id.field <- 'NOM_COURT_MES'
-		if (missing (search.fields))
-			search.fields <- 'NOM_COURT_MES'
+	if(missing(what)) what <- 'value'
+	what     <- match.arg (what, several.ok = TRUE)
+	# Pour maintenir la compatibilité avec la v2, 'both' est accepté.
+	# On remplace juste 'both' par 'value' et 'state'
+	if('both' %in% what) {
+		what <- c('value', 'state', what)
+		what <- setdiff(what, 'both')
+		what <- unique(what)
+		warning("L'argument 'what' est obsolète et remplacé par la combinaision c('value', 'state')")
 	}
 
-	# pour permettre eventuellement d'entrer des chaines de caracteres en start en end
-	#	on fait un petit cast
+	nv     <- paste0('nv', conn[['version']])
+	bquery <- sprintf('data?')
+
+	# traitement des dates de debut et de fin ---------------------------------
+	# si debut et fin ne sont pas en POSIXct, conversion
+
 	if( inherits(start, 'POSIXlt') ) start <- as.POSIXct(start)
 	if( inherits(end, 'POSIXlt') ) end <- as.POSIXct(end)
 
@@ -140,249 +153,120 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	start <- as.POSIXct(as.POSIXlt(start, tz='UTC'))
 	end <- as.POSIXct(as.POSIXlt(end, tz='UTC'))
 
-	real.start <- start
-	real.end <- end
+	# recuperation des noms de mesures à chercher -----------------------------
 
-	#start <- floor_date (start, switch(period, qh='day', h='day', d='day', m='year', y='year') )
-	start <- if (period %in% c('qh', 'h', 'd'))
-			 as.POSIXct(format(start, '%Y-%m-%d'), attributes(start)$tzone) else
-			 as.POSIXct(sprintf('%s-01-01', format(start, '%Y')), attributes(start)$tzone)
-	#end <- ceiling_date (end, switch(period, qh='day', h='day', d='day', m='year', y='year') )
-	end <- if (period %in% c('qh', 'h', 'd')) 
-		       as.POSIXct(format(end, '%Y-%m-%d'), attributes(end)$tzone) + POSIXctp(unit='day') else 
-		       as.POSIXct(sprintf('%s-01-01', format(end, '%Y')), attributes(end)$tzone) + POSIXctp(unit='year')
+	mesures <- xrGetMesures(conn = conn,
+							pattern = pattern, search.fields = search.fields,
+							campagnes = campagnes,
+							reseaux   = reseaux,
+						   	stations  = stations,
+							polluants = polluants,
+							collapse  = collapse, exact = exact,
+							validOnly = validOnly, resv3 = TRUE)
 
-	# recuperation des noms de mesures qu'il faut 
-	q <- list ()
-	mesures <- xrGetMesures(conn=conn, pattern=pattern, search.fields=search.fields,
-				campagnes=campagnes, reseaux=reseaux, stations=stations,
-				polluants=polluants, collapse=collapse, exact=exact)
+	# récuperation des données ------------------------------------------------
+	
+	# si aucune mesure ne correspond aux critères, un tableau vide est
+	# directement créé, sinon go
 
-	if (nrow(mesures)==0)
+	# FIXME:VLAD faire en sort que quand rien ne match, les xrGet renvoies bien des
+	# tables à z&ro ligne
+	# FIXME:VLAD intégrer le exact dans la v3 pour que ça fonctionne comme avant
+	# (c'est chiant de devoir mettre des %)
+	# FIXME:VLAD faire apparaître les champs de recherche par defaut
+
+	if (nrow(mesures) == 0)
 		result <- TimeIntervalDataFrame(character(0), character(0), 'UTC') else {
 
-	q$mesures <- paste ("'", mesures$NOM_COURT_MES, "'", sep='', collapse=', ')
+		# FIXME:ISEO accès aux données brutes QH ? (table BRUTE)
 
-	# donnees brutes ou pas ? Et quelle table aller taper ?
-	if(validated) {
-		q$table <- switch (period,
-				 qh = 'JOURNALIER', h = 'JOURNALIER', d = 'JOURNALIER',
-				 m = 'MOIS', y = 'MOIS')
-	} else {
-		if (period %in% c('m', 'y') )
-			warning ("Il n'y a pas de valeurs brutes pour les mois et les annees (period in 'm', 'y').")
-		q$table <-  switch (period,
-				 qh = 'BRUTE', h = 'BRUTE', d = 'BRUTE',
-				 m = 'MOIS', y = 'MOIS')
-	}
+		# start et end sont mis en forme pour la requete ----------------------
 
-	# quels champs faut-il rapatrier ? (depend de la table determinee juste avant)
-	#	Les champs de donnees et la date, et le nom_court_mes
-	q$fields.l <- dbListFields (conn, q$table, schema='RSDBA')
-	q$fields.l <- lapply (c('DATE', switch (period, qh = '^Q_', h = '^H_', d = '^J_', m = '^M_', y = '^A_')),
-			  grep, dbListFields (conn, q$table, schema='RSDBA'), value=TRUE)
-	# pour la possible conversion plus bas on sauvegarde à part les noms Q_, H_, etc.
-	a.convertir <- q$fields.l[[2]]
-	a.convertir <- a.convertir[!grepl('_ETAT', a.convertir) & !grepl('_DATE', a.convertir)]
-	q$fields.l <- unique (unlist (q$fields.l) )
-	q$fields.l <- c('NOM_COURT_MES', setdiff (q$fields.l, 'Q_ETATB') )
-	q$fields.l <- unique (unlist (q$fields.l) )
-	q$fields.l <- q$fields.l[!grepl ('PV_', q$fields.l)]
-	q$fields <- q$fields.l
+		dformat <- '%Y-%m-%dT%H:%M:%SZ'
+		from    <- format (start, format = dformat, tz='UTC')
+		to      <- format (end+POSIXctp('second'), format = dformat, tz='UTC')
 
-	q$date <- grep ('DATE', q$fields, value=TRUE)
-	
-	q$fields[grep ('DATE', q$fields)] <- sprintf ("TO_CHAR(%s, 'YYYY-MM-DD')", q$fields[grep ('DATE', q$fields)])
-	q$fields <- paste (q$fields, collapse=', ')
+		# la requete a proprement parler --------------------------------------
 
-	# start et end sont mis en forme pour la requete
-	q$start <- format (start, format = '%Y-%m-%d', tz='UTC')
-	q$start <- sprintf ("TO_DATE('%s', 'YYYY-MM-DD')", q$start)
-	q$end	<- format (end, format = '%Y-%m-%d', tz='UTC')
-	q$end	<- sprintf ("TO_DATE('%s', 'YYYY-MM-DD')", q$end)
+		query <- sprintf('%sfrom=%s&to=%s&measures=%s&dataTypes=%s',
+						 bquery, from, to,
+						 paste (mesures[['id']], collapse=','),
+						 switch(period,
+								h ='hourly',
+								qh='base',
+								d ='daily',
+								m ='monthly',
+								y ='annual'))
 
-	# la requete a proprement parler. C'est presque decevant tellement ça devient lisible :)
-	query <- sprintf ('SELECT %s FROM %s WHERE NOM_COURT_MES IN (%s) AND %s BETWEEN %s AND %s',
-			  q$fields, q$table, q$mesures, q$date, q$start, q$end)
+		donnees <- xrGetQuery(conn, query, resv3=TRUE)
 
-	data <- xrGetQuery (conn, query)
-	names (data)[2] <- 'DATE'
+		#----------------------------------------------------------------------
+		# mise en forme des donnees -------------------------------------------
 
-	# correctif bug suite malformation table après import de Polair
-	etat <- grep('ETAT', names(data), value=TRUE)
-	data <- data[!is.na(data[[etat]]), ]
-
-	# à priori pour airparif, les Q_, H_, etc. sont rappatriés sous forme de char, donc conversion
-	# conversion systématique (sans impact si pas nécessaire, corrige à priori non pour XR < 6 mais pour
-	# windows >= 7)
-	data[a.convertir] <- lapply(data[a.convertir], function(x)
-		{
-			if (is.character(x)) {
-				wv <- grepl(',', x)
-				x[wv] <- sub(',', '.', x[wv])
-			}
-			as.numeric(x)
-		} )
-
-	# mise en forme des donnees
-	#q$period <- eval (parse (text = period) )	# period est evaluee au sens lubridate
-	q$periodb <- switch (period, qh = 'Q_M01',	# period est evaluee  de façon bidon pour mef.
-			    h = 'H_M01', d = 'J_M01', m = 'M_M01', y = 'A_M01')
-
-	data <- split (data, data$NOM_COURT_MES)
-
-	m <- match (names (data), mesures$NOM_COURT_MES)
-	data <- mapply (mef.mesure, data, fmul=mesures$FMUL[m], SIMPLIFY = FALSE,
-			MoreArgs = list (period=q$periodb, valid.states=valid.states, what=what, XR6=XR6))
-
-	for (i in names(data) ) {
-		names (data[[i]])[3] <- i
-		if(length(data[[i]]) == 4) names (data[[i]])[4] <- paste(sep='.', i, 'state')
-	}
-	
-	tmp <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
-		    as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
-		    switch (period, qh='day', h='day', d='day', 'year') )
-	tmp <- format (tmp, '%Y-%m-%d')
-	tmp2 <- grep (switch (period, qh = 'Q_M', h = 'H_M', d = 'J_M', m = 'M_M', y = 'A_M'), 
-		      q$fields.l, value=TRUE)
-	tmp <- paste (rep (tmp, each=length(tmp2) ), tmp2)
-	if (period %in% c('qh', 'h') )
-		tmp <- c(paste (as.character(as.POSIXct(tmp[1]) -
-				     switch (period,
-					     qh = POSIXctp(unit='day'),
-					     h = POSIXctp(unit='day'))),
-			tmp2[length(tmp2)]),
-		 tmp) else if (period %in% c('d', 'm', 'y') )
-		tmp <- c(tmp,
-			 paste (as.character(as.POSIXct(tmp[length(tmp)]) +
-				     switch (period,
-					     d = POSIXctp(unit='day'),
-					     m = POSIXctp(unit='month'),
-					     y = POSIXctp(unit='year'))),
-			tmp2[1]))
-	result <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
-	while (length (data) > 0) {
-		result <- merge (result, data[[1]], all.x=TRUE, all.y=FALSE, by=c('start', 'end') )
-		data[[1]] <- NULL
-	}
-	result$start <- result$end <- NULL
-	rm (data)
-
-	for (i in setdiff(mesures$NOM_COURT_MES, names(result) ) ) {
-		result[[i]] <- NA
-		if( what == 'both' )
-			result[[paste(i, 'state', sep='.')]] <- NA
-	}
-
-	result <- result[paste(rep(mesures$NOM_COURT_MES, each=switch(what, both=2, 1)),
-			       switch(what, both=c('', '.state')), sep='')]
-
-	names( result ) <- paste(
-		rep(mesures[[id.field]], each=switch(what, both=2, 1)),
-  		switch(what, both=c('', '.state')), sep='')
+		# FIXME:ISEO colonne advalValidated vs validated == 1 ?
+		# FIXME:ISEO dans le comportement 'normal', toutes les mesures sont
+		#  indépendamment du fait qu'elles soient validées ou non.
+		#  --> ajouter un argument qui permette de faire le tri (pbm :
+		#  le terme 'validated' est déjà pris)
 		
+		# FIXME:ISEO on travaille sur l'id, mais il faudra travailler sur le
+		# NOM_COURT_MES
+		# FIXME:VLAD faire des tests sur la quantité de donnnées (1 000 000)
+		#  pour éventuellement mettre en place des boucles ...
 
-	# recuperation des infos
-	q$stations <- xrGetStations (conn, pattern=mesures$NOM_COURT_SIT, search.fields='NOM_COURT_SIT')
-	q$stations <- q$stations[match(mesures$NOM_COURT_SIT, q$stations$NOM_COURT_SIT),]
-	q$polluants <- xrGetPolluants (conn, pattern=mesures$NOPOL, search.fields='NOPOL')
-	q$polluants <- q$polluants[match(mesures$NOPOL, q$polluants$NOPOL),]
-	
-	q$attr.mesures <- cbind (
-		q$stations[, intersect(names(q$stations), c('LAMBERTX', 'LAMBERTY', 'NSIT_PUBLIC', 'NINSEE', 'ISIT', 'NOM_COURT_SIT', 'IDENTIFIANT'))],
-		q$polluants[, c('CCHIM', 'NCON', 'NOPOL')])
-	row.names (q$attr.mesures) <- attributes(result)$NOM_COURT_MES
-	
-	#         for (i in 1:length(result) )
-	#                 if (!any (is.na (q$attr.mesures[i,c('LAMBERTX', 'LAMBERTY')]) ) )
-	#                 attr(result[[i]], 'station') <- SpatialPointsDataFrame (
-	#                         q$attr.mesures[i,c('LAMBERTX', 'LAMBERTY')],
-	#                         q$attr.mesures[i,setdiff(names(q$attr.mesures), c('LAMBERTX', 'LAMBERTY'))],
-	#                         proj4string = CRS('+init=epsg:27572') )
+		# conservation des colonnes voulues -----------------------------------
 
-		to <- as.POSIXct(format (end, format = '%Y-%m-%d', tz='UTC'), tz='UTC')
-		#np.arg <- list(1)
-		np.arg <- switch (period, qh = 'day', h = 'day', d = 'day', m = 'year', y = 'year')
-		to <- to + POSIXctp(unit=np.arg)#do.call (new_period, np.arg)
+		donnees <- lapply(mesures[['id']], function(id) {
+				i <- which(donnees[['id']] == id)
+				r <- donnees[[2]][[i]]
+				
+				# quand toutes les colonnes ne sont pas dans le resultat
+				r <- r[c('date', intersect(what, names(r)))]
+				r[setdiff(what, names(r))] <- NA
+				r <- r[c('date', what)]
 
-	dates <- seq (as.POSIXct(format (start, format = '%Y-%m-%d', tz='UTC'), tz='UTC'),
-		      to,
-		      switch (period, qh='15 mins', h='hour', d='day', m='month', y='year') )
+				# nommage des colonnes
+				if(length(what) > 1)
+					names(r) <- c('date', paste(sep='.', id, what)) else
+					names(r) <- c('date', id)
+				return(r)
+		})
 
-	names (result) <- sprintf ('%s%s', ifelse (substr(names(result), 1, 1) %in% as.character(0:9),
-						   'X', ''), names(result) )
-	result <- new('TimeIntervalDataFrame', start=dates[-length(dates)], end=dates[-1], timezone='UTC',
-		      data=result)
-	
-	result <- result[start(result) >= real.start & end(result) <= real.end,]
-	} # fin de if sur la création d'un tableau vide ou non
+		# concaténation en une seule data.frame avec une colonne de date ------
 
-	if( !is.null(cursor) )
-		result <- as.TimeInstantDataFrame(result, cursor)
-	timezone(result) <- tz
-	return (result)
+		while(length(donnees) > 1) {
+			donnees[[1]] <- merge(donnees[[1]], donnees[[2]], all=TRUE)
+			donnees[[2]] <- NULL
+		}
+		donnees <- donnees[[1]]
+
+		# formatage  des dates et création de la TimeIntervalDataFrame --------
+
+		donnees[['date']] <- strptime(donnees[['date']], dformat, 'UTC')
+		donnees[['date']] <- as.POSIXct(donnees[['date']])
+
+		# FIXME:VLAD vérifier pour tous les pas de temps que c'est bien un "moins" qu'il 
+		# faut faire
+		pas <- switch(period,
+					  h = POSIXctp('hour'),
+					  qh= POSIXctp(15, 'minute'),
+					  d = POSIXctp('day'),
+					  m = POSIXctp('month'),
+					  y = POSIXctp('year'))
+
+		donnees <- TimeIntervalDataFrame(
+			start = donnees[['date']] - pas,
+			end   = donnees[['date']],
+			data  = donnees[setdiff(names(donnees), 'date')])
+
+	}
+
+	if( !is.null(cursor) ) donnees <- as.TimeInstantDataFrame(donnees, cursor)
+	timezone(donnees) <- tz
+
+	options(stringsAsFactors = osaf)
+	return (donnees)
 }
 
 
-mef.mesure <- function(data, period, valid.states, what, XR6, fmul) {
-	ncm <- unique (data[[grep ('NOM_COURT_MES', names (data))]])
-	data <- data[setdiff (names (data), c('NOM_COURT_MES') )]
-
-	# attention, l'ordre de récupération/affectation de chaque 'type' de 
-	# données est primordial. Sinon la mise en forme n'est pas correcte.
-	
-	# extraction des dates à partir de data, détermination de l'ordre
-	# temporel des données et ré-ordonnage des dates
-	dates <- unique (data[[grep ('DATE', names (data))]])
-	data <- data[-grep ('DATE', names (data))]
-
-	ordre <- order(dates)
-
-	dates <- dates[ordre]
-
-	# extraction des etats à partir de data et ré-ordonnage temporel
-	# à partir de l'ordre déterminé ci-dessus
-	etats <- data[[grep ('ETAT', names (data))]]
-	data <- data[-grep ('ETAT', names (data))]
-
-	etats <- etats[ordre]
-	etats <- unlist (strsplit (etats, ''))
-
-	# ordonnage temporel de data
-
-	data <- data[ordre,,drop=FALSE]
-
-	tmp <- paste (rep (dates, each=length(data) ), names (data) )
-	if (period %in% c('Q_M01', 'H_M01') )
-		tmp <- c(paste (as.character(as.POSIXct(dates[1]) -
-					     switch (period,
-						     Q_M01 = POSIXctp(unit='day'),
-						     H_M01 = POSIXctp(unit='day'))),
-				names(data)[length(data)]),
-			 tmp) else if (period %in% c('J_M01', 'M_M01', 'A_M01') )
-		tmp <- c(tmp,
-			 paste (as.character(as.POSIXct(dates[length(dates)]) +
-					     switch (period,
-						     J_M01 = POSIXctp(unit='day'),
-						     M_M01 = POSIXctp(unit='month'),
-						     A_M01 = POSIXctp(unit='year'))),
-				names(data)[1]) )
-	dates <- data.frame (start=tmp[-length(tmp)], end=tmp[-1])
-
-	if (what %in% c('value', 'both') ) {
-		values <- c( t(data) )
-		values[!etats %in% valid.states] <- NA
-		values <- data.frame (values)
-		if (!XR6) values <- values*10^fmul
-	}
-	if (what == 'state') {
-		values <- data.frame (etats)
-	} else if (what == 'both') {
-		values <- data.frame (values, etats)
-	}
-	values <- data.frame (dates, values)
-	attributes(values)$NOM_COURT_MES <- ncm
-	return (values)
-}
 
