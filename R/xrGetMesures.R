@@ -33,7 +33,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 
 	xrfields <- xrListFields ('measures')
 	if(is.null(search.fields)){
-		search.fields <- c('id')#FIXME: mettre le remplacant de NOM_COURT_MES en plus
+		search.fields <- c('id')#FIXME:ISEO mettre le remplacant de NOM_COURT_MES en plus
 	}else{
 		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
 		if(conn[['version']] == 2)
@@ -54,7 +54,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# champs sont traités comme les autres (puisqu'on est de toute façon 
 	# obligé de charger toutes les stations pour les autres champs)
 
-	# FIXME: vérifier au moment de l'jout de NOM_COURT_MES que la recherche en %
+	# FIXME:ISEO vérifier au moment de l'jout de NOM_COURT_MES que la recherche en %
 	# fonctionne. Sino on se reporte sur la version globale
 	#if(all(search.fields %in% c('id', 'NOM_COURT_MES???'))){}
 	if(!is.null(pattern))
@@ -72,7 +72,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			idmesures <- collapseIds(ist, idmesures, 'OR')
 		}
 		if('NOM_COURT_MES???' %in% search.fields){
-			# FIXME: à laisser là si champ de recherche spécifique dans API
+			# FIXME:ISEO à laisser là si champ de recherche spécifique dans API
 			# sinon à supprimer et à laisser le cas suivant prendre la main
 			query     <- paste0(bquery, 'NOM_COURT_MES???=', query)
 			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]

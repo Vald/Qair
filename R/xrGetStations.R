@@ -49,7 +49,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	xrfields <- xrListFields ('sites')
 	if(is.null(search.fields)){
-		search.fields <- c('id')#FIXME: mettre le remplacant de NOM_COURT_SIT en plus
+		search.fields <- c('id')#FIXME:ISEO mettre le remplacant de NOM_COURT_SIT en plus
 	}else{
 		search.fields <- as.character(match.arg(search.fields, xrfields[[nv]], TRUE))
 		if(conn[['version']] == 2)
@@ -75,7 +75,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	#if(all(search.fields %in% c('id', 'ref'))){
 		# recherche sur id / IDENTIFIANT / sites
 		#  sur ref / NSIT / refSites
-		# FIXME: recherche sur ? ne marche pas ... c'est grave ?
+		# TODO:ISEO recherche sur ? ne marche pas ... c'est grave ?
 		# et rechercher % sur ref ne marche pas donc pour l'instant on ne garde 
 		# que l'approche 'global'
 
@@ -168,7 +168,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	if(!resv3 & nv == 'nv2')
 		names(stations) <- xrfields[['nv2']][match(names(stations), xrfields[['nv3']])]
 
-	# FIXME: à compléter quand on aura l'équivalent du champ classe_site dans
+	# FIXME:ISEO à compléter quand on aura l'équivalent du champ classe_site dans
 	# l'API (remplacer 'CLASSE_SITE par sa valeur dans l'API
 	#fields <- union(fields, 'CLASSE_SITE')
 	if (is.null(fields))

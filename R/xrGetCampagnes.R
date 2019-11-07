@@ -39,7 +39,7 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 
 		query     <- paste0(bquery, 'campaigns=', query)
 		campagnes <- xrGetQuery(conn, query, resv3=TRUE)
-		# FIXME: intégrer dans les champs de recherche le LIBELLE et 
+		# FIXME:ISEO intégrer dans les champs de recherche le LIBELLE et 
 		# son futur remplaçant --> réactiver le search.fields
 	} else campagnes <- xrGetQuery(conn, bquery, resv3=TRUE)
 

@@ -50,7 +50,7 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 
 	if(!is.null(pattern))
 	#if(all(search.fields == 'id')) {}
-	# FIXME: recherche % ne marche pas sur physicals
+	# TODO:ISEO recherche % ne marche pas sur physicals
 	if(FALSE){
 		# recherche sur id / NOPOL / physicals
 		if(conn[['version']] == 2 & !exact)

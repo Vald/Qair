@@ -38,7 +38,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 								'measure-groups', 'data')){
 	name <- match.arg(name)
 	if(name == 'sites'){
-		# FIXME: il manque des champs cf correspondance commentées
+		# FIXME:ISEO il manque des champs cf correspondance commentées
 		return(data.frame(
 			nv2  = c('IDENTIFIANT', 'NSIT', 'ISIT', 'typologie', 'LATI', 'LONGI',
 					 'area', 'type', 'D_CREATION', 'D_ARRET', 'labelCommune', 
@@ -163,8 +163,8 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	result <- result[[type]]
 	fields <- xrListFields(type)
 
-	# FIXME: mettre des types POSXIct pour les dates et traiter le cas ici
-	# FIXME: mettre des types boolean pour le isNetworkGroup 
+	# FIXME:VLAD mettre des types POSXIct pour les dates et traiter le cas ici
+	# FIXME:VLAD mettre des types boolean pour le isNetworkGroup 
 	if (is.null(names(result))){
 		f        <- lapply(fields[['type']], function(x) eval(parse(text=x)))
 		names(f) <- fields[['nv3']]

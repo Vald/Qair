@@ -50,7 +50,7 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 	#if(all(search.fields == 'id')){
 	if(FALSE){
 		# recherche sur id / NOM_COURT_RES / measureGroups
-		# FIXME: rechercher % sur ref ne marche pas donc pour l'instant on ne garde 
+		# TODO:ISEO rechercher % sur ref ne marche pas donc pour l'instant on ne garde 
 		# que l'approche 'global'
 
 		if(conn[['version']] == 2 & !exact)
