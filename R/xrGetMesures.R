@@ -113,7 +113,6 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# recherche sur reseaux ---------------------------------------------------
 
 	if (!is.null (reseaux) ) {
-		# FIXME: à tester quand xrGetReseaux ok
 		if( !is.list(reseaux) )
 			reseaux <- xrGetReseaux(conn, pattern = reseaux, resv3=TRUE) else{
 			reseaux[['resv3']] <- TRUE
@@ -174,6 +173,12 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	if (is.null(fields))
 		fields <- xrfields[[ifelse(resv3, 'nv3', nv)]] else 
 		fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
+
+	# il est possible que dans la selection tous les champs ne soient pas renvoyés
+	# et que mesures ne contient pas toutes les colonnes. Les manquantes sont 
+	# ajoutées
+	if(!all(fields %in% names(mesures)))
+		mesures[setdiff(fields, names(mesures))] <- NA
 
 	return(mesures[fields])
 

@@ -99,6 +99,12 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 		fields <- xrfields[[ifelse(resv3, 'nv3', nv)]] else
 		fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])
 
+	# il est possible que dans la selection tous les champs ne soient pas renvoyés
+	# et que reseaux ne contient pas toutes les colonnes. Les manquantes sont 
+	# ajoutées
+	if(!all(fields %in% names(reseaux)))
+		reseaux[setdiff(fields, names(reseaux))] <- NA
+
 	return(reseaux[fields])
 }
 
