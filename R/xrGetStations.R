@@ -70,9 +70,9 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	# champs sont traités comme les autres (puisqu'on est de toute façon 
 	# obligé de charger toutes les stations pour les autres champs)
 
-	#if(all(search.fields %in% c('id', 'ref'))){
 	if(!is.null(pattern))
 	if(FALSE){
+	#if(all(search.fields %in% c('id', 'ref'))){
 		# recherche sur id / IDENTIFIANT / sites
 		#  sur ref / NSIT / refSites
 		# FIXME: recherche sur ? ne marche pas ... c'est grave ?

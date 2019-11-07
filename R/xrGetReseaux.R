@@ -47,9 +47,11 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 	# obligé de charger toutes les stations pour les autres champs)
 
 	if(!is.null(pattern))
-	if(all(search.fields == 'id')){
-	#if(FALSE){
+	#if(all(search.fields == 'id')){
+	if(FALSE){
 		# recherche sur id / NOM_COURT_RES / measureGroups
+		# FIXME: rechercher % sur ref ne marche pas donc pour l'instant on ne garde 
+		# que l'approche 'global'
 
 		if(conn[['version']] == 2 & !exact)
 			query <- paste0('%', pattern, '%', collapse=',') else
