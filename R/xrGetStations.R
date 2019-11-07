@@ -85,12 +85,12 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 		if('id' %in% search.fields){
 			query   <- paste0(bquery, 'sites=', query)
 			ist     <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
-			idsites <- collapseIds(ist, idsites, collapse)
+			idsites <- collapseIds(ist, idsites, 'OR')
 		}
 		if('ref' %in% search.fields){
 			query   <- paste0(bquery, 'refSites=', query)
 			ist     <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
-			idsites <- collapseIds(ist, idsites, collapse)
+			idsites <- collapseIds(ist, idsites, 'OR')
 		}
 	} else {
 		# sinon recherche sur la base de toutes les stations
@@ -109,7 +109,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 				selection <- sapply(selection, grep, all.stations[[sf]])
 			}
 			ist     <- all.stations[['id']][unique(unlist(selection))]
-			idsites <- collapseIds(ist, idsites, collapse)
+			idsites <- collapseIds(ist, idsites, 'OR')
 		}
 	}
 

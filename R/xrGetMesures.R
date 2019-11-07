@@ -68,14 +68,14 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 		if('id' %in% search.fields){
 			query     <- paste0(bquery, 'measures=', query)
 			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
-			idmesures <- collapseIds(ist, idmesures, collapse)
+			idmesures <- collapseIds(ist, idmesures, 'OR')
 		}
 		if('NOM_COURT_MES???' %in% search.fields){
 			# FIXME: à laisser là si champ de recherche spécifique dans API
 			# sinon à supprimer et à laisser le cas suivant prendre la main
 			query     <- paste0(bquery, 'NOM_COURT_MES???=', query)
 			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
-			idmesures <- collapseIds(ist, idmesures, collapse)
+			idmesures <- collapseIds(ist, idmesures, 'OR')
 		}
 	} else {
 		all.mesures <- xrGetQuery(conn, bquery, resv3=TRUE)
@@ -91,7 +91,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 				selection <- sapply(selection, grep, all.mesures[[sf]])
 			}
 			ist       <- all.mesures[['id']][unique(unlist(selection))]
-			idmesures <- collapseIds(ist, idmesures, collapse)
+			idmesures <- collapseIds(ist, idmesures, 'OR')
 		}
 	}
 

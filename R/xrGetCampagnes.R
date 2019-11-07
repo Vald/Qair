@@ -15,7 +15,6 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 					resv3 = FALSE) {
 
 	# Fonction validée le 06/11/2019
-	# FIXME: ajouter l'argument collapse
 	if(!is.null(search.fields))
 		warning("'search.fields' est obsolète, sa valeur n'est pas prise en compte")
 

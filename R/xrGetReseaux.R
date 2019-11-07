@@ -11,9 +11,7 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les réseaux trouvés.
 xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
-						 fields = NULL, exact = FALSE , collapse = c('AND', 'OR'),
-						 resv3 = FALSE) {
-	collapse <- match.arg(collapse)
+						 fields = NULL, exact = FALSE , resv3 = FALSE) {
 
 	# récupération de la version avec laquelle on bosse et initialisation de
 	# la requête
@@ -39,7 +37,6 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 	# algo:
 	# récupération des sites sur la base de search.fields
 	# puis recherche de mesure si != NULL et récup. de id site
-	# --> agregation des différents tests en fonction de collapse...
 
 	idreseaux <- NULL
 
@@ -60,7 +57,7 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 		if('id' %in% search.fields){
 			query     <- paste0(bquery, 'measureGroups=', query)
 			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
-			idreseaux <- collapseIds(ist, idreseaux, collapse)
+			idreseaux <- collapseIds(ist, idreseaux, 'OR')
 		}
 	} else {
 		# sinon recherche sur la base de toutes les stations
@@ -79,7 +76,7 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 				selection <- sapply(selection, grep, all.reseaux[[sf]])
 			}
 			ist       <- all.reseaux[['id']][unique(unlist(selection))]
-			idreseaux <- collapseIds(ist, idreseaux, collapse)
+			idreseaux <- collapseIds(ist, idreseaux, 'OR')
 		}
 	}
 

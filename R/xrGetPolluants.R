@@ -14,7 +14,6 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 			   fields = NULL, exact = FALSE, resv3 = FALSE) {
 
 	# Fonction validée le 06/11/2019
-	# FIXME: ajouter l'argument collapse
 
 	# récupération de la version avec laquelle on bosse et initialisation de
 	# la requête
@@ -60,7 +59,7 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 		if('id' %in% search.fields){
 			query       <- paste0(bquery, 'physicals=', query)
 			ist         <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
-			idpolluants <- collapseIds(ist, idpolluants, collapse)
+			idpolluants <- collapseIds(ist, idpolluants, 'OR')
 		}
 	} else {
 		all.polluants <- xrGetQuery(conn, bquery, resv3=TRUE)
@@ -76,7 +75,7 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 				selection <- sapply(selection, grep, all.polluants[[sf]])
 			}
 			ist         <- all.polluants[['id']][unique(unlist(selection))]
-			idpolluants <- collapseIds(ist, idpolluants, collapse)
+			idpolluants <- collapseIds(ist, idpolluants, 'OR')
 		}
 	}
 
