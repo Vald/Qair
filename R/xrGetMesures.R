@@ -55,7 +55,6 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# FIXME: vérifier au moment de l'jout de NOM_COURT_MES que la recherche en %
 	# fonctionne. Sino on se reporte sur la version globale
 	#if(all(search.fields %in% c('id', 'NOM_COURT_MES???'))){}
-	# Cette partie a été validée le 06/11/2019
 	if(!is.null(pattern))
 	if(all(search.fields %in% 'id')) {
 	#if(FALSE){}
@@ -98,7 +97,6 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# recherche sur campagnes -------------------------------------------------
 
 	if (!is.null (campagnes) ) {
-		# Cette partie a été validée le 06/11/2019
 		if( !is.list(campagnes) )
 			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
 			campagnes[['resv3']] <- TRUE
@@ -127,7 +125,6 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# recherche sur stations --------------------------------------------------
 
 	if (!is.null (stations) ) {
-		# Cette partie a été validée le 06/11/2019
 		if( !is.list(stations) )
 			stations <- xrGetStations(conn, pattern = stations, resv3=TRUE) else{
 			stations[['resv3']] <- TRUE
@@ -142,7 +139,6 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# recherche sur polluants -------------------------------------------------
 
 	if (!is.null (polluants) ) {
-		# FIXME: à tester quand xrGetPolluants ok
 		if( !is.list(polluants) )
 			polluants <- xrGetPolluants(conn, pattern = polluants, resv3=TRUE) else{
 			polluants[['resv3']] <- TRUE

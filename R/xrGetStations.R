@@ -94,7 +94,6 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 		}
 	} else {
 		# sinon recherche sur la base de toutes les stations
-		# Cette partie a été validée le 06/11/2019
 
 		all.stations <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
@@ -116,7 +115,6 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	# récupération d'idsite sur la base de mesures ----------------------------
 
 	if (!is.null (mesures) ) {
-		# FIXME: à tester quand xrGetMesures ok
 		if( !is.list(mesures) )
 			mesures <- xrGetMesures(conn, pattern = mesures, resv3=TRUE) else{
 			mesures[['resv3']] <- TRUE
@@ -129,7 +127,6 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	# récupération d'idcampaignes ---------------------------------------------
 
 	if (!is.null (campagnes) ) {
-		# Cette partie a été validée le 06/11/2019
 		if( !is.list(campagnes) )
 			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
 			campagnes[['resv3']] <- TRUE
