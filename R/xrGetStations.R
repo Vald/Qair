@@ -79,7 +79,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 		# et rechercher % sur ref ne marche pas donc pour l'instant on ne garde 
 		# que l'approche 'global'
 
-		if(conn[['version']] == 2 & !exact)
+		if(!exact)
 			query <- paste0('%', pattern, '%', collapse=',') else
 			query <- paste0(pattern, collapse=',')
 		if('id' %in% search.fields){
@@ -95,18 +95,19 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	} else {
 		# sinon recherche sur la base de toutes les stations
 
+		# TODO: créer une fonction qui fait la recherche pour tous ...
 		all.stations <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
-			if(conn[['version']] == 2){
-				if(exact)
-					selection <- match(pattern, all.stations[[sf]]) else
-					selection <- sapply(pattern, grep, all.stations[[sf]])
-			} else {
-				selection <- gsub('\\%', '.*', pattern)
-				selection <- gsub('\\?', '.', selection)
-				selection <- paste0('^', selection, '$')
-				selection <- sapply(selection, grep, all.stations[[sf]])
-			}
+			if(!exact)
+				selection <- sapply(pattern, grep, all.stations[[sf]]) else {
+				if(conn[['version']] == 2){
+					selection <- match(pattern, all.stations[[sf]])
+				} else {
+					selection <- gsub('\\%', '.*', pattern)
+					selection <- gsub('\\?', '.', selection)
+					selection <- paste0('^', selection, '$')
+					selection <- sapply(selection, grep, all.stations[[sf]])
+				}}
 			ist     <- all.stations[['id']][unique(unlist(selection))]
 			idsites <- collapseIds(ist, idsites, 'OR')
 		}

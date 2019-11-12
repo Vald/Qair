@@ -53,7 +53,7 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 		# TODO:ISEO rechercher % sur ref ne marche pas donc pour l'instant on ne garde 
 		# que l'approche 'global'
 
-		if(conn[['version']] == 2 & !exact)
+		if(!exact)
 			query <- paste0('%', pattern, '%', collapse=',') else
 			query <- paste0(pattern, collapse=',')
 		if('id' %in% search.fields){
@@ -67,16 +67,16 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 
 		all.reseaux <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
-			if(conn[['version']] == 2){
-				if(exact)
-					selection <- match(pattern, all.reseaux[[sf]]) else
-					selection <- sapply(pattern, grep, all.reseaux[[sf]])
-			} else {
-				selection <- gsub('\\%', '.*', pattern)
-				selection <- gsub('\\?', '.', selection)
-				selection <- paste0('^', selection, '$')
-				selection <- sapply(selection, grep, all.reseaux[[sf]])
-			}
+			if(!exact)
+				selection <- sapply(pattern, grep, all.reseaux[[sf]]) else {
+				if(conn[['version']] == 2){
+					selection <- match(pattern, all.reseaux[[sf]])
+				} else {
+					selection <- gsub('\\%', '.*', pattern)
+					selection <- gsub('\\?', '.', selection)
+					selection <- paste0('^', selection, '$')
+					selection <- sapply(selection, grep, all.reseaux[[sf]])
+				}}
 			ist       <- all.reseaux[['id']][unique(unlist(selection))]
 			idreseaux <- collapseIds(ist, idreseaux, 'OR')
 		}

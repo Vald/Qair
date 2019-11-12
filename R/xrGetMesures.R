@@ -58,12 +58,12 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# fonctionne. Sino on se reporte sur la version globale
 	#if(all(search.fields %in% c('id', 'NOM_COURT_MES???'))){}
 	if(!is.null(pattern))
-	if(all(search.fields %in% 'id')) {
-	#if(FALSE){}
+	#if(all(search.fields %in% 'id')) {}
+	if(FALSE){
 		# recherche sur id / IDENTIFIANT / measures
 		#  sur ? / NOM_COURT_MES / ?
 
-		if(conn[['version']] == 2 & !exact)
+		if(!exact)
 			query <- paste0('%', pattern, '%', collapse=',') else
 			query <- paste0(pattern, collapse=',')
 		if('id' %in% search.fields){
@@ -81,16 +81,16 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	} else {
 		all.mesures <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
-			if(conn[['version']] == 2){
-				if(exact)
-					selection <- match(pattern, all.mesures[[sf]]) else
-					selection <- sapply(pattern, grep, all.mesures[[sf]])
-			} else {
-				selection <- gsub('\\%', '.*', pattern)
-				selection <- gsub('\\?', '.', selection)
-				selection <- paste0('^', selection, '$')
-				selection <- sapply(selection, grep, all.mesures[[sf]])
-			}
+			if(!exact)
+				selection <- sapply(pattern, grep, all.mesures[[sf]]) else {
+				if(conn[['version']] == 2){
+					selection <- match(pattern, all.mesures[[sf]])
+				} else {
+					selection <- gsub('\\%', '.*', pattern)
+					selection <- gsub('\\?', '.', selection)
+					selection <- paste0('^', selection, '$')
+					selection <- sapply(selection, grep, all.mesures[[sf]])
+				}}
 			ist       <- all.mesures[['id']][unique(unlist(selection))]
 			idmesures <- collapseIds(ist, idmesures, 'OR')
 		}

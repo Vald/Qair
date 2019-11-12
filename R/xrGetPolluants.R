@@ -53,7 +53,7 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 	# TODO:ISEO recherche % ne marche pas sur physicals
 	if(FALSE){
 		# recherche sur id / NOPOL / physicals
-		if(conn[['version']] == 2 & !exact)
+		if(!exact)
 			query <- paste0('%', pattern, '%', collapse=',') else
 			query <- paste0(pattern, collapse=',')
 		if('id' %in% search.fields){
@@ -64,16 +64,16 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 	} else {
 		all.polluants <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
-			if(conn[['version']] == 2){
-				if(exact)
-					selection <- match(pattern, all.polluants[[sf]]) else
-					selection <- sapply(pattern, grep, all.polluants[[sf]])
-			} else {
-				selection <- gsub('\\%', '.*', pattern)
-				selection <- gsub('\\?', '.', selection)
-				selection <- paste0('^', selection, '$')
-				selection <- sapply(selection, grep, all.polluants[[sf]])
-			}
+			if(!exact)
+				selection <- sapply(pattern, grep, all.polluants[[sf]]) else {
+				if(conn[['version']] == 2){
+					selection <- match(pattern, all.polluants[[sf]])
+				} else {
+					selection <- gsub('\\%', '.*', pattern)
+					selection <- gsub('\\?', '.', selection)
+					selection <- paste0('^', selection, '$')
+					selection <- sapply(selection, grep, all.polluants[[sf]])
+				}}
 			ist         <- all.polluants[['id']][unique(unlist(selection))]
 			idpolluants <- collapseIds(ist, idpolluants, 'OR')
 		}

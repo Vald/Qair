@@ -33,7 +33,7 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 	idcampagnes <- NULL
 	if(!is.null(pattern)) {
 		# recherche sur id / NOM_COURT_CM / campaigns
-		if(conn[['version']] == 2 & !exact)
+		if(!exact)
 			query <- paste0('%', pattern, '%', collapse=',') else
 			query <- paste0(pattern, collapse=',')
 

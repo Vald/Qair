@@ -99,8 +99,10 @@
 #' 	TimeInstantDataFrame (1 pour respecter les conventions XR).
 #' @param exact booléen indiquant si les mesures à rapatrier doivent être 
 #' 	exactement identiques à \sQuote{pattern} ou si \sQuote{pattern} doit 
-#' 	être utilisé dans une expression régulière. Utilisé uniquement si la connexion
-#'  à XR est en v2. Sinon il faut utiliser les % et ?.
+#' 	être utilisé dans une expression régulière. Dans le cas d'une connexion v3, 
+#'  exact=TRUE prendra en compte les % et les ? (comme dans la doc de l'API), 
+#'  exact=FALSE fera une recherche 'large' exactement comme pour la v2
+#'  (concrètement en ajoutant % avant et après la chaîne recherchée).
 #' @param validOnly (v3) La recherche doit-elle porter uniquement sur les
 #'  mesures ouvertes ?
 #'
@@ -171,8 +173,6 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	# FIXME:VLAD faire en sort que quand rien ne match, les xrGet renvoies bien des
 	# tables à z&ro ligne
-	# FIXME:VLAD intégrer le exact dans la v3 pour que ça fonctionne comme avant
-	# (c'est chiant de devoir mettre des %)
 	# FIXME:VLAD faire apparaître les champs de recherche par defaut
 
 	# nombre de secondes dans la période demandée
