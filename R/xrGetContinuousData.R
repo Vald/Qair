@@ -175,8 +175,50 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	# (c'est chiant de devoir mettre des %)
 	# FIXME:VLAD faire apparaître les champs de recherche par defaut
 
-	if (nrow(mesures) == 0)
-		result <- TimeIntervalDataFrame(character(0), character(0), 'UTC') else {
+	# nombre de secondes dans la période demandée
+	nbsbp <- switch(period,
+					h =60*60,
+					qh=60*15,
+					d =60*60*24,
+					m =60*60*24*31,
+					y =60*60*24*366)
+
+	if (nrow(mesures) == 0) {
+		result <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
+	} else if(nrow(mesures) > 500) {
+		# si la requete concerne plus de 500 mesures, on fait du 
+		# récusrif
+		#FIXME:ISEO il faudra remplacer 'id' par le remplacant de NOM_COURT_MES
+
+		donnees <- xrGetContinuousData(conn=conn,
+				start=start, end=end, period=period,
+				validated=validated, valid.states=valid.states, what=what,
+				pattern=mesures[['id']][1:500], search.fields='id', exact=TRUE,
+				validOnly=FALSE)
+
+		donnees <- merge(donnees, xrGetContinuousData(conn=conn,
+				start=start, end=end, period=period,
+				validated=validated, valid.states=valid.states, what=what,
+				pattern=mesures[['id']][-(1:500)], search.fields='id', exact=TRUE,
+				validOnly=FALSE))
+
+	} else if(nrow(mesures)*difftime(end, start, units='secs')/nbsbp  > 1000000) {
+		# si la requete concerne plus de 1 million de mesure idem
+		i <- floor(1000000 / as.numeric(difftime(end, start) / nbsbp))
+
+		donnees <- xrGetContinuousData(conn=conn,
+				start=start, end=end, period=period,
+				validated=validated, valid.states=valid.states, what=what,
+				pattern=mesures[['id']][1:i], search.fields='id', exact=TRUE,
+				validOnly=FALSE)
+
+		donnees <- merge(donnees, xrGetContinuousData(conn=conn,
+				start=start, end=end, period=period,
+				validated=validated, valid.states=valid.states, what=what,
+				pattern=mesures[['id']][-(1:i)], search.fields='id', exact=TRUE,
+				validOnly=FALSE))
+
+	} else {
 
 		# FIXME:ISEO accès aux données brutes QH ? (table BRUTE)
 
@@ -211,8 +253,6 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		
 		# FIXME:ISEO on travaille sur l'id, mais il faudra travailler sur le
 		# NOM_COURT_MES
-		# FIXME:VLAD faire des tests sur la quantité de donnnées (1 000 000)
-		#  pour éventuellement mettre en place des boucles ...
 
 		# conservation des colonnes voulues -----------------------------------
 
