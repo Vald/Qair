@@ -46,6 +46,15 @@
 'indicesXR2R' <-
 function (conn, agglos, start, end, detail=FALSE,
 	  format=c('type', 'agglo', 'aucun'), type=c('C', 'P')) {
+	# FIXME:ISEO possibilité d'écrire l'indice ?
+	# FIXME:ISEO group Atmo --> capacité de lister les groupes
+	#  recherche sur le champ NOM_AGGLO
+	# FIXME:ISEO Pourquoi forecast à 1 uniquement ?
+	# FIXME:VLAD une fois lAPI stabilisée, mettre la table de correspondance
+	# dans xrListFields (à disclosedAQI)
+	# FIXME:ISEO sites de prelevements
+	# FIXME:ISEO methodes de prelevements
+	# FIXME:ISEO donnees manuelles
 	if (missing (agglos) ) {
 		query <- 'SELECT NOM_AGGLO FROM GROUPE_ATMO'
 		return (xrGetQuery (conn, query))

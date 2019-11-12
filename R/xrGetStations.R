@@ -103,7 +103,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 		all.stations <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
 			if(!exact)
-				selection <- sapply(pattern, grep, all.stations[[sf]]) else {
+				selection <- sapply(pattern, grep, all.stations[[sf]]) else {
 				if(conn[['version']] == 2){
 					selection <- match(pattern, all.stations[[sf]])
 				} else {

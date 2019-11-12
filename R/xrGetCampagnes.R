@@ -14,7 +14,6 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 					start = NULL, end = NULL, fields = NULL, exact = FALSE,
 					resv3 = FALSE) {
 
-	# Fonction validée le 06/11/2019
 	if(!is.null(search.fields))
 		warning("'search.fields' est obsolète, sa valeur n'est pas prise en compte")
 

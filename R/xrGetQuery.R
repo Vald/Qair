@@ -38,6 +38,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 								'measure-groups', 'data')){
 	name <- match.arg(name)
 	if(name == 'sites'){
+		# FIXME:VLAD modifier/intégrer les fonctions de incertR
 		# FIXME:ISEO il manque des champs cf correspondance commentées
 		return(data.frame(
 			nv2  = c('IDENTIFIANT', 'NSIT', 'ISIT', 'typologie', 'LATI', 'LONGI',
@@ -150,6 +151,9 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	osaf   <- getOption('stringsAsFactors')
 	options(stringsAsFactors = FALSE)
 
+	# FIXME: test les timeout (cas ou trop de connexions simultanées, le serveur
+	# ne répond pas --> ajouter un parametre nb tentatives)
+
 	# récupération de la requete brute ----------------------------------------
 
 	url    <- sprintf('%s%s', xrGetUrl(conn), query)
@@ -163,8 +167,8 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	result <- result[[type]]
 	fields <- xrListFields(type)
 
-	# FIXME:VLAD mettre des types POSXIct pour les dates et traiter le cas ici
-	# FIXME:VLAD mettre des types boolean pour le isNetworkGroup 
+	# TODO:VLAD mettre des types POSXIct pour les dates et traiter le cas ici
+	# TODO:VLAD mettre des types boolean pour le isNetworkGroup 
 	if (is.null(names(result))){
 		f        <- lapply(fields[['type']], function(x) eval(parse(text=x)))
 		names(f) <- fields[['nv3']]
