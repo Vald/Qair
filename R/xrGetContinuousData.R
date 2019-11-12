@@ -285,8 +285,6 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		donnees[['date']] <- strptime(donnees[['date']], dformat, 'UTC')
 		donnees[['date']] <- as.POSIXct(donnees[['date']])
 
-		# FIXME:VLAD vérifier pour tous les pas de temps que c'est bien un "moins" qu'il 
-		# faut faire
 		pas <- switch(period,
 					  h = POSIXctp('hour'),
 					  qh= POSIXctp(15, 'minute'),
