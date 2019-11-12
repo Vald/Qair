@@ -79,6 +79,13 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 		}
 	}
 
+	# si des filtres ont été appliqués et que idsites est vide ----------------
+	# la fonction retourne une data.frame vide
+	# (on procède en donnant une valeur bidon à idsites)
+
+	if(!is.null(pattern) & length(idpolluants) == 0)
+		idpolluants <- 'AUCUNECORRESPONDANCE'
+
 	# création et exécution de la requête -------------------------------------
 
 	query <- bquery

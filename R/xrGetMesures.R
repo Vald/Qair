@@ -152,6 +152,13 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 		idmesures <- collapseIds(ist, idmesures, collapse)
 	}
 
+	# si des filtres ont été appliqués et que idsites est vide ----------------
+	# la fonction retourne une data.frame vide
+	# (on procède en donnant une valeur bidon à idsites)
+
+	if(!is.null(c(pattern, campagnes, reseaux, stations, polluants))
+	   & length(idmesures) == 0) idmesures <- 'AUCUNECORRESPONDANCE'
+
 	# création et exécution de la requête -------------------------------------
 
 	query <- bquery

@@ -171,8 +171,6 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	# si aucune mesure ne correspond aux critères, un tableau vide est
 	# directement créé, sinon go
 
-	# FIXME:VLAD faire en sort que quand rien ne match, les xrGet renvoies bien des
-	# tables à z&ro ligne
 	# FIXME:VLAD faire apparaître les champs de recherche par defaut
 
 	# nombre de secondes dans la période demandée
