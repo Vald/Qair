@@ -28,8 +28,13 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 	# de la fonction on revient éventuellement en nv2.
 
 	xrfields <- xrListFields ('physicals')
-	if(is.null(search.fields))
-		search.fields <- c('id', 'chemicalSymbol', 'label') else {
+	if(is.null(search.fields)) {
+		search.fields <- c('id', 'chemicalSymbol', 'label') 
+		message("Champs disponibles pour la recherche : ",
+				paste(collapse=', ', xrfields[[nv]]),
+				"\nPar défaut : ",
+				paste(collapse=', ', xrfields[[nv]][1:3]))
+	}else {
 		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
 		if(conn[['version']] == 2)
 			search.fields <- xrfields[['nv3']][match(search.fields, xrfields[['nv2']])]

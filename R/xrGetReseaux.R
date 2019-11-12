@@ -28,6 +28,10 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 	xrfields <- xrListFields ('measure-groups')
 	if(is.null(search.fields)){
 		search.fields <- c('id', 'label')
+		message("Champs disponibles pour la recherche : ",
+				paste(collapse=', ', xrfields[[nv]]),
+				"\nPar défaut : ",
+				paste(collapse=', ', xrfields[[nv]][1:2]))
 	}else{
 		search.fields <- as.character(match.arg(search.fields, xrfields[[nv]], TRUE))
 		if(conn[['version']] == 2)

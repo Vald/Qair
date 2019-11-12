@@ -171,8 +171,6 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	# si aucune mesure ne correspond aux critères, un tableau vide est
 	# directement créé, sinon go
 
-	# FIXME:VLAD faire apparaître les champs de recherche par defaut
-
 	# nombre de secondes dans la période demandée
 	nbsbp <- switch(period,
 					h =60*60,

@@ -41,6 +41,10 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 		campagnes <- xrGetQuery(conn, query, resv3=TRUE)
 		# FIXME:ISEO intégrer dans les champs de recherche le LIBELLE et 
 		# son futur remplaçant --> réactiver le search.fields
+#		message("Champs disponibles pour la recherche : ",
+#				paste(collapse=', ', xrfields[[nv]]),
+#				"\nPar défaut : ",
+#				paste(collapse=', ', xrfields[[nv]][c(1)]))
 	} else campagnes <- xrGetQuery(conn, bquery, resv3=TRUE)
 
 	# TODO:  ajouter filtre stopDate, startDate / start - end dans le cadre de
