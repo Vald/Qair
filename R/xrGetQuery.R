@@ -35,7 +35,8 @@ collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
 #'  des noms de champs entre Qair v2 et l'API (Qair v3 donc)
 #' @export
 xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
-								'measure-groups', 'data')){
+								'measure-groups', 'data',
+								'equipments', 'trackMeasureEquipments')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# FIXME:VLAD modifier/intégrer les fonctions de incertR
@@ -119,6 +120,8 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 			nv3  = c('id', 'label', 'isNetworkGroup'),
 			type = c('character()', 'character()', 'numeric()')
 		  ))
+	}else if(name %in% c('equipments', 'trackMeasureEquipments')){
+		return(NULL)
 #	}else if(name == ''){
 #		return(data.frame(
 #			nv2  = c(),
@@ -166,6 +169,11 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	type   <- names(result)[[1]]
 	result <- result[[type]]
 	fields <- xrListFields(type)
+
+	if(is.null(fields)) {
+		options(stringsAsFactors = osaf)
+		return( result )
+	}
 
 	# TODO:VLAD mettre des types POSXIct pour les dates et traiter le cas ici
 	# TODO:VLAD mettre des types boolean pour le isNetworkGroup 
