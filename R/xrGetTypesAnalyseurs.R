@@ -51,13 +51,18 @@ xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 	ids <- lapply(analyseurs[['trackEquipments']], '[[', 'id_equipment')
 	ids <- unlist(ids)
 	query <- paste0('equipments?idEquipment=',
-					paste(ids, collapse=',')) # FIXME:ISEO
-	analyseurs <- xrGetQuery(conn, query, resv3=TRUE)
-	analyseurs <- as.list(analyseurs)
+					paste(ids, collapse=','),  # FIXME:ISEO
+					'&withDetail=1')
+	analyseursl <- xrGetQuery(conn, query, resv3=TRUE)
+	analyseursl <- data.frame(
+		id    = analyseursl[['id']],
+		idPhy = sapply(analyseursl[['physicals']], '[[', 'id'))
 
 	# réduction de la première liste en se basant sur les polluants -----------
 	# trouvés dans la seconde (de façon à ce que ça colle avec 
 	# la colonne idPhy)
+
+	# TODO: faire un match entre les deux
 
 	# Pour chaque mesure, création d'une data.frame 
 
