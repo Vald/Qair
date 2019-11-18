@@ -3,8 +3,14 @@
 #' Pour un usage interne uniquement
 #'
 #' @param conn Un objet de type 'xr' (\code{\link{xrConnect}})
+#' @param version booléen : faut-il retourner l'url pour récupérer la version ?
+#'  FALSE par défaut.
 #' @return une chaîne de caractères correspondant à la base de l'URL à requêter
-xrGetUrl <- function(conn){
+xrGetUrl <- function(conn, version=FALSE){
+	if(version)
+	return(sprintf('http%s://%s:%s/dms-api/version/',
+				   if(conn[['port']] == 8443) 's' else '',
+				   conn[['host']], conn[['port']])) else
 	return(sprintf('http%s://%s:%s/dms-api/public/v1/',
 				   if(conn[['port']] == 8443) 's' else '',
 				   conn[['host']], conn[['port']]))
@@ -44,23 +50,26 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 		return(data.frame(
 			nv2  = c('IDENTIFIANT', 'NSIT', 'ISIT', 'typologie', 'LATI', 'LONGI',
 					 'area', 'type', 'D_CREATION', 'D_ARRET', 'labelCommune', 
-					 'AXE', 'CODE_POSTAL'),
-			# en plus 'NSIT_PUBLIC', 'NOM_COURT_SIT', 'LAMBERTX', 'LAMBERTY',
-			# 'CLASSE_SITE', 'CODE', 'ISIT', 'ISIT_LONG'
+					 'AXE', 'CODE_POSTAL', 'ALTI'),
+			# en plus 'NSIT_PUBLIC', 'NOM_COURT_SIT', 'ISIT_LONG',
+			# 'LAMBERTX', 'LAMBERTY',
+			# 'CLASSE_SITE', en fait non
+			# 'CODE' euh non ... (Qu'est-ce ?)
 			nv3  = c('id', 'ref', 'label', 'class', 'latitude', 'longitude',
 					 'area', 'type', 'startDate', 'stopDate', 'labelCommune',
-					 'street', 'postCode'),
+					 'street', 'postCode', 'elevation'),
 			type = c('character()', 'character()', 'character()', 'numeric()',
 					 'numeric()', 'character()', 'character()', 'numeric()',
 					 'character()', 'character()', 'character()', 'character()',
-					 'numeric()')
+					 'numeric()', 'numeric()')
 		  ))
 	}else if(name == 'measures'){
 		return(data.frame(
 			nv2  = c('IDENTIFIANT', 'NOM_MES', 'id_site', 'UNITE', 'phy_name',
 					 'phy_comp_code', 'NOPOL', 'DERNIER_QH', 'D_VALIDATION',
 					 'D_VALIDATION_ENV', 'D_CREATION', 'D_ARRET', 'campaigns'),
-			# en plus 'NSIT', 'NOM_COURT_SIT', 'CMET'
+			# en plus 'NSIT', 'CMET', 'TYPE_ACQ'
+			# 'NOM_COURT_SIT' sinon récupérable
 			nv3  = c('id', 'label', 'id_site', 'unit', 'phy_name',
 					 'phy_comp_code', 'idPhy', 'lastDataDate', 'techValidationDate',
 					 'envValidationDate', 'startDate', 'stopDate', 'campaigns'),
@@ -79,44 +88,12 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 	}else if(name == 'physicals'){
 		return(data.frame(
 			nv2  = c('NOPOL', 'CCHIM', 'NCON'),
-			# , 'CODE_COMPLEMENTAIRE', 'TYPE_AGR', 'FCON', 'ECHELLE_MIN',
-			# 'ECHELLE_MAX', 'TIMESTAMP', 'CCHIM_COURT', 'LIB_ECHELLE',
-			# 'ECHELLE2_MIN', 'ECHELLE2_MAX', 'LIB_ECHELLE2', 'ECHELLE3_MIN',
-			# 'ECHELLE3_MAX', 'LIB_ECHELLE3', 'ECHELLE4_MIN', 'ECHELLE4_MAX',
-			# 'LIB_ECHELLE4', 'ECHELLE5_MIN', 'ECHELLE5_MAX', 'LIB_ECHELLE5',
-			# 'NO_CHRONO', 'SEUIL_30MIN', 'SEUIL_10MIN', 'SEUIL_24H', 'SEUIL_MAX',
-			# 'SEUIL_MIN', 'SEUIL_60MIN'),
 			nv3  = c('id', 'chemicalSymbol', 'label'),
 			type = c('character()', 'character()', 'character()')
 		  ))
 	}else if(name == 'measure-groups'){
 		return(data.frame(
 			nv2  = c('NOM_COURT_RES', 'NOM_RES', 'FLAG_RESEAURES'),
-			# , 'NRESSURV', 'R_CREATEUR', 'R_TYPE',
-			# 'TYPEVALIDATION', 'TYPESUIVICAL', 'TYPESAISIEIMPORT', 'TYPESCRUTATION',
-			# 'TYPEEXPLOITATION', 'TYPECONSULTATION', 'TYPEEXPORT', 'TYPEADEME',
-			# 'TYPEALERTE', 'TYPEPERMANENT', 'TYPESPECIFIQUE1', 'TYPESPECIFIQUE2',
-			# 'TYPESPECIFIQUE3', 'DIFFUSIONPUBLIQUE', 'NCARTE', 'NOM_COURT_ALERTE',
-			# 'MAIL', 'STEP', 'D_CREATION', 'MOT_PASSE', 'TIMESTAMP',
-			# 'FLAG_CONTROL_R', 'EVT_ALR_DIR', 'SORTIE_ALR_DIR', 'EVT_ALR_INTER',
-			# 'SORTIE_ALR_INTER', 'EVT_ALR_FINALE', 'SORTIE_ALR_FINALE',
-			# 'APP_DEP_SEUIL_MAX', 'DISP_DEP_SEUIL_MAX', 'SORTIE_SEUIL_MAX',
-			# 'EVT_APP_ARRET_4H', 'EVT_DISP_ARRET_4H', 'SORTIE_ARRET_4H',
-			# 'EVT_APP_ARRET_JOUR', 'EVT_DISP_ARRET_JOUR', 'SORTIE_ARRET_JOUR',
-			# 'EVT_APP_ARRET_T2S', 'EVT_DISP_ARRET_T2S', 'SORTIE_ARRET_T2S',
-			# 'FLAG_CONTROL_4H', 'FLAG_CONTROL_60H', 'FLAG_INVAL_JOUR', 'FLAG_INVAL_AN',
-			# 'FLAG_CONTROL_MAX', 'SEUIL_ALR_INTER', 'FLAG_10H_UNAVAIL_CONT',
-			# 'FLAG_60H_YEAR_UNAVAIL', 'FLAG_T2S', 'D_START_MONTH_DAY', 'D_START_CTRL',
-			# 'EVT_APP_LAST_AVG_INV', 'EVT_DISP_LAST_AVG_INV', 'SORTIE_LAST_AVG_INV',
-			# 'EVT_APP_STOP_FEED', 'EVT_DISP_STOP_FEED', 'SORTIE_STOP_FEED',
-			# 'EVT_APP_60H_OVERRUN', 'EVT_DISP_60H_OVERRUN', 'SORTIE_60H_OVERRUN',
-			# 'EVT_APP_60H_YEAR_UNAVAIL', 'EVT_DISP_60H_YEAR_UNAVAIL', 'SORTIE_60H_YEAR_UNAVAIL',
-			# 'EVT_APP_10H_UNAVAIL_CONT', 'EVT_DISP_10H_UNAVAIL_CONT', 'SORTIE_10H_UNAVAIL_CONT',
-			# 'EVT_APP_T2S_LAST', 'EVT_DISP_T2S_LAST', 'SORTIE_T2S_LAST',
-			# 'EVT_APP_LIMIT_MAX_LAST', 'EVT_DISP_LIMIT_MAX_LAST', 'SORTIE_LIMIT_MAX_LAST',
-			# 'EVT_APP_10_DAYS_INVALID', 'EVT_DISP_10_DAYS_INVALID', 'SORTIE_10_DAYS_INVALID',
-			# 'EVT_DISP_DIR', 'EVT_DISP_INTER', 'EVT_DISP_FINALE', 'EVT_APP_4H_OVERRUN_CONT',
-			# 'EVT_DISP_4H_OVERRUN_CONT', 'SORTIE_4H_OVERRUN_CONT'
 			nv3  = c('id', 'label', 'isNetworkGroup'),
 			type = c('character()', 'character()', 'numeric()')
 		  ))

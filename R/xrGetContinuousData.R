@@ -241,7 +241,6 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		#----------------------------------------------------------------------
 		# mise en forme des donnees -------------------------------------------
 
-		# FIXME:ISEO colonne advalValidated vs validated == 1 ?
 		# FIXME:ISEO dans le comportement 'normal', toutes les mesures sont
 		#  indépendamment du fait qu'elles soient validées ou non.
 		#  --> ajouter un argument qui permette de faire le tri (pbm :
