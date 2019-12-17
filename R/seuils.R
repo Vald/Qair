@@ -1,3 +1,4 @@
+# TODO: remplacer 0.9 par 0.85
 #' Affichage des objets de classe seuil (classe S3)
 #'
 #' @method print seuil
