@@ -8,7 +8,7 @@ Depends:
 Suggests:
     RODBC (>= 1.3.6),
     RJDBC (>= 0.2-1),
-    ROracle (>= 1.1-8),rgdal,RCurl,rjson,XML,utils
+    ROracle (>= 1.1-8),rgdal,RCurl,rjson,XML,utils,openxlsx
 LazyData: true
 Author: Vladislav Navel
 Maintainer: Vladislav Navel <vnavel@yahoo.fr>

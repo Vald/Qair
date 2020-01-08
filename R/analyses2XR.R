@@ -38,7 +38,7 @@ analyses2XR <- function(fichier, nreseau, labo, fichier_export=NULL, sheet=1, st
 
 	# fonction interne --------------------------------------------------------
 
-	wt <- function(x, file, append=TRUE) write.table(
+	wt <- function(x, file, append=TRUE) utils::write.table(
 		x = x, file = file, col.names = FALSE, row.names = FALSE,
 		append = append, quote = FALSE, fileEncoding = "UTF8", eol = '\r\n')
 
