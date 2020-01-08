@@ -4,9 +4,14 @@
 \alias{validation.reglementaire}
 \title{Applique strictement des seuils reglementaires a des valeurs donnees}
 \usage{
-validation.reglementaire(x, seuils, etapes = c("preparation.calcul",
-  "preparation.comparaison", "comparaison"), resultat = c("detail",
-  "comparaison"), check.720 = TRUE, ...)
+validation.reglementaire(
+  x,
+  seuils,
+  etapes = c("preparation.calcul", "preparation.comparaison", "comparaison"),
+  resultat = c("detail", "comparaison"),
+  check.720 = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{jeu de données (\code{\link[timetools]{TimeIntervalDataFrame-class}})

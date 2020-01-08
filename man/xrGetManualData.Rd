@@ -4,10 +4,20 @@
 \alias{xrGetManualData}
 \title{Fonction pour recuperer des donnees manuelles de XR}
 \usage{
-xrGetManualData(conn, start, end, sites = NULL, polluants = NULL,
-  methodes = NULL, valid.states = c("A", "L", "U"), what = c("value",
-  "state", "both"), campagnes = NULL, tz = "UTC", cursor = NULL,
-  categories = as.character(0:4))
+xrGetManualData(
+  conn,
+  start,
+  end,
+  sites = NULL,
+  polluants = NULL,
+  methodes = NULL,
+  valid.states = c("A", "L", "U"),
+  what = c("value", "state", "both"),
+  campagnes = NULL,
+  tz = "UTC",
+  cursor = NULL,
+  categories = as.character(0:4)
+)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

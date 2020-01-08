@@ -4,8 +4,13 @@
 \alias{preparation.base}
 \title{Mise en forme des donnees avant calculs reglementaires}
 \usage{
-preparation.base(x, seuil, base = c("calcul", "comparaison"),
-  check.720 = TRUE, ...)
+preparation.base(
+  x,
+  seuil,
+  base = c("calcul", "comparaison"),
+  check.720 = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{jeu de données (\code{\link[timetools]{TimeIntervalDataFrame-class}})

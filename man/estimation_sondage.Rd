@@ -4,8 +4,14 @@
 \alias{estimation_sondage}
 \title{Calcul de moyenne par application des methodes issues des plans de sondage}
 \usage{
-estimation_sondage(echantillon, auxiliaire, redressement = NULL,
-  iso = NULL, grappe = "grappe", strate = "strate")
+estimation_sondage(
+  echantillon,
+  auxiliaire,
+  redressement = NULL,
+  iso = NULL,
+  grappe = "grappe",
+  strate = "strate"
+)
 }
 \arguments{
 \item{echantillon}{\code{\link[=TimeIntervalDataFrame-class]{TimeIntervalDataFrame}}

@@ -4,10 +4,22 @@
 \alias{xrGetScan}
 \title{Fonction pour recuperer des donnees scan de XR}
 \usage{
-xrGetScan(conn, pattern = NULL, start, end, search.fields,
-  campagnes = NULL, reseaux = NULL, stations = NULL,
-  polluants = NULL, collapse = c("AND", "OR"), XR6 = TRUE,
-  tz = "UTC", cursor = NULL, exact = FALSE)
+xrGetScan(
+  conn,
+  pattern = NULL,
+  start,
+  end,
+  search.fields,
+  campagnes = NULL,
+  reseaux = NULL,
+  stations = NULL,
+  polluants = NULL,
+  collapse = c("AND", "OR"),
+  XR6 = TRUE,
+  tz = "UTC",
+  cursor = NULL,
+  exact = FALSE
+)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

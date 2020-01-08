@@ -1,3 +1,5 @@
+setOldClass('RODBC')
+
 #' extends dbListFields for RODBC objects
 #' @inheritParams DBI::dbListFields
 #' @param \dots pour compatibiltié avec la méthode générique

@@ -4,9 +4,19 @@
 \alias{plot.rosevent}
 \title{Trace des roses des vents}
 \usage{
-\method{plot}{rosevent}(x, y, col, border, density = -1, rlim = NULL,
-  centre = list(x = 0, y = 0), pas.rose = 1, facteur = 1,
-  add = FALSE, ...)
+\method{plot}{rosevent}(
+  x,
+  y,
+  col,
+  border,
+  density = -1,
+  rlim = NULL,
+  centre = list(x = 0, y = 0),
+  pas.rose = 1,
+  facteur = 1,
+  add = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{liste contenant la structure \sQuote{rose} à représenter. Cette

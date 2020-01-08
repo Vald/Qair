@@ -4,9 +4,15 @@
 \alias{xrGetCampagnes}
 \title{Recuperation des campagnes de mesures definies dans une base XR}
 \usage{
-xrGetCampagnes(conn, pattern = NULL, search.fields = c("NOM_COURT_CM",
-  "LIBELLE"), start = NULL, end = NULL, fields = NULL,
-  exact = FALSE)
+xrGetCampagnes(
+  conn,
+  pattern = NULL,
+  search.fields = c("NOM_COURT_CM", "LIBELLE"),
+  start = NULL,
+  end = NULL,
+  fields = NULL,
+  exact = FALSE
+)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

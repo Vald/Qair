@@ -4,9 +4,17 @@
 \alias{xrGetStations}
 \title{Recuperation des stations de mesures definies dans une base XR}
 \usage{
-xrGetStations(conn, pattern = NULL, search.fields = c("IDENTIFIANT",
-  "NOM_COURT_SIT"), campagnes = NULL, reseaux = NULL, fields = NULL,
-  mesures = NULL, collapse = c("AND", "OR"), exact = FALSE)
+xrGetStations(
+  conn,
+  pattern = NULL,
+  search.fields = c("IDENTIFIANT", "NOM_COURT_SIT"),
+  campagnes = NULL,
+  reseaux = NULL,
+  fields = NULL,
+  mesures = NULL,
+  collapse = c("AND", "OR"),
+  exact = FALSE
+)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

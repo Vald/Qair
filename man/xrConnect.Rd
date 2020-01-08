@@ -9,8 +9,15 @@
 \alias{Xair.dsn}
 \title{Initialisation d'une connexion a une base XR.}
 \usage{
-xrConnect(dsn = NULL, uid = NULL, pwd = NULL, host = NULL,
-  ojdbc = NULL, drv.type = NULL, believeNRows = TRUE)
+xrConnect(
+  dsn = NULL,
+  uid = NULL,
+  pwd = NULL,
+  host = NULL,
+  ojdbc = NULL,
+  drv.type = NULL,
+  believeNRows = TRUE
+)
 }
 \arguments{
 \item{dsn}{Nom de la base de données (cf le pilote concerné, JDBC, ODBC ou Oracle).

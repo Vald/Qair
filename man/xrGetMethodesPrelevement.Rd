@@ -4,9 +4,14 @@
 \alias{xrGetMethodesPrelevement}
 \title{Recuperation des methodes de prelevement manuels definies dans une base XR}
 \usage{
-xrGetMethodesPrelevement(conn, pattern = NULL,
-  search.fields = c("LIBELLE"), fields = NULL, collapse = c("AND",
-  "OR"), exact = FALSE)
+xrGetMethodesPrelevement(
+  conn,
+  pattern = NULL,
+  search.fields = c("LIBELLE"),
+  fields = NULL,
+  collapse = c("AND", "OR"),
+  exact = FALSE
+)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

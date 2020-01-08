@@ -4,8 +4,7 @@
 \alias{agolGetData}
 \title{Fonction qui se connecte à ArcGIS online, sur les flux ASQAAs}
 \usage{
-agolGetData(aasqa, flux, where = "1=1", outFields = "*",
-  getGeometry = TRUE)
+agolGetData(aasqa, flux, where = "1=1", outFields = "*", getGeometry = TRUE)
 }
 \arguments{
 \item{aasqa}{identifiant 'codé' de l'AASQA correspondant à ses URLs ArcGIS.

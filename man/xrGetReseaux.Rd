@@ -4,8 +4,13 @@
 \alias{xrGetReseaux}
 \title{Recuperation des reseaux de mesures definis dans une base XR}
 \usage{
-xrGetReseaux(conn, pattern = NULL, search.fields = c("NOM_COURT_RES",
-  "NOM_RES"), fields = NULL, exact = FALSE)
+xrGetReseaux(
+  conn,
+  pattern = NULL,
+  search.fields = c("NOM_COURT_RES", "NOM_RES"),
+  fields = NULL,
+  exact = FALSE
+)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}

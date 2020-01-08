@@ -4,14 +4,34 @@
 \alias{plot.rose}
 \title{Trace des roses de concentrations (moyennes, maximales, etc.)}
 \usage{
-\method{plot}{rose}(x, y, col, border, density = -1, rlim = NULL,
-  at.rho = NULL, unite = "", labels.rho = NULL, col.rho,
-  lwd.rho = 1, lty.rho = 2, expr.rho = FALSE, cex.rho = 1,
-  theta.rho = sample(360, 1), at.theta = 0:7 * 45,
+\method{plot}{rose}(
+  x,
+  y,
+  col,
+  border,
+  density = -1,
+  rlim = NULL,
+  at.rho = NULL,
+  unite = "",
+  labels.rho = NULL,
+  col.rho,
+  lwd.rho = 1,
+  lty.rho = 2,
+  expr.rho = FALSE,
+  cex.rho = 1,
+  theta.rho = sample(360, 1),
+  at.theta = 0:7 * 45,
   labels.theta = c("N", "NE", "E", "SE", "S", "SO", "O", "NO"),
-  nb.theta = 360, col.theta, lwd.theta = 1, lty.theta = 2,
-  centre = list(x = 0, y = 0), pas.rose = 1, facteur = 1,
-  add = FALSE, ...)
+  nb.theta = 360,
+  col.theta,
+  lwd.theta = 1,
+  lty.theta = 2,
+  centre = list(x = 0, y = 0),
+  pas.rose = 1,
+  facteur = 1,
+  add = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{liste contenant la structure \sQuote{rose} à représenter. Cette

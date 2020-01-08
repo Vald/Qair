@@ -4,16 +4,18 @@
 \alias{seuils}
 \title{Seuils reglementaires pour la qualite de l'air}
 \usage{
-seuils(type = c("objectif de qualité",
-  "seuil d'information et de recommandation", "seuil d'alerte",
-  "valeur limite", "niveau critique", "valeur cible",
-  "seuil d'évaluation inférieur", "seuil d'évaluation supérieur"),
+seuils(
+  type = c("objectif de qualité", "seuil d'information et de recommandation",
+    "seuil d'alerte", "valeur limite", "niveau critique", "valeur cible",
+    "seuil d'évaluation inférieur", "seuil d'évaluation supérieur"),
   protection = c("la santé humaine", "la végétation",
-  "la mise en oeuvre progressive de mesures d'urgence"),
-  polluant = c("03", "12", "24", "39", "19", "AA", "01", "08", "04",
-  "V4", "80", "AH", "82", "AJ", "87", "AC", "P6"), cchim = c("NO2",
-  "NOx", "PM10", "PM2.5", "Plomb", "SO2", "O3", "CO", "C6H6", "Arsenic",
-  "Cadmium", "Nickel", "B(a)P"), sites = typologies)
+    "la mise en oeuvre progressive de mesures d'urgence"),
+  polluant = c("03", "12", "24", "39", "19", "AA", "01", "08", "04", "V4", "80", "AH",
+    "82", "AJ", "87", "AC", "P6"),
+  cchim = c("NO2", "NOx", "PM10", "PM2.5", "Plomb", "SO2", "O3", "CO", "C6H6",
+    "Arsenic", "Cadmium", "Nickel", "B(a)P"),
+  sites = typologies
+)
 }
 \arguments{
 \item{type}{type du seuil recherché : "objectif de qualité",

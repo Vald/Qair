@@ -4,8 +4,15 @@
 \alias{indicesXR2R}
 \title{Recuperation des indices de qualite de l'air}
 \usage{
-indicesXR2R(conn, agglos, start, end, detail = FALSE,
-  format = c("type", "agglo", "aucun"), type = c("C", "P"))
+indicesXR2R(
+  conn,
+  agglos,
+  start,
+  end,
+  detail = FALSE,
+  format = c("type", "agglo", "aucun"),
+  type = c("C", "P")
+)
 }
 \arguments{
 \item{conn}{une connexion valide telle que retournée par \code{\link{xrConnect}}.}
