@@ -23,5 +23,7 @@ du nom du flux tel qu'il apparaît dans les URLs des flux WFS. Par exemple
 Fonction pour lister les champs d'un flux
 }
 \examples{
+\dontrun{
 agolListFields(aasqa='AQwB7zFo5jNpvM0X', flux='ind_nouvelle_aquitaine')
+}
 }

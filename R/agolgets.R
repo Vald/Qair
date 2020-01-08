@@ -24,12 +24,14 @@
 #'  récupérer. La valeur par défaut '*' signifie 'tous'.
 #' @param getGeometry Si TRUE, un Spatial*DataFrame est retourné, sinon une data.frame.
 #' @examples
+#' \dontrun{
 #' ingeom <- agolGetData(aasqa='AQwB7zFo5jNpvM0X', flux='ind_nouvelle_aquitaine',
 #'                        where="date%20IN%20('2018-09-17','2018-09-18','2018-09-19')")
 #' indice <- agolGetData(aasqa='AQwB7zFo5jNpvM0X', flux='ind_nouvelle_aquitaine',
 #'                        outFields=c('lib_zone', 'date', 'valeur'),
 #'                        where="date%20IN%20('2018-09-17','2018-09-18','2018-09-19')",
 #'                        getGeometry=FALSE)
+#' }
 agolGetData <- function(aasqa, flux, where='1=1', outFields='*', getGeometry=TRUE) {
     loadNamespace('rgdal')
     loadNamespace('RCurl')
@@ -80,7 +82,9 @@ agolGetData <- function(aasqa, flux, where='1=1', outFields='*', getGeometry=TRU
 #'  "https://dservices1.arcgis.com/AQwB7zFo5jNpvM0X/arcgis/services/ind_nouvelle_aquitaine/WFSSe..."
 #' @inheritParams agolGetData
 #' @examples
+#' \dontrun{
 #' agolListFields(aasqa='AQwB7zFo5jNpvM0X', flux='ind_nouvelle_aquitaine')
+#' }
 agolListFields <- function(aasqa, flux) {
     loadNamespace('RCurl')
     loadNamespace('XML')

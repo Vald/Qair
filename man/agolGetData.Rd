@@ -37,10 +37,12 @@ cela permet un gain de temps significatif quand seules quelques valeurs sont
 recherchées.
 }
 \examples{
+\dontrun{
 ingeom <- agolGetData(aasqa='AQwB7zFo5jNpvM0X', flux='ind_nouvelle_aquitaine',
                        where="date\%20IN\%20('2018-09-17','2018-09-18','2018-09-19')")
 indice <- agolGetData(aasqa='AQwB7zFo5jNpvM0X', flux='ind_nouvelle_aquitaine',
                        outFields=c('lib_zone', 'date', 'valeur'),
                        where="date\%20IN\%20('2018-09-17','2018-09-18','2018-09-19')",
                        getGeometry=FALSE)
+}
 }
