@@ -17,6 +17,7 @@ export (xrGetQuery, xrConnect,
 	xrGetCampagnes, xrGetReseaux, xrGetStations, xrGetMesures, xrGetPolluants,
 	xrGetSitesPrelevement, xrGetMethodesPrelevement,
 	xrGetContinuousData, xrGetManualData, xrGetScan,
+	xrGetTypesAnalyseurs,
 	Xair2R, indicesXR2R, plot.indice, indicesXR2Rlong,
     agolGetData, agolListFields, analyses2XR)
 

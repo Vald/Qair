@@ -4,7 +4,9 @@
 \name{typologies}
 \alias{typologies}
 \title{liste les differentes typologie de site possible}
-\format{An object of class \code{character} of length 6.}
+\format{
+An object of class \code{character} of length 6.
+}
 \usage{
 typologies
 }

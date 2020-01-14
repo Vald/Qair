@@ -8,7 +8,17 @@
 \alias{m}
 \alias{y}
 \title{definition d'un raccourci pour les heures et les quart-d'heures}
-\format{An object of class \code{POSIXctp} of length 1.}
+\format{
+An object of class \code{POSIXctp} of length 1.
+
+An object of class \code{POSIXctp} of length 1.
+
+An object of class \code{POSIXctp} of length 1.
+
+An object of class \code{POSIXctp} of length 1.
+
+An object of class \code{POSIXctp} of length 1.
+}
 \usage{
 qh
 
