@@ -100,9 +100,10 @@
 #' @param exact booléen indiquant si les mesures à rapatrier doivent être 
 #' 	exactement identiques à \sQuote{pattern} ou si \sQuote{pattern} doit 
 #' 	être utilisé dans une expression régulière. Dans le cas d'une connexion v3, 
-#'  exact=TRUE prendra en compte les % et les ? (comme dans la doc de l'API), 
+#'  exact=TRUE prendra en compte les symboles \sQuote{pourcent} et
+#'  \sQuote{point d'interrogation} (comme dans la doc de l'API), 
 #'  exact=FALSE fera une recherche 'large' exactement comme pour la v2
-#'  (concrètement en ajoutant % avant et après la chaîne recherchée).
+#'  (concrètement en ajoutant \sQuote{pourcent} avant et après la chaîne recherchée).
 #' @param validOnly (v3) La recherche doit-elle porter uniquement sur les
 #'  mesures ouvertes ?
 #'
