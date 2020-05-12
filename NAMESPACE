@@ -2,11 +2,7 @@
 useDynLib(Qair, .registration = TRUE, .fixes = "C_")
 
 # import des dependances
-import (timetools, jsonlite, httr)
-# a supprimer
-importMethodsFrom(DBI, dbListFields, dbDisconnect, dbConnect, dbGetQuery)
-# probablement a supprimer
-import (methods)
+import (timetools, jsonlite, httr, methods)
 
 # on garde
 importFrom("grDevices", "colorRampPalette", "colors", "hsv")
@@ -17,12 +13,12 @@ importFrom("utils", "URLencode")
 exportMethods (dbListFields, dbDisconnect)
 
 # liens avec une base XR
-export ( xrGetQuery, xrConnect,
+export (xrGetQuery, xrConnect,
 	xrGetCampagnes, xrGetReseaux, xrGetStations,
 	xrGetMesures, xrGetPolluants,
 	xrGetSitesPrelevement, xrGetMethodesPrelevement,
 	xrGetContinuousData, xrGetManualData,
-	Xair2R, indicesXR2R, plot.indice, indicesXR2Rlong,
+	indicesXR2R, plot.indice, indicesXR2Rlong,
     agolGetData, agolListFields)
 
 # outils divers
