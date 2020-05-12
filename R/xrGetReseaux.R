@@ -72,7 +72,7 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 		all.reseaux <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
 			if(!exact)
-				selection <- sapply(pattern, grep, all.reseaux[[sf]]) else {
+				selection <- sapply(pattern, grep, all.reseaux[[sf]]) else {
 				if(conn[['version']] == 2){
 					selection <- match(pattern, all.reseaux[[sf]])
 				} else {
