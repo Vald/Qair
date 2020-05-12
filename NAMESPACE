@@ -18,8 +18,7 @@ export (xrGetQuery, xrConnect,
 	xrGetMesures, xrGetPolluants,
 	xrGetSitesPrelevement, xrGetMethodesPrelevement,
 	xrGetContinuousData, xrGetManualData,
-	indicesXR2R, plot.indice, indicesXR2Rlong,
-    agolGetData, agolListFields)
+	indicesXR2R, plot.indice, indicesXR2Rlong)
 
 # outils divers
 export (slide, qh, h, estimation_sondage)
