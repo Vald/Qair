@@ -1,9 +1,5 @@
 library (Qair)
-options(Xair.host = '172.16.16.16',
-	Xair.dsn = 'N09',
-	Xair.uid = 'vlad',
-	Xair.pwd = 'vlad',
-	Xair.drv='oracle')
+options(Xair.host='xair.atmo-na.org', Xair.version=2, Xair.port=8443)
 
 # test des calculs de valeurs réglementaires
 #===========================================
