@@ -75,7 +75,7 @@ xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 	analyseurs <- lapply(analyseurs, function(x)
 						 TimeInstantDataFrame(c(debut, x$date[-1]), data=x))
 
-	if(!resv3 & nv == 'nv2') analyseurs <- lapply(analyseurs, names<-, 'MODELE')
+	if(!resv3 & nv == 'nv2') analyseurs <- lapply(analyseurs, 'names<-', 'MODELE')
 
 	return (analyseurs)
 }

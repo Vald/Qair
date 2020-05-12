@@ -17,8 +17,8 @@ importFrom("utils", "URLencode")
 exportMethods (dbListFields, dbDisconnect)
 
 # liens avec une base XR
-export ( #xrGetQuery, #xrConnect,
-	xrGetCampagnes, xrGetReseaux, #xrGetStations,
+export ( xrGetQuery, xrConnect,
+	xrGetCampagnes, xrGetReseaux, xrGetStations,
 	xrGetMesures, xrGetPolluants,
 	xrGetSitesPrelevement, xrGetMethodesPrelevement,
 	xrGetContinuousData, xrGetManualData,
