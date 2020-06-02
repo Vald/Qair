@@ -17,6 +17,8 @@
 #' @param version Version de Qair avec laquelle doivent être compatibles les résultats
 #'  des requêtes : 2 -> avec Qair_2* (rétro-compatibilité), 3 sinon.
 #'	optionnel : sera demandé si nécessaire.
+#' @param debug Si TRUE, chaque requête http envoyée est affichée dans le terminal.
+#'  FALSE par defaut. Peut être spécifié via l'option Xair.debug.
 #' @return Une connexion à la base XR (il s'agit en fait d'une liste avec 'host' et
 #'  'port'. Cela permet de gérer plusieurs 'connexion' simultanément et de mimer
 #'  le comportement de Qair2).
@@ -31,7 +33,9 @@
 #' xrConnect()
 #'}
 #' @export
-xrConnect <- function(host=NULL, port=NULL, version=NULL) {
+xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL) {
+	if(!is.null(debug)) options(Xair.debug=debug)
+
 	if(!is.null(host)) {
 		options(Xair.host=host)
 	} else if(is.null(getOption('Xair.host'))) {
