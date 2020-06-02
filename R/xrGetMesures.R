@@ -23,7 +23,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('measures?')
+	bquery <- sprintf('v2/measures?')
 
 	# récupération des champs possibles de recherches (dépend de la version de
 	# Qair)

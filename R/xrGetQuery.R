@@ -11,7 +11,7 @@ xrGetUrl <- function(conn, version=FALSE){
 	return(sprintf('http%s://%s:%s/dms-api/version/',
 				   if(conn[['port']] == 8443) 's' else '',
 				   conn[['host']], conn[['port']])) else
-	return(sprintf('http%s://%s:%s/dms-api/public/v1/',
+	return(sprintf('http%s://%s:%s/dms-api/public/',
 				   if(conn[['port']] == 8443) 's' else '',
 				   conn[['host']], conn[['port']]))
 }

@@ -39,7 +39,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('sites?')
+	bquery <- sprintf('v2/sites?')
 
 	# récupération des champs possibles de recherches (dépend de la version de
 	# Qair)

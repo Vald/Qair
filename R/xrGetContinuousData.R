@@ -142,7 +142,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	}
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('data?')
+	bquery <- sprintf('v2/data?')
 
 	# traitement des dates de debut et de fin ---------------------------------
 	# si debut et fin ne sont pas en POSIXct, conversion

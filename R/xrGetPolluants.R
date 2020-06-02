@@ -19,7 +19,7 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('physicals?')
+	bquery <- sprintf('v1/physicals?')
 
 	# récupération des champs possibles de recherches (dépend de la version de
 	# Qair)

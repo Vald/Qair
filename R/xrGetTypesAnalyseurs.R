@@ -40,7 +40,7 @@ xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 
 	# récupération de la liste des analyseurs par mesure ----------------------
 
-	query <- paste0('trackMeasureEquipments?measure=',
+	query <- paste0('v1/trackMeasureEquipments?measure=',
 					paste(x[['id']], collapse=','), # FIXME:ISEO
 					'&from=', from, '&to=', to)
 	analyseurs <- xrGetQuery(conn, query, resv3=TRUE)
