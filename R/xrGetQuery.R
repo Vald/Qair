@@ -8,7 +8,7 @@
 #' @return une chaîne de caractères correspondant à la base de l'URL à requêter
 xrGetUrl <- function(conn, version=FALSE){
 	if(version)
-	return(sprintf('http%s://%s:%s/dms-api/version/',
+	return(sprintf('http%s://%s:%s/dms-api/version',
 				   if(conn[['port']] == 8443) 's' else '',
 				   conn[['host']], conn[['port']])) else
 	return(sprintf('http%s://%s:%s/dms-api/public/',
