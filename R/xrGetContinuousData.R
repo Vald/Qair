@@ -201,8 +201,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	q$end	<- sprintf ("TO_DATE('%s', 'YYYY-MM-DD')", q$end)
 
 	# la requete a proprement parler. C'est presque decevant tellement ça devient lisible :)
-	query <- sprintf ('SELECT %s FROM %s WHERE NOM_COURT_MES IN (%s) AND %s BETWEEN %s AND %s',
-			  q$fields, q$table, q$mesures, q$date, q$start, q$end)
+	query <- sprintf ("SELECT %s FROM %s WHERE NOM_COURT_MES IN (%s) AND %s BETWEEN %s AND %s
+					  AND  TO_CHAR(%s,'HH24')='00'",
+			  q$fields, q$table, q$mesures, q$date, q$start, q$end, q$date)
 
 	data <- xrGetQuery (conn, query)
 	names (data)[2] <- 'DATE'

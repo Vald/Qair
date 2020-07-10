@@ -5,6 +5,12 @@ pour les utilisateurs d'une version de R < 3.5 (3.4.3 par exemple), il faut
 télécharger le fichier winbin-R3.4.4-Qair_2.14.*.zip et le renommmer en
 Qair_2.14.*.zip avant de l'installer.
 
+----------  Qair v2.20.1
+Si la table JOURNALIER est utilisée pour stocker des données non-standard 
+(10min par exemple), cela créé une incohérence dans les requêtes vers la 
+base et un résultat erroné.
+Erreur détectée et corrigée par Serge Rapenne.
+
 ----------  Qair v2.20.0
 Mise à jour des critères de représentativité pour le calcul des valeurs pour comparaison
 aux seuils réglementaires (fonctions seuils() , validation.reglementaire() , etc.).
