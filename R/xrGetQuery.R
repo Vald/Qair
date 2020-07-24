@@ -47,20 +47,30 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 	if(name == 'sites'){
 		# FIXME:VLAD modifier/intégrer les fonctions de incertR
 		# FIXME:ISEO il manque des champs cf correspondance commentées
+		# quand le json n'est pas un simple vecteur mais un dictionnaire en
+		# cascade : utiliser '.' pour accéder à l'élément voulu (par exemple
+		# environment:classTypeLabel)
+		# FIXME: faire en sorte que les champs qui ne sont que dans l'API n'aient
+		# pas besoin d'être indiqué dans la partie nv2 ...
 		return(data.frame(
-			nv2  = c('IDENTIFIANT', 'NSIT', 'ISIT', 'typologie', 'LATI', 'LONGI',
+			nv2  = c('IDENTIFIANT', 'NSIT', 'ISIT', 'typologie',
+					 'LATI', 'LONGI', 'ALTI',
 					 'area', 'type', 'D_CREATION', 'D_ARRET', 'labelCommune', 
-					 'AXE', 'CODE_POSTAL', 'ALTI'),
-			# en plus 'NSIT_PUBLIC', 'NOM_COURT_SIT', 'ISIT_LONG',
-			# 'LAMBERTX', 'LAMBERTY',
-			# 'CLASSE_SITE', en fait non
+					 'AXE', 'CODE_POSTAL', 'ALTI', 'NSIT_PUBLIC',
+					 'ISIT_LONG', 'LAMBERTX', 'LAMBERTY'),
+			# en plus 'NOM_COURT_SIT',
+			 # 'CLASSE_SITE', en fait non
 			# 'CODE' euh non ... (Qu'est-ce ?)
-			nv3  = c('id', 'ref', 'label', 'class', 'latitude', 'longitude',
+			nv3  = c('id', 'refSite', 'labelSite', 'environment.classTypeLabel',
+					 'address.latitude', 'address.longitude', 'address.altitude',
 					 'area', 'type', 'startDate', 'stopDate', 'labelCommune',
-					 'street', 'postCode', 'elevation'),
+					 'street', 'postCode', 'elevation', 'refSitePublic',
+					 'labelSiteExtended', 'address.mapCoordinateX', 'address.mapCoordinateY'),
 			type = c('character()', 'character()', 'character()', 'numeric()',
-					 'numeric()', 'character()', 'character()', 'numeric()',
+					 'numeric()', 'numeric()',
+					 'character()', 'character()', 'numeric()',
 					 'character()', 'character()', 'character()', 'character()',
+					 'numeric()', 'numeric()', 'character()', 'character()',
 					 'numeric()', 'numeric()')
 		  ))
 	}else if(name == 'measures'){
@@ -162,6 +172,19 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 		result   <- do.call(data.frame, f)
 	}
 
+	# traitement des réponses quand il y a des champs complexes ---------------
+	# (le json n'est pas juste un vecteur ...)
+
+	compounded <- names(result)[!sapply(result, is.vector)]
+	if(length(compounded) > 0) {
+		# definition des noms des champs récursifs
+		flatnames <- sapply(compounded, function(x) paste(sep='.', x, names(result[[x]])))
+		# affectation des valeurs aux champs en question
+		result[unlist(flatnames)] <- unlist(result[names(flatnames)], FALSE)
+		# suppression des champs complexes
+		result[compounded] <- NULL
+	}
+
 	# traitement des cas specifiques ------------------------------------------
 
 	#if(type == 'sites'){
@@ -171,7 +194,8 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	# gestion si compatibilité v2 et fin --------------------------------------
 
 	if(!resv3 & conn[['version']] == 2)
-		names(result) <- fields[['nv2']][match(names(result), fields[['nv3']])]
+		names(result) <- fields[['nv2']][
+			match(names(result), gsub(':', '.', fields[['nv3']]))]
 
 	options(stringsAsFactors = osaf)
 	return( result )
