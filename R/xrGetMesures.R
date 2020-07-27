@@ -23,7 +23,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('v2/measures?')
+	bquery <- sprintf('v2/measures?showDbRowIds=true&')
 
 	# récupération des champs possibles de recherches (dépend de la version de
 	# Qair)
@@ -33,11 +33,11 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 
 	xrfields <- xrListFields ('measures')
 	if(is.null(search.fields)){
-		search.fields <- c('id')#FIXME:ISEO mettre le remplacant de NOM_COURT_MES en plus
+		search.fields <- c('id','dbRowId')
 		message("Champs disponibles pour la recherche : ",
 				paste(collapse=', ', xrfields[[nv]]),
 				"\nPar défaut : ",
-				paste(collapse=', ', xrfields[[nv]][c(1)]))
+				paste(collapse=', ', xrfields[[nv]][1:2]))
 	}else{
 		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
 		if(conn[['version']] == 2)

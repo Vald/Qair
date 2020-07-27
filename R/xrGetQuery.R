@@ -46,54 +46,93 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# FIXME:VLAD modifier/intégrer les fonctions de incertR
-		# FIXME:ISEO il manque des champs cf correspondance commentées
 		# quand le json n'est pas un simple vecteur mais un dictionnaire en
 		# cascade : utiliser '.' pour accéder à l'élément voulu (par exemple
 		# environment:classTypeLabel)
-		# FIXME: faire en sorte que les champs qui ne sont que dans l'API n'aient
-		# pas besoin d'être indiqué dans la partie nv2 ...
 		return(data.frame(
-			nv2  = c('IDENTIFIANT', 'NSIT', 'ISIT', 'typologie',
+			nv2  = c('IDENTIFIANT','NOM_COURT_SIT','NSIT','ISIT',
+					 'D_CREATION','D_ARRET',
+					 'NSIT_PUBLIC','ISIT_LONG',
+					 'address.commune.labelCommune','address.commune.id', 
 					 'LATI', 'LONGI', 'ALTI',
-					 'area', 'type', 'D_CREATION', 'D_ARRET', 'labelCommune', 
-					 'AXE', 'CODE_POSTAL', 'ALTI', 'NSIT_PUBLIC',
-					 'ISIT_LONG', 'LAMBERTX', 'LAMBERTY'),
-			# en plus 'NOM_COURT_SIT',
-			 # 'CLASSE_SITE', en fait non
-			# 'CODE' euh non ... (Qu'est-ce ?)
-			nv3  = c('id', 'refSite', 'labelSite', 'environment.classTypeLabel',
+					 'AXE', 'CODE_POSTAL', 
+					 'LAMBERTX', 'LAMBERTY',
+					 'address.departement.labelDepartement','address.departement.id',
+					 'DENSITE','NBRE_SOURCES',
+					 'NB_VEHICULE','RAYON_ACTION',
+					 'ZONE_IMPLANT','DER_LECT_QH',
+					 'CLASSE_SITE','SITE_TYPE',
+					 'TYPE_LIEU_ECHAN','TYPE_VOIE',
+					 'typologie','environnment.locationTypeLabel',
+					 'environnment.samplingPlaceTypeLabel','environnment.laneTypeLabel',
+					 'TYPE_SECTEUR','ZONE_ACTIVITE',
+					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel'
+					 ),
+			nv3  = c('id','dbRowId','refSite','labelSite',
+					 'startDate', 'stopDate',
+					 'refSitePublic','labelSiteExtended',
+					 'address.commune.labelCommune','address.commune.id', 
 					 'address.latitude', 'address.longitude', 'address.altitude',
-					 'area', 'type', 'startDate', 'stopDate', 'labelCommune',
-					 'street', 'postCode', 'elevation', 'refSitePublic',
-					 'labelSiteExtended', 'address.mapCoordinateX', 'address.mapCoordinateY'),
-			type = c('character()', 'character()', 'character()', 'numeric()',
+					 'address.street', 'address.postCode',
+					 'address.mapCoordinateX', 'address.mapCoordinateY',
+					 'address.departement.labelDepartement','address.departement.id',
+					 'implantation.populationDensity','implantation.emissionSource',
+					 'implantation.vehiclePerDay','implantation.radius',
+					 'implantation.zoneDescription','implantation.lastCensusDate',
+					 'environnment.classType','environnment.locationType',
+					 'environnment.samplingPlaceType','environnment.laneType',
+					 'environnment.classTypeLabel','environnment.locationTypeLabel',
+					 'environnment.samplingPlaceTypeLabel','environnment.laneTypeLabel',
+					 'sectors.typeSector','sectors.zoneOfActivity',
+					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel'
+					 ),
+			type = c(rep('character()',4), 
+					 'as.POSIXct(character())', 'as.POSIXct(character())',
+					 'character()', 'character()',
+					 'character()','numeric()',
+					 'numeric()', 'numeric()',  'numeric()', 
+					 'character()', 'character()',
 					 'numeric()', 'numeric()',
-					 'character()', 'character()', 'numeric()',
-					 'character()', 'character()', 'character()', 'character()',
-					 'numeric()', 'numeric()', 'character()', 'character()',
-					 'numeric()', 'numeric()')
+					 'character()', 'character()',
+					 'numeric()','numeric()',
+					 'numeric()','numeric()',
+					 'character()','as.POSIXct(character())',
+					 'numeric()','numeric()',
+					 'numeric()','numeric()',
+					 'character()','character()',
+					 'character()','character()',
+					 'numeric()','numeric()',
+					 'character()','character()'
+					 )
 		  ))
 	}else if(name == 'measures'){
 		return(data.frame(
-			nv2  = c('IDENTIFIANT', 'NOM_MES', 'id_site', 'UNITE', 'phy_name',
-					 'phy_comp_code', 'NOPOL', 'DERNIER_QH', 'D_VALIDATION',
-					 'D_VALIDATION_ENV', 'D_CREATION', 'D_ARRET', 'campaigns'),
-			# en plus 'NSIT', 'CMET', 'TYPE_ACQ'
-			# 'NOM_COURT_SIT' sinon récupérable
-			nv3  = c('id', 'label', 'id_site', 'unit', 'phy_name',
-					 'phy_comp_code', 'idPhy', 'lastDataDate', 'techValidationDate',
-					 'envValidationDate', 'startDate', 'stopDate', 'campaigns'),
-			type = c('character()', 'character()', 'character()', 'character()',
-					 'character()', 'character()', 'character()', 'character()',
-					 'character()', 'character()', 'character()', 'character()',
-					 'character()')
+			nv2  = c('IDENTIFIANT','NOM_COURT_MES','NOM_MES','TYPE_MESURE','TYPE_ACQ',
+					 'compCode', 'codeP2',
+					 'D_CREATION', 'D_ARRET','DERNIER_QH', 'D_VALIDATION',
+					 'D_VALIDATION_ENV','D_ADVAL',
+					 'id_site','NSIT','NSIT_PUBLIC',
+					 'UNITE',
+					 'CCHIM', 'NOPOL'),
+			nv3  = c('id','dbRowId','labelMeas','measureType','acqType',
+					 'compCode', 'codeP2',
+					 'startDate', 'stopDate','lastDataDate','techValidationDate',
+					 'envValidationDate','advalValidationDate',
+					 'site.id','site.refSite','site.refSitePublic',
+					 'unit.id',
+					 'physical.tagPhy','physical.id'),
+			type = c(rep('character()',5),
+					 rep('character()',2),
+					 rep('as.POSIXct(character())',6),
+					 rep('character()',3),
+					 'character()',
+					 rep('character()',2))
 		  ))
 	}else if(name == 'campaigns'){
 		return(data.frame(
-			nv2  = c('NOM_COURT_CM', 'DATEDEB', 'DATEFIN'),
-			# en plus 'LIBELLE'
-			nv3  = c('id', 'startDate', 'stopDate'),
-			type = c('character()', 'character()', 'character()')
+			nv2  = c('NOM_COURT_CM','LIBELLE','DATEDEB','DATEFIN'),
+			nv3  = c('id','label','startDate','stopDate'),
+			type = c(rep('character()',2),rep('as.POSIXct(character())',2))
 		  ))
 	}else if(name == 'physicals'){
 		return(data.frame(
@@ -105,7 +144,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 		return(data.frame(
 			nv2  = c('NOM_COURT_RES', 'NOM_RES', 'FLAG_RESEAURES'),
 			nv3  = c('id', 'label', 'isNetworkGroup'),
-			type = c('character()', 'character()', 'numeric()')
+			type = c('character()', 'character()', 'logical()')
 		  ))
 	}else if(name %in% c('equipments', 'trackMeasureEquipments')){
 		return(NULL)
@@ -155,7 +194,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	# traitement du cas générique ---------------------------------------------
 
-	type   <- names(result)[[1]]
+	type   <- sub('^.*/', '', sub('\\?.*$', '', query))
 	result <- result[[type]]
 	fields <- xrListFields(type)
 
@@ -164,8 +203,6 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 		return( result )
 	}
 
-	# TODO:VLAD mettre des types POSXIct pour les dates et traiter le cas ici
-	# TODO:VLAD mettre des types boolean pour le isNetworkGroup 
 	if (is.null(names(result))){
 		f        <- lapply(fields[['type']], function(x) eval(parse(text=x)))
 		names(f) <- fields[['nv3']]
@@ -175,7 +212,8 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	# traitement des réponses quand il y a des champs complexes ---------------
 	# (le json n'est pas juste un vecteur ...)
 
-	compounded <- names(result)[!sapply(result, is.vector)]
+	compounded <- names(result)[
+		!sapply(result, is.vector) & !sapply(result, inherits, 'POSIXct')]
 	if(length(compounded) > 0) {
 		# definition des noms des champs récursifs
 		flatnames <- sapply(compounded, function(x) paste(sep='.', x, names(result[[x]])))
