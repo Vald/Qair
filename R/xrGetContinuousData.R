@@ -53,7 +53,7 @@
 #'	validated : seuls les codes validation sont récupérés ; un mélange des trois :
 #'  les infos correspondantes sont récupérées. Pour assurer une rétrocompatiblité 
 #'  avec la v2 de Qair, 'both' est également accepté. Il est équivalent à mettre
-#'  'value' et 'state'.
+#'  'value' et 'state'. validated : 1 adval, 2 technique, 3 environnemental.
 #' @param search.fields champ de la table dans lesquels \code{pattern} doit être
 #' 	recherché.
 #' @param campagnes chaînes de caractères correspondant aux campagnes à rapatrier
@@ -142,7 +142,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	}
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('v2/data?')
+	bquery <- sprintf('v2/data?showDbRowIds=true&')
 
 	# traitement des dates de debut et de fin ---------------------------------
 	# si debut et fin ne sont pas en POSIXct, conversion
@@ -185,18 +185,17 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	} else if(nrow(mesures) > 500) {
 		# si la requete concerne plus de 500 mesures, on fait du 
 		# récusrif
-		#FIXME:ISEO il faudra remplacer 'id' par le remplacant de NOM_COURT_MES
 
 		donnees <- xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['id']][1:500], search.fields='id', exact=TRUE,
+				pattern=mesures[['dbRowId']][1:500], search.fields='dbRowId', exact=TRUE,
 				validOnly=FALSE)
 
 		donnees <- merge(donnees, xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['id']][-(1:500)], search.fields='id', exact=TRUE,
+				pattern=mesures[['dbRowId']][-(1:500)], search.fields='dbRowId', exact=TRUE,
 				validOnly=FALSE))
 
 	} else if(nrow(mesures)*difftime(end, start, units='secs')/nbsbp  > 1000000) {
@@ -206,18 +205,16 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		donnees <- xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['id']][1:i], search.fields='id', exact=TRUE,
+				pattern=mesures[['dbRowId']][1:i], search.fields='dbRowId', exact=TRUE,
 				validOnly=FALSE)
 
 		donnees <- merge(donnees, xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['id']][-(1:i)], search.fields='id', exact=TRUE,
+				pattern=mesures[['dbRowId']][-(1:i)], search.fields='dbRowId', exact=TRUE,
 				validOnly=FALSE))
 
 	} else {
-
-		# FIXME:ISEO accès aux données brutes QH ? (table BRUTE)
 
 		# start et end sont mis en forme pour la requete ----------------------
 
@@ -227,34 +224,32 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 		# la requete a proprement parler --------------------------------------
 
-		query <- sprintf('%sfrom=%s&to=%s&measures=%s&dataTypes=%s',
+		dataTypes <- switch(period,
+							h ='hourly',
+							qh='sta',
+							d ='daily',
+							m ='monthly',
+							y ='annual')
+
+		query <- sprintf('%sfrom=%s&to=%s&dbRowIdOfMeasures=%s&dataTypes=%s&includeRaw=%s',
 						 bquery, from, to,
-						 paste (mesures[['id']], collapse=','),
-						 switch(period,
-								h ='hourly',
-								qh='base',
-								d ='daily',
-								m ='monthly',
-								y ='annual'))
+						 paste (mesures[['dbRowId']], collapse=','),
+						 dataTypes,
+						 ifelse(validated,'false','true'))
 
 		donnees <- xrGetQuery(conn, query, resv3=TRUE)
 
 		#----------------------------------------------------------------------
 		# mise en forme des donnees -------------------------------------------
 
-		# FIXME:ISEO dans le comportement 'normal', toutes les mesures sont
-		#  indépendamment du fait qu'elles soient validées ou non.
-		#  --> ajouter un argument qui permette de faire le tri (pbm :
-		#  le terme 'validated' est déjà pris)
+		if(!validated)
+			what <- sub('value', 'rawValue', sub('state', 'rawState', what))
 		
-		# FIXME:ISEO on travaille sur l'id, mais il faudra travailler sur le
-		# NOM_COURT_MES
-
 		# conservation des colonnes voulues -----------------------------------
 
-		donnees <- lapply(mesures[['id']], function(id) {
-				i <- which(donnees[['id']] == id)
-				r <- donnees[[2]][[i]]
+		donnees <- lapply(mesures[['dbRowId']], function(id) {
+				i <- which(donnees[['dbRowId']] == id)
+				r <- donnees[[dataTypes]][['data']][[i]]
 				
 				# quand toutes les colonnes ne sont pas dans le resultat
 				r <- r[c('date', intersect(what, names(r)))]
