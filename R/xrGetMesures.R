@@ -33,7 +33,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 
 	xrfields <- xrListFields ('measures')
 	if(is.null(search.fields)){
-		search.fields <- c('id','dbRowId')
+		search.fields <- xrfields[['nv3']][1:2]
 		message("Champs disponibles pour la recherche : ",
 				paste(collapse=', ', xrfields[[nv]]),
 				"\nPar défaut : ",
@@ -136,7 +136,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			stations[['resv3']] <- TRUE
 			stations <- do.call(xrGetStations, c(list(conn=conn), stations))
 			}
-		query     <- paste0(stations[['ref']], collapse=',')
+		query     <- paste0(stations[['refSite']], collapse=',')
 		query     <- paste0(bquery, 'refSites=', query)
 		ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
 		idmesures <- collapseIds(ist, idmesures, collapse)
@@ -192,5 +192,4 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	return(mesures[fields])
 
 }
-
 

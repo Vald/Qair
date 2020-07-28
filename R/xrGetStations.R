@@ -49,7 +49,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	xrfields <- xrListFields ('sites')
 	if(is.null(search.fields)){
-		search.fields <- c('id','dbRowId')
+		search.fields <- xrfields[['nv3']][1:2]
 		message("Champs disponibles pour la recherche : ",
 				paste(collapse=', ', xrfields[[nv]]),
 				"\nPar défaut : ",
@@ -125,7 +125,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			mesures[['resv3']] <- TRUE
 			mesures <- do.call(xrGetMesures, c(list(conn=conn), mesures))
 			}
-		ist     <- unique(mesures[['id_site']])
+		ist     <- unique(mesures[['site.id']])
 		idsites <- collapseIds(ist, idsites, collapse)
 	}
 
@@ -180,9 +180,6 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	if(!resv3 & nv == 'nv2')
 		names(stations) <- xrfields[['nv2']][match(names(stations), xrfields[['nv3']])]
 
-	# FIXME:ISEO à compléter quand on aura l'équivalent du champ classe_site dans
-	# l'API (remplacer 'CLASSE_SITE par sa valeur dans l'API
-	#fields <- union(fields, 'CLASSE_SITE')
 	if (is.null(fields))
 		fields <- xrfields[[ifelse(resv3, 'nv3', nv)]] else
 		fields <- intersect(fields, xrfields[[ifelse(resv3, 'nv3', nv)]])

@@ -27,7 +27,7 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 
 	xrfields <- xrListFields ('measure-groups')
 	if(is.null(search.fields)){
-		search.fields <- c('id', 'label')
+		search.fields <- xrfields[['nv3']][1:2]
 		message("Champs disponibles pour la recherche : ",
 				paste(collapse=', ', xrfields[[nv]]),
 				"\nPar défaut : ",
