@@ -188,11 +188,17 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	if(getOption('Xair.debug', FALSE)) message(url)
 
 	nbattempt <- getOption('Xair.nbattempt', 10)
-	result <- list(status_code='notsent')
-	i <- 1
+	result    <- list(status_code='notsent')
+	i         <- 1
 	while(result[['status_code']] != 200 && i <= nbattempt) {
-		result <- httr::GET(url, httr::config(ssl_verifypeer=FALSE, ssl_verifyhost=FALSE))
-		i <- i+1
+		conf   <- httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE)
+		result <- try(httr::GET(url, conf), silent=TRUE)
+		i      <- i+1
+
+		if(inherits(result, 'try-error')) {
+			if(getOption('Xair.debug', FALSE)) message('curl error, nouvel essai')
+			result <- list(status_code='notsent')
+		}
 		if(getOption('Xair.debug', FALSE) && i > 2) message('attempt ', i)
 	}
 
@@ -217,15 +223,15 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	# traitement des réponses quand il y a des champs complexes ---------------
 	# (le json n'est pas juste un vecteur ...)
+		# definition des noms des champs récursifs
+		# affectation des valeurs aux champs en question
+		# suppression des champs complexes
 
 	compounded <- names(result)[
 		!sapply(result, is.vector) & !sapply(result, inherits, 'POSIXct')]
 	if(length(compounded) > 0) {
-		# definition des noms des champs récursifs
 		flatnames <- sapply(compounded, function(x) paste(sep='.', x, names(result[[x]])))
-		# affectation des valeurs aux champs en question
 		result[unlist(flatnames)] <- unlist(result[names(flatnames)], FALSE)
-		# suppression des champs complexes
 		result[compounded] <- NULL
 	}
 
