@@ -115,7 +115,7 @@
 #'	\code{\link{xrGetManualData}}
 
 xrGetContinuousData <- function (conn, pattern=NULL, start, end,
-		       period = c('h', 'qh', 'd', 'm', 'y'),
+		       period = c('h', 'qh', 'd', 'm', 'y', 'scan'),
 		       validated = TRUE, valid.states = c("A", "R", "O", "W", "P"),
 			   what = c('value', 'state', 'both', 'validated'),
 		       search.fields=NULL, campagnes = NULL, reseaux = NULL, stations = NULL,
@@ -178,7 +178,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 					qh=60*15,
 					d =60*60*24,
 					m =60*60*24*31,
-					y =60*60*24*366)
+					y =60*60*24*366,
+					scan=10)
 
 	if (nrow(mesures) == 0) {
 		result <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
@@ -229,7 +230,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 							qh='sta',
 							d ='daily',
 							m ='monthly',
-							y ='annual')
+							y ='annual',
+							scan='fld')
 
 		query <- sprintf('%sfrom=%s&to=%s&dbRowIdOfMeasures=%s&dataTypes=%s&includeRaw=%s',
 						 bquery, from, to,
@@ -281,7 +283,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 					  qh= POSIXctp(15, 'minute'),
 					  d = POSIXctp('day'),
 					  m = POSIXctp('month'),
-					  y = POSIXctp('year'))
+					  y = POSIXctp('year'),
+					  scan=POSIXctp(10, 'second'))
 
 		donnees <- TimeIntervalDataFrame(
 			start = donnees[['date']] - pas,
