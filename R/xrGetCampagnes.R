@@ -14,9 +14,6 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 					start = NULL, end = NULL, fields = NULL, exact = FALSE,
 					resv3 = FALSE) {
 
-	if(!is.null(search.fields))
-		warning("'search.fields' est obsolète, sa valeur n'est pas prise en compte")
-
 	# récupération de la version avec laquelle on bosse et initialisation de
 	# la requête
 
@@ -29,29 +26,68 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 	# on les 'traduit' en nv3, on fait tout le travail en nv3 et à la fin 
 	# de la fonction on revient éventuellement en nv2.
 
+	xrfields <- xrListFields ('campaigns')
+	if(is.null(search.fields)){
+		search.fields <- xrfields[['nv3']][1:2]
+		message("Champs disponibles pour la recherche : ",
+				paste(collapse=', ', xrfields[[nv]]),
+				"\nPar défaut : ",
+				paste(collapse=', ', xrfields[[nv]][1:2]))
+	}else{
+		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
+		if(conn[['version']] == 2)
+			search.fields <- xrfields[['nv3']][match(search.fields, xrfields[['nv2']])]
+	}
+
+	# algo:
+	# récupération des mesures sur la base de search.fields, de campagne, de reseaux 
+	# de stations et de polluants
+	# puis refiltre si search.fields contient autre chose que juste id/NJOM_COUR_MEs
+	# --> agregation des différents tests en fonction de collapse...
+
 	idcampagnes <- NULL
+
+	# recherche sur search.fields ---------------------------------------------
+
 	if(!is.null(pattern)) {
 		# recherche sur id / NOM_COURT_CM / campaigns
-		if(!exact)
-			query <- paste0('%', pattern, '%', collapse=',') else
-			query <- paste0(pattern, collapse=',')
+		all.campagnes <- xrGetQuery(conn, bquery, resv3=TRUE)
+		for (sf in search.fields){
+			if(!exact)
+				selection <- sapply(pattern, grep, all.campagnes[[sf]]) else {
+				if(conn[['version']] == 2){
+					selection <- match(pattern, all.campagnes[[sf]])
+				} else {
+					selection <- gsub('\\%', '.*', pattern)
+					selection <- gsub('\\?', '.', selection)
+					selection <- paste0('^', selection, '$')
+					selection <- sapply(selection, grep, all.campagnes[[sf]])
+				}}
+			ist       <- all.campagnes[['id']][unique(unlist(selection))]
+			idcampagnes <- collapseIds(ist, idcampagnes, 'OR')
+		}
+	}
 
-		query     <- paste0(bquery, 'campaigns=', query)
-		campagnes <- xrGetQuery(conn, query, resv3=TRUE)
-		# FIXME:ISEO intégrer dans les champs de recherche le LIBELLE et 
-		# son futur remplaçant --> réactiver le search.fields
-#		message("Champs disponibles pour la recherche : ",
-#				paste(collapse=', ', xrfields[[nv]]),
-#				"\nPar défaut : ",
-#				paste(collapse=', ', xrfields[[nv]][c(1)]))
-	} else campagnes <- xrGetQuery(conn, bquery, resv3=TRUE)
+	# si des filtres ont été appliqués et que idsites est vide ----------------
+	# la fonction retourne une data.frame vide
+	# (on procède en donnant une valeur bidon à idsites)
+
+	if(!is.null(c(pattern)) & length(idcampagnes) == 0)
+		idcampagnes <- 'AUCUNECORRESPONDANCE'
+
+	# création et exécution de la requête -------------------------------------
+
+	query <- bquery
+	if(!is.null(idcampagnes))
+		query <- sprintf('%s&campaigns=%s', query, paste(idcampagnes, collapse=','))
 
 	# TODO:  ajouter filtre stopDate, startDate / start - end dans le cadre de
 	# cette fonction
 
+	campagnes <- xrGetQuery(conn, query, resv3=TRUE)
+
 	# selection des champs de retour ------------------------------------------
 
-	xrfields <- xrListFields ('campaigns')
 	if(!resv3 & nv == 'nv2')
 		names(campagnes) <- xrfields[['nv2']][match(names(campagnes), xrfields[['nv3']])]
 
@@ -67,5 +103,4 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 
 	return(campagnes[fields])
 }
-
 

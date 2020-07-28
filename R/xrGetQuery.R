@@ -130,9 +130,9 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 		  ))
 	}else if(name == 'campaigns'){
 		return(data.frame(
-			nv2  = c('NOM_COURT_CM','LIBELLE','DATEDEB','DATEFIN'),
-			nv3  = c('id','label','startDate','stopDate'),
-			type = c(rep('character()',2),rep('as.POSIXct(character())',2))
+			nv2  = c('NOM_COURT_CM','LIBELLE','COMMENTAIRE','DATEDEB','DATEFIN'),
+			nv3  = c('id','label','comment','startDate','stopDate'),
+			type = c(rep('character()',3),rep('as.POSIXct(character())',2))
 		  ))
 	}else if(name == 'physicals'){
 		return(data.frame(
