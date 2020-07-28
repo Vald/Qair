@@ -1,7 +1,0 @@
-* prévoir une correspondance (quand c'est possible) entre les nouveaux noms et 
-les anciens
-* prévoir un argument qui précise si on souhaite fonctionner avec les anciens
-noms ou les nouveaux
-* intégrer ça dans une variable options(Xair.names=c('api', 'database'))
-* incorporer l'usage des wildcards en fonction de l'options ci-dessus (si api, 
-alors usage possible de % et ? et non-usage de l'argument exact)
