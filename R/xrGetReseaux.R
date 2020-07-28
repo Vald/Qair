@@ -45,27 +45,11 @@ xrGetReseaux <- function(conn, pattern = NULL, search.fields = NULL,
 	idreseaux <- NULL
 
 	# recherche sur search.fields ---------------------------------------------
-	# si on a que id  comme champ de recherche, on utilise directement
-	# l'API d'XR, sinon on charge toutes les stations d'XR et ce
+	# on charge toutes les stations d'XR et ce
 	# champ est traité comme les autres (puisqu'on est de toute façon 
 	# obligé de charger toutes les stations pour les autres champs)
 
-	if(!is.null(pattern))
-	#if(all(search.fields == 'id')){
-	if(FALSE){
-		# recherche sur id / NOM_COURT_RES / measureGroups
-		# TODO:ISEO rechercher % sur ref ne marche pas donc pour l'instant on ne garde 
-		# que l'approche 'global'
-
-		if(!exact)
-			query <- paste0('%', pattern, '%', collapse=',') else
-			query <- paste0(pattern, collapse=',')
-		if('id' %in% search.fields){
-			query     <- paste0(bquery, 'measureGroups=', query)
-			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
-			idreseaux <- collapseIds(ist, idreseaux, 'OR')
-		}
-	} else {
+	if(!is.null(pattern)) {
 		# sinon recherche sur la base de toutes les stations
 		# Cette partie a été validée le 06/11/2019
 
