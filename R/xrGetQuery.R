@@ -45,7 +45,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 								'equipments', 'trackMeasureEquipments')){
 	name <- match.arg(name)
 	if(name == 'sites'){
-		# FIXME:VLAD modifier/intégrer les fonctions de incertR
+		# FIXME:VLAD modifier/intégrer les fonctions de incertR (xrGetTypeAnalyseurs)
 		# quand le json n'est pas un simple vecteur mais un dictionnaire en
 		# cascade : utiliser '.' pour accéder à l'élément voulu (par exemple
 		# environment:classTypeLabel)
@@ -180,16 +180,22 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	osaf   <- getOption('stringsAsFactors')
 	options(stringsAsFactors = FALSE)
 
-	# FIXME: test les timeout (cas ou trop de connexions simultanées, le serveur
-	# ne répond pas --> ajouter un parametre nb tentatives)
-
 	# récupération de la requete brute ----------------------------------------
 
 	url    <- sprintf('%s%s', xrGetUrl(conn), query)
 	if(sub('\\?.*$', '', query) == 'equipments') url <- URLencode(url)
 
 	if(getOption('Xair.debug', FALSE)) message(url)
-	result <- httr::GET(url, httr::config(ssl_verifypeer=FALSE, ssl_verifyhost=FALSE))
+
+	nbattempt <- getOption('Xair.nbattempt', 10)
+	result <- list(status_code='notsent')
+	i <- 1
+	while(result[['status_code']] != 200 && i <= nbattempt) {
+		result <- httr::GET(url, httr::config(ssl_verifypeer=FALSE, ssl_verifyhost=FALSE))
+		i <- i+1
+		if(getOption('Xair.debug', FALSE) && i > 2) message('attempt ', i)
+	}
+
 	result <- jsonlite::fromJSON(httr::content(result, 'text'))
 
 	# traitement du cas générique ---------------------------------------------
@@ -228,6 +234,12 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	#if(type == 'sites'){
 	#}else if(type == ''){
 	#}
+
+	# gestion des dates -------------------------------------------------------
+
+	champdates         <- grep('POSIXct', fields[['type']])
+	result[champdates] <- lapply(result[champdates],
+								 strptime, '%Y-%m-%dT%H:%M:%SZ', 'UTC')
 
 	# gestion si compatibilité v2 et fin --------------------------------------
 

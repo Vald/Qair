@@ -19,6 +19,9 @@
 #'	optionnel : sera demandé si nécessaire.
 #' @param debug Si TRUE, chaque requête http envoyée est affichée dans le terminal.
 #'  FALSE par defaut. Peut être spécifié via l'option Xair.debug.
+#' @param nbattempt Nombre de tentative d'exécution d'une requête avant plantage
+#'  définitif. 10 par défaut. Nécessaire dans le cadre de la limititation du nombre 
+#'  de requêtes pr unité de temps imposée par ISEO.
 #' @return Une connexion à la base XR (il s'agit en fait d'une liste avec 'host' et
 #'  'port'. Cela permet de gérer plusieurs 'connexion' simultanément et de mimer
 #'  le comportement de Qair2).
@@ -33,8 +36,9 @@
 #' xrConnect()
 #'}
 #' @export
-xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL) {
+xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=NULL) {
 	if(!is.null(debug)) options(Xair.debug=debug)
+	if(!is.null(nbattempt)) options(Xair.nbattempt=nbattempt)
 
 	if(!is.null(host)) {
 		options(Xair.host=host)
@@ -68,7 +72,6 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL) {
 			   port   = options()[['Xair.port']],
 			   version= options()[['Xair.version']])
 	class(xr) <- 'xr'
-
 
 	if(nrow(suppressMessages(xrGetStations(xr))) == 0) stop('Problème de connexion')
 
