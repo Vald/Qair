@@ -3,7 +3,7 @@
 #' @param conn Connexion à la base XR.
 #' @param x Une data.frame telle que retournée par
 #'  \code{\link[Qair]{xrGetMesures}} avec au moins les colonnes 'NOPOL',
-#'  'NOM_COURT_MES' (v2) et/ou 'idPhy', 'FIXME:ISEO remplacant de NOM_COURT_MES'.
+#'  'NOM_COURT_MES' (v2) et/ou 'physical.id', 'FIXME:ISEO remplacant de NOM_COURT_MES'.
 #' @param debut POSIXct indiquant la date de début de la période
 #'  pour laquelle on souhaite avoir la liste des analyseurs.
 #' @param fin POSIXct indiquant la date de fin de la période
@@ -15,9 +15,10 @@
 xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 	nv     <- paste0('nv', conn[['version']])
 
-	if(nv == 2) {
-		names(x)[names(x) == 'NOPOL'] <- 'idPhy'
-		names(x)[names(x) == 'NOM_COURT_MES'] <- 'FIXME:ISEO'
+	if(nv == 'nv2') {
+		names(x)[names(x) == 'NOPOL'] <- 'physical.id'
+		names(x)[names(x) == 'IDENTIFIANT'] <- 'id'
+		#names(x)[names(x) == 'NOM_COURT_MES'] <- 'dbRowId'# 'FIXME:ISEO'
 	}
 
 	# traitement des dates de debut et de fin ---------------------------------
@@ -40,8 +41,8 @@ xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 
 	# récupération de la liste des analyseurs par mesure ----------------------
 
-	query <- paste0('v1/trackMeasureEquipments?measure=',
-					paste(x[['id']], collapse=','), # FIXME:ISEO
+	query <- paste0('v1/trackMeasureEquipments?measure=', # FIXME:ISEO dbRowId=
+					paste(x[['id']], collapse=','), # FIXME:ISEO dbRowId
 					'&from=', from, '&to=', to)
 	analyseurs <- xrGetQuery(conn, query, resv3=TRUE)
 	analyseurs <- as.list(analyseurs)
@@ -50,8 +51,8 @@ xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 
 	ids <- lapply(analyseurs[['trackEquipments']], '[[', 'id_equipment')
 	ids <- unlist(ids)
-	query <- paste0('equipments?idEquipment=',
-					paste(ids, collapse=','),  # FIXME:ISEO
+	query <- paste0('v1/equipments?idEquipment=',
+					paste(ids, collapse=','),
 					'&withDetail=1')
 	analyseursl <- xrGetQuery(conn, query, resv3=TRUE)
 	analyseursl <- data.frame(

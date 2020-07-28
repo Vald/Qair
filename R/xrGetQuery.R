@@ -45,7 +45,6 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 								'equipments', 'trackMeasureEquipments')){
 	name <- match.arg(name)
 	if(name == 'sites'){
-		# FIXME:VLAD modifier/intégrer les fonctions de incertR (xrGetTypeAnalyseurs)
 		# quand le json n'est pas un simple vecteur mais un dictionnaire en
 		# cascade : utiliser '.' pour accéder à l'élément voulu (par exemple
 		# environment:classTypeLabel)
@@ -111,20 +110,20 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'compCode', 'codeP2',
 					 'D_CREATION', 'D_ARRET','DERNIER_QH', 'D_VALIDATION',
 					 'D_VALIDATION_ENV','D_ADVAL',
-					 'id_site','NSIT','NSIT_PUBLIC',
+					 'id_site','NSIT','NSIT_PUBLIC','NOM_COURT_SIT',
 					 'UNITE',
 					 'CCHIM', 'NOPOL'),
 			nv3  = c('id','dbRowId','labelMeas','measureType','acqType',
 					 'compCode', 'codeP2',
 					 'startDate', 'stopDate','lastDataDate','techValidationDate',
 					 'envValidationDate','advalValidationDate',
-					 'site.id','site.refSite','site.refSitePublic',
+					 'site.id','site.refSite','site.refSitePublic','site.dbRowId',
 					 'unit.id',
 					 'physical.tagPhy','physical.id'),
 			type = c(rep('character()',5),
 					 rep('character()',2),
 					 rep('as.POSIXct(character())',6),
-					 rep('character()',3),
+					 rep('character()',4),
 					 'character()',
 					 rep('character()',2))
 		  ))
