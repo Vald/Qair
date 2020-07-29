@@ -42,42 +42,30 @@ xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 	# récupération de la liste des analyseurs par mesure ----------------------
 
 	query <- paste0('v1/trackMeasureEquipments?measure=', # FIXME:ISEO dbRowId=
-					paste(x[['id']], collapse=','), # FIXME:ISEO dbRowId
-					'&from=', from, '&to=', to)
+					paste(x[['id']], collapse=',')) # FIXME:ISEO dbRowId
 	analyseurs <- xrGetQuery(conn, query, resv3=TRUE)
 	analyseurs <- as.list(analyseurs)
 
-	# récupération des infos sur les analyseurs trouvés -----------------------
-
-	ids <- lapply(analyseurs[['trackEquipments']], '[[', 'id_equipment')
-	ids <- unlist(ids)
-	query <- paste0('v1/equipments?idEquipment=',
-					paste(ids, collapse=','),
-					'&withDetail=1')
-	analyseursl <- xrGetQuery(conn, query, resv3=TRUE)
-	analyseursl <- data.frame(
-		id    = analyseursl[['id']],
-		idPhy = sapply(analyseursl[['physicals']], '[[', 'id'))
-
-	# réduction de la première liste en se basant sur les polluants -----------
-	# trouvés dans la seconde (de façon à ce que ça colle avec 
-	# la colonne idPhy)
-
-	# TODO: faire un match entre les deux
-
-	# Pour chaque mesure, création d'une data.frame 
-
-
-	# FIXME:ISEO inconsistance entre id retourné par trackMeasureEquipment et equipment
-	# l'id récupéré par trackMachin est in entier au lieu d'une chaîne de caractères
-
 	# création de la structure de retour --------------------------------------
 
-	analyseurs <- lapply(analyseurs, function(x)
-						 TimeInstantDataFrame(c(debut, x$date[-1]), data=x))
+	res <- lapply(analyseurs[['trackEquipments']], function(a) {
+		a <- unique(a[c('startDate', 'model')])
+		a[['startDate']] <- strptime(a[['startDate']], '%Y-%m-%dT%H:%M:%SZ', 'UTC')
+		a[['startDate']] <- trunc(a[['startDate']], 'hour')
+		a[['startDate']] <- as.POSIXct(a[['startDate']])
+		a <- a[order(a[['startDate']]),]
+		a <- a[a[['startDate']] <= fin,]
 
-	if(!resv3 & nv == 'nv2') analyseurs <- lapply(analyseurs, 'names<-', 'MODELE')
+		d <- (which(a[['startDate']] > debut)[1] - 1)
+		a <- a[ifelse(is.na(d), nrow(a), d):nrow(a),]
 
-	return (analyseurs)
+		return(TimeInstantDataFrame(a[['startDate']], data=a['model']))
+	})
+
+	names(res) <- x[['dbRowId']][match(analyseurs[['id_measure']],x[['id']])]
+
+	if(!resv3 & nv == 'nv2') res <- lapply(res, 'names<-', 'MODELE')
+
+	return (res)
 }
 
