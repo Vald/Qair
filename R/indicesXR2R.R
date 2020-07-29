@@ -2,8 +2,8 @@
 #'
 #' La fonction permet de rapatrier les indices de
 #' la qualité de l'air stocké dans une base XR. Pour 
-#' connaître la liste des réseaux d'indices definis,
-#' il suffit d'invoquer la fonction sans arguments.
+#' connaître la liste des réseaux d'indices definis au 1er janvier 2020.
+#' FIXME: ISEO --> en attendant que v2/aqiGroup fonctionne
 #'
 #' @param agglos chaîne de caractères indiquant les 
 #' 	les réseaux d'indices pour lesquels les donnée
@@ -42,123 +42,151 @@
 #'
 #' contenant les indices pour la période demandée.
 #'
-#' @author Fabrice Caïni, Vladislav Navel
 'indicesXR2R' <-
 function (conn, agglos, start, end, detail=FALSE,
-	  format=c('type', 'agglo', 'aucun'), type=c('C', 'P')) {
+	  format=c('type', 'agglo', 'aucun'), type=c('C', 'P'), resv3=FALSE) {
 	# FIXME:ISEO possibilité d'écrire l'indice ?
-	# FIXME:ISEO group Atmo --> capacité de lister les groupes
-	#  recherche sur le champ NOM_AGGLO
-	# FIXME:ISEO Pourquoi forecast à 1 uniquement ?
-	# FIXME:VLAD une fois lAPI stabilisée, mettre la table de correspondance
-	# dans xrListFields (à disclosedAQI)
 	# FIXME:ISEO sites de prelevements
 	# FIXME:ISEO methodes de prelevements
 	# FIXME:ISEO donnees manuelles
-	if (missing (agglos) ) {
-		query <- 'SELECT NOM_AGGLO FROM GROUPE_ATMO'
-		return (xrGetQuery (conn, query))
-	}
 
 	format <- match.arg(format)
-	type <- match.arg(type)
+	type   <- match.arg(type)
 
-	query <- sprintf (
-		"SELECT NOM_AGGLO, J_DATE, %s_IND_DIFFUSE
-			FROM	RESULTAT_INDICE JOIN
-				GROUPE_ATMO USING (NOM_COURT_GRP)
-			WHERE	NOM_AGGLO IN('%s') AND
-				J_DATE BETWEEN
-			       		TO_DATE ('%s', 'YYYY-MM-DD') AND
-					TO_DATE ('%s', 'YYYY-MM-DD')",
-		type, paste (agglos, collapse="', '"), start, end)
+	# récupération de la version avec laquelle on bosse et initialisation de --
+	# la requête
 
-	indices <- xrGetQuery (conn, query)
-	names(indices)[3] <- 'IND_DIFFUSE'
-	# forçage
-	indices$IND_DIFFUSE <- as.numeric( indices$IND_DIFFUSE )
+	nv     <- paste0('nv', conn[['version']])
+	bquery <- sprintf('v2/disclosedAQI?')
 
-	if( detail ) {
-		indices$NOPOL <- 'indice'
+	nagglo <- ifelse(!resv3 & nv == 'nv2','NOM_AGGLO','areaName')
+	nopols <- c('01', '03' ,'08', '24')
+	cchims <- c('SO2', 'NO2', 'O3', 'PM10')
 
-		query <- sprintf("SELECT NOM_AGGLO, J_DATE, %s_SS_INDICE_DIFF, NOPOL
-			FROM	RESULTAT_SS_INDICE JOIN
-					GROUPE_ATMO USING (NOM_COURT_GRP)
-				WHERE	NOM_AGGLO IN('%s') AND
-					J_DATE BETWEEN
-						TO_DATE ('%s', 'YYYY-MM-DD') AND
-						TO_DATE ('%s', 'YYYY-MM-DD')", 
-			type, paste(agglos, collapse = "', '"), start, end)
+	# liste des agglos disponibles --------------------------------------------
+	# FIXME:ISEO à corriger chez ISEO (résultat vide)
+	#agglos <- xrGetQuery(conn, 'v2/aqiGroups')
+	# en attendant : attention solution partielle, les groupes pour lesquels pas 
+	# d'indice sur la periode demandée n'apparaitront pas
+	lagglos <- xrGetQuery(conn,
+		'v2/disclosedAQI?from=2020-01-01T00:00:00Z&to=2020-01-02T00:00:00Z')
+	lagglos <- lagglos[['group']]
+	lagglos <- lagglos[c('idAqiGroup','idAqiIndex','idMeasureGroup','idCommune','areaName')]
+	lagglos <- unique(lagglos)
+	lagglos <- lagglos[order(lagglos[['idAqiIndex']],lagglos[['idMeasureGroup']]),]
+	names(lagglos)[names(lagglos)=='areaName'] <- nagglo
 
-		ss.indices <- xrGetQuery(conn, query)
-		names(ss.indices)[3] <- 'SS_INDICE_DIFF'
-		# forçage
-		ss.indices$SS_INDICE_DIFF <-
-			as.numeric( ss.indices$SS_INDICE_DIFF )
-		names(ss.indices)[names(ss.indices) == 'SS_INDICE_DIFF'] <-
-			'IND_DIFFUSE'
+	if(missing(agglos)) return(lagglos[nagglo])
 
-		pols <- xrGetPolluants(conn, unique(ss.indices$NOPOL),
-			      search.fields='NOPOL')[c('NOPOL', 'CCHIM')]
+	# idAqiGroups demandés
+	iag <- lagglos[['idAqiGroup']][match(agglos, lagglos[[nagglo]])]
 
-		ss.indices$NOPOL <- pols$CCHIM[match(ss.indices$NOPOL, pols$NOPOL)]
+	# start et end sont mis en forme pour la requete ----------------------
+	# si debut et fin ne sont pas en POSIXct, conversion
 
-		indices <- merge(indices, ss.indices, all=TRUE)
+	if( inherits(start, 'POSIXlt') ) start <- as.POSIXct(start)
+	if( inherits(end, 'POSIXlt') ) end <- as.POSIXct(end)
+
+	if( !inherits(start, 'POSIXct') ) start <- as.POSIXct(start, tz='UTC')
+	if( !inherits(end, 'POSIXct') ) end <- as.POSIXct(end, tz='UTC')
+
+	start <- as.POSIXct(as.POSIXlt(start, tz='UTC'))
+	end <- as.POSIXct(as.POSIXlt(end, tz='UTC'))
+
+	dformat <- '%Y-%m-%dT%H:%M:%SZ'
+	from    <- format (start, format = dformat, tz='UTC')
+	to      <- format (end+POSIXctp('second'), format = dformat, tz='UTC')
+
+
+	# creation de la requête et exécution -------------------------------------
+
+	query <- sprintf('%sidAqiGroups=%s&withSubIndexes=%s&from=%s&to=%s',
+		bquery, paste(iag, collapse=','), ifelse(detail,'true','false'), from, to)
+
+	indices <- xrGetQuery(conn, query)
+
+	indices[[nagglo]] <- lagglos[[nagglo]][
+		match(indices[['idAqiGroup']], lagglos[['idAqiGroup']])]
+
+	# selection des complets ou partiels et sous-indices ----------------------
+
+	indtmp <- cbind(
+		indices[c('date', nagglo)],
+		indices[[ifelse(type=='C', 'full', 'anticipated')]][['disclose']])
+
+	if(detail)
+		indices <- cbind(
+			indtmp,
+			indices[[ifelse(type=='C', 'full', 'anticipated')]][['subIndexes']]) else
+		indices <- indtmp
+
+	# traitement des sous-indices (si demandés) -------------------------------
+
+	indices[['date']] <- strptime(indices[['date']], dformat, 'UTC')
+	indices[['date']] <- as.POSIXct(indices[['date']])
+
+	if(detail) {
+
+		sindices <- lapply(1:length(nopols), function(i) {
+			si <- cbind(indices[c('date', nagglo)],
+						NOPOL         =cchims[i],
+						disclosedValue=indices[[nopols[i]]][['subIndexDisclosedValue']])
+			return(si)
+		})
+		sindices <-do.call(rbind, sindices)
+
+		indices[['NOPOL']] <- 'indice'
+		indices <- indices[c('date', nagglo, 'NOPOL', 'disclosedValue')]
+		indices <- rbind(indices, sindices)
 	}
 
-	indices$NOM_AGGLO <- as.character (indices$NOM_AGGLO)
-	indices$J_DATE <- substr (as.character (indices$J_DATE), 1, 10)
-	names (indices)[names (indices) == 'J_DATE'] <- 'date'
+	# définition d'un fonction interne qui transforme un tableau --------------
+	# brute d'indice en un TimeIntervalDataFrame qui va bien
 
-	indices$IND_DIFFUSE[indices$IND_DIFFUSE == 0] <- NA
-
-	# définition d'un fonction interne qui transformet un tableau
-	# brute d'indice (directement extrait d'XR et un TimeIntervalDataFrame
-	# qui va bien
 	mef <- function(indices, group.by) {
 		if (nrow(indices) == 0) {
 			indices <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
-
 		} else {
-			temp <- split(indices[c("date", "IND_DIFFUSE")],
-						  indices[[group.by]])
+			indices <- split(indices, indices[[group.by]])
+			indices <- lapply(names(indices), function(n) {
+				i <- names(indices[[n]]) == 'disclosedValue'
+				names(indices[[n]])[i] <- n
+				return(indices[[n]][c('date', n)])
+			})
 
-			indices <- temp[[1]]
-			names (indices)[2] <- names (temp)[1]
-			if (length (temp) > 1)
-				for (i in 2:length(temp)) {
-					names (temp[[i]])[2] <- names (temp)[i]
-					indices <- merge (indices, temp[[i]],
-									  all=TRUE, by='date')
-				}
-			rm(temp)
-			indices$date <- as.POSIXct(indices$date, 'UTC')
+			while(length(indices) > 1) {
+				indices[[1]] <- merge(indices[[1]], indices[[2]], all=TRUE)
+				indices[[2]] <- NULL
+			}
+			indices <- indices[[1]]
 
-			indices <- new ('TimeIntervalDataFrame',
-							start=indices$date, end=indices$date+d,
-							timezone='UTC',
-							data=indices[setdiff(names(indices), 'date')])
+			indices <- TimeIntervalDataFrame(
+				indices[['date']], indices[['date']]+POSIXctp('day'), 'UTC',
+				indices[setdiff(names(indices), 'date')])
 		}
-
-		return( indices )
+		return(indices)
 	}
 
-	# application de la fonction mef
+	# mise à NA des éventuels 0 -----------------------------------------------
 
-	if( detail ) {
-		if( format == 'type' ) {
-			indices <- lapply(split( indices, indices$NOPOL ),
-					  mef, 'NOM_AGGLO')
-		} else if( format == 'agglo' ) {
-			indices <- lapply(split( indices, indices$NOM_AGGLO ),
-					  mef, 'NOPOL')
-		} else if( format == 'aucun' ) {
-			indices$NOM_AGGLO <-
-				paste(indices$NOM_AGGLO, indices$NOPOL, sep='.')
-			indices <- mef(indices, 'NOM_AGGLO')
+	indices[['disclosedValue']][indices[['disclosedValue']]==0] <- NA
+
+	# application de la fonction mef ------------------------------------------
+
+	if(detail) {
+
+		if(format == 'type') {
+			indices <- lapply(split(indices, indices[['NOPOL']]), mef, nagglo)
+
+		} else if(format == 'agglo') {
+			indices <- lapply(split(indices, indices[[nagglo]]), mef, 'NOPOL')
+
+		} else if(format == 'aucun') {
+			indices[[nagglo]] <- paste(indices[[nagglo]], indices[['NOPOL']], sep='.')
+			indices <- mef(indices, nagglo)
 		}
 	} else {
-		indices <- mef(indices, 'NOM_AGGLO')
+		indices <- mef(indices, nagglo)
 	}
 
 	return (indices)

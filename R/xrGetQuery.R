@@ -42,7 +42,8 @@ collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
 #' @export
 xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 								'measure-groups', 'data',
-								'equipments', 'trackMeasureEquipments')){
+								'equipments', 'trackMeasureEquipments',
+								'aqiGroups', 'disclosedAQI')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# quand le json n'est pas un simple vecteur mais un dictionnaire en
@@ -145,7 +146,8 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 			nv3  = c('id', 'label', 'isNetworkGroup'),
 			type = c('character()', 'character()', 'logical()')
 		  ))
-	}else if(name %in% c('equipments', 'trackMeasureEquipments')){
+	}else if(name %in% c(
+		'equipments','trackMeasureEquipments','aqiGroups', 'disclosedAQI')){
 		return(NULL)
 #	}else if(name == ''){
 #		return(data.frame(
@@ -206,8 +208,9 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	# traitement du cas générique ---------------------------------------------
 
 	type   <- sub('^.*/', '', sub('\\?.*$', '', query))
-	result <- result[[type]]
 	fields <- xrListFields(type)
+	if(type == 'disclosedAQI') type <- 'calculatedIndex'
+	result <- result[[type]]
 
 	if(is.null(fields)) {
 		options(stringsAsFactors = osaf)
