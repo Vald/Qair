@@ -9,18 +9,18 @@ indicesXR2Rlong <- function(xr, debut, fin, agglos, type='C') {
 	debut	<- as.POSIXct(debut, 'UTC')-POSIXctp(2, 'day')
 	fin		<- as.POSIXct(fin, 'UTC')
 
-	# récupération de l'indice complet
+	# récupération de l'indice complet ----------------------------------------
 
 	i <- try(indicesXR2R(xr, agglos, debut, fin, TRUE, 'agglo'), silent=TRUE)
 	if (type == 'P') iP <-
 		 try(indicesXR2R(xr, agglos, debut, fin, TRUE, 'agglo', type='P'), silent=TRUE)
 
-	# création d'une structure par défaut si pas d'indice complet
+	# création d'une structure par défaut si pas d'indice complet -------------
 
 	if (inherits(i, 'try-error'))
 		i <- lapply(agglos, function(x) tidf(debut, fin))
 
-	# récupération des autres valeurs d'indices
+	# récupération des autres valeurs d'indices -------------------------------
 	# et création de quelques identifiants
 
 	si <- xrGetQuery(xr, 
@@ -72,6 +72,9 @@ indicesXR2Rlong <- function(xr, debut, fin, agglos, type='C') {
 		newVals <- newVals[match(newVals$nom, i$nom[l.fin]),]
 		i[l.fin,c('NO2', 'O3', 'PM10', 'SO2')] <- newVals[-1]
 	}
+	# TODO: on fabrique le même tableau.
+	# une fois qu'on l'a, on garde la suite de l'algo (en commentant éventuellement,
+	# et en remplaçant les $ par [[
 
 	# création d'identifiants temporels
 
