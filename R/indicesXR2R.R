@@ -57,7 +57,7 @@ function (conn, agglos, start, end, detail=FALSE,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('v2/disclosedAQI?')
+	bquery <- 'v2/disclosedAQI?'
 
 	nagglo <- ifelse(!resv3 & nv == 'nv2','NOM_AGGLO','areaName')
 	nopols <- c('01', '03' ,'08', '24')
