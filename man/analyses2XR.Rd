@@ -7,7 +7,6 @@
 analyses2XR(
   fichier,
   nreseau,
-  labo,
   fichier_export = NULL,
   sheet = 1,
   startRow = 1,
@@ -19,9 +18,6 @@ analyses2XR(
 \item{fichier}{nom du fichier d'entrée}
 
 \item{nreseau}{numero du réseau (tel qu'il doit être intégré dans XR).}
-
-\item{labo}{Nom du laboratoire ayant réalisé les analyses
-('Micropolluants Technologie', 'IANESCO CHIMIE', ...).}
 
 \item{fichier_export}{nom du fichier de sortie (par défaut =
 fichier+'export.csv')}
@@ -47,7 +43,8 @@ dans XR), DEBUT (date de début au format date dans le fichier excel - si
 chaîne de caractères, ça ne fonctionnera pas), HDEBUT (heure de début, au
 format heure), FIN et HFIN (date et heure de fin, aux formats appropriés), 
 ANALYSE (date d'analyse au format date). Les colonnes HDEBUT et HFIN ne sont
-pas obligatoires.
+pas obligatoires. LABO Nom du laboratoire ayant réalisé les analyses
+('Micropolluants Technologie', 'IANESCO CHIMIE', ...).
 }
 \details{
 En plus de ces colonnes, une colonne supplémentaire doit être ajoutée pour 
