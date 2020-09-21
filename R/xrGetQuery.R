@@ -260,3 +260,31 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 }
 
+
+#' Information sur la version d'XR (serveur et API)
+#' 
+#' @param conn une connexion à une base XR (cf \code{\link{xrConnect}})
+#' @export
+xrVersion <- function(conn) {
+	url    <- xrGetUrl(conn, TRUE)
+
+	if(getOption('Xair.debug', FALSE)) message(url)
+
+	nbattempt <- getOption('Xair.nbattempt', 10)
+	result    <- list(status_code='notsent')
+	i         <- 1
+	while(result[['status_code']] != 200 && i <= nbattempt) {
+		conf   <- httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE)
+		result <- try(httr::GET(url, conf), silent=TRUE)
+		i      <- i+1
+
+		if(inherits(result, 'try-error')) {
+			if(getOption('Xair.debug', FALSE)) message('curl error, nouvel essai')
+			result <- list(status_code='notsent')
+		}
+		if(getOption('Xair.debug', FALSE) && i > 2) message('attempt ', i)
+	}
+
+	result <- jsonlite::fromJSON(httr::content(result, 'text'))
+	return(result)
+}
