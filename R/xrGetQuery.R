@@ -20,8 +20,8 @@ xrGetUrl <- function(conn, version=FALSE){
 #'
 #' Pour un usage interne uniquement
 #'
-#' @param x Premier vecteur d'ids
-#' @param y Second vecteur d'ids
+#' @param ist Premier vecteur d'ids
+#' @param idsites Second vecteur d'ids
 #' @param collapse AND ou OR
 #' @return les ids fusionner selon collapse
 collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){

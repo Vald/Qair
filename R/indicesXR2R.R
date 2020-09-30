@@ -10,6 +10,7 @@
 #' 	doivent être rapatriées (invoquer \code{indices2XR()}
 #' 	sans arguments pour connaître les valeurs possibles).
 #' @inheritParams xrGetContinuousData
+#' @inheritParams xrGetMesures
 #' @param detail booleen indiquant si le détails des indices doit être rapatrié
 #' également. Autrement dit si les sous-indices doivent également être récupérés
 #' dans la base XR. Si TRUE, le paramètre \sQuote{format} permet de préciser

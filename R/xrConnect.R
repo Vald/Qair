@@ -140,7 +140,6 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 
 		# connexion a la base
 		if(getOption('Xair.drv') == 'odbc') {
-			loadNamespace ('RODBC')
 			conxair <- try (RODBC::odbcConnect (getOption('Xair.dsn'),
 							 uid = getOption('Xair.uid'),
 							 pwd = getOption('Xair.pwd'),
@@ -148,9 +147,8 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 			if(inherits(conxair, 'try-error'))
 				stop('echec de la connexion a la base Xair.')
 		} else if(getOption('Xair.drv') == 'jdbc') {
-			loadNamespace ('RJDBC')
 			drv <- RJDBC::JDBC('oracle.jdbc.OracleDriver', getOption('Xair.ojdbc.file'))
-			conxair <- try (dbConnect (drv,
+			conxair <- try (DBI::dbConnect (drv,
 						   paste ('jdbc:oracle:thin:@', getOption('Xair.host'),
 							  ':1521:', getOption('Xair.dsn'), sep=''),
 						   getOption('Xair.uid'),
@@ -159,9 +157,8 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 			if(inherits(conxair, 'try-error'))
 				stop('echec de la connexion a la base Xair.')
 		} else if(getOption('Xair.drv') == 'oracle') {
-			loadNamespace ('ROracle')
 			drv <- ROracle::Oracle()
-			conxair <- try (dbConnect (drv, username=getOption('Xair.uid'),
+			conxair <- try (DBI::dbConnect (drv, username=getOption('Xair.uid'),
 						   password=getOption('Xair.pwd'),
 						   sprintf('%s:1521/%s', getOption('Xair.host'),
 							   getOption('Xair.dsn'), sep='') ) )

@@ -1,6 +1,7 @@
 #' Fonction pour recuperer des donnees scan de XR
 #'
-#' @inheritParams xrGetContinuousData
+#' @param \dots Arguments renvoyés à la fonction xrGetContinuousData.
+#'  L'argument 'period' ne peut être modifié et sa valeur est fixée à 'scan'.
 #'
 #' @return un objet de classe \code{\link[timetools]{TimeIntervalDataFrame-class}}
 #'   contenant les données demandées.
