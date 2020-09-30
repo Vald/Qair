@@ -91,7 +91,9 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 
 	# conservation de l'accès à la base de données pour les données manuelles -
 
+	conxair <- NULL
 	# définition du pilote à utiliser
+	if (is.null(drv.type)) drv.type <- getOption('Xair.drv')
 	if (!is.null(drv.type)) {
 		options(Xair.drv=drv.type)
 

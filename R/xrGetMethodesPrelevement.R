@@ -16,8 +16,6 @@ xrGetMethodesPrelevement <- function(conn, pattern = NULL, search.fields = c('LI
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
-	conn <- conn[['db']]
-
 	if (is.null (fields) ) fields <- '*'
 	
 	query <- sprintf ('SELECT %s FROM', paste ('METH_PRELEVEMENT', fields, sep='.', collapse=', ') )

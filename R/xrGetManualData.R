@@ -49,8 +49,6 @@ xrGetManualData <-
 		  campagnes = NULL, tz='UTC', cursor=NULL,
 		  categories=as.character(0:4)) {
 
-	conn <- conn[['db']]
-
 	what <- match.arg (what)
 	categories <- match.arg(categories, several.ok=TRUE)
 

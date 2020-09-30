@@ -249,9 +249,10 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		
 		# conservation des colonnes voulues -----------------------------------
 
-		donnees <- lapply(mesures[['dbRowId']], function(id) {
-				i <- which(donnees[['dbRowId']] == id)
-				r <- donnees[[dataTypes]][['data']][[i]]
+		donnees <- lapply(mesures[['dbRowId']], function(drid) {
+				i  <- which(donnees[['dbRowId']] == drid)
+				r  <- donnees[[dataTypes]][['data']][[i]]
+				id <- mesures[['id']][i]
 				
 				# quand toutes les colonnes ne sont pas dans le resultat
 				r <- r[c('date', intersect(what, names(r)))]
