@@ -1,7 +1,7 @@
 library (Qair)
 library (DBI)
 options(Xair.host='xair.atmo-na.org', Xair.version=2, Xair.port=8443,
-		uid='vlad', pwd='vlad', Xair.drv='oracle')
+		Xair.dsn='N09', Xair.uid='vlad', Xair.pwd='vlad', Xair.drv='oracle')
 
 # test des calculs de valeurs réglementaires
 #===========================================
