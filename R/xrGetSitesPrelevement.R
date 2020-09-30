@@ -16,6 +16,8 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = c('IDSIT
 	collapse <- match.arg (collapse)
 	collapse <- sprintf (' %s ', collapse)
 
+	conn <- conn[['db']]
+
 	if (is.null (fields) ) fields <- '*'
 	
 	query <- sprintf ('SELECT %s FROM', paste ('SITE_PRELEVEMENT', fields, sep='.', collapse=', ') )
@@ -45,7 +47,7 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = c('IDSIT
 	if (length (q) > 0)
 		query <- sprintf ('%s WHERE %s', query, paste (q, collapse = collapse) )
 
-	sites <- unique (xrGetQuery (conn, query) )
+	sites <- unique (xrGetQueryBD (conn, query) )
 	sites
 }
 
