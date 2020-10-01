@@ -10,33 +10,41 @@ xr <- xrConnect()
 # test des différentes fonctions xrGet*
 #======================================
 
-summary(xrGetPolluants(xr))
-xrGetPolluants(xr, 'N2')
-xrGetPolluants(xr, 'und', 'NCON')
+p <- xrGetPolluants(xr)
+p[order(p[['NOPOL']]),]
+p <- xrGetPolluants(xr, 'N2')
+p[order(p[['NOPOL']]),]
+p <- xrGetPolluants(xr, 'und', 'NCON')
+p[order(p[['NOPOL']]),]
 
-xrGetMethodesPrelevement(xr)
+mp <- xrGetMethodesPrelevement(xr)
+mp[order(mp[['CODE_METH_P']]),]
 
 xrGetCampagnes(xr, 'LARO', end='2011-01-01')
+# FIXME: en erreur, attente retour ISEO
 
-# xrGetReseaux(xr, 'R_SO2')
+r <- xrGetReseaux(xr, 'SO2')
+r[order(r[['NOM_COURT_RES']]),]
 
-colonnes <- c(63, 64, 70, 92)
-xrGetStations(xr, 'Chas')[-colonnes]
-xrGetStations(xr, campagnes='ANG12')[-colonnes]
-xrGetStations(xr, campagnes='ANG12', mesures='24')[-colonnes]
+xrGetStations(xr, 'Chas')
+s <- xrGetStations(xr, reseaux='PALR')
+s[order(s[['NSIT']]),]
+s <- xrGetStations(xr, reseaux='PALR', mesures='24')
+s[order(s[['NSIT']]),]
 
 summary(xrGetSitesPrelevement(xr, 'TLAROC_L'))
 xrGetSitesPrelevement(xr, campagnes='TLAROC2009')
+# FIXME: en erreur (à cause campagnes), attente retour ISEO
 
 #==========================================
 # tests sur la fonction xrGetContinuousData
 
-xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01')
-xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='UTC')
-xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='CET')
-xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', cursor=1)
-xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='UTC', cursor=1)
-xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='CET', cursor=1)
+xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01')
+xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='UTC')
+xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='CET')
+xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', cursor=1)
+xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='UTC', cursor=1)
+xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='CET', cursor=1)
 
 #======================================
 # tests sur la fonction xrGetManualData
