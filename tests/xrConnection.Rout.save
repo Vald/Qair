@@ -1,23 +1,21 @@
 
-R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 4.0.2 (2020-06-22) -- "Taking Off Again"
+Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
-R is free software and comes with ABSOLUTELY NO WARRANTY.
-You are welcome to redistribute it under certain conditions.
-Type 'license()' or 'licence()' for distribution details.
+R est un logiciel libre livré sans AUCUNE GARANTIE.
+Vous pouvez le redistribuer sous certaines conditions.
+Tapez 'license()' ou 'licence()' pour plus de détails.
 
-R is a collaborative project with many contributors.
-Type 'contributors()' for more information and
-'citation()' on how to cite R or R packages in publications.
+R est un projet collaboratif avec de nombreux contributeurs.
+Tapez 'contributors()' pour plus d'information et
+'citation()' pour la façon de le citer dans les publications.
 
-Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for an HTML browser interface to help.
-Type 'q()' to quit R.
+Tapez 'demo()' pour des démonstrations, 'help()' pour l'aide
+en ligne ou 'help.start()' pour obtenir l'aide au format HTML.
+Tapez 'q()' pour quitter R.
 
-> library (Qair)
-Loading required package: timetools
-Loading required package: DBI
+> library (Qair, lib.loc='~/R/test/')
 > options(Xair.host = '172.16.16.16',
 + 	Xair.dsn = 'N09',
 + 	Xair.uid = 'vlad',
@@ -32,108 +30,428 @@ Loading required package: DBI
 > # test des différentes fonctions xrGet*
 > #======================================
 > 
-> summary(xrGetPolluants(xr))
-    NOPOL              CCHIM               NCON           CODE_COMPLEMENTAIRE
- Length:433         Length:433         Length:433         Length:433         
- Class :character   Class :character   Class :character   Class :character   
- Mode  :character   Mode  :character   Mode  :character   Mode  :character   
-                                                                             
-                                                                             
-                                                                             
-                                                                             
-   TYPE_AGR              FCON           ECHELLE_MIN     ECHELLE_MAX     
- Length:433         Min.   :   0.665   Min.   :-20.0   Min.   :   0.01  
- Class :character   1st Qu.:   1.000   1st Qu.:  0.0   1st Qu.:   5.00  
- Mode  :character   Median :   1.000   Median :  0.0   Median :  15.00  
-                    Mean   :   3.525   Mean   : 12.9   Mean   : 112.50  
-                    3rd Qu.:   1.000   3rd Qu.:  0.0   3rd Qu.:  50.00  
-                    Max.   :1000.000   Max.   :900.0   Max.   :2000.00  
-                                       NA's   :352     NA's   :352      
-  TIMESTAMP         CCHIM_COURT        LIB_ECHELLE         ECHELLE2_MIN    
- Length:433         Length:433         Length:433         Min.   :-30.000  
- Class :character   Class :character   Class :character   1st Qu.:  0.000  
- Mode  :character   Mode  :character   Mode  :character   Median :  0.000  
-                                                          Mean   : -1.806  
-                                                          3rd Qu.:  0.000  
-                                                          Max.   :  0.000  
-                                                          NA's   :397      
-  ECHELLE2_MAX    LIB_ECHELLE2        ECHELLE3_MIN       ECHELLE3_MAX  
- Min.   :  0.00   Length:433         Min.   :-100.000   Min.   :    0  
- 1st Qu.:  4.25   Class :character   1st Qu.:   0.000   1st Qu.:    5  
- Median : 35.00   Mode  :character   Median :   0.000   Median :  100  
- Mean   : 45.44                      Mean   :  -3.571   Mean   :  383  
- 3rd Qu.:100.00                      3rd Qu.:   0.000   3rd Qu.:  200  
- Max.   :150.00                      Max.   :   0.000   Max.   :10000  
- NA's   :397                         NA's   :398        NA's   :398    
- LIB_ECHELLE3        ECHELLE4_MIN  ECHELLE4_MAX     LIB_ECHELLE4      
- Length:433         Min.   :0     Min.   :    4.0   Length:433        
- Class :character   1st Qu.:0     1st Qu.:   10.0   Class :character  
- Mode  :character   Median :0     Median :  100.0   Mode  :character  
-                    Mean   :0     Mean   :  767.2                     
-                    3rd Qu.:0     3rd Qu.:  500.0                     
-                    Max.   :0     Max.   :15000.0                     
-                    NA's   :406   NA's   :406                         
-  ECHELLE5_MIN     ECHELLE5_MAX   LIB_ECHELLE5         NO_CHRONO     
- Min.   :0.0000   Min.   :    5   Length:433         Min.   :  1.00  
- 1st Qu.:0.0000   1st Qu.:   20   Class :character   1st Qu.: 19.50  
- Median :0.0000   Median :  450   Mode  :character   Median : 42.00  
- Mean   :0.0455   Mean   : 1598                      Mean   : 54.23  
- 3rd Qu.:0.0000   3rd Qu.: 1000                      3rd Qu.: 91.50  
- Max.   :1.0000   Max.   :25000                      Max.   :113.00  
- NA's   :411      NA's   :411                        NA's   :358     
-  SEUIL_30MIN   SEUIL_10MIN    SEUIL_24H        SEUIL_MAX       SEUIL_MIN  
- Min.   : 20   Min.   :150   Min.   : 10.00   Min.   : 10.0   Min.   : NA  
- 1st Qu.: 30   1st Qu.:325   1st Qu.: 10.00   1st Qu.: 17.5   1st Qu.: NA  
- Median : 60   Median :500   Median : 30.00   Median : 85.0   Median : NA  
- Mean   :120   Mean   :500   Mean   : 88.33   Mean   : 82.5   Mean   :NaN  
- 3rd Qu.:150   3rd Qu.:675   3rd Qu.: 50.00   3rd Qu.:150.0   3rd Qu.: NA  
- Max.   :400   Max.   :850   Max.   :400.00   Max.   :150.0   Max.   : NA  
- NA's   :426   NA's   :431   NA's   :427      NA's   :429     NA's   :433  
-  SEUIL_60MIN 
- Min.   : NA  
- 1st Qu.: NA  
- Median : NA  
- Mean   :NaN  
- 3rd Qu.: NA  
- Max.   : NA  
- NA's   :433  
-> xrGetPolluants(xr, 'N2')
-  NOPOL    CCHIM                        NCON CODE_COMPLEMENTAIRE TYPE_AGR FCON
-1    N2 PM2.5FNV Fraction non volatile PM2.5                <NA>        N    1
-2    36      N2O              Oxydes nitreux                <NA>        N    1
-  ECHELLE_MIN ECHELLE_MAX TIMESTAMP CCHIM_COURT LIB_ECHELLE ECHELLE2_MIN
-1          NA          NA      <NA>        <NA>        <NA>           NA
-2          NA          NA      <NA>        <NA>        <NA>           NA
-  ECHELLE2_MAX LIB_ECHELLE2 ECHELLE3_MIN ECHELLE3_MAX LIB_ECHELLE3 ECHELLE4_MIN
-1           NA         <NA>           NA           NA         <NA>           NA
-2           NA         <NA>           NA           NA         <NA>           NA
-  ECHELLE4_MAX LIB_ECHELLE4 ECHELLE5_MIN ECHELLE5_MAX LIB_ECHELLE5 NO_CHRONO
-1           NA         <NA>           NA           NA         <NA>        88
-2           NA         <NA>           NA           NA         <NA>       100
-  SEUIL_30MIN SEUIL_10MIN SEUIL_24H SEUIL_MAX SEUIL_MIN SEUIL_60MIN
-1          NA          NA        NA        NA        NA          NA
-2          NA          NA        NA        NA        NA          NA
-> xrGetPolluants(xr, 'und', 'NCON')
-  NOPOL  CCHIM       NCON CODE_COMPLEMENTAIRE TYPE_AGR FCON ECHELLE_MIN
-1    WX C11H24 n-undecane                <NA>        N    1          NA
-  ECHELLE_MAX TIMESTAMP CCHIM_COURT LIB_ECHELLE ECHELLE2_MIN ECHELLE2_MAX
-1          NA      <NA>        <NA>        <NA>           NA           NA
-  LIB_ECHELLE2 ECHELLE3_MIN ECHELLE3_MAX LIB_ECHELLE3 ECHELLE4_MIN ECHELLE4_MAX
-1         <NA>           NA           NA         <NA>           NA           NA
-  LIB_ECHELLE4 ECHELLE5_MIN ECHELLE5_MAX LIB_ECHELLE5 NO_CHRONO SEUIL_30MIN
-1         <NA>           NA           NA         <NA>        NA          NA
-  SEUIL_10MIN SEUIL_24H SEUIL_MAX SEUIL_MIN SEUIL_60MIN
-1          NA        NA        NA        NA          NA
+> f <- c('NOPOL', 'CCHIM', 'NCON')
+> p <- xrGetPolluants(xr)[f]
+> p[order(p[['NOPOL']]),]
+    NOPOL      CCHIM                           NCON
+3      01        SO2              Dioxyde de soufre
+10     02         NO               Monoxyde d'azote
+4      03        NO2                Dioxyde d'azote
+13     04         CO            Monoxyde de carbone
+20     05        H2S            Sulfure d hydrogene
+101    06         HF           Fluorure d hydrogene
+44     07        HCl           Chlorure d hydrogene
+5      08         O3                          Ozone
+6      10         AF                  Acidite forte
+11     11         FN                  Fumees noires
+9      12        NOX                 Oxydes d azote
+338    14          S            soufre particulaire
+16     15        HCT           Hydrocarbures Totaux
+14     16        HCM      Hydrocarbures Methaniques
+39     17        CO2             Dioxyde de carbone
+91     19         PB                          Plomb
+2      20       HCNM  Hydrocarbures non methaniques
+21     21        NH3                       Ammoniac
+17     22         PS       Poussieres en suspension
+15     23        P.S                     Poussieres
+48     24       PM10                           PM10
+181    25      Alpha      Activite alpha artificiel
+182    26       Beta       Activite beta artificiel
+183    28      Radon                 Activite radon
+335    33 Debit Dose    Debit de dose Gamma ambiant
+184    36        N2O                 Oxydes nitreux
+395    37       HNO3                 acide nitrique
+1      39      PM2.5                          PM2.5
+65     3C     Bipart           Bismuth particulaire
+66     3D     Cepart            Cerium particulaire
+67     3E     Copart            Cobalt particulaire
+68     3J     Gapart           Gallium particulaire
+70     3K     Gepart         Germanium particulaire
+69     3L     Gdpart         Gadolinum particulaire
+71     3R     Lapart          Lanthane particulaire
+72     3T     Mopart         Molybdene particulaire
+73     3V     Ndpart           Neodyme particulaire
+74     3X     Prpart        Praseodyme particulaire
+75     3Z     Rbpart          Rubidium particulaire
+33     40        CL-                            CL-
+77     41       NO3-                           NO3-
+34     42      SO4--                          SO4--
+79     43       CA++                           CA++
+339    45         K+                  ion potassium
+80     46       MG++                           MG++
+340    47        Na+                     ion sodium
+99     48       NH4+                       Ammonium
+341    49       COnd                   conductivite
+76     4D     Sbpart         Antimoine particulaire
+220    4E     Smpart          Samarium particulaire
+221    4F     Srpart         Strontium particulaire
+222    4I     Thpart           Thorium particulaire
+223    4J     Tipart            Titane particulaire
+224    4K     Tlpart          Thallium particulaire
+225    4M      Upart           Uranium particulaire
+226    4N      Wpart         Tungstene particulaire
+227    4O      Ypart           Yttrium particulaire
+228    4Q     Zrpart         Zirconium particulaire
+249    4R     Sipart          Silicium particulaire
+294    4S       Ptot                Phosphore total
+295    4T      N-NTK Azote total (org + ammoniacal)
+296    4U      N-NO2                  Azote nitreux
+297    4V      N-NH3               Azote ammoniacal
+298    4W      N-NO3                 Azote nitrique
+28     50         PH                             pH
+7      51         VV                Vitesse du vent
+8      52         DV              Direction du vent
+19     53         PA         Pression Atmospherique
+12     54         TC                    Temperature
+185    55         HA               Humidite absolue
+336    57         RS     Rayonnement Solaire Direct
+18     58         HR              Humidite relative
+106    59 tps soleil           Duree ensoleillement
+261    5A Visibilite                    Visilbilite
+260    5B Nebulosite                      Neulosite
+262    5C Tps sensib                 Temps sensible
+105    60  Precipita                  precipitation
+25     61        U V        Composante U Anemometre
+43     62        V V         Composant V Anemometre
+186    63        W V        Composante W Anemometre
+45     64          V                         Volume
+100    65        CVH             Comptage Vehicules
+153    68       PM 1                            PM1
+187    70         BR                 Bilan radiatif
+337    73       RSDT       Rayon. solaire direct TO
+49     74   ray_glob             Rayonnement global
+190    79     Snpart             Etain particulaire
+96     80     Aspart           Arsenic particulaire
+102    81 Berylium p         Beryllium particulaire
+93     82     Cdpart           Cadmium particulaire
+42     83     Crpart            Chrome particulaire
+178    84     Cupart            Cuivre particulaire
+95     85     Hgpart           Mercure particulaire
+89     86     Fepart               Fer particulaire
+179    87     Nipart            Nickel particulaire
+92     88     Znpart              Zinc particulaire
+90     89     Mgpart         Magnesium particulaire
+259    8A   17,5<<20              Nb 17,5?m<PM<20?m
+263    8B     20<<25                Nb 20?m<PM<25?m
+264    8C     25<<30                Nb 25?m<PM<30?m
+266    8D     30<<32                    nb 30<PM<32
+265    8E        >32                     Nb PM>32?m
+41     90     Mnpart         Manganese particulaire
+88     91     Alpart         Aluminium particulaire
+180    92      Vpart          Vanadium particulaire
+177    93     Bapart            Baryum particulaire
+193    94     Separt          Selenium particulaire
+248    96      Kpart         Potassium particulaire
+46     99          F  Fluor total (polluant gazeux)
+78     A1      AL+++                          AL+++
+83     A2       CD++                           CD++
+35     A3      FE+++                          FE+++
+81     A4       MN++                           MN++
+36     A5       PB++                           PB++
+82     A6       ZN++                           ZN++
+237    AA      Pbtot                    Plomb total
+229    AB      Crtot                   Chrome total
+236    AC      Nitot                   Nickel total
+317    AD      Zntot                     Zinc total
+233    AF      Cutot                   Cuivre total
+230    AH      Astot                  Arsenic total
+231    AI      Batot                   Baryum total
+232    AJ      Cdtot                  Cadmium total
+234    AK      Fetot                      Fer total
+235    AL      Hgtot                  Mercure total
+333    AM    Cr6part           Chrome6 particulaire
+334    AN     Cr6tot                   Chrome6total
+239    C1      C2H4O                   Acetaldehyde
+246    C2      C3H6O                       Propanal
+242    C3      C4H8O                        Butanal
+243    C4     C6H12O                        Hexanal
+240    C5      C3H4O                      Acroleine
+282    C7      C3H6O                        acetone
+241    C8      C7H6O                   Benzaldehyde
+283    CE      C4H8O              methylethylcetone
+245    CJ     C5H10O                       Pentanal
+174    CK CH3-CH2-OH                        Ethanol
+244    CL     C5H10O                    Isopentanal
+173    CM CH3OCOC2H5               Acetate d ethyle
+188    CT        COT             Carbonne Organique
+202    DA       TCDD    2.3.7.8 TetraChloroDibenzoD
+203    DB      PeCDD  1.2.3.7.8 PentaChloroDibenzoD
+204    DC      HxCDD 1.2.3.4.7.8 HexaChloroDibenzoD
+364    Dd   2378TBDD 2.3.7.8 TetraBromoBibenzoDioxi
+205    DD      HxCDD 1.2.3.6.7.8 HexaChloroDibenzoD
+365    De  12378PBDD 1.2.3.7.8 PentaBromoBibenzoDio
+206    DE      HxCDd 1.2.3.7.8.9 HexaChloroDibenzoD
+366    Df 123478HBDD 1.2.3.4.7.8 HexaBromoDibenzoDi
+207    DF      HpCDD  1-4.6.7.8 HeptaChloroDibenzoD
+367    Dg 123678HBDD 1.2.3.6.7.8 HexaBromoDibenzoDi
+208    DG       OCDD       OctoChloroDibenzoDioxine
+368    Dh 123789HBDD 1.2.3.7.8.9 HexaBromoDibenzoDi
+56     DH       TCDF    2.3.7.8 TetraChloroDibenzoF
+369    Di 123467HBDD 1.2.3.4.6.7.8 HeptaBromoDibenz
+57     DI      PeCDF  1.2.3.7.8 PentaChloroDibenzoF
+370    Dj       OBDD        OctoBromoDibenzoDioxine
+58     DJ      PeCDF  2.3.4.7.8 PentaChloroDibenzoF
+371    Dk   2468TBDF 2.4.6.8 TetraBromoDibenzoFuran
+59     DK      HxCDF 1.2.3.4.7.8 HexaChloroDibenzoF
+372    Dl   2378TBDF 2.3.7.8 TetraBromoDibenzoFuran
+60     DL      HxCDF 1.2.3.6.7.8 HexaChloroDibenzoF
+373    Dm  12378PBDF 1.2.3.7.8 PentaBromoDibenzoFur
+61     DM      HxCDF 2.3.4.6.7.8 HexaChloroDibenzoF
+374    Dn  23478PBDF 2.3.4.7.8 PentaBromoDibenzoFur
+62     DN      HxCDF 1.2.3.7.8.9 HexaChloroDibenzoF
+375    Do 123478HBDF 1.2.3.4.7.8 HexaBromoDibenzoFu
+63     DO      HpCDF  1-4.6.7.8 HeptaChloroDibenzoF
+376    Dp 123467HBDF 1.2.3.4.6.7.8 HeptaBromoDibenz
+175    DP      HpCDF  1-4.7.8.9 HeptaChloroDibenzoF
+377    Dq       OBDF        OctoBromoDibenzoFuranne
+64     DQ       OCDF        OctoChloroDibenzoFurane
+194    DR TCDD total      Total TetrachloroDibenzoD
+195    DS PeCDD tota      Total PentaChloroDibenzoD
+197    DU HpCDD tota      Total HeptaChloroDibenzoD
+198    DV TCDF total      Total TetraChloroDibenzoF
+199    DW PeCDF tota      Total PentaChloroDibenzoF
+200    DX HxCDF tota       Total HexaChloroDibenzoF
+201    DY HpCDF tota      Total HeptaChloroDibenzoF
+167    E1     PM10EC             Ecart calcule PM10
+170    E2    PM2.5EC            Ecart calcule PM2.5
+166    F1     PM10FV         Fraction Volatile PM10
+169    F2    PM2.5FV        Fraction volatile PM2.5
+250    F3     OCpart Carbone organique particulaire
+251    F4     ECpart Carbone elementaire particulai
+385    F5  Levogluco    Levoglucosan dans les PM2.5
+300    G0     eBC670             Black carbon 670nm
+301    G1     eBC370            Black carbon 370 nm
+302    G2     eBC470            Black carbon 470 nm
+303    G3     eBC525            Black carbon 525 nm
+304    G4     eBC590            Black carbon 590 nm
+305    G5     eBC660            Black carbon 660 nm
+306    G6     eBC880            Black carbon 880 nm
+307    G7     eBC940            Black carbon 940 nm
+308    G8      BCwb%          Contribution Biomasse
+309    G9         k6 Coefficient compensation 880nm
+355    GA       BCwb  concentration equivalent BCwb
+356    GB       BCff  concentration equivalent BCff
+253    H1    CH3CCl3          1,1,1-trichloroethane
+254    H3   ClCHCCl2               tricholoethylene
+256    H4      C2Cl4            Tetrachloroethylene
+318    I1        Org          Concentration Matiere
+319    I2        SO4      Concentration Sulfate PM1
+320    I3        NO3     Concentration Nitrates PM1
+321    I4        NH4     Concentration Ammonium PM1
+322    I5        Chl       Concentration Chlore PM1
+323    I6     CE_dry Efficacite collection Middlebr
+324    I7  Levogluco              Levoglucosan ACSM
+325    I8       mz60                   Masse 60 PM1
+326    I9       mz43                   Masse 43 PM1
+327    IA       mz44                   Masse 44 PM1
+328    IB       mz55                   Masse 55 PM1
+329    IC       mz57                   Masse 57 PM1
+172    MT         MT               Mesure Technique
+168    N1    PM10FNV     Fraction non volatile PM10
+171    N2   PM2.5FNV    Fraction non volatile PM2.5
+258    N3    NO3part           Nitrate particulaire
+189    O2         O2                        Oxygene
+255    OA      C6H12                    Cyclohexane
+343    P0  B(a)P gaz   Benzo(a)pyrene phase gazeuse
+218    P6  B(a)Ppart    Benzo(a)pyrene particulaire
+129    P8  B(a)Apart Benzo(a)anthracene particulair
+130    P9 DB(ah)Apar Dibenzo(a,h)anthracene particu
+219    PA B(ghi)Ppar Benzo(ghi)perylene particulair
+353    PD      B(j)F Benzo(j)fluoranthene part PM10
+383    PF     C18H18 Retene phase particulaire PM10
+212    Q1   B(a)Atot       Benzo(a)anthracene total
+209    Q2      FLtot             Fluoranthene total
+213    Q3      PYtot                   Pyrene total
+214    Q4     CHRtot                 Chrysene total
+211    Q5     ANTtot               Anthracene total
+284    Q6     PHEtot              Phenantrene total
+131    QR    PHEpart      Phenanthrene particulaire
+86     QS    ANTpart        Anthracene particulaire
+215    QT     FLpart      Fluoranthene particulaire
+132    QU     PYpart            Pyrene particulaire
+133    QW    CHRpart          Chrysene particulaire
+216    QX  B(b)Fpart Benzo(b)fluoranthene particula
+217    QY  B(k)Fpart Benzo(k)fluoranthene particula
+84     QZ     IPpart Indeno(123 cd)pyrene particula
+252    R2       C8H8                        Styrene
+257    R4    C6H4Cl2            1,4-dichlorobenzene
+144    V0       C4H6                  1,3 BUTADIENE
+140    V1    C4H8(2)                       1-Butene
+139    V2       C4H8                 TRANS-2-BUTENE
+138    V3       C2H2                      ACETYLENE
+103    V4       C6H6                        Benzene
+152    V5   C4H10(2)                     ISO-BUTANE
+137    V6      C4H10                       N-BUTANE
+141    V7    C4H8(3)                   CIS-2-BUTENE
+134    V8       C2H6                         ETHANE
+151    V9       C2H4                       ETHYLENE
+109    VA      C8H10                   Ethylbenzene
+238    VB       CH2O                   Formaldehyde
+108    VC      C7H16                      N-Heptane
+148    VD      C6H14                       N-HEXANE
+150    VE      C6H12                       1-HEXENE
+149    VF       C5H8                       ISOPRENE
+107    VG      C8H18                     Iso-Octane
+111    VH      C8H18                       n-Octane
+142    VI      C5H12                    ISO-PENTANE
+116    VJ     C10H22                         Decane
+143    VK   C5H12(2)                      N-PENTANE
+146    VL   C5H10(2)                      1-PENTENE
+135    VN       C3H8                        Propane
+136    VP       C3H6                        PROPENE
+47     VQ       C7H8                        Toluene
+112    VR      C9H12         1,2,3-Trimethylbenzene
+113    VS      C9H12         1,2,4-Trimethylbenzene
+114    VT      C9H12         1,3,5-Trimethylbenzene
+110    VU      C8H10                     M-P-xylene
+104    VV      C8H10                       O-xylene
+40     VW  C2H3-C6H5                        Styrene
+115    VX      C9H20                         Nonane
+292    W1    C5H12O2             1-etoxy-2-propanol
+293    W2     C3H8O2               2-methoxyethanol
+210    WA      C6H6O                         phenol
+85     WB C7H8O (WB)                       o-cresol
+287    WC C7H8O (WC)                     m+p-cresol
+285    WD C8H10O (WD             2.3-dimethylphenol
+286    WE C8H10O (WE             2.5-dimethylphenol
+288    WF C8H10O (WF             2.6-dimethylphenol
+289    WG C8H10O (WG             3.4-dimethylphenol
+145    WH      C5H10                TRANS-2-PENTENE
+147    WI   C5H10(3)                  CIS-2-PENTENE
+268    WJ    C7H16O2            1-butoxy-2-propanol
+269    WK    C6H12O2              acetate de butyle
+270    WL    C5H10O3         2-methoxyethyl acetate
+271    WM    C6H12O3           2-ethoxyetyl acetate
+272    WN    C6H14O2                2-butoxyethanol
+267    WO C5H10O2 WO            Acetate d isopropyl
+273    WP    C4H10O2           1-methoxy-2-propanol
+274    WQ     C5H12O         methyl-ter-butyl ether
+275    WR    C6H14O2           ethy-ter-butyl ether
+276    WS     C10H16                       limonene
+277    WT     C8H18O              2-ethyl-1-hexanol
+278    WU     C2H6S2             dimethyl disulfure
+279    WV    C4H10O2                2-ethoxyethanol
+280    WW     C10H16                   Alpha-pinene
+281    WX     C11H24                     n-undecane
+290    WY C8H10O (WY             3.5-dimethylphenol
+291    WZ C5H10O2 WZ               n-propyl acetate
+176    XA ACETOCHLOR                    Acetochlore
+87     XB  ACLONIFEN                      Aclonifen
+94     XC  ALACHLORE                      Alachlore
+97     XD   ATRAZINE                       Atrazine
+117    XE AZOXYSTROB                  Azoxystrobine
+118    XF    BIFENOX                        Bifenox
+119    XG BROMOXYNIL           Bromoxynil octanoate
+120    XH   CARBARYL                       Carbaryl
+121    XI CARBOFURAN                     Carbofuran
+122    XJ CHLOROTHAL                 Chlorothalonil
+123    XK CHLORPYRIP            Chlorpyriphos ethyl
+124    XL CYPRODINIL                     Cyprodinil
+125    XM DELTAMETHR                  Deltamethrine
+126    XN DICHLORVOS                     Dichlorvos
+127    XO DICLOFOP-M                Diclofop-methyl
+128    XP DIFLUFENIC                 Diflufenicanil
+98     XQ DIMETHENAM                  Dimethenamide
+23     XR ENDOSULFAN                     Endosulfan
+22     XS EPOXICONAZ                  Epoxiconazole
+24     XT ETHYL PARA                Ethyl parathion
+26     XU FENAZAQUIN                     Fenazaquin
+27     XV FENOXAPROP             Fenoxaprop-p-ethyl
+29     XW FENPROPIMO                 Fenpropimorphe
+30     XX FLUROCHLOR                Flurochloridone
+31     XY FLURTAMONE                     Flurtamone
+32     XZ FLUSILAZOL                    Flusilazole
+37     Y1 PENDIMETHA                 Pendimethaline
+154    YA     FOLPEL                         Folpel
+155    YB HEXACONAZO                   Hexaconazole
+156    YC KRESOXIM M                Kresoxim methyl
+157    YD LAMBDA CYH            Lambda cyhalothrine
+158    YE    LINDANE                        Lindane
+159    YF  MALATHION                      Malathion
+160    YG METALDEHYD                    Metaldehyde
+161    YH METAZACHLO                   Metazachlore
+162    YI METOLACHLO                   Metolachlore
+163    YJ  OXADIAZON                      Oxadiazon
+164    YK   OXADIXYL                       Oxadixyl
+165    YL  PHOSALONE                      Phosalone
+38     YM    PHOSMET                        Phosmet
+50     YN   SIMAZINE                       Simazine
+51     YO TEBUCONAZO                   Tebuconazole
+52     YP   TEBUTAME                       Tebutame
+53     YQ TERBUTHYLA                 Terbuthylazine
+54     YR TOLYLFLUAN                  Tolylfluanide
+55     YS TRIFLURALI                   Trifluraline
+378    z0     HR BAM                   Humidite BAM
+345    Z0       PR10                           PR10
+363    z1        CS2               Carbon disulfide
+346    Z1      PR2.5                          PR2.5
+379    z2  ET_MP101M Ecart temperatue TTete et Tamb
+347    Z2        PR1                            PR1
+380    z3 BRUIT_TEOM                     BRUIT TEOM
+348    Z3      CPM10                          CPM10
+381    z4    TEOM_RE TEOM : Point rosee echantillon
+349    Z4     CPM2.5                         CPM2.5
+384    z5        PUF                            PUF
+350    Z5       CPM1                           CPM1
+354    z6     PM-CPC                         PM-CPC
+351    Z6   CPMTOTAL                       CPMTOTAL
+403    Z7 Pollens nb                  Pollens nb /j
+352    Z8        NOY      Oxydes d azote + Ammoniac
+404    Z9 COMPT GRIM                 Comptage Grimm
+386    Za      C4H8S       Tetrahydrothiophene(THT)
+387    Zb     C4H4N2                       Pyrazine
+388    Zc    C6H9NOS                       Sulfurol
+191    ZC       Flow                Debit analyseur
+389    Zd    C12H26S         Tert Dodecyl Mercaptan
+192    ZD   Velocity                        Vitesse
+390    Ze      C2H3N                   acetonitrile
+315    ZE      Altot                Aluminium total
+391    Zf       HONO                  acide nitreux
+316    ZF      Mntot                Manganese total
+392    Zg       CH4S                methylmercaptan
+330    ZG  TECH ACSM         Mesure techinique ACSM
+393    Zh      C3H3N                  acrylonitrile
+331    ZH  FIDAS <12        Nb de particules <12 ?m
+394    Zi     C2H4O2                 acide acetique
+332    ZI  FIDAS >12       Nb de particules > 12 ?m
+396    Zj     C4H6O2 diacetyle/ac methacryl/acrylat
+310    ZJ     CH3-SH                   Methanethiol
+397    Zk     C5H8O2         methacrylate de methyl
+311    ZK      C2H6S               Dimethyl Sulfure
+398    Zl C6H18O3Si3     hexamethylcyclotrisiloxane
+312    ZL     C4H10S               Di-Ethyl Sulfure
+399    Zm C8H24O4Si4   octamethylcyclotetrasiloxane
+313    ZM CH3-CH2-SH                    Ethanethiol
+400    Zn   C3H3ClO2           acide chloroacetique
+314    ZN CH3-S2-CH3           Di-Methyl Di-Sulfure
+401    Zo     C2H6OS          DMSO dimethylsulfoide
+299    ZO      ICONE          Indice de confinement
+402    Zp     C4H8O2                    1,4-dioxane
+196    ZP HxCDD tota       Total HexaChloroDibenzoD
+344    ZQ    TEOMDEP          Depression Pompe TEOM
+247    ZR       Test                   Test station
+342    ZS   B(a)Ptot                 Benzo(a)pyrene
+357    ZT     C4H10S              Tert-Buthanethiol
+358    ZU      C3H8S                 1-Propanethiol
+359    ZV      C3H8S           Methyl ethyl sulfide
+360    ZW     C4H10S                Sec-Butanethiol
+361    ZX     C4H10S                  1-Butanethiol
+382    zz  technique               Mesure technique
+362    ZZ      C3H8S                 2-Propanethiol
+> p <- xrGetPolluants(xr, 'N2')[f]
+> p[order(p[['NOPOL']]),]
+  NOPOL    CCHIM                        NCON
+2    36      N2O              Oxydes nitreux
+1    N2 PM2.5FNV Fraction non volatile PM2.5
+3    Zb   C4H4N2                    Pyrazine
+> p <- xrGetPolluants(xr, 'und', 'NCON')[f]
+> p[order(p[['NOPOL']]),]
+  NOPOL  CCHIM       NCON
+1    WX C11H24 n-undecane
 > 
-> xrGetMethodesPrelevement(xr)
+> mp <- xrGetMethodesPrelevement(xr)
+> mp[order(mp[['CODE_METH_P']]),]
    CODE_METH_P                                               LIBELLE TIMESTAMP
-1          905         PRELEVEMENT 0.6 m3/h sur LANZONI pour pollens      <NA>
-2          906                      PRELEVEMENT 0.72 m3/h SUR FILTRE      <NA>
-3          903                                                   903      <NA>
-4          218                    PRELEVEMENT SUR FILTRE A 2 m3/jour      <NA>
-5          219                   BARBOTAGE DANS SOLUTION A 2 m3/jour      <NA>
-6          907                       PRELEVEMENT 0.6 m3/h SUR FILTRE      <NA>
-7          221              PRELEVEMENT 15 m3/h SUR FILTRE ET MOUSSE      <NA>
 8          201                                              CANISTER      <NA>
 9          202                         CANISTER DEPRESSURISE (AVOCS)      <NA>
 10         203                           COLLECTEUR DE PRECIPITATION      <NA>
@@ -151,10 +469,17 @@ Loading required package: DBI
 22         215                                            TUBE ACTIF      <NA>
 23         216                                           TUBE PASSIF      <NA>
 24         217                                        CARTOUCHE DNPH      <NA>
+4          218                    PRELEVEMENT SUR FILTRE A 2 m3/jour      <NA>
+5          219                   BARBOTAGE DANS SOLUTION A 2 m3/jour      <NA>
+28         220              PRELEVEMENT 30 m3/h SUR FILTRE ET MOUSSE      <NA>
+7          221              PRELEVEMENT 15 m3/h SUR FILTRE ET MOUSSE      <NA>
 25         902               PRELEVEMENT 1 m3/h SUR FILTRE ET MOUSSE      <NA>
+3          903                                                   903      <NA>
+1          905         PRELEVEMENT 0.6 m3/h sur LANZONI pour pollens      <NA>
+2          906                      PRELEVEMENT 0.72 m3/h SUR FILTRE      <NA>
+6          907                       PRELEVEMENT 0.6 m3/h SUR FILTRE      <NA>
 26         908                       PRELEVEMENT 0,3 m3/h SUR FILTRE      <NA>
 27         909                                               LICHENS      <NA>
-28         220              PRELEVEMENT 30 m3/h SUR FILTRE ET MOUSSE      <NA>
 29         910                                               LEGUMES      <NA>
 30         911                                                  LAIT      <NA>
 31         912                      Prelevement 0.18 m3/h sur filtre      <NA>
@@ -176,10 +501,15 @@ Loading required package: DBI
 2      <NA>      <NA>
 3      <NA>      <NA>
 > 
-> # xrGetReseaux(xr, 'R_SO2')
+> f <- c('NOM_COURT_RES', 'NOM_RES', 'FLAG_RESEAURES')
+> r <- xrGetReseaux(xr, 'SO2')[f]
+> r[order(r[['NOM_COURT_RES']]),]
+  NOM_COURT_RES               NOM_RES FLAG_RESEAURES
+3        PMESO2               PME SO2              0
+2        S2_MER SO2 Pole de Bordeayux              0
+1           SO2          SO2 LIMOUSIN              0
 > 
-> colonnes <- c(63, 64, 70, 92)
-> xrGetStations(xr, 'Chas')[-colonnes]
+> xrGetStations(xr, 'Chas')
   CLASSE_SITE  NSIT NDEPART NINSEE                 ISIT NOM_COURT_SIT       AXE
 1           6 44110      86  86062 Poitiers - Chasseneu        Chasse Leclanche
   CODE_POSTAL NO_TELEPHONE NO_ZONE NO_RTC  MPST MPST1_U MPST2_U MPST3_U MPST4_U
@@ -198,159 +528,179 @@ Loading required package: DBI
 1            NA           NA             0         480         <NA>          0
                  DDMO        D_SUSP_ACTIV          D_FIN_SUSP
 1 1997-08-04 13:14:55 1997-01-01 00:00:00 1997-01-01 00:00:00
-           D_CREATION           D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 1995-10-01 00:00:00 2012-12-18 13:04:14      <NA>  <NA>  <NA>      <NA>
-   D_SYNCHRO_CRITIQUE MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE
-1 2012-11-22 08:23:25    SAMEX54         0        8             NA
-  AN_FIN_FORCAGE QH_DEB_FORCAGE QH_FIN_FORCAGE DERNIER_AN DER_TENT_SCRUT
-1             NA             NA             NA         NA           <NA>
-  SCRUT_EN_COURS N_ESSAIS_SCRUT DER_LECT_QH DER_LECT_HIS DER_LECT_DEF
-1             NA             NA        <NA>         <NA>         <NA>
-  DER_LECT_ALR DER_LECT_SCN DER_LECT_CAL DER_ESSAI_COMM DER_ETAT ETAT_ALARME
-1         <NA>         <NA>         <NA>           <NA>     <NA>        <NA>
-      ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR SITE_TYPE TYPE_SECTEUR
-1 127.0.0.1:9010        9010             NA        16           18
-  ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION MODEM_TEMPO
-1            23        NA              93          NA           NA        <NA>
-  MODEM_RELAIS     IDENTIFIANT TIME_MANAGEMENT MQTT_FREQ_DATA MQTT_FREQ_STATE
-1         <NA> D86POI_CHASSENE            <NA>             NA              NA
-  MQTT_SCAN HTTP_ADDR_NORM HTTP_ADDR_SEC   typologie
-1      <NA>           <NA>          <NA> Periurbaine
-> xrGetStations(xr, campagnes='ANG12')[-colonnes]
-  CLASSE_SITE  NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
-1           6 44008      16  16113 Lafarge site sud        ANG_13
-2          NA 44007      16  16113    Lafarge Ouest        ANG_12
-3          NA 44005      16  16113     Lafarge nord        ANG_14
-                                     AXE CODE_POSTAL NO_TELEPHONE NO_ZONE
-1         Enceinte Lafarge Ciments (Sud)       16000            0    <NA>
-2 Enceinte Lafarge ciments (transfo EDF)       16000   0608903988    <NA>
-3               22 bis route de Bordeaux       16000   0684786560    <NA>
-  NO_RTC  MPST MPST1_U MPST2_U MPST3_U MPST4_U MPST5_U MPST_SU_LOCAL
-1      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
-2      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
-3      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
-  MPST_NOUVEAU       LONGI      LATI ALTI LAMBERTX LAMBERTY NOM_GESTION DENSITE
-1        simon 0.001816354 0.7960876   50   425867  2070485        <NA>      NA
-2        simon 0.001801083 0.7961494   50   425811  2070880        <NA>      NA
-3        simon 0.001831820 0.7961813   50   425954  2071079        <NA>      NA
-  DATE_RECENS ZON_IMPLANT NBRE_SOURCES NTMS    FSTA TADC_NUM TADC_TYP TCPU VERS
-1        <NA>        <NA>           NA    5 Argopol     <NA>     <NA> <NA> <NA>
-2        <NA>        <NA>           NA   38 Argopol     <NA>     <NA> <NA> <NA>
-3        <NA>        <NA>           NA    5 Argopol     <NA>     <NA> <NA> <NA>
-  VERA TCOM DERNIER_QH BCOM  VCOM COMP NTPC1 NTPC2    MPPC           TMAC
-1 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000001000
-2 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000000200
-3 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000003000
-            TAAR           TAAC NMAP TRAA           TRAD           TMSD
-1 00000000000100 00000000000200    3 <NA> 00000000001000 00000000000100
-2 00000000000100 00000000000030    1 <NA> 00000000001500 00000000000100
-3 00000000000100 00000000000030    1 <NA> 00000000001500 00000000000100
-       DATE_DEB_SCRUT PERIODE_SCRUT OFFSET_SCRUT WEEKEND_SCRUT NBRE_QH_MEM
-1 1997-11-06 00:00:00            12           93             1         480
-2 2004-05-17 01:00:00             4           96             1         480
-3 2009-05-17 01:00:00             4           95             1         480
-  FLAG_FORCAGE FLAG_VALID DDMO        D_SUSP_ACTIV          D_FIN_SUSP
-1         <NA>          0 <NA> 1997-01-01 00:00:00 1997-01-01 00:00:00
-2         <NA>          0 <NA> 2004-05-17 00:00:00 2004-05-17 00:00:00
-3         <NA>          0 <NA> 2004-05-17 00:00:00 2004-05-17 00:00:00
-           D_CREATION           D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46 2018-10-02 05:49:41      <NA>  <NA>  <NA>      <NA>
-2 2011-02-21 15:17:38 2013-02-19 08:07:23      <NA>  <NA>  <NA>      <NA>
-3 2011-03-18 13:10:32 2014-10-08 07:36:54      <NA>  <NA>  <NA>      <NA>
-   D_SYNCHRO_CRITIQUE MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE
-1 2011-03-22 11:37:51    SAMEX54         2        8             NA
-2 2011-03-22 13:52:00  SAMSK2V54         2        8             NA
-3 2010-05-21 08:54:16  SAMSK2V54         2        8             NA
-  AN_FIN_FORCAGE QH_DEB_FORCAGE QH_FIN_FORCAGE DERNIER_AN DER_TENT_SCRUT
-1             NA             NA             NA         NA           <NA>
-2             NA             NA             NA         NA           <NA>
-3             NA             NA             NA         NA           <NA>
-  SCRUT_EN_COURS N_ESSAIS_SCRUT         DER_LECT_QH        DER_LECT_HIS
-1             NA             NA 2018-10-10 10:00:00 2018-10-10 10:01:13
-2             NA             NA                <NA>                <NA>
-3             NA             NA                <NA>                <NA>
-         DER_LECT_DEF        DER_LECT_ALR        DER_LECT_SCN
-1 2018-10-10 10:01:12 2018-10-10 10:01:12 2018-10-10 10:01:13
-2                <NA>                <NA>                <NA>
+           D_CREATION             D_ARRET               D_MAJ
+1 1995-10-01 00:00:00 2013-01-09 00:00:00 2018-09-11 15:58:02
+            D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
+1 2012-12-18 13:04:14      <NA>  <NA>  <NA>      <NA>
+                                               ISIT_LONG  D_SYNCHRO_CRITIQUE
+1 Poitiers agglo - Chasseneuil du Poitou - rue Leclanche 2012-11-22 08:23:25
+  MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE AN_FIN_FORCAGE QH_DEB_FORCAGE
+1    SAMEX54         0        8             NA             NA             NA
+  QH_FIN_FORCAGE DERNIER_AN DER_TENT_SCRUT SCRUT_EN_COURS N_ESSAIS_SCRUT
+1             NA         NA           <NA>             NA             NA
+  DER_LECT_QH DER_LECT_HIS DER_LECT_DEF DER_LECT_ALR DER_LECT_SCN DER_LECT_CAL
+1        <NA>         <NA>         <NA>         <NA>         <NA>         <NA>
+  DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM     ADRESSE_IP NSIT_PUBLIC
+1           <NA>     <NA>        <NA>            NA 127.0.0.1:9010        9010
+  SUPERVISION_TR SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN
+1             NA        16           18            23        NA              93
+  NB_VEHICULE RAYON_ACTION MODEM_TEMPO MODEM_RELAIS     IDENTIFIANT
+1          NA           NA        <NA>         <NA> D86POI_CHASSENE
+  TIME_MANAGEMENT MQTT_FREQ_DATA MQTT_FREQ_STATE MQTT_SCAN HTTP_ADDR_NORM
+1            <NA>             NA              NA      <NA>           <NA>
+  HTTP_ADDR_SEC   typologie
+1          <NA> Periurbaine
+> s <- xrGetStations(xr, reseaux='PALR')
+> s[order(s[['NSIT']]),]
+  CLASSE_SITE  NSIT NDEPART NINSEE                ISIT NOM_COURT_SIT
+1           5 44103      17  17300   Rochelle - Verdun        VERDUN
+2           9 44129      17  17300 Rochelle - Pallice3        :00005
+3          NA 44611      17  17300       Meteo - Laleu        ME_LRL
+              AXE CODE_POSTAL NO_TELEPHONE NO_ZONE NO_RTC  MPST MPST1_U MPST2_U
+1 Place de verdun       17000   0546349049    <NA>      4 simon    <NA>    <NA>
+2 Place d Orbigny       17000         <NA>    <NA>      4 simon    <NA>    <NA>
+3            <NA>       17000            0    <NA>      0     a    <NA>    <NA>
+  MPST3_U MPST4_U MPST5_U MPST_SU_LOCAL MPST_NOUVEAU       LONGI      LATI ALTI
+1    <NA>    <NA>    <NA>          <NA>        simon -0.02013417 0.8056886   10
+2    <NA>    <NA>    <NA>          <NA>        simon -0.02113948 0.8056721   10
+3    <NA>    <NA>    <NA>          <NA>            a  0.00000000 0.0000000    0
+  LAMBERTX LAMBERTY NOM_GESTION DENSITE DATE_RECENS ZON_IMPLANT NBRE_SOURCES
+1   330537  2135140        <NA>    4201        <NA>       VILLE           NA
+2   326089  2135234        <NA>      NA        <NA>        <NA>           NA
+3        0        0        <NA>      NA        <NA>        <NA>           NA
+  NTMS    FSTA TADC_NUM TADC_TYP    TCPU     VERS   VERA  TCOM DERNIER_QH BCOM
+1   83    ISEO     <NA>     <NA> MII G96 OS9/V3.0 4.4.24 TCPIP         NA    1
+2   66    ISEO     <NA>     <NA>    <NA>     <NA>   <NA> TCPIP         NA    0
+3    6 ARGOPOL     <NA>     <NA>    <NA>     <NA>   <NA>   RTC         NA    1
+   VCOM COMP NTPC1 NTPC2    MPPC           TMAC           TAAR           TAAC
+1  9600    1  <NA>  <NA>    <NA> 00000000010000 00000000001000 00000000000400
+2 19200    1     0  <NA> appelpc 00000000000500 00000000000100 00000000000030
+3  9600    0  <NA>  <NA>    <NA> 00000000003000 00000000000100 00000000000030
+  NMAP TRAA           TRAD           TMSD      DATE_DEB_SCRUT PERIODE_SCRUT
+1    0 <NA> 00000000001000 00000000001000 1997-09-01 00:00:00             4
+2    1 <NA> 00000000001500 00000000000500 2012-01-10 00:00:00             4
+3    0 <NA> 00000000001500 00000000000500 2010-10-14 00:00:00            NA
+  OFFSET_SCRUT WEEKEND_SCRUT NBRE_QH_MEM FLAG_FORCAGE FLAG_VALID
+1           96             1         960         <NA>          1
+2           96             1         960         <NA>          1
+3           NA             0         960         <NA>          1
+                 DDMO        D_SUSP_ACTIV          D_FIN_SUSP
+1 2001-03-29 08:56:48 1997-01-01 00:00:00 1997-01-01 00:00:00
+2                <NA> 2012-01-10 00:00:00 2012-01-10 00:00:00
+3                <NA> 2010-10-14 00:00:00 2010-10-14 00:00:00
+           D_CREATION             D_ARRET               D_MAJ
+1 1992-01-01 00:00:00 2099-12-31 00:00:00 2020-09-22 06:35:50
+2 2012-01-10 00:00:00 2030-12-31 00:00:00 2020-07-30 13:57:43
+3 2010-10-14 14:05:44 2030-12-31 00:00:00 2016-07-12 13:05:02
+            D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
+1 2020-09-22 06:36:02      <NA>  <NA>  <NA>      <NA>
+2 2020-07-30 13:58:03      <NA>  <NA>  <NA>      <NA>
+3                <NA>      <NA>  <NA>  <NA>      <NA>
+                                   ISIT_LONG  D_SYNCHRO_CRITIQUE MODELE_STA
+1       La Rochelle centre - place de Verdun 2020-09-04 12:07:20   SAMWEX64
+2 La Rochelle - La Pallice - Place d Orbigny 2020-06-04 12:03:25   SAMWEX64
+3         Meteo La Rochelle Laleu - 17300009 2010-12-27 08:18:01 SAMEXV50_G
+  TYPE_SITE CODE_TSA AN_DEB_FORCAGE AN_FIN_FORCAGE QH_DEB_FORCAGE
+1         0        Y             NA             NA             NA
+2         0        Y             NA             NA             NA
+3         0        7             NA             NA             NA
+  QH_FIN_FORCAGE DERNIER_AN DER_TENT_SCRUT SCRUT_EN_COURS N_ESSAIS_SCRUT
+1             NA         NA           <NA>             NA             NA
+2             NA         NA           <NA>             NA             NA
+3             NA         NA           <NA>             NA             NA
+          DER_LECT_QH        DER_LECT_HIS        DER_LECT_DEF
+1 2020-10-01 07:00:00 2020-10-01 07:01:13 2020-10-01 07:01:12
+2 2020-10-01 07:00:00 2020-10-01 07:01:16 2020-10-01 07:01:15
 3                <NA>                <NA>                <NA>
-         DER_LECT_CAL      DER_ESSAI_COMM DER_ETAT ETAT_ALARME
-1 2018-10-10 10:01:13 2018-10-10 10:01:12     <NA>        <NA>
-2                <NA>                <NA>     <NA>        <NA>
-3                <NA>                <NA>     <NA>        <NA>
-          ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR SITE_TYPE TYPE_SECTEUR
-1 90.84.183.156:3005        9036             NA        16           18
-2 90.84.166.254:3005        9035             NA        NA           NA
-3   90.95.1.171:3005        9033             NA        NA           NA
-  ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION
-1            23        NA              93          NA           NA
-2            NA        NA              NA          NA           NA
-3            NA        NA              NA          NA           NA
-     MODEM_TEMPO MODEM_RELAIS     IDENTIFIANT TIME_MANAGEMENT MQTT_FREQ_DATA
-1 00000000030000           16  D16ANG_LAF_SUD            <NA>             NA
-2 00000000000000         <NA>  D16ANG_LAF_EDF            <NA>             NA
-3 00000000000000         <NA> D16ANG_LAF_BORD            <NA>             NA
-  MQTT_FREQ_STATE MQTT_SCAN HTTP_ADDR_NORM HTTP_ADDR_SEC   typologie
-1              NA      <NA>           <NA>          <NA> Periurbaine
-2              NA      <NA>           <NA>          <NA>        <NA>
-3              NA      <NA>           <NA>          <NA>        <NA>
-> xrGetStations(xr, campagnes='ANG12', mesures='24')[-colonnes]
-  CLASSE_SITE  NSIT NDEPART NINSEE             ISIT NOM_COURT_SIT
-1           6 44008      16  16113 Lafarge site sud        ANG_13
-2          NA 44007      16  16113    Lafarge Ouest        ANG_12
-                                     AXE CODE_POSTAL NO_TELEPHONE NO_ZONE
-1         Enceinte Lafarge Ciments (Sud)       16000            0    <NA>
-2 Enceinte Lafarge ciments (transfo EDF)       16000   0608903988    <NA>
-  NO_RTC  MPST MPST1_U MPST2_U MPST3_U MPST4_U MPST5_U MPST_SU_LOCAL
-1      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
-2      4 simon    <NA>    <NA>    <NA>    <NA>    <NA>          <NA>
-  MPST_NOUVEAU       LONGI      LATI ALTI LAMBERTX LAMBERTY NOM_GESTION DENSITE
-1        simon 0.001816354 0.7960876   50   425867  2070485        <NA>      NA
-2        simon 0.001801083 0.7961494   50   425811  2070880        <NA>      NA
-  DATE_RECENS ZON_IMPLANT NBRE_SOURCES NTMS    FSTA TADC_NUM TADC_TYP TCPU VERS
-1        <NA>        <NA>           NA    5 Argopol     <NA>     <NA> <NA> <NA>
-2        <NA>        <NA>           NA   38 Argopol     <NA>     <NA> <NA> <NA>
-  VERA TCOM DERNIER_QH BCOM  VCOM COMP NTPC1 NTPC2    MPPC           TMAC
-1 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000001000
-2 <NA> GPRS         NA    0 19200    1     0  <NA> appelpc 00000000000200
-            TAAR           TAAC NMAP TRAA           TRAD           TMSD
-1 00000000000100 00000000000200    3 <NA> 00000000001000 00000000000100
-2 00000000000100 00000000000030    1 <NA> 00000000001500 00000000000100
-       DATE_DEB_SCRUT PERIODE_SCRUT OFFSET_SCRUT WEEKEND_SCRUT NBRE_QH_MEM
-1 1997-11-06 00:00:00            12           93             1         480
-2 2004-05-17 01:00:00             4           96             1         480
-  FLAG_FORCAGE FLAG_VALID DDMO        D_SUSP_ACTIV          D_FIN_SUSP
-1         <NA>          0 <NA> 1997-01-01 00:00:00 1997-01-01 00:00:00
-2         <NA>          0 <NA> 2004-05-17 00:00:00 2004-05-17 00:00:00
-           D_CREATION           D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
-1 2011-03-18 12:58:46 2018-10-02 05:49:41      <NA>  <NA>  <NA>      <NA>
-2 2011-02-21 15:17:38 2013-02-19 08:07:23      <NA>  <NA>  <NA>      <NA>
-   D_SYNCHRO_CRITIQUE MODELE_STA TYPE_SITE CODE_TSA AN_DEB_FORCAGE
-1 2011-03-22 11:37:51    SAMEX54         2        8             NA
-2 2011-03-22 13:52:00  SAMSK2V54         2        8             NA
-  AN_FIN_FORCAGE QH_DEB_FORCAGE QH_FIN_FORCAGE DERNIER_AN DER_TENT_SCRUT
-1             NA             NA             NA         NA           <NA>
-2             NA             NA             NA         NA           <NA>
-  SCRUT_EN_COURS N_ESSAIS_SCRUT         DER_LECT_QH        DER_LECT_HIS
-1             NA             NA 2018-10-10 10:00:00 2018-10-10 10:01:13
-2             NA             NA                <NA>                <NA>
-         DER_LECT_DEF        DER_LECT_ALR        DER_LECT_SCN
-1 2018-10-10 10:01:12 2018-10-10 10:01:12 2018-10-10 10:01:13
-2                <NA>                <NA>                <NA>
-         DER_LECT_CAL      DER_ESSAI_COMM DER_ETAT ETAT_ALARME
-1 2018-10-10 10:01:13 2018-10-10 10:01:12     <NA>        <NA>
-2                <NA>                <NA>     <NA>        <NA>
-          ADRESSE_IP NSIT_PUBLIC SUPERVISION_TR SITE_TYPE TYPE_SECTEUR
-1 90.84.183.156:3005        9036             NA        16           18
-2 90.84.166.254:3005        9035             NA        NA           NA
-  ZONE_ACTIVITE TYPE_VOIE TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION
-1            23        NA              93          NA           NA
-2            NA        NA              NA          NA           NA
-     MODEM_TEMPO MODEM_RELAIS    IDENTIFIANT TIME_MANAGEMENT MQTT_FREQ_DATA
-1 00000000030000           16 D16ANG_LAF_SUD            <NA>             NA
-2 00000000000000         <NA> D16ANG_LAF_EDF            <NA>             NA
-  MQTT_FREQ_STATE MQTT_SCAN HTTP_ADDR_NORM HTTP_ADDR_SEC   typologie
-1              NA      <NA>           <NA>          <NA> Periurbaine
-2              NA      <NA>           <NA>          <NA>        <NA>
+         DER_LECT_ALR        DER_LECT_SCN        DER_LECT_CAL
+1 2020-10-01 07:01:12 2020-10-01 07:01:14 2020-10-01 07:01:13
+2 2020-10-01 07:01:15 2020-10-01 07:01:16 2020-10-01 07:01:16
+3                <NA>                <NA>                <NA>
+       DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM       ADRESSE_IP
+1 2020-10-01 07:01:12     <NA>        <NA>             0  10.17.3.10:3005
+2 2020-10-01 07:01:15     <NA>        <NA>             0 10.17.29.10:3005
+3                <NA>     <NA>        <NA>            NA             <NA>
+  NSIT_PUBLIC SUPERVISION_TR SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE
+1        9003             NA        16           17            23        NA
+2        9203              0        15           NA            NA        NA
+3        9911             NA        NA           NA            NA        NA
+  TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION MODEM_TEMPO MODEM_RELAIS
+1              91          NA           NA        <NA>         <NA>
+2              93          NA           NA        <NA>         <NA>
+3              NA          NA           NA        <NA>         <NA>
+      IDENTIFIANT TIME_MANAGEMENT MQTT_FREQ_DATA MQTT_FREQ_STATE MQTT_SCAN
+1   D17LAR_VERDUN            <NA>             NA              NA      <NA>
+2 D17LAR_PALLICE3            <NA>             NA              NA      <NA>
+3     MET17_LALEU            <NA>             NA              NA      <NA>
+  HTTP_ADDR_NORM HTTP_ADDR_SEC    typologie
+1           <NA>          <NA>      Urbaine
+2           <NA>          <NA> Industrielle
+3           <NA>          <NA>         <NA>
+> s <- xrGetStations(xr, reseaux='PALR', mesures='24')
+> s[order(s[['NSIT']]),]
+  CLASSE_SITE  NSIT NDEPART NINSEE                ISIT NOM_COURT_SIT
+1           5 44103      17  17300   Rochelle - Verdun        VERDUN
+2           9 44129      17  17300 Rochelle - Pallice3        :00005
+              AXE CODE_POSTAL NO_TELEPHONE NO_ZONE NO_RTC  MPST MPST1_U MPST2_U
+1 Place de verdun       17000   0546349049    <NA>      4 simon    <NA>    <NA>
+2 Place d Orbigny       17000         <NA>    <NA>      4 simon    <NA>    <NA>
+  MPST3_U MPST4_U MPST5_U MPST_SU_LOCAL MPST_NOUVEAU       LONGI      LATI ALTI
+1    <NA>    <NA>    <NA>          <NA>        simon -0.02013417 0.8056886   10
+2    <NA>    <NA>    <NA>          <NA>        simon -0.02113948 0.8056721   10
+  LAMBERTX LAMBERTY NOM_GESTION DENSITE DATE_RECENS ZON_IMPLANT NBRE_SOURCES
+1   330537  2135140        <NA>    4201        <NA>       VILLE           NA
+2   326089  2135234        <NA>      NA        <NA>        <NA>           NA
+  NTMS FSTA TADC_NUM TADC_TYP    TCPU     VERS   VERA  TCOM DERNIER_QH BCOM
+1   83 ISEO     <NA>     <NA> MII G96 OS9/V3.0 4.4.24 TCPIP         NA    1
+2   66 ISEO     <NA>     <NA>    <NA>     <NA>   <NA> TCPIP         NA    0
+   VCOM COMP NTPC1 NTPC2    MPPC           TMAC           TAAR           TAAC
+1  9600    1  <NA>  <NA>    <NA> 00000000010000 00000000001000 00000000000400
+2 19200    1     0  <NA> appelpc 00000000000500 00000000000100 00000000000030
+  NMAP TRAA           TRAD           TMSD      DATE_DEB_SCRUT PERIODE_SCRUT
+1    0 <NA> 00000000001000 00000000001000 1997-09-01 00:00:00             4
+2    1 <NA> 00000000001500 00000000000500 2012-01-10 00:00:00             4
+  OFFSET_SCRUT WEEKEND_SCRUT NBRE_QH_MEM FLAG_FORCAGE FLAG_VALID
+1           96             1         960         <NA>          1
+2           96             1         960         <NA>          1
+                 DDMO        D_SUSP_ACTIV          D_FIN_SUSP
+1 2001-03-29 08:56:48 1997-01-01 00:00:00 1997-01-01 00:00:00
+2                <NA> 2012-01-10 00:00:00 2012-01-10 00:00:00
+           D_CREATION             D_ARRET               D_MAJ
+1 1992-01-01 00:00:00 2099-12-31 00:00:00 2020-09-22 06:35:50
+2 2012-01-10 00:00:00 2030-12-31 00:00:00 2020-07-30 13:57:43
+            D_SYNCHRO NUM_TACHE NTPC3 NTPC4 TIMESTAMP
+1 2020-09-22 06:36:02      <NA>  <NA>  <NA>      <NA>
+2 2020-07-30 13:58:03      <NA>  <NA>  <NA>      <NA>
+                                   ISIT_LONG  D_SYNCHRO_CRITIQUE MODELE_STA
+1       La Rochelle centre - place de Verdun 2020-09-04 12:07:20   SAMWEX64
+2 La Rochelle - La Pallice - Place d Orbigny 2020-06-04 12:03:25   SAMWEX64
+  TYPE_SITE CODE_TSA AN_DEB_FORCAGE AN_FIN_FORCAGE QH_DEB_FORCAGE
+1         0        Y             NA             NA             NA
+2         0        Y             NA             NA             NA
+  QH_FIN_FORCAGE DERNIER_AN DER_TENT_SCRUT SCRUT_EN_COURS N_ESSAIS_SCRUT
+1             NA         NA           <NA>             NA             NA
+2             NA         NA           <NA>             NA             NA
+          DER_LECT_QH        DER_LECT_HIS        DER_LECT_DEF
+1 2020-10-01 07:00:00 2020-10-01 07:01:13 2020-10-01 07:01:12
+2 2020-10-01 07:00:00 2020-10-01 07:01:16 2020-10-01 07:01:15
+         DER_LECT_ALR        DER_LECT_SCN        DER_LECT_CAL
+1 2020-10-01 07:01:12 2020-10-01 07:01:14 2020-10-01 07:01:13
+2 2020-10-01 07:01:15 2020-10-01 07:01:16 2020-10-01 07:01:16
+       DER_ESSAI_COMM DER_ETAT ETAT_ALARME NB_ECHEC_COMM       ADRESSE_IP
+1 2020-10-01 07:01:12     <NA>        <NA>             0  10.17.3.10:3005
+2 2020-10-01 07:01:15     <NA>        <NA>             0 10.17.29.10:3005
+  NSIT_PUBLIC SUPERVISION_TR SITE_TYPE TYPE_SECTEUR ZONE_ACTIVITE TYPE_VOIE
+1        9003             NA        16           17            23        NA
+2        9203              0        15           NA            NA        NA
+  TYPE_LIEU_ECHAN NB_VEHICULE RAYON_ACTION MODEM_TEMPO MODEM_RELAIS
+1              91          NA           NA        <NA>         <NA>
+2              93          NA           NA        <NA>         <NA>
+      IDENTIFIANT TIME_MANAGEMENT MQTT_FREQ_DATA MQTT_FREQ_STATE MQTT_SCAN
+1   D17LAR_VERDUN            <NA>             NA              NA      <NA>
+2 D17LAR_PALLICE3            <NA>             NA              NA      <NA>
+  HTTP_ADDR_NORM HTTP_ADDR_SEC    typologie
+1           <NA>          <NA>      Urbaine
+2           <NA>          <NA> Industrielle
 > 
 > summary(xrGetSitesPrelevement(xr, 'TLAROC_L'))
     NRESSURV       NSIT          IDSITEP            LIBELLE         
@@ -410,24 +760,162 @@ Loading required package: DBI
 > #==========================================
 > # tests sur la fonction xrGetContinuousData
 > 
-> xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01')
-[1] start end  
-<0 rows> (or 0-length row.names)
-> xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='UTC')
-[1] start end  
-<0 rows> (or 0-length row.names)
-> xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='CET')
-[1] start end  
-<0 rows> (or 0-length row.names)
-> xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', cursor=1)
-[1] when
-<0 rows> (or 0-length row.names)
-> xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='UTC', cursor=1)
-[1] when
-<0 rows> (or 0-length row.names)
-> xrGetContinuousData(xr, 'N2_VER', '2012-09-30', '2012-10-01', tz='CET', cursor=1)
-[1] when
-<0 rows> (or 0-length row.names)
+> xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01')
+                     start                     end NO2_VERDUN
+1  2012-09-30 00:00:00 UTC 2012-09-30 01:00:00 UTC          7
+2  2012-09-30 01:00:00 UTC 2012-09-30 02:00:00 UTC          5
+3  2012-09-30 02:00:00 UTC 2012-09-30 03:00:00 UTC          6
+4  2012-09-30 03:00:00 UTC 2012-09-30 04:00:00 UTC          5
+5  2012-09-30 04:00:00 UTC 2012-09-30 05:00:00 UTC          7
+6  2012-09-30 05:00:00 UTC 2012-09-30 06:00:00 UTC          8
+7  2012-09-30 06:00:00 UTC 2012-09-30 07:00:00 UTC          8
+8  2012-09-30 07:00:00 UTC 2012-09-30 08:00:00 UTC          7
+9  2012-09-30 08:00:00 UTC 2012-09-30 09:00:00 UTC          9
+10 2012-09-30 09:00:00 UTC 2012-09-30 10:00:00 UTC         11
+11 2012-09-30 10:00:00 UTC 2012-09-30 11:00:00 UTC          9
+12 2012-09-30 11:00:00 UTC 2012-09-30 12:00:00 UTC          6
+13 2012-09-30 12:00:00 UTC 2012-09-30 13:00:00 UTC          5
+14 2012-09-30 13:00:00 UTC 2012-09-30 14:00:00 UTC          6
+15 2012-09-30 14:00:00 UTC 2012-09-30 15:00:00 UTC          7
+16 2012-09-30 15:00:00 UTC 2012-09-30 16:00:00 UTC          8
+17 2012-09-30 16:00:00 UTC 2012-09-30 17:00:00 UTC         10
+18 2012-09-30 17:00:00 UTC 2012-09-30 18:00:00 UTC         10
+19 2012-09-30 18:00:00 UTC 2012-09-30 19:00:00 UTC         10
+20 2012-09-30 19:00:00 UTC 2012-09-30 20:00:00 UTC          8
+21 2012-09-30 20:00:00 UTC 2012-09-30 21:00:00 UTC          8
+22 2012-09-30 21:00:00 UTC 2012-09-30 22:00:00 UTC          7
+23 2012-09-30 22:00:00 UTC 2012-09-30 23:00:00 UTC          6
+24 2012-09-30 23:00:00 UTC 2012-10-01 00:00:00 UTC          6
+> xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='UTC')
+                     start                     end NO2_VERDUN
+1  2012-09-30 00:00:00 UTC 2012-09-30 01:00:00 UTC          7
+2  2012-09-30 01:00:00 UTC 2012-09-30 02:00:00 UTC          5
+3  2012-09-30 02:00:00 UTC 2012-09-30 03:00:00 UTC          6
+4  2012-09-30 03:00:00 UTC 2012-09-30 04:00:00 UTC          5
+5  2012-09-30 04:00:00 UTC 2012-09-30 05:00:00 UTC          7
+6  2012-09-30 05:00:00 UTC 2012-09-30 06:00:00 UTC          8
+7  2012-09-30 06:00:00 UTC 2012-09-30 07:00:00 UTC          8
+8  2012-09-30 07:00:00 UTC 2012-09-30 08:00:00 UTC          7
+9  2012-09-30 08:00:00 UTC 2012-09-30 09:00:00 UTC          9
+10 2012-09-30 09:00:00 UTC 2012-09-30 10:00:00 UTC         11
+11 2012-09-30 10:00:00 UTC 2012-09-30 11:00:00 UTC          9
+12 2012-09-30 11:00:00 UTC 2012-09-30 12:00:00 UTC          6
+13 2012-09-30 12:00:00 UTC 2012-09-30 13:00:00 UTC          5
+14 2012-09-30 13:00:00 UTC 2012-09-30 14:00:00 UTC          6
+15 2012-09-30 14:00:00 UTC 2012-09-30 15:00:00 UTC          7
+16 2012-09-30 15:00:00 UTC 2012-09-30 16:00:00 UTC          8
+17 2012-09-30 16:00:00 UTC 2012-09-30 17:00:00 UTC         10
+18 2012-09-30 17:00:00 UTC 2012-09-30 18:00:00 UTC         10
+19 2012-09-30 18:00:00 UTC 2012-09-30 19:00:00 UTC         10
+20 2012-09-30 19:00:00 UTC 2012-09-30 20:00:00 UTC          8
+21 2012-09-30 20:00:00 UTC 2012-09-30 21:00:00 UTC          8
+22 2012-09-30 21:00:00 UTC 2012-09-30 22:00:00 UTC          7
+23 2012-09-30 22:00:00 UTC 2012-09-30 23:00:00 UTC          6
+24 2012-09-30 23:00:00 UTC 2012-10-01 00:00:00 UTC          6
+> xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='CET')
+                      start                      end NO2_VERDUN
+23 2012-09-30 00:00:00 CEST 2012-09-30 01:00:00 CEST          7
+24 2012-09-30 01:00:00 CEST 2012-09-30 02:00:00 CEST          6
+25 2012-09-30 02:00:00 CEST 2012-09-30 03:00:00 CEST          7
+26 2012-09-30 03:00:00 CEST 2012-09-30 04:00:00 CEST          5
+27 2012-09-30 04:00:00 CEST 2012-09-30 05:00:00 CEST          6
+28 2012-09-30 05:00:00 CEST 2012-09-30 06:00:00 CEST          5
+29 2012-09-30 06:00:00 CEST 2012-09-30 07:00:00 CEST          7
+30 2012-09-30 07:00:00 CEST 2012-09-30 08:00:00 CEST          8
+31 2012-09-30 08:00:00 CEST 2012-09-30 09:00:00 CEST          8
+32 2012-09-30 09:00:00 CEST 2012-09-30 10:00:00 CEST          7
+33 2012-09-30 10:00:00 CEST 2012-09-30 11:00:00 CEST          9
+34 2012-09-30 11:00:00 CEST 2012-09-30 12:00:00 CEST         11
+35 2012-09-30 12:00:00 CEST 2012-09-30 13:00:00 CEST          9
+36 2012-09-30 13:00:00 CEST 2012-09-30 14:00:00 CEST          6
+37 2012-09-30 14:00:00 CEST 2012-09-30 15:00:00 CEST          5
+38 2012-09-30 15:00:00 CEST 2012-09-30 16:00:00 CEST          6
+39 2012-09-30 16:00:00 CEST 2012-09-30 17:00:00 CEST          7
+40 2012-09-30 17:00:00 CEST 2012-09-30 18:00:00 CEST          8
+41 2012-09-30 18:00:00 CEST 2012-09-30 19:00:00 CEST         10
+42 2012-09-30 19:00:00 CEST 2012-09-30 20:00:00 CEST         10
+43 2012-09-30 20:00:00 CEST 2012-09-30 21:00:00 CEST         10
+44 2012-09-30 21:00:00 CEST 2012-09-30 22:00:00 CEST          8
+45 2012-09-30 22:00:00 CEST 2012-09-30 23:00:00 CEST          8
+46 2012-09-30 23:00:00 CEST 2012-10-01 00:00:00 CEST          7
+> xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', cursor=1)
+                      when NO2_VERDUN
+1  2012-09-30 01:00:00 UTC          7
+2  2012-09-30 02:00:00 UTC          5
+3  2012-09-30 03:00:00 UTC          6
+4  2012-09-30 04:00:00 UTC          5
+5  2012-09-30 05:00:00 UTC          7
+6  2012-09-30 06:00:00 UTC          8
+7  2012-09-30 07:00:00 UTC          8
+8  2012-09-30 08:00:00 UTC          7
+9  2012-09-30 09:00:00 UTC          9
+10 2012-09-30 10:00:00 UTC         11
+11 2012-09-30 11:00:00 UTC          9
+12 2012-09-30 12:00:00 UTC          6
+13 2012-09-30 13:00:00 UTC          5
+14 2012-09-30 14:00:00 UTC          6
+15 2012-09-30 15:00:00 UTC          7
+16 2012-09-30 16:00:00 UTC          8
+17 2012-09-30 17:00:00 UTC         10
+18 2012-09-30 18:00:00 UTC         10
+19 2012-09-30 19:00:00 UTC         10
+20 2012-09-30 20:00:00 UTC          8
+21 2012-09-30 21:00:00 UTC          8
+22 2012-09-30 22:00:00 UTC          7
+23 2012-09-30 23:00:00 UTC          6
+24 2012-10-01 00:00:00 UTC          6
+> xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='UTC', cursor=1)
+                      when NO2_VERDUN
+1  2012-09-30 01:00:00 UTC          7
+2  2012-09-30 02:00:00 UTC          5
+3  2012-09-30 03:00:00 UTC          6
+4  2012-09-30 04:00:00 UTC          5
+5  2012-09-30 05:00:00 UTC          7
+6  2012-09-30 06:00:00 UTC          8
+7  2012-09-30 07:00:00 UTC          8
+8  2012-09-30 08:00:00 UTC          7
+9  2012-09-30 09:00:00 UTC          9
+10 2012-09-30 10:00:00 UTC         11
+11 2012-09-30 11:00:00 UTC          9
+12 2012-09-30 12:00:00 UTC          6
+13 2012-09-30 13:00:00 UTC          5
+14 2012-09-30 14:00:00 UTC          6
+15 2012-09-30 15:00:00 UTC          7
+16 2012-09-30 16:00:00 UTC          8
+17 2012-09-30 17:00:00 UTC         10
+18 2012-09-30 18:00:00 UTC         10
+19 2012-09-30 19:00:00 UTC         10
+20 2012-09-30 20:00:00 UTC          8
+21 2012-09-30 21:00:00 UTC          8
+22 2012-09-30 22:00:00 UTC          7
+23 2012-09-30 23:00:00 UTC          6
+24 2012-10-01 00:00:00 UTC          6
+> xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='CET', cursor=1)
+                       when NO2_VERDUN
+23 2012-09-30 01:00:00 CEST          7
+24 2012-09-30 02:00:00 CEST          6
+25 2012-09-30 03:00:00 CEST          7
+26 2012-09-30 04:00:00 CEST          5
+27 2012-09-30 05:00:00 CEST          6
+28 2012-09-30 06:00:00 CEST          5
+29 2012-09-30 07:00:00 CEST          7
+30 2012-09-30 08:00:00 CEST          8
+31 2012-09-30 09:00:00 CEST          8
+32 2012-09-30 10:00:00 CEST          7
+33 2012-09-30 11:00:00 CEST          9
+34 2012-09-30 12:00:00 CEST         11
+35 2012-09-30 13:00:00 CEST          9
+36 2012-09-30 14:00:00 CEST          6
+37 2012-09-30 15:00:00 CEST          5
+38 2012-09-30 16:00:00 CEST          6
+39 2012-09-30 17:00:00 CEST          7
+40 2012-09-30 18:00:00 CEST          8
+41 2012-09-30 19:00:00 CEST         10
+42 2012-09-30 20:00:00 CEST         10
+43 2012-09-30 21:00:00 CEST         10
+44 2012-09-30 22:00:00 CEST          8
+45 2012-09-30 23:00:00 CEST          8
+46 2012-10-01 00:00:00 CEST          7
 > 
 > #======================================
 > # tests sur la fonction xrGetManualData
@@ -510,6 +998,3 @@ Loading required package: DBI
 9  2011-12-23 22:49:00 CET                         1.91
 > 
 > 
-> proc.time()
-   user  system elapsed 
-  1.091   0.095   9.619 
