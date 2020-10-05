@@ -212,8 +212,11 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			dates <- unique(c(dates, fin))
 			if(getOption('Xair.debug', FALSE)) message("découpage des dates: ", dates)
 
+			nbattempt <- getOption('Xair.nbattempt', 10)
+			options(Xair.nbattempt=20)
+
 			donnees <- mcmapply(
-				mc.preschedule=FALSE, SIMPLIFY=FALSE,
+				SIMPLIFY=FALSE,
 				s = dates[-length(dates)],
 				e = dates[-1],
 				function(s, e) {
@@ -225,11 +228,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 							validOnly=FALSE)
 				})
 
-			while(length(donnees) > 1) {
-				donnees[[1]] <- merge(donnees[[1]], donnees[[2]], all=TRUE)
-				donnees[[2]] <- NULL
-			}
-			donnees <- donnees[[1]]
+			options(Xair.nbattempt=nbattempt)
+
+			donnees <- do.call(rbind.TimeIntervalDataFrame, donnees)
 
 		} else {
 

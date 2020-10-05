@@ -37,7 +37,8 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 		message("Champs disponibles pour la recherche : ",
 				paste(collapse=', ', xrfields[[nv]]),
 				"\nPar défaut : ",
-				paste(collapse=', ', xrfields[[nv]][1:2]))
+				paste(collapse=', ', xrfields[[nv]][1:2]),
+				'\n\n')
 	}else{
 		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
 		if(conn[['version']] == 2)
