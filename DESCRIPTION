@@ -4,7 +4,7 @@ Title: Qualite de l'Air, Seuils Europeens et Traitement de donnees
 Version: 3.1.0
 Date: 2020-09-30
 Depends: timetools,methods,httr,jsonlite,utils,stats,graphics,grDevices
-Suggests: DBI,ROracle,RODBC,RJDBC,openxlsx
+Suggests: DBI,ROracle,RODBC,RJDBC,openxlsx,parallel
 LazyData: true
 Author: Vladislav Navel
 Maintainer: Vladislav Navel <vnavel@yahoo.fr>
