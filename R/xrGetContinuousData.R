@@ -180,6 +180,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 					m =60*60*24*31,
 					y =60*60*24*366,
 					scan=10)
+	limsupdata <- 100000
 
 	if (nrow(mesures) == 0) {
 		result <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
@@ -199,7 +200,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 				pattern=mesures[['dbRowId']][-(1:500)], search.fields=search.fields, exact=TRUE,
 				validOnly=FALSE))
 
-	} else if(nrow(mesures)*difftime(end, start, units='secs')/nbsbp  > 1000000) {
+	} else if(nrow(mesures)*difftime(end, start, units='secs')/nbsbp  > limsupdata) {
 		# si la requete concerne plus de 1 million de mesure idem
 		i <- floor(1000000 / as.numeric(difftime(end, start) / nbsbp))
 
