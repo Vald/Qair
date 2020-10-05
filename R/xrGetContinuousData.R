@@ -190,13 +190,13 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		donnees <- xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['dbRowId']][1:500], search.fields='dbRowId', exact=TRUE,
+				pattern=mesures[['dbRowId']][1:500], search.fields=search.fields, exact=TRUE,
 				validOnly=FALSE)
 
 		donnees <- merge(donnees, xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['dbRowId']][-(1:500)], search.fields='dbRowId', exact=TRUE,
+				pattern=mesures[['dbRowId']][-(1:500)], search.fields=search.fields, exact=TRUE,
 				validOnly=FALSE))
 
 	} else if(nrow(mesures)*difftime(end, start, units='secs')/nbsbp  > 1000000) {
