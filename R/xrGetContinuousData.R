@@ -215,7 +215,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			nbattempt <- getOption('Xair.nbattempt', 10)
 			options(Xair.nbattempt=20)
 
-			donnees <- mcmapply(
+			donnees <- parallel::mcmapply(
 				SIMPLIFY=FALSE,
 				s = dates[-length(dates)],
 				e = dates[-1],
