@@ -285,6 +285,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 				i  <- which(donnees[['dbRowId']] == drid)
 				r  <- donnees[[dataTypes]][['data']][[i]]
 				id <- mesures[['id']][i]
+
+				# remplacement des valeurs non-valides par NA
+				r[['value']][!r[['state']] %in% valid.states] <- NA
 				
 				# quand toutes les colonnes ne sont pas dans le resultat
 				r <- r[c('date', intersect(what, names(r)))]
