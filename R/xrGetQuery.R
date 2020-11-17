@@ -246,9 +246,16 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	# gestion des dates -------------------------------------------------------
 
-	champdates         <- grep('POSIXct', fields[['type']])
+	champdates         <- fields[['nv3']][grep('POSIXct', fields[['type']])]
+	champdates         <- intersect(champdates, names(result))
 	result[champdates] <- lapply(result[champdates],
 								 strptime, '%Y-%m-%dT%H:%M:%SZ', 'UTC')
+
+	# remplissage des colonnes absentes ---------------------------------------
+
+	colabsentes <- setdiff(fields[['nv3']], names(result))
+	result[colabsentes] <- NA
+	result <- result[fields[['nv3']]]
 
 	# gestion si compatibilité v2 et fin --------------------------------------
 
