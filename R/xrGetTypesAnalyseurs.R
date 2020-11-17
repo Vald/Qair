@@ -2,8 +2,10 @@
 #'
 #' @param conn Connexion à la base XR.
 #' @param x Une data.frame telle que retournée par
-#'  \code{\link[Qair]{xrGetMesures}} avec au moins les colonnes 'NOPOL',
-#'  'NOM_COURT_MES' (v2) et/ou 'physical.id', 'FIXME:ISEO remplacant de NOM_COURT_MES'.
+#'  \code{\link[Qair]{xrGetMesures}} avec au moins les colonnes 'NOPOL' et
+#'  'IDENTIFIANT' et/ou 'NOM_COURT_MES' (v2) ou 'physical.id', et 'id' et/ou 'dbRowId'.
+#'  La fonction sera plus lente s'il n'y a qu'une seule des deux colonnes
+#'  NOM_COURT_MES(dbRowId) et IDENTIFIANT(id).
 #' @param debut POSIXct indiquant la date de début de la période
 #'  pour laquelle on souhaite avoir la liste des analyseurs.
 #' @param fin POSIXct indiquant la date de fin de la période
@@ -12,14 +14,26 @@
 #' @return Retourne un  TimeInstantDataFrame dont chaque élément contient,
 #'  pour une des mesures demandées, la liste des analyseurs utilisés et la
 #'  date d'installation de l'analyseur.
+#' @export
 xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 	nv     <- paste0('nv', conn[['version']])
+
 
 	if(nv == 'nv2') {
 		names(x)[names(x) == 'NOPOL'] <- 'physical.id'
 		names(x)[names(x) == 'IDENTIFIANT'] <- 'id'
-		#names(x)[names(x) == 'NOM_COURT_MES'] <- 'dbRowId'# 'FIXME:ISEO'
+		names(x)[names(x) == 'NOM_COURT_MES'] <- 'dbRowId'
+		id      <- 'IDENTIFIANT'
+		dbRowId <- 'NOM_COURT_MES'
+	} else {
+		id      <- 'id'
+		dbRowId <- 'dbRowId'
 	}
+
+	if(!'id' %in% names(x))
+		x <- xrGetMesures(xr, x[['dbRowId']], exact=TRUE, resv3=TRUE, search.fields=dbRowId)
+	if(!'dbRowId' %in% names(x))
+		x <- xrGetMesures(xr, x[['id']], exact=TRUE, resv3=TRUE, search.fields=id)
 
 	# traitement des dates de debut et de fin ---------------------------------
 	# si debut et fin ne sont pas en POSIXct, conversion
@@ -41,15 +55,18 @@ xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 
 	# récupération de la liste des analyseurs par mesure ----------------------
 
-	query <- paste0('v1/trackMeasureEquipments?measure=', # FIXME:ISEO dbRowId=
-					paste(x[['id']], collapse=',')) # FIXME:ISEO dbRowId
+	query <- paste0('v1/trackMeasureEquipments?measure=',
+					paste(x[['id']], collapse=','))
 	analyseurs <- xrGetQuery(conn, query, resv3=TRUE)
 	analyseurs <- as.list(analyseurs)
 
 	# création de la structure de retour --------------------------------------
 
 	res <- lapply(analyseurs[['trackEquipments']], function(a) {
-		a <- unique(a[c('startDate', 'model')])
+		a <- unique(a[c('startDate', 'endDate', 'model')])
+		a <- a[(!is.na(a[['startDate']]) & is.na(a[['endDate']])) |
+			   !a[['startDate']]==a[['endDate']],]
+
 		a[['startDate']] <- strptime(a[['startDate']], '%Y-%m-%dT%H:%M:%SZ', 'UTC')
 		a[['startDate']] <- trunc(a[['startDate']], 'hour')
 		a[['startDate']] <- as.POSIXct(a[['startDate']])
