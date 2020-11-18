@@ -69,11 +69,34 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	idsites <- NULL
 
 	# recherche sur search.fields ---------------------------------------------
-	# on charge toutes les stations d'XR et ces deux
+	# si on a que id ou ref comme champ de recherche, on utilise directement
+	# l'API d'XR, sinon on charge toutes les stations d'XR et ces deux
 	# champs sont traités comme les autres (puisqu'on est de toute façon 
-	# obligé de charger toutes les stations pour les autres champs) 
+	# obligé de charger toutes les stations pour les autres champs)
 
-	if(!is.null(pattern)) {
+	if(!is.null(pattern))
+	if(FALSE){
+	#if(all(search.fields %in% c('id', 'ref'))){
+		# recherche sur id / IDENTIFIANT / sites
+		#  sur ref / NSIT / refSites
+		# TODO:ISEO recherche sur ? ne marche pas ... c'est grave ?
+		# et rechercher % sur ref ne marche pas donc pour l'instant on ne garde 
+		# que l'approche 'global'
+
+		if(!exact)
+			query <- paste0('%', pattern, '%', collapse=',') else
+			query <- paste0(pattern, collapse=',')
+		if('id' %in% search.fields){
+			query   <- paste0(bquery, 'sites=', query)
+			ist     <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idsites <- collapseIds(ist, idsites, 'OR')
+		}
+		if('ref' %in% search.fields){
+			query   <- paste0(bquery, 'refSites=', query)
+			ist     <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idsites <- collapseIds(ist, idsites, 'OR')
+		}
+	} else {
 		# sinon recherche sur la base de toutes les stations
 
 		# TODO: créer une fonction qui fait la recherche pour tous ...

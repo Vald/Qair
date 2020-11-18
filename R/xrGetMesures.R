@@ -54,11 +54,36 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	idmesures <- NULL
 
 	# recherche sur search.fields ---------------------------------------------
-	#  on charge toutes les stations d'XR et ces deux
+	# si on a que id ou NOM_COURT_MES??? comme champ de recherche, on utilise directement
+	# l'API d'XR, sinon on charge toutes les stations d'XR et ces deux
 	# champs sont traités comme les autres (puisqu'on est de toute façon 
 	# obligé de charger toutes les stations pour les autres champs)
 
-	if(!is.null(pattern)) {
+	# FIXME:ISEO vérifier au moment de l'jout de NOM_COURT_MES que la recherche en %
+	# fonctionne. Sino on se reporte sur la version globale
+	#if(all(search.fields %in% c('id', 'NOM_COURT_MES???'))){}
+	if(!is.null(pattern))
+	#if(all(search.fields %in% 'id')) {}
+	if(FALSE){
+		# recherche sur id / IDENTIFIANT / measures
+		#  sur ? / NOM_COURT_MES / ?
+
+		if(!exact)
+			query <- paste0('%', pattern, '%', collapse=',') else
+			query <- paste0(pattern, collapse=',')
+		if('id' %in% search.fields){
+			query     <- paste0(bquery, 'measures=', query)
+			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idmesures <- collapseIds(ist, idmesures, 'OR')
+		}
+		if('NOM_COURT_MES???' %in% search.fields){
+			# FIXME:ISEO à laisser là si champ de recherche spécifique dans API
+			# sinon à supprimer et à laisser le cas suivant prendre la main
+			query     <- paste0(bquery, 'NOM_COURT_MES???=', query)
+			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
+			idmesures <- collapseIds(ist, idmesures, 'OR')
+		}
+	} else {
 		all.mesures <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
 			if(!exact)
