@@ -191,13 +191,13 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		donnees <- xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['dbRowId']][1:500], search.fields=search.fields, exact=TRUE,
+				pattern=mesures[['dbRowId']][1:500], search.fields='dbRowId', exact=TRUE,
 				validOnly=FALSE)
 
 		donnees <- merge(donnees, xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['dbRowId']][-(1:500)], search.fields=search.fields, exact=TRUE,
+				pattern=mesures[['dbRowId']][-(1:500)], search.fields='dbRowId', exact=TRUE,
 				validOnly=FALSE))
 
 	} else if(nrow(mesures)*difftime(end, start, units='secs')/nbsbp  > limsupdata) {
@@ -209,11 +209,11 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			if(getOption('Xair.debug', FALSE)) message("requêtage parallèle de l'API")
 
 			dates <- seq(start, end, by=paste(limsupdata*nbsbp/nrow(mesures), 'sec'))
-			dates <- unique(c(dates, fin))
+			dates <- unique(c(dates, end))
 			if(getOption('Xair.debug', FALSE)) message("découpage des dates: ", dates)
 
 			nbattempt <- getOption('Xair.nbattempt', 10)
-			options(Xair.nbattempt=20)
+			options(Xair.nbattempt=100)
 
 			donnees <- parallel::mcmapply(
 				SIMPLIFY=FALSE,
@@ -223,7 +223,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 					xrGetContinuousData(conn=conn,
 							start=s, end=e, period=period,
 							validated=validated, valid.states=valid.states, what=what,
-							pattern=mesures[['dbRowId']], search.fields=search.fields,
+							pattern=mesures[['dbRowId']], search.fields='dbRowId',
 							exact=TRUE,
 							validOnly=FALSE)
 				})
@@ -237,13 +237,13 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			donnees <- xrGetContinuousData(conn=conn,
 					start=start, end=datesplit, period=period,
 					validated=validated, valid.states=valid.states, what=what,
-					pattern=mesures[['dbRowId']], search.fields=search.fields, exact=TRUE,
+					pattern=mesures[['dbRowId']], search.fields='dbRowId', exact=TRUE,
 					validOnly=FALSE)
 
 			donnees <- merge(donnees, xrGetContinuousData(conn=conn,
 					start=datesplit, end=end, period=period,
 					validated=validated, valid.states=valid.states, what=what,
-					pattern=mesures[['dbRowId']], search.fields=search.fields, exact=TRUE,
+					pattern=mesures[['dbRowId']], search.fields='dbRowId', exact=TRUE,
 					validOnly=FALSE))
 		}
 
