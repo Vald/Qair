@@ -48,25 +48,11 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 	idpolluants <- NULL
 
 	# recherche sur search.fields ---------------------------------------------
-	# si on a que id  comme champ de recherche, on utilise directement
-	# l'API d'XR, sinon on charge toutes les stations d'XR et ces deux
+	# on charge toutes les stations d'XR et ces deux
 	# champs sont traités comme les autres (puisqu'on est de toute façon 
 	# obligé de charger toutes les stations pour les autres champs)
 
-	if(!is.null(pattern))
-	#if(all(search.fields == 'id')) {}
-	# TODO:ISEO recherche % ne marche pas sur physicals
-	if(FALSE){
-		# recherche sur id / NOPOL / physicals
-		if(!exact)
-			query <- paste0('%', pattern, '%', collapse=',') else
-			query <- paste0(pattern, collapse=',')
-		if('id' %in% search.fields){
-			query       <- paste0(bquery, 'physicals=', query)
-			ist         <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
-			idpolluants <- collapseIds(ist, idpolluants, 'OR')
-		}
-	} else {
+	if(!is.null(pattern)) {
 		all.polluants <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
 			if(!exact)
