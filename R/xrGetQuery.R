@@ -183,8 +183,8 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	# récupération de la requete brute ----------------------------------------
 
-	url    <- sprintf('%s%s', xrGetUrl(conn), query)
-	if(sub('\\?.*$', '', query) == 'equipments') url <- URLencode(url)
+	url <- sprintf('%s%s', xrGetUrl(conn), query)
+	url <- URLencode(url)
 
 	if(getOption('Xair.debug', FALSE)) message(url)
 
@@ -200,7 +200,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 			if(getOption('Xair.debug', FALSE)) message('curl error, nouvel essai')
 			result <- list(status_code='notsent')
 		}
-		if(result[['status_code']] != 200) Sys.sleep(1+sample(0:10/10, 1))
+		if(result[['status_code']] != 200) Sys.sleep(1+sample(-50:50/100, 1))
 		if(getOption('Xair.debug', FALSE) && i > 2) message('attempt ', i)
 	}
 
