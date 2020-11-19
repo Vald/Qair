@@ -12,7 +12,8 @@
 #'	pour les campagnes trouvées.
 xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 					start = NULL, end = NULL, fields = NULL, exact = FALSE,
-					resv3 = FALSE) {
+					resv3 = FALSE, silent) {
+	if(missing(silent)) silent <- getOption('Xair.silent', FALSE)
 
 	# récupération de la version avec laquelle on bosse et initialisation de
 	# la requête
@@ -29,10 +30,11 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 	xrfields <- xrListFields ('campaigns')
 	if(is.null(search.fields)){
 		search.fields <- xrfields[['nv3']][1:2]
-		message("Champs disponibles pour la recherche : ",
+		if(!silent) message("Champs disponibles pour la recherche : ",
 				paste(collapse=', ', xrfields[[nv]]),
-				"\nPar défaut : ",
-				paste(collapse=', ', xrfields[[nv]][1:2]))
+				"\n\nPar défaut : ",
+				paste(collapse=', ', xrfields[[nv]][1:2]), 
+				"\n\n")
 	}else{
 		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
 		if(conn[['version']] == 2)

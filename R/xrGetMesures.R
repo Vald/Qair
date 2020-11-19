@@ -15,8 +15,10 @@
 xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			  campagnes = NULL, reseaux = NULL, stations=NULL, polluants = NULL,
 			  fields = NULL,
-			  collapse = c('AND', 'OR'), exact=FALSE, resv3=FALSE, validOnly=FALSE){#,
+			  collapse = c('AND', 'OR'), exact=FALSE, resv3=FALSE, validOnly=FALSE,
+			  silent){#,
 			  #startDate=NULL, stopDate=NULL) {}
+	if(missing(silent)) silent <- getOption('Xair.silent', FALSE)
 	collapse <- match.arg(collapse)
 
 	# récupération de la version avec laquelle on bosse et initialisation de
@@ -34,9 +36,9 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	xrfields <- xrListFields ('measures')
 	if(is.null(search.fields)){
 		search.fields <- xrfields[['nv3']][1:2]
-		message("Champs disponibles pour la recherche : ",
+		if(!silent) message("Champs disponibles pour la recherche : ",
 				paste(collapse=', ', xrfields[[nv]]),
-				"\nPar défaut : ",
+				"\n\nPar défaut : ",
 				paste(collapse=', ', xrfields[[nv]][1:2]),
 				'\n\n')
 	}else{
@@ -96,9 +98,11 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 
 	if (!is.null (campagnes) ) {
 		if( !is.list(campagnes) )
-			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
+			campagnes <- xrGetCampagnes(conn, pattern = campagnes,
+										resv3=TRUE, silent=silent) else{
 			campagnes[['resv3']] <- TRUE
-			campagnes <- do.call(xrGetCampagnes, c(list(conn=conn), campagnes))
+			campagnes <- do.call(xrGetCampagnes,
+								 c(list(conn=conn), campagnes, silent=silent))
 			}
 		query     <- paste0(campagnes[['id']], collapse=',')
 		query     <- paste0(bquery, 'campaigns=', query)
@@ -110,9 +114,11 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 
 	if (!is.null (reseaux) ) {
 		if( !is.list(reseaux) )
-			reseaux <- xrGetReseaux(conn, pattern = reseaux, resv3=TRUE) else{
+			reseaux <- xrGetReseaux(conn, pattern = reseaux,
+									resv3=TRUE, silent=silent) else{
 			reseaux[['resv3']] <- TRUE
-			reseaux <- do.call(xrGetReseaux, c(list(conn=conn), reseaux))
+			reseaux <- do.call(xrGetReseaux,
+							   c(list(conn=conn), reseaux, silent=silent))
 			}
 		query     <- paste0(reseaux[['id']], collapse=',')
 		query     <- paste0(bquery, 'groups=', query)
@@ -124,9 +130,11 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 
 	if (!is.null (stations) ) {
 		if( !is.list(stations) )
-			stations <- xrGetStations(conn, pattern = stations, resv3=TRUE) else{
+			stations <- xrGetStations(conn, pattern = stations,
+									  resv3=TRUE, silent=silent) else{
 			stations[['resv3']] <- TRUE
-			stations <- do.call(xrGetStations, c(list(conn=conn), stations))
+			stations <- do.call(xrGetStations,
+								c(list(conn=conn), stations, silent=silent))
 			}
 		query     <- paste0(stations[['refSite']], collapse=',')
 		query     <- paste0(bquery, 'refSites=', query)
@@ -138,9 +146,11 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 
 	if (!is.null (polluants) ) {
 		if( !is.list(polluants) )
-			polluants <- xrGetPolluants(conn, pattern = polluants, resv3=TRUE) else{
+			polluants <- xrGetPolluants(conn, pattern = polluants,
+										resv3=TRUE, silent=silent) else{
 			polluants[['resv3']] <- TRUE
-			polluants <- do.call(xrGetPolluants, c(list(conn=conn), polluants))
+			polluants <- do.call(xrGetPolluants,
+								 c(list(conn=conn), polluants, silent=silent))
 			}
 		query     <- paste0(polluants[['id']], collapse=',')
 		query     <- paste0(bquery, 'physicals=', query)

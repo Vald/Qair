@@ -11,9 +11,11 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les polluants trouvés.
 xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
-			   fields = NULL, exact = FALSE, resv3 = FALSE) {
+			   fields = NULL, exact = FALSE, resv3 = FALSE, silent) {
 
 	# Fonction validée le 06/11/2019
+
+	if(missing(silent)) silent <- getOption('Xair.silent', FALSE)
 
 	# récupération de la version avec laquelle on bosse et initialisation de
 	# la requête
@@ -30,10 +32,11 @@ xrGetPolluants <- function(conn, pattern = NULL, search.fields = NULL,
 	xrfields <- xrListFields ('physicals')
 	if(is.null(search.fields)) {
 		search.fields <- xrfields[['nv3']][1:3]
-		message("Champs disponibles pour la recherche : ",
+		if(!silent) message("Champs disponibles pour la recherche : ",
 				paste(collapse=', ', xrfields[[nv]]),
-				"\nPar défaut : ",
-				paste(collapse=', ', xrfields[[nv]][1:3]))
+				"\n\nPar défaut : ",
+				paste(collapse=', ', xrfields[[nv]][1:3]),
+				"\n\n")
 	}else {
 		search.fields <- match.arg(search.fields, xrfields[[nv]], TRUE)
 		if(conn[['version']] == 2)

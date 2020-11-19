@@ -29,8 +29,10 @@
 #' @export
 xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			  campagnes = NULL, reseaux = NULL, fields = NULL, mesures = NULL,
-			  collapse=c('AND', 'OR'), exact=FALSE, resv3=FALSE, validOnly=FALSE){#,
+			  collapse=c('AND', 'OR'), exact=FALSE, resv3=FALSE, validOnly=FALSE,
+			  silent){#,
 			  #startDate=NULL, stopDate=NULL) {
+	if(missing(silent)) silent <- getOption('Xair.silent', FALSE)
 	osaf     <- getOption('stringsAsFactors')
 	options(stringsAsFactors = FALSE)
 	collapse <- match.arg(collapse)
@@ -50,10 +52,11 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	xrfields <- xrListFields ('sites')
 	if(is.null(search.fields)){
 		search.fields <- xrfields[['nv3']][1:2]
-		message("Champs disponibles pour la recherche : ",
+		if(!silent) message("Champs disponibles pour la recherche : ",
 				paste(collapse=', ', xrfields[[nv]]),
-				"\nPar défaut : ",
-				paste(collapse=', ', xrfields[[nv]][1:2]))
+				"\n\nPar défaut : ",
+				paste(collapse=', ', xrfields[[nv]][1:2]),
+				"\n\n")
 	}else{
 		search.fields <- as.character(match.arg(search.fields, xrfields[[nv]], TRUE))
 		if(conn[['version']] == 2)
@@ -114,9 +117,11 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	if (!is.null (mesures) ) {
 		if( !is.list(mesures) )
-			mesures <- xrGetMesures(conn, pattern = mesures, resv3=TRUE) else{
+			mesures <- xrGetMesures(conn, pattern = mesures,
+									resv3=TRUE, silent=silent) else{
 			mesures[['resv3']] <- TRUE
-			mesures <- do.call(xrGetMesures, c(list(conn=conn), mesures))
+			mesures <- do.call(xrGetMesures,
+							   c(list(conn=conn), mesures, silent=silent))
 			}
 		ist     <- unique(mesures[['site.id']])
 		idsites <- collapseIds(ist, idsites, collapse)
@@ -126,9 +131,11 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	if (!is.null (campagnes) ) {
 		if( !is.list(campagnes) )
-			campagnes <- xrGetCampagnes(conn, pattern = campagnes, resv3=TRUE) else{
+			campagnes <- xrGetCampagnes(conn, pattern = campagnes,
+										resv3=TRUE, silent=silent) else{
 			campagnes[['resv3']] <- TRUE
-			campagnes <- do.call(xrGetCampagnes, c(list(conn=conn), campagnes))
+			campagnes <- do.call(xrGetCampagnes,
+								 c(list(conn=conn), campagnes, silent=silent))
 			}
 		query   <- paste0(campagnes[['id']], collapse=',')
 		query   <- paste0(bquery, 'campaigns=', query)
@@ -140,9 +147,11 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	if (!is.null (reseaux) ) {
 		if( !is.list(reseaux) )
-			reseaux <- xrGetReseaux(conn, pattern = reseaux, resv3=TRUE) else{
+			reseaux <- xrGetReseaux(conn, pattern = reseaux,
+									resv3=TRUE, silent=silent) else{
 			reseaux[['resv3']] <- TRUE
-			reseaux <- do.call(xrGetReseaux, c(list(conn=conn), reseaux))
+			reseaux <- do.call(xrGetReseaux,
+							   c(list(conn=conn), reseaux, silent=silent))
 			}
 		query   <- paste0(reseaux[['id']], collapse=',')
 		query   <- paste0(bquery, 'groups=', query)

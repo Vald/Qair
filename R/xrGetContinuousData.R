@@ -106,6 +106,11 @@
 #'  (concrètement en ajoutant \sQuote{pourcent} avant et après la chaîne recherchée).
 #' @param validOnly (v3) La recherche doit-elle porter uniquement sur les
 #'  mesures ouvertes ?
+#' @param silent Les messages doivent-ils être affichés ? Par défaut FALSE.
+#'  Peut être gérée avec l'option Xair.silent. L'ordre d'utilisation est donc
+#'  le suivant : si une valeur est renseignée à l'appel de la fonction, elle est 
+#'  utilisée ; sinon si l'option Xair.silent est définie, elle est utilisée ;
+#'  sinon la valeur FALSE est utilisée.
 #'
 #' @return un objet de classe \code{\link[timetools]{TimeIntervalDataFrame-class}}
 #' 	contenant les données demandées.
@@ -121,9 +126,10 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		       search.fields=NULL, campagnes = NULL, reseaux = NULL, stations = NULL,
 			   polluants = NULL,
 		       collapse = c('AND', 'OR'), XR6 = TRUE,
-		       tz='UTC', cursor=NULL, exact=FALSE, validOnly=FALSE) {
+		       tz='UTC', cursor=NULL, exact=FALSE, validOnly=FALSE, silent) {
 
 	# initialisation ----------------------------------------------------------
+	if(missing(silent)) silent <- getOption('Xair.silent', FALSE)
 	osaf     <- getOption('stringsAsFactors')
 	options(stringsAsFactors = FALSE)
 
@@ -165,7 +171,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 						   	stations  = stations,
 							polluants = polluants,
 							collapse  = collapse, exact = exact,
-							validOnly = validOnly, resv3 = TRUE)
+							validOnly = validOnly, resv3 = TRUE,
+							silent    = silent)
 
 	# récuperation des données ------------------------------------------------
 	
@@ -191,14 +198,14 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		donnees <- xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['dbRowId']][1:500], search.fields='dbRowId', exact=TRUE,
-				validOnly=FALSE)
+				pattern=mesures[['dbRowId']][1:limsupmes], search.fields='dbRowId', exact=TRUE,
+				validOnly=FALSE, silent=silent)
 
 		donnees <- merge(donnees, xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['dbRowId']][-(1:500)], search.fields='dbRowId', exact=TRUE,
-				validOnly=FALSE))
+				pattern=mesures[['dbRowId']][-(1:limsupmes)], search.fields='dbRowId', exact=TRUE,
+				validOnly=FALSE, silent=silent))
 
 	} else if(nrow(mesures)*difftime(end, start, units='secs')/nbsbp  > limsupdata) {
 		# si la requete concerne plus de 1 million de mesure idem
@@ -225,7 +232,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 							validated=validated, valid.states=valid.states, what=what,
 							pattern=mesures[['dbRowId']], search.fields='dbRowId',
 							exact=TRUE,
-							validOnly=FALSE)
+							validOnly=FALSE, silent=silent)
 				})
 
 			options(Xair.nbattempt=nbattempt)
@@ -238,13 +245,13 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 					start=start, end=datesplit, period=period,
 					validated=validated, valid.states=valid.states, what=what,
 					pattern=mesures[['dbRowId']], search.fields='dbRowId', exact=TRUE,
-					validOnly=FALSE)
+					validOnly=FALSE, silent=silent)
 
 			donnees <- merge(donnees, xrGetContinuousData(conn=conn,
 					start=datesplit, end=end, period=period,
 					validated=validated, valid.states=valid.states, what=what,
 					pattern=mesures[['dbRowId']], search.fields='dbRowId', exact=TRUE,
-					validOnly=FALSE))
+					validOnly=FALSE, silent=silent))
 		}
 
 	} else {
