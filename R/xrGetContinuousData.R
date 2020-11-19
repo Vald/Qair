@@ -218,7 +218,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 			dates <- seq(start, end, by=paste(limsupdata*nbsbp/nrow(mesures), 'sec'))
 			dates <- unique(c(dates, end))
-			if(getOption('Xair.debug', FALSE)) message("découpage des dates: ", dates)
+			if(getOption('Xair.debug', FALSE)) message("découpage des dates: ",
+													   paste(dates, collapse='\n'))
 
 			nbattempt <- getOption('Xair.nbattempt', 10)
 			options(Xair.nbattempt=100)

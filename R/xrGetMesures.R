@@ -36,7 +36,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	xrfields <- xrListFields ('measures')
 	if(is.null(search.fields)){
 		search.fields <- xrfields[['nv3']][1:2]
-		if(!silent) message("Champs disponibles pour la recherche : ",
+		if(!silent) message("Champs disponibles pour la recherche (mesures) : \n",
 				paste(collapse=', ', xrfields[[nv]]),
 				"\n\nPar défaut : ",
 				paste(collapse=', ', xrfields[[nv]][1:2]),
