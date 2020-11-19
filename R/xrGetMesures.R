@@ -64,15 +64,15 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	if(!is.null(pattern))
 	if(all(search.fields %in% c('id', 'dbRowId'))) {
 		if(!exact)
-			query <- paste0('%', pattern, '%', collapse=',') else
-			query <- paste0(pattern, collapse=',')
+			ids <- paste0('%', pattern, '%', collapse=',') else
+			ids <- paste0(pattern, collapse=',')
 		if('id' %in% search.fields){
-			query     <- paste0(bquery, 'measures=', query)
+			query     <- paste0(bquery, 'measures=', ids)
 			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
 			idmesures <- collapseIds(ist, idmesures, 'OR')
 		}
 		if('dbRowId' %in% search.fields){
-			query     <- paste0(bquery, 'dbRowIdOfMeasures=', query)
+			query     <- paste0(bquery, 'dbRowIdOfMeasures=', ids)
 			ist       <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
 			idmesures <- collapseIds(ist, idmesures, 'OR')
 		}

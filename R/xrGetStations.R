@@ -80,15 +80,15 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	if(!is.null(pattern))
 	if(all(search.fields %in% c('id', 'dbRowId'))){
 		if(!exact)
-			query <- paste0('%', pattern, '%', collapse=',') else
-			query <- paste0(pattern, collapse=',')
+			ids <- paste0('%', pattern, '%', collapse=',') else
+			ids <- paste0(pattern, collapse=',')
 		if('id' %in% search.fields){
-			query   <- paste0(bquery, 'sites=', query)
+			query   <- paste0(bquery, 'sites=', ids)
 			ist     <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
 			idsites <- collapseIds(ist, idsites, 'OR')
 		}
 		if('dbRowId' %in% search.fields){
-			query   <- paste0(bquery, 'dbRowIdOfSites=', query)
+			query   <- paste0(bquery, 'dbRowIdOfSites=', ids)
 			ist     <- xrGetQuery(conn, query, resv3=TRUE)[['id']]
 			idsites <- collapseIds(ist, idsites, 'OR')
 		}
