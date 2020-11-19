@@ -188,10 +188,11 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 					y =60*60*24*366,
 					scan=10)
 	limsupdata <- 100000
+	limsupmes  <- 10
 
 	if (nrow(mesures) == 0) {
 		donnees <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
-	} else if(nrow(mesures) > 500) {
+	} else if(nrow(mesures) > limsupmes) {
 		# si la requete concerne plus de 500 mesures, on fait du 
 		# récusrif
 

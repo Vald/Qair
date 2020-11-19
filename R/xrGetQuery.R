@@ -188,7 +188,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	if(getOption('Xair.debug', FALSE)) message(url)
 
-	nbattempt <- getOption('Xair.nbattempt', 10)
+	nbattempt <- getOption('Xair.nbattempt', 100)
 	result    <- list(status_code='notsent')
 	i         <- 1
 	while(result[['status_code']] != 200 && i <= nbattempt) {
@@ -200,7 +200,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 			if(getOption('Xair.debug', FALSE)) message('curl error, nouvel essai')
 			result <- list(status_code='notsent')
 		}
-		if(result[['status_code']] != 200) Sys.sleep(1+sample(-50:50/100, 1))
+		if(result[['status_code']] != 200) Sys.sleep(0.1+sample(-50:50/1000, 1))
 		if(getOption('Xair.debug', FALSE) && i > 2) message('attempt ', i)
 	}
 
@@ -290,7 +290,7 @@ xrVersion <- function(conn) {
 			if(getOption('Xair.debug', FALSE)) message('curl error, nouvel essai')
 			result <- list(status_code='notsent')
 		}
-		if(result[['status_code']] != 200) Sys.sleep(1+sample(0:10/10, 1))
+		if(result[['status_code']] != 200) Sys.sleep(0.1+sample(-50:50/1000, 1))
 		if(getOption('Xair.debug', FALSE) && i > 2) message('attempt ', i)
 	}
 
