@@ -278,7 +278,7 @@ xrVersion <- function(conn) {
 
 	if(getOption('Xair.debug', FALSE)) message(url)
 
-	nbattempt <- getOption('Xair.nbattempt', 10)
+	nbattempt <- getOption('Xair.nbattempt', 100)
 	result    <- list(status_code='notsent')
 	i         <- 1
 	while(result[['status_code']] != 200 && i <= nbattempt) {

@@ -188,7 +188,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 					y =60*60*24*366,
 					scan=10)
 	limsupdata <- 100000
-	limsupmes  <- 10
+	limsupmes  <- 100
 
 	if (nrow(mesures) == 0) {
 		donnees <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
@@ -210,18 +210,16 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	} else if(nrow(mesures)*difftime(end, start, units='secs')/nbsbp  > limsupdata) {
 		# si la requete concerne plus de 1 million de mesure idem
-		datesplit <- trunc(start + POSIXctp(limsupdata*nbsbp/nrow(mesures), 'second'), 'day')
-		if(getOption('Xair.debug', FALSE)) message(datesplit)
 
 		if(requireNamespace('parallel', quietly=TRUE)) {
 			if(getOption('Xair.debug', FALSE)) message("requêtage parallèle de l'API")
 
 			dates <- seq(start, end, by=paste(limsupdata*nbsbp/nrow(mesures), 'sec'))
 			dates <- unique(c(dates, end))
-			if(getOption('Xair.debug', FALSE)) message("découpage des dates: ",
-													   paste(dates, collapse='\n'))
+			if(getOption('Xair.debug', FALSE))
+				message("découpage des dates:\n", paste(dates, collapse='\n'))
 
-			nbattempt <- getOption('Xair.nbattempt', 10)
+			nbattempt <- getOption('Xair.nbattempt', 100)
 			options(Xair.nbattempt=100)
 
 			donnees <- parallel::mcmapply(
@@ -242,6 +240,8 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			donnees <- do.call(rbind.TimeIntervalDataFrame, donnees)
 
 		} else {
+			datesplit <- trunc(start + POSIXctp(limsupdata*nbsbp/nrow(mesures), 'second'), 'day')
+			if(getOption('Xair.debug', FALSE)) message(datesplit)
 
 			donnees <- xrGetContinuousData(conn=conn,
 					start=start, end=datesplit, period=period,
