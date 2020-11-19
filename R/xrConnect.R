@@ -27,7 +27,7 @@
 #' @param debug Si TRUE, chaque requête http envoyée est affichée dans le terminal.
 #'  FALSE par defaut. Peut être spécifié via l'option Xair.debug.
 #' @param nbattempt Nombre de tentative d'exécution d'une requête avant plantage
-#'  définitif. 10 par défaut. Nécessaire dans le cadre de la limititation du nombre 
+#'  définitif. 100 par défaut. Nécessaire dans le cadre de la limititation du nombre 
 #'  de requêtes pr unité de temps imposée par ISEO.
 #' @param dsn Nom de la base de données (cf le pilote concerné, JDBC, ODBC ou Oracle).
 #'	optionnel : sera demandé si nécessaire.
@@ -41,6 +41,7 @@
 #' 	peut prendre les valeurs 'oracle', 'jdbc' ou 'odbc'. Par défault, la valeur utilisée
 #' 	est 'oracle' pour les systèmes type 'unix' et 'odbc' pour windows.
 #' @inheritParams RODBC::odbcConnect
+#' @inheritParams xrGetContinuousData
 #' @return Une connexion à la base XR (il s'agit en fait d'une liste avec 'host' et
 #'  'port'. Cela permet de gérer plusieurs 'connexion' simultanément et de mimer
 #'  le comportement de Qair2).
@@ -57,9 +58,10 @@
 #' @export
 xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=NULL,
 					  dsn=NULL, uid=NULL, pwd=NULL, ojdbc=NULL, drv.type=NULL,
-					  believeNRows=TRUE) {
+					  believeNRows=TRUE, silent=FALSE) {
 	if(!is.null(debug)) options(Xair.debug=debug)
 	if(!is.null(nbattempt)) options(Xair.nbattempt=nbattempt)
+	if(!is.null(silent)) options(Xair.silent=silent)
 
 	if(!is.null(host)) {
 		options(Xair.host=host)
