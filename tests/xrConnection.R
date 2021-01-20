@@ -7,52 +7,89 @@ options(Xair.host='xair.atmo-na.org', Xair.version=2, Xair.port=8443,
 
 xr <- xrConnect()
 
-# test des différentes fonctions xrGet*
-#======================================
+#==============================================================================
+# DONNEES CONTINUES
+#==============================================================================
 
-p <- xrGetPolluants(xr)
-p[order(p[['NOPOL']]),]
-p <- xrGetPolluants(xr, 'N2')
-p[order(p[['NOPOL']]),]
-p <- xrGetPolluants(xr, 'und', 'NCON')
-p[order(p[['NOPOL']]),]
+# test simple de récupération de données
+#=======================================
 
-mp <- xrGetMethodesPrelevement(xr)
-mp[order(mp[['CODE_METH_P']]),]
+mes <- c('O3_AYTRE', 'PM10_NICOLAS', 'NO2_DALTON', 'SO2_LACQ', 'PM25_BILLERE')
+# note le [mes] est pour assurer l'ordre des mesures
+# horaires
+xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01')[mes]
+# QH
+xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2018-07-01', period='qh')[mes]
+# journalières
+xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01', period='d')[mes]
+# mensuelles
+xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01', period='m')[mes]
+# annuelles
+xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01', period='y')[mes]
+# scan
+xrGetContinuousData(xr, 'NO_BASTI', '2019-01-01 09:15:00', '2019-01-01 09:30:00', period='scan')
+# exact
+xrGetContinuousData(xr, 'O3_VER', '2019-02-03', '2019-02-04')
+xrGetContinuousData(xr, 'O3_VER', '2019-02-03', '2019-02-04', search.fields='IDENTIFIANT')
+xrGetContinuousData(xr, 'O3_VER', '2019-02-03', '2019-02-04', search.fields='NOM_COURT_MES')
+xrGetContinuousData(xr, 'O3_VER', '2019-02-03', '2019-02-04', exact=TRUE)
+xrGetContinuousData(xr, 'O3_VER', '2019-02-03', '2019-02-04', search.fields='IDENTIFIANT', exact=TRUE)
+xrGetContinuousData(xr, 'O3_VERDUN', '2019-02-03', '2019-02-04', search.fields='IDENTIFIANT', exact=TRUE)
+xrGetContinuousData(xr, 'O3_VER', '2019-02-03', '2019-02-04', search.fields='NOM_COURT_MES', exact=TRUE)
+# validated / what
+d <- '2020-02-19 23:00:00'
+f <- '2020-02-20 02:00:00'
+xrGetContinuousData(xr, mes[3], d, f, period='qh', what='state')
+xrGetContinuousData(xr, mes[3], d, f, period='qh', what='validated')
+xrGetContinuousData(xr, mes[3], d, f, period='qh', what='value')
+xrGetContinuousData(xr, mes[3], d, f, validated=TRUE, period='qh')
+xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh')
+xrGetContinuousData(xr, mes[3], d, f, validated=TRUE, period='qh', what=c('value', 'state', 'validated'))
+xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh', what=c('value', 'state', 'validated'))
 
-xrGetCampagnes(xr, 'LARO', end='2011-01-01')
-# FIXME: en erreur, attente retour ISEO
+# valid.states TODO:
 
-r <- xrGetReseaux(xr, 'SO2')
-r[order(r[['NOM_COURT_RES']]),]
+# cursor/timezone
+xrGetContinuousData(xr, mes[4], '2019-05-07', '2019-05-08')
+xrGetContinuousData(xr, mes[4], '2019-05-07', '2019-05-08', cursor=0)
+xrGetContinuousData(xr, mes[4], '2019-05-07', '2019-05-08', cursor=0.5)
+xrGetContinuousData(xr, mes[4], '2019-05-07', '2019-05-08', cursor=1)
 
-xrGetStations(xr, 'Chas')
-s <- xrGetStations(xr, reseaux='PALR')
-s[order(s[['NSIT']]),]
-s <- xrGetStations(xr, reseaux='PALR', mesures='24')
-s[order(s[['NSIT']]),]
+xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d')
+xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=0)
+xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=0.5)
+xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=1)
+xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=0, tz='CET')
+xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=0.5, tz='CET')
+xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=1, tz='CET')
 
-summary(xrGetSitesPrelevement(xr, 'TLAROC_L'))
-xrGetSitesPrelevement(xr, campagnes='TLAROC2009')
-# FIXME: en erreur (à cause campagnes), attente retour ISEO
+# validOnly TODO:
 
-#==========================================
-# tests sur la fonction xrGetContinuousData
+# test sur les fonctions de recherches seules et dans xrGetContinuousData
+#========================================================================
 
-xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01')
-xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='UTC')
-xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='CET')
-xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', cursor=1)
-xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='UTC', cursor=1)
-xrGetContinuousData(xr, 'NO2_VERDUN', '2012-09-30', '2012-10-01', tz='CET', cursor=1)
+# stations
+xrGetStations
 
-#======================================
-# tests sur la fonction xrGetManualData
+# mesures
+xrGetMesures
 
-xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6')
-xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', tz='UTC')
-xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', tz='CET')
-xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', cursor=0.5)
-xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', tz='UTC', cursor=0.5)
-xrGetManualData(xr, '2011-01-01', '2012-01-01', 'PNIORT_001', 'C6H6', tz='CET', cursor=0.5)
+# 
+xrGetPolluants
+xrGetReseaux
+xrGetCampagnes
+
+# polluants et mesures
+# reseaux et polluants
+# campagnes et stations
+
+
+#==============================================================================
+# DONNEES MANUELLES TODO:
+#==============================================================================
+# pas de tests pour l'instant : utilise l'ancien moteur
+# xrGetManualData
+# xrGetMethodesPrelevement
+# xrGetSitesPrelevement
+
 
