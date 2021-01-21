@@ -47,7 +47,20 @@ xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh')
 xrGetContinuousData(xr, mes[3], d, f, validated=TRUE, period='qh', what=c('value', 'state', 'validated'))
 xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh', what=c('value', 'state', 'validated'))
 
-# valid.states TODO:
+# valid.states
+xrGetContinuousData(xr, mes[1], '2019-09-24', '2019-09-24 08:30:00',
+					what=c('value', 'state'), period='qh')
+xrGetContinuousData(xr, mes[1], '2019-09-24', '2019-09-24 08:30:00',
+					what=c('value', 'state'), period='qh', valid.states='I')
+xrGetContinuousData(xr, mes[1], '2019-09-24', '2019-09-24 08:30:00',
+					what=c('value', 'state'), period='qh', valid.states=c('Z', 'C'))
+
+xrGetContinuousData(xr, mes[1], '2019-01-09', '2019-01-09 08:30:00',
+					what=c('value', 'state'), period='qh')
+xrGetContinuousData(xr, mes[1], '2019-01-09', '2019-01-09 08:30:00',
+					what=c('value', 'state'), period='qh', valid.states='A')
+xrGetContinuousData(xr, mes[1], '2019-01-09', '2019-01-09 08:30:00',
+					what=c('value', 'state'), period='qh', valid.states=c('Z', 'C'))
 
 # cursor/timezone
 xrGetContinuousData(xr, mes[4], '2019-05-07', '2019-05-08')
@@ -63,13 +76,11 @@ xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=0
 xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=0.5, tz='CET')
 xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=1, tz='CET')
 
-# validOnly TODO:
-
 # test sur les fonctions de recherches seules et dans xrGetContinuousData
 #========================================================================
 
 # stations
-xrGetStations
+xrGetStations(xr, 'D17LAR')
 
 # mesures
 xrGetMesures
