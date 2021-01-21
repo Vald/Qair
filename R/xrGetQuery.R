@@ -184,7 +184,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	# récupération de la requete brute ----------------------------------------
 
 	url <- sprintf('%s%s', xrGetUrl(conn), query)
-	url <- URLencode(url)
+	url <- URLencode(url, repeated=TRUE)
 
 	if(getOption('Xair.debug', FALSE)) message(url)
 
