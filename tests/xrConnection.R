@@ -79,10 +79,13 @@ xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=1
 # test sur les fonctions de recherches seules et dans xrGetContinuousData
 #========================================================================
 
-# stations
+# stations --------------------------------------------------------------------
 xrGetStations(xr, 'D87LIM_PRESID')
 xrGetStations(xr, 'D87LIM_PRESID', search.fields='IDENTIFIANT')
 xrGetStations(xr, 'D87LIM_PRESID', search.fields='NOM_COURT_SIT')
+xrGetStations(xr, 'PRESID', search.fields='NOM_COURT_SIT')
+xrGetStations(xr, '44803', search.fields='NSIT')
+xrGetStations(xr, '35003', search.fields='NSIT_PUBLIC')
 xrGetStations(xr, 'D87LIM_PRESID', exact=TRUE)
 xrGetStations(xr, 'D87LIM_PRESID', search.fields='IDENTIFIANT', exact=TRUE)
 xrGetStations(xr, 'D87LIM_PRESID', search.fields='NOM_COURT_SIT', exact=TRUE)
@@ -108,45 +111,113 @@ xrGetStations(xr, mesures='O3_PRE')
 xrGetStations(xr, mesures=list(pattern='O3_PRE', exact=TRUE))
 xrGetStations(xr, mesures=list(pattern='O3_PR', exact=TRUE))
 
-# mesures
+# mesures ---------------------------------------------------------------------
 xrGetMesures(xr, 'PM10_MARMANDE')
 xrGetMesures(xr, 'PM10_MARMANDE', search.fields='IDENTIFIANT')
-xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_SIT')
+xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_MES')
+xrGetMesures(xr, ':01908', search.fields='NOM_COURT_MES')
 xrGetMesures(xr, 'PM10_MARMANDE', exact=TRUE)
 xrGetMesures(xr, 'PM10_MARMANDE', search.fields='IDENTIFIANT', exact=TRUE)
-xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_SIT', exact=TRUE)
+xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_MES', exact=TRUE)
+xrGetMesures(xr, 'PM10_MARM')
+xrGetMesures(xr, 'PM10_MARM', search.fields='IDENTIFIANT')
+xrGetMesures(xr, 'PM10_MARM', exact=TRUE)
+xrGetMesures(xr, 'PM10_MARM', search.fields='IDENTIFIANT', exact=TRUE)
 xrGetMesures(xr, 'PM10_MAR')
-xrGetMesures(xr, 'PM10_MAR', search.fields='IDENTIFIANT')
-xrGetMesures(xr, 'PM10_MAR', exact=TRUE)
-xrGetMesures(xr, 'PM10_MAR', search.fields='IDENTIFIANT', exact=TRUE)
 xrGetMesures(xr, c('PM10_MAR', 'PM10_VER'))
 
-xrGetMesures(xr, campagnes=)
+xrGetMesures(xr, campagnes='EUROC_20')
+xrGetMesures(xr, campagnes='EUROC_2020')
+xrGetMesures(xr, campagnes=list(pattern='EUROC_2020', exact=TRUE))
+# FIXME: si aucune campagne ne correspond, plante (pbm de renvoi de tout ?)
+xrGetMesures(xr, campagnes=list(pattern='EUROC_20', exact=TRUE))
 
-xrGetMesures(xr, reseaux=)
+xrGetMesures(xr, reseaux='RALQ1')
+xrGetMesures(xr, reseaux=list(pattern='RALQ1', exact=TRUE))
+# FIXME: si aucun reseau ne correspond, plante (pbm de renvoi de tout ?)
+xrGetMesures(xr, reseaux=list(pattern='RALQ', exact=TRUE))
 
-xrGetMesures(xr, stations=)
+xrGetMesures(xr, stations='D87LIM_PRESID')
+xrGetMesures(xr, stations=list(pattern='D87LIM_PRESID', exact=TRUE))
+# FIXME: si aucune station ne correspond, plante (pbm de renvoi de tout ?)
+xrGetMesures(xr, stations=list(pattern='D87LIM_PRESI', exact=TRUE))
 
-xrGetMesures(xr, polluants=)
+xrGetMesures(xr, polluants='H2S')
+xrGetMesures(xr, polluants=list(pattern='H2S', exact=TRUE))
 
-xrGetMesures(xr, polluants=, campagnes=)
+xrGetMesures(xr, polluants='H2S', campagnes='EUROC_20')
+xrGetMesures(xr,
+			 polluants=list(pattern='05', exact=TRUE),
+			 campagnes=list(pattern='EUROC_2019', exact=TRUE))
+# FIXME: si pas de correspondance, renvoie tous les EUROC_2019
+xrGetMesures(xr,
+			 polluants=list(pattern='29', exact=TRUE),
+			 campagnes=list(pattern='EUROC_2019', exact=TRUE))
+# FIXME: si pas de correspondance, renvoie tous les H2S
+xrGetMesures(xr,
+			 polluants=list(pattern='05', exact=TRUE),
+			 campagnes=list(pattern='EUROC_1980', exact=TRUE))
 
-xrGetMesures(xr, polluants=, reseaux=)
+xrGetMesures(xr, polluants='PM', reseaux='VH')
+xrGetMesures(xr, polluants='PM10', reseaux='VHBX')
+xrGetMesures(xr,
+			 polluants=list(pattern='24', exact=TRUE),
+			 reseaux=list(pattern='VHBX', exact=TRUE))
+# FIXME: si pas de correspondance renvoie tous les PM10
+xrGetMesures(xr,
+			 polluants=list(pattern='24', exact=TRUE),
+			 reseaux=list(pattern='VHX', exact=TRUE))
+# FIXME: si pas de correspondance renvoie tous les VHBX
+xrGetMesures(xr,
+			 polluants=list(pattern='29', exact=TRUE),
+			 reseaux=list(pattern='VHBX', exact=TRUE))
 
-xrGetMesures(xr, polluants=, stations=)
+xrGetMesures(xr, polluants='PM', stations='PRESID')
+xrGetMesures(xr, polluants='PM10', stations='PRESID')
+xrGetMesures(xr,
+			 polluants=list(pattern='24', exact=TRUE),
+			 stations=list(pattern='PRESID', exact=TRUE))
+# FIXME: si pas de correspondance renvoie tous les PM10
+xrGetMesures(xr,
+			 polluants=list(pattern='24', exact=TRUE),
+			 stations=list(pattern='PREID', exact=TRUE))
+# FIXME: si pas de correspondance renvoie tous les PRESID
+xrGetMesures(xr,
+			 polluants=list(pattern='29', exact=TRUE),
+			 stations=list(pattern='PRESID', exact=TRUE))
 
-# polluants
-xrGetPolluants
+# polluants -------------------------------------------------------------------
+xrGetPolluants(xr)
+xrGetPolluants(xr, c('24', 'PM2.5'))
+xrGetPolluants(xr, c('24', 'PM2.5'), exact=TRUE)
+xrGetPolluants(xr, c('24', 'PM2.5'), exact=TRUE, search.fields='CCHIM')
 
-# polluants
-xrGetReseaux
+# reseaux ---------------------------------------------------------------------
+xrGetReseaux(xr, 'RALQ1')
+xrGetReseaux(xr, 'RALQ1', search.fields='NOM_RES')
+xrGetReseaux(xr, 'RALQ1', search.fields='NOM_COURT_RES')
+xrGetReseaux(xr, 'RALQ1', exact=TRUE)
+xrGetReseaux(xr, 'RALQ1', search.fields='NOM_RES', exact=TRUE)
+xrGetReseaux(xr, 'RALQ1', search.fields='NOM_COURT_RES', exact=TRUE)
+xrGetReseaux(xr, 'RALQ')
+xrGetReseaux(xr, 'RALQ', search.fields='NOM_RES')
+xrGetReseaux(xr, 'RALQ', exact=TRUE)
+xrGetReseaux(xr, 'RALQ', search.fields='NOM_RES', exact=TRUE)
+xrGetReseaux(xr, c('RALQ', 'VH'))
 
-# campagnes
-xrGetCampagnes(xr, 'PANTA')
-
-# polluants et mesures
-# reseaux et polluants
-# campagnes et stations
+# campagnes -------------------------------------------------------------------
+xrGetCampagnes(xr, 'PANTA_2011')
+xrGetCampagnes(xr, 'PANTA_2011')
+xrGetCampagnes(xr, 'PANTA_2011', search.fields='LIBELLE')
+xrGetCampagnes(xr, 'PANTA_2011', search.fields='NOM_COURT_CM')
+xrGetCampagnes(xr, 'PANTA_2011', exact=TRUE)
+xrGetCampagnes(xr, 'PANTA_2011', search.fields='LIBELLE', exact=TRUE)
+xrGetCampagnes(xr, 'PANTA_2011', search.fields='NOM_COURT_CM', exact=TRUE)
+xrGetCampagnes(xr, 'Pantaléon')
+xrGetCampagnes(xr, 'Pantaléon', search.fields='LIBELLE')
+xrGetCampagnes(xr, 'Pantaléon', exact=TRUE)
+xrGetCampagnes(xr, 'Pantaléon', search.fields='LIBELLE', exact=TRUE)
+xrGetCampagnes(xr, c('PANT', 'EUROC'))
 
 
 #==============================================================================
