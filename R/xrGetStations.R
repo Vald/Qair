@@ -70,6 +70,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 	# --> agregation des différents tests en fonction de collapse...
 
 	idsites <- NULL
+	aucunecorrespondance <- FALSE
 
 	# recherche sur search.fields ---------------------------------------------
 	# si on a que id ou dbRowId comme champ de recherche, on utilise directement
@@ -115,7 +116,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	# récupération d'idsite sur la base de mesures ----------------------------
 
-	if (!is.null (mesures) ) {
+	if (!is.null (mesures)) {
 		if( !is.list(mesures) )
 			mesures <- xrGetMesures(conn, pattern = mesures,
 									resv3=TRUE, silent=silent) else{
@@ -129,7 +130,7 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 
 	# récupération d'idcampaignes ---------------------------------------------
 
-	if (!is.null (campagnes) ) {
+	if (!is.null (campagnes) && !aucunecorrespondance) {
 		if( !is.list(campagnes) )
 			campagnes <- xrGetCampagnes(conn, pattern = campagnes,
 										resv3=TRUE, silent=silent) else{
@@ -137,15 +138,17 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			campagnes <- do.call(xrGetCampagnes,
 								 c(list(conn=conn), campagnes, silent=silent))
 			}
-		query   <- paste0(campagnes[['id']], collapse=',')
-		query   <- paste0(bquery, 'campaigns=', query)
-		ist     <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
-		idsites <- collapseIds(ist, idsites, collapse)
+		if(nrow(campagnes) > 0) {
+			query   <- paste0(campagnes[['id']], collapse=',')
+			query   <- paste0(bquery, 'campaigns=', query)
+			ist     <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
+			idsites <- collapseIds(ist, idsites, collapse)
+		} else aucunecorrespondance <- TRUE
 	}
 
 	# récupération d'idgroups -------------------------------------------------
 
-	if (!is.null (reseaux) ) {
+	if (!is.null (reseaux) && !aucunecorrespondance) {
 		if( !is.list(reseaux) )
 			reseaux <- xrGetReseaux(conn, pattern = reseaux,
 									resv3=TRUE, silent=silent) else{
@@ -153,17 +156,20 @@ xrGetStations <- function(conn, pattern = NULL, search.fields = NULL,
 			reseaux <- do.call(xrGetReseaux,
 							   c(list(conn=conn), reseaux, silent=silent))
 			}
-		query   <- paste0(reseaux[['id']], collapse=',')
-		query   <- paste0(bquery, 'groups=', query)
-		ist     <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
-		idsites <- collapseIds(ist, idsites, collapse)
+		if(nrow(reseaux) > 0) {
+			query   <- paste0(reseaux[['id']], collapse=',')
+			query   <- paste0(bquery, 'groups=', query)
+			ist     <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
+			idsites <- collapseIds(ist, idsites, collapse)
+		} else aucunecorrespondance <- TRUE
 	}
 
 	# si des filtres ont été appliqués et que idsites est vide ----------------
 	# la fonction retourne une data.frame vide
 	# (on procède en donnant une valeur bidon à idsites)
 
-	if(!is.null(c(pattern, campagnes, reseaux, mesures)) & length(idsites) == 0)
+	if(aucunecorrespondance ||
+	   (!is.null(c(pattern, campagnes, reseaux, mesures)) & length(idsites) == 0))
 		idsites <- 'AUCUNECORRESPONDANCE'
 
 	# création et exécution de la requête -------------------------------------

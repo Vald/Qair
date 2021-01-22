@@ -54,6 +54,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 	# --> agregation des différents tests en fonction de collapse...
 
 	idmesures <- NULL
+	aucunecorrespondance <- FALSE
 
 	# recherche sur search.fields ---------------------------------------------
 	# si on a que id ou dbRowId comme champ de recherche, on utilise directement
@@ -96,7 +97,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 
 	# recherche sur campagnes -------------------------------------------------
 
-	if (!is.null (campagnes) ) {
+	if (!is.null (campagnes) && !aucunecorrespondance) {
 		if( !is.list(campagnes) )
 			campagnes <- xrGetCampagnes(conn, pattern = campagnes,
 										resv3=TRUE, silent=silent) else{
@@ -104,15 +105,17 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			campagnes <- do.call(xrGetCampagnes,
 								 c(list(conn=conn), campagnes, silent=silent))
 			}
-		query     <- paste0(campagnes[['id']], collapse=',')
-		query     <- paste0(bquery, 'campaigns=', query)
-		ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
-		idmesures <- collapseIds(ist, idmesures, collapse)
+		if(nrow(campagnes) > 0) {
+			query     <- paste0(campagnes[['id']], collapse=',')
+			query     <- paste0(bquery, 'campaigns=', query)
+			ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
+			idmesures <- collapseIds(ist, idmesures, collapse)
+		} else aucunecorrespondance  <- TRUE
 	}
 
 	# recherche sur reseaux ---------------------------------------------------
 
-	if (!is.null (reseaux) ) {
+	if (!is.null (reseaux) && !aucunecorrespondance) {
 		if( !is.list(reseaux) )
 			reseaux <- xrGetReseaux(conn, pattern = reseaux,
 									resv3=TRUE, silent=silent) else{
@@ -120,15 +123,17 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			reseaux <- do.call(xrGetReseaux,
 							   c(list(conn=conn), reseaux, silent=silent))
 			}
-		query     <- paste0(reseaux[['id']], collapse=',')
-		query     <- paste0(bquery, 'groups=', query)
-		ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
-		idmesures <- collapseIds(ist, idmesures, collapse)
+		if(nrow(reseaux) > 0) {
+			query     <- paste0(reseaux[['id']], collapse=',')
+			query     <- paste0(bquery, 'groups=', query)
+			ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
+			idmesures <- collapseIds(ist, idmesures, collapse)
+		} else aucunecorrespondance  <- TRUE
 	}
 
 	# recherche sur stations --------------------------------------------------
 
-	if (!is.null (stations) ) {
+	if (!is.null (stations) && !aucunecorrespondance) {
 		if( !is.list(stations) )
 			stations <- xrGetStations(conn, pattern = stations,
 									  resv3=TRUE, silent=silent) else{
@@ -136,15 +141,17 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			stations <- do.call(xrGetStations,
 								c(list(conn=conn), stations, silent=silent))
 			}
-		query     <- paste0(stations[['refSite']], collapse=',')
-		query     <- paste0(bquery, 'refSites=', query)
-		ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
-		idmesures <- collapseIds(ist, idmesures, collapse)
+		if(nrow(stations) > 0) {
+			query     <- paste0(stations[['refSite']], collapse=',')
+			query     <- paste0(bquery, 'refSites=', query)
+			ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
+			idmesures <- collapseIds(ist, idmesures, collapse)
+		} else aucunecorrespondance  <- TRUE
 	}
 
 	# recherche sur polluants -------------------------------------------------
 
-	if (!is.null (polluants) ) {
+	if (!is.null (polluants) && !aucunecorrespondance) {
 		if( !is.list(polluants) )
 			polluants <- xrGetPolluants(conn, pattern = polluants,
 										resv3=TRUE, silent=silent) else{
@@ -152,18 +159,21 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			polluants <- do.call(xrGetPolluants,
 								 c(list(conn=conn), polluants, silent=silent))
 			}
-		query     <- paste0(polluants[['id']], collapse=',')
-		query     <- paste0(bquery, 'physicals=', query)
-		ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
-		idmesures <- collapseIds(ist, idmesures, collapse)
+		if(nrow(polluants) > 0) {
+			query     <- paste0(polluants[['id']], collapse=',')
+			query     <- paste0(bquery, 'physicals=', query)
+			ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
+			idmesures <- collapseIds(ist, idmesures, collapse)
+		} else aucunecorrespondance  <- TRUE
 	}
 
 	# si des filtres ont été appliqués et que idsites est vide ----------------
 	# la fonction retourne une data.frame vide
 	# (on procède en donnant une valeur bidon à idsites)
 
-	if(!is.null(c(pattern, campagnes, reseaux, stations, polluants))
-	   & length(idmesures) == 0) idmesures <- 'AUCUNECORRESPONDANCE'
+	if(aucunecorrespondance ||
+	   (!is.null(c(pattern, campagnes, reseaux, stations, polluants))
+		& length(idmesures) == 0)) idmesures <- 'AUCUNECORRESPONDANCE'
 
 	# création et exécution de la requête -------------------------------------
 

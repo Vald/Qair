@@ -1,6 +1,7 @@
 library (Qair)
 options(Xair.host='xair.atmo-na.org', Xair.version=2, Xair.port=8443, 
-		Xair.dsn='N09', Xair.uid='vlad', Xair.pwd='vlad', Xair.drv='oracle')
+		Xair.dsn='N09', Xair.uid='vlad', Xair.pwd='vlad', Xair.drv='oracle',
+		Xair.silent=TRUE)
 
 # test de la connexion  à XR
 #============================
@@ -44,23 +45,23 @@ xrGetContinuousData(xr, mes[3], d, f, period='qh', what='validated')
 xrGetContinuousData(xr, mes[3], d, f, period='qh', what='value')
 xrGetContinuousData(xr, mes[3], d, f, validated=TRUE, period='qh')
 xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh')
-xrGetContinuousData(xr, mes[3], d, f, validated=TRUE, period='qh', what=c('value', 'state', 'validated'))
-xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh', what=c('value', 'state', 'validated'))
+xrGetContinuousData(xr, mes[3], d, f, validated=TRUE, period='qh', what=c('both'))
+xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh', what=c('both'))
 
 # valid.states
 xrGetContinuousData(xr, mes[1], '2019-09-24', '2019-09-24 08:30:00',
-					what=c('value', 'state'), period='qh')
+					what=c('both'), period='qh')
 xrGetContinuousData(xr, mes[1], '2019-09-24', '2019-09-24 08:30:00',
-					what=c('value', 'state'), period='qh', valid.states='I')
+					what=c('both'), period='qh', valid.states='I')
 xrGetContinuousData(xr, mes[1], '2019-09-24', '2019-09-24 08:30:00',
-					what=c('value', 'state'), period='qh', valid.states=c('Z', 'C'))
+					what=c('both'), period='qh', valid.states=c('Z', 'C'))
 
 xrGetContinuousData(xr, mes[1], '2019-01-09', '2019-01-09 08:30:00',
-					what=c('value', 'state'), period='qh')
+					what=c('both'), period='qh')
 xrGetContinuousData(xr, mes[1], '2019-01-09', '2019-01-09 08:30:00',
-					what=c('value', 'state'), period='qh', valid.states='A')
+					what=c('both'), period='qh', valid.states='A')
 xrGetContinuousData(xr, mes[1], '2019-01-09', '2019-01-09 08:30:00',
-					what=c('value', 'state'), period='qh', valid.states=c('Z', 'C'))
+					what=c('both'), period='qh', valid.states=c('Z', 'C'))
 
 # cursor/timezone
 xrGetContinuousData(xr, mes[4], '2019-05-07', '2019-05-08')
@@ -99,12 +100,10 @@ xrGetStations(xr, c('D87LIM_C', 'D17LAR_C'))
 xrGetStations(xr, campagnes='EUROC_20')
 xrGetStations(xr, campagnes='EUROC_2020')
 xrGetStations(xr, campagnes=list(pattern='EUROC_2020', exact=TRUE))
-# FIXME: si aucune campagne ne correspond, retourne toutes les stations. Devrait n'en renvoyer aucune
 xrGetStations(xr, campagnes=list(pattern='EUROC_20', exact=TRUE))
 
 xrGetStations(xr, reseaux='RALQ1')
 xrGetStations(xr, reseaux=list(pattern='RALQ1', exact=TRUE))
-# FIXME: si aucune campagne ne correspond, retourne toutes les stations. Devrait n'en renvoyer aucune
 xrGetStations(xr, reseaux=list(pattern='RALQ', exact=TRUE))
 
 xrGetStations(xr, mesures='O3_PRE')
@@ -129,17 +128,14 @@ xrGetMesures(xr, c('PM10_MAR', 'PM10_VER'))
 xrGetMesures(xr, campagnes='EUROC_20')
 xrGetMesures(xr, campagnes='EUROC_2020')
 xrGetMesures(xr, campagnes=list(pattern='EUROC_2020', exact=TRUE))
-# FIXME: si aucune campagne ne correspond, plante (pbm de renvoi de tout ?)
 xrGetMesures(xr, campagnes=list(pattern='EUROC_20', exact=TRUE))
 
 xrGetMesures(xr, reseaux='RALQ1')
 xrGetMesures(xr, reseaux=list(pattern='RALQ1', exact=TRUE))
-# FIXME: si aucun reseau ne correspond, plante (pbm de renvoi de tout ?)
 xrGetMesures(xr, reseaux=list(pattern='RALQ', exact=TRUE))
 
 xrGetMesures(xr, stations='D87LIM_PRESID')
 xrGetMesures(xr, stations=list(pattern='D87LIM_PRESID', exact=TRUE))
-# FIXME: si aucune station ne correspond, plante (pbm de renvoi de tout ?)
 xrGetMesures(xr, stations=list(pattern='D87LIM_PRESI', exact=TRUE))
 
 xrGetMesures(xr, polluants='H2S')
@@ -149,11 +145,9 @@ xrGetMesures(xr, polluants='H2S', campagnes='EUROC_20')
 xrGetMesures(xr,
 			 polluants=list(pattern='05', exact=TRUE),
 			 campagnes=list(pattern='EUROC_2019', exact=TRUE))
-# FIXME: si pas de correspondance, renvoie tous les EUROC_2019
 xrGetMesures(xr,
 			 polluants=list(pattern='29', exact=TRUE),
 			 campagnes=list(pattern='EUROC_2019', exact=TRUE))
-# FIXME: si pas de correspondance, renvoie tous les H2S
 xrGetMesures(xr,
 			 polluants=list(pattern='05', exact=TRUE),
 			 campagnes=list(pattern='EUROC_1980', exact=TRUE))
@@ -163,11 +157,9 @@ xrGetMesures(xr, polluants='PM10', reseaux='VHBX')
 xrGetMesures(xr,
 			 polluants=list(pattern='24', exact=TRUE),
 			 reseaux=list(pattern='VHBX', exact=TRUE))
-# FIXME: si pas de correspondance renvoie tous les PM10
 xrGetMesures(xr,
 			 polluants=list(pattern='24', exact=TRUE),
 			 reseaux=list(pattern='VHX', exact=TRUE))
-# FIXME: si pas de correspondance renvoie tous les VHBX
 xrGetMesures(xr,
 			 polluants=list(pattern='29', exact=TRUE),
 			 reseaux=list(pattern='VHBX', exact=TRUE))
@@ -177,11 +169,9 @@ xrGetMesures(xr, polluants='PM10', stations='PRESID')
 xrGetMesures(xr,
 			 polluants=list(pattern='24', exact=TRUE),
 			 stations=list(pattern='PRESID', exact=TRUE))
-# FIXME: si pas de correspondance renvoie tous les PM10
 xrGetMesures(xr,
 			 polluants=list(pattern='24', exact=TRUE),
 			 stations=list(pattern='PREID', exact=TRUE))
-# FIXME: si pas de correspondance renvoie tous les PRESID
 xrGetMesures(xr,
 			 polluants=list(pattern='29', exact=TRUE),
 			 stations=list(pattern='PRESID', exact=TRUE))
