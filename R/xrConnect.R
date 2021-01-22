@@ -58,10 +58,10 @@
 #' @export
 xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=NULL,
 					  dsn=NULL, uid=NULL, pwd=NULL, ojdbc=NULL, drv.type=NULL,
-					  believeNRows=TRUE, silent=FALSE) {
+					  believeNRows=TRUE, silent) {
 	if(!is.null(debug)) options(Xair.debug=debug)
 	if(!is.null(nbattempt)) options(Xair.nbattempt=nbattempt)
-	if(!is.null(silent)) options(Xair.silent=silent)
+	if(!missing(silent)) options(Xair.silent=silent)
 
 	if(!is.null(host)) {
 		options(Xair.host=host)
