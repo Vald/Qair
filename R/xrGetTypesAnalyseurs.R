@@ -31,9 +31,9 @@ xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 	}
 
 	if(!'id' %in% names(x))
-		x <- xrGetMesures(xr, x[['dbRowId']], exact=TRUE, resv3=TRUE, search.fields=dbRowId)
+		x <- xrGetMesures(conn, x[['dbRowId']], exact=TRUE, resv3=TRUE, search.fields=dbRowId)
 	if(!'dbRowId' %in% names(x))
-		x <- xrGetMesures(xr, x[['id']], exact=TRUE, resv3=TRUE, search.fields=id)
+		x <- xrGetMesures(conn, x[['id']], exact=TRUE, resv3=TRUE, search.fields=id)
 
 	# traitement des dates de debut et de fin ---------------------------------
 	# si debut et fin ne sont pas en POSIXct, conversion
