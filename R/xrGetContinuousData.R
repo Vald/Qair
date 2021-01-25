@@ -321,6 +321,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	if( !is.null(cursor) )
 		result <- as.TimeInstantDataFrame(result, cursor)
 	timezone(result) <- tz
+	rownames(result@data) <- NULL
 	return (result)
 }
 
