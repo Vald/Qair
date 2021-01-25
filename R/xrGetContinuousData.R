@@ -296,7 +296,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 				id <- mesures[['id']][i]
 
 				# remplacement des valeurs non-valides par NA
-				r[['value']][!r[['state']] %in% valid.states] <- NA
+				if(validated)
+					r[['value']][!r[['state']] %in% valid.states] <- NA else
+					r[['rawValue']][!r[['rawState']] %in% valid.states] <- NA
 				
 				# quand toutes les colonnes ne sont pas dans le resultat
 				r <- r[c('date', intersect(what, names(r)))]
@@ -342,7 +344,9 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	timezone(donnees) <- tz
 
 	options(stringsAsFactors = osaf)
-	return (donnees[start, end])
+	donnees <- donnees[start, end]
+	rownames(donnees@data) <- NULL
+	return (donnees)
 }
 
 
