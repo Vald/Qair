@@ -1,7 +1,7 @@
 library (Qair)
 options(Xair.host='xair.atmo-na.org', Xair.version=2, Xair.port=8443, 
 		Xair.dsn='N09', Xair.uid='vlad', Xair.pwd='vlad', Xair.drv='oracle',
-		Xair.silent=TRUE)
+		Xair.silent=TRUE, width=100)
 
 # test de la connexion  à XR
 #============================
@@ -26,7 +26,7 @@ xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01', period='d')[me
 # mensuelles
 xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01', period='m')[mes]
 # annuelles
-xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01', period='y')[mes]
+xrGetContinuousData(xr, mes, '2017-06-07 08:00:00', '2020-07-01', period='y')[mes]
 # scan
 xrGetContinuousData(xr, 'NO_BASTI', '2019-01-01 09:15:00', '2019-01-01 09:30:00', period='scan')
 # exact
@@ -45,23 +45,23 @@ xrGetContinuousData(xr, mes[3], d, f, period='qh', what='validated')
 xrGetContinuousData(xr, mes[3], d, f, period='qh', what='value')
 xrGetContinuousData(xr, mes[3], d, f, validated=TRUE, period='qh')
 xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh')
-xrGetContinuousData(xr, mes[3], d, f, validated=TRUE, period='qh', what=c('both'))
-xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh', what=c('both'))
+xrGetContinuousData(xr, mes[3], d, f, validated=TRUE, period='qh', what=c('value', 'state'))
+xrGetContinuousData(xr, mes[3], d, f, validated=FALSE, period='qh', what=c('value', 'state'))
 
 # valid.states
 xrGetContinuousData(xr, mes[1], '2019-09-24', '2019-09-24 08:30:00',
-					what=c('both'), period='qh')
+					what=c('value', 'state'), period='qh')
 xrGetContinuousData(xr, mes[1], '2019-09-24', '2019-09-24 08:30:00',
-					what=c('both'), period='qh', valid.states='I')
+					what=c('value', 'state'), period='qh', valid.states='I')
 xrGetContinuousData(xr, mes[1], '2019-09-24', '2019-09-24 08:30:00',
-					what=c('both'), period='qh', valid.states=c('Z', 'C'))
+					what=c('value', 'state'), period='qh', valid.states=c('Z', 'C'))
 
 xrGetContinuousData(xr, mes[1], '2019-01-09', '2019-01-09 08:30:00',
-					what=c('both'), period='qh')
+					what=c('value', 'state'), period='qh')
 xrGetContinuousData(xr, mes[1], '2019-01-09', '2019-01-09 08:30:00',
-					what=c('both'), period='qh', valid.states='A')
+					what=c('value', 'state'), period='qh', valid.states='A')
 xrGetContinuousData(xr, mes[1], '2019-01-09', '2019-01-09 08:30:00',
-					what=c('both'), period='qh', valid.states=c('Z', 'C'))
+					what=c('value', 'state'), period='qh', valid.states=c('Z', 'C'))
 
 # cursor/timezone
 xrGetContinuousData(xr, mes[4], '2019-05-07', '2019-05-08')
@@ -81,6 +81,20 @@ xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=1
 #========================================================================
 
 # stations --------------------------------------------------------------------
+fields <- c('IDENTIFIANT','NOM_COURT_SIT','NSIT','ISIT',
+					 'D_CREATION','D_ARRET',
+					 'NSIT_PUBLIC','ISIT_LONG',
+					 'LATI', 'LONGI', 'ALTI',
+					 'AXE', 'CODE_POSTAL', 
+					 'LAMBERTX', 'LAMBERTY',
+					 'DENSITE','NBRE_SOURCES',
+					 'NB_VEHICULE','RAYON_ACTION',
+					 'DER_LECT_QH',
+					 'CLASSE_SITE','SITE_TYPE',
+					 'TYPE_LIEU_ECHAN','TYPE_VOIE',
+					 'typologie',
+					 'TYPE_SECTEUR','ZONE_ACTIVITE'
+					 )
 xrGetStations(xr, 'D87LIM_PRESID')
 xrGetStations(xr, 'D87LIM_PRESID', search.fields='IDENTIFIANT')
 xrGetStations(xr, 'D87LIM_PRESID', search.fields='NOM_COURT_SIT')
@@ -111,6 +125,12 @@ xrGetStations(xr, mesures=list(pattern='O3_PRE', exact=TRUE))
 xrGetStations(xr, mesures=list(pattern='O3_PR', exact=TRUE))
 
 # mesures ---------------------------------------------------------------------
+fields <- c('IDENTIFIANT','NOM_COURT_MES','NOM_MES','TYPE_MESURE','TYPE_ACQ',
+					 'D_CREATION', 'D_ARRET','DERNIER_QH', 'D_VALIDATION',
+					 'D_VALIDATION_ENV','D_ADVAL',
+					 'NSIT','NOM_COURT_SIT',
+					 'UNITE',
+					 'CCHIM', 'NOPOL')
 xrGetMesures(xr, 'PM10_MARMANDE')
 xrGetMesures(xr, 'PM10_MARMANDE', search.fields='IDENTIFIANT')
 xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_MES')
@@ -177,12 +197,14 @@ xrGetMesures(xr,
 			 stations=list(pattern='PRESID', exact=TRUE))
 
 # polluants -------------------------------------------------------------------
+fields <- c('NOPOL', 'CCHIM', 'NCON')
 xrGetPolluants(xr)
 xrGetPolluants(xr, c('24', 'PM2.5'))
 xrGetPolluants(xr, c('24', 'PM2.5'), exact=TRUE)
 xrGetPolluants(xr, c('24', 'PM2.5'), exact=TRUE, search.fields='CCHIM')
 
 # reseaux ---------------------------------------------------------------------
+fields <- c('NOM_COURT_RES', 'NOM_RES', 'FLAG_RESEAURES')
 xrGetReseaux(xr, 'RALQ1')
 xrGetReseaux(xr, 'RALQ1', search.fields='NOM_RES')
 xrGetReseaux(xr, 'RALQ1', search.fields='NOM_COURT_RES')
@@ -196,6 +218,7 @@ xrGetReseaux(xr, 'RALQ', search.fields='NOM_RES', exact=TRUE)
 xrGetReseaux(xr, c('RALQ', 'VH'))
 
 # campagnes -------------------------------------------------------------------
+fields <- c('NOM_COURT_CM','LIBELLE','COMMENTAIRE','DATEDEB','DATEFIN')
 xrGetCampagnes(xr, 'PANTA_2011')
 xrGetCampagnes(xr, 'PANTA_2011')
 xrGetCampagnes(xr, 'PANTA_2011', search.fields='LIBELLE')
