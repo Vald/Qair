@@ -144,7 +144,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		what <- c('value', 'state', what)
 		what <- setdiff(what, 'both')
 		what <- unique(what)
-		warning("L'argument 'what' est obsolète et remplacé par la combinaision c('value', 'state')")
+		warning("La valeur 'both' pour l'argument 'what' est obsolète et remplacés par la combinaision c('value', 'state')")
 	}
 
 	nv     <- paste0('nv', conn[['version']])
