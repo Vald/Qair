@@ -230,13 +230,22 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 		# affectation des valeurs aux champs en question
 		# suppression des champs complexes
 
-	compounded <- names(result)[
-		!sapply(result, is.vector) & !sapply(result, inherits, 'POSIXct')]
-	if(length(compounded) > 0) {
-		flatnames <- sapply(compounded, function(x) paste(sep='.', x, names(result[[x]])))
-		result[unlist(flatnames)] <- unlist(result[names(flatnames)], FALSE)
-		result[compounded] <- NULL
+	flat <- function(x) {
+		compounded <- !sapply(x, is.vector) & !sapply(x, inherits, 'POSIXct')
+		res        <- x[!compounded]
+		if(any(compounded)) {
+			res <- c(list(res), lapply(x[compounded], flat))
+			while(length(res) > 1) {
+				names(res[[2]]) <- paste(names(res)[2], names(res[[2]]), sep='.')
+				res[[1]] <- cbind(res[[1]], res[[2]])
+				res[[2]] <- NULL
+			}
+			res <- res[[1]]
+		}
+		return(as.data.frame(res))
 	}
+
+	result <- flat(result)
 
 	# traitement des cas specifiques ------------------------------------------
 
