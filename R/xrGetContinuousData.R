@@ -342,7 +342,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 	timezone(donnees) <- tz
 
 	options(stringsAsFactors = osaf)
-	return (donnees)
+	return (donnees[start, end])
 }
 
 
