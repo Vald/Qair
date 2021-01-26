@@ -5,8 +5,9 @@ pour les utilisateurs d'une version antérieure de R (3.4.3 par exemple), il fau
 télécharger le fichier winbin-R3.4.3-Qair_3.*.*.zip et le renommmer en
 Qair_3.*.*.zip avant de l'installer.
 
-----------  Qair v3.0.0
-* La connexion directe à la base de données XR a été supprimée.
+----------  Qair v3.2.1
+* La connexion directe à la base de données XR a été supprimée (sauf pour les 
+données manuelles).
 * Toutes les interactions avec la base passent par l'API d'XR.
 * Suppression des fonctions agolGet.
 
