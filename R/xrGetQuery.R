@@ -63,8 +63,8 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'ZONE_IMPLANT','DER_LECT_QH',
 					 'CLASSE_SITE','SITE_TYPE',
 					 'TYPE_LIEU_ECHAN','TYPE_VOIE',
-					 'typologie','environnment.locationTypeLabel',
-					 'environnment.samplingPlaceTypeLabel','environnment.laneTypeLabel',
+					 'typologie','environment.locationTypeLabel',
+					 'environment.samplingPlaceTypeLabel','environment.laneTypeLabel',
 					 'TYPE_SECTEUR','ZONE_ACTIVITE',
 					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel'
 					 ),
@@ -79,10 +79,10 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'implantation.populationDensity','implantation.emissionSource',
 					 'implantation.vehiclePerDay','implantation.radius',
 					 'implantation.zoneDescription','implantation.lastCensusDate',
-					 'environnment.classType','environnment.locationType',
-					 'environnment.samplingPlaceType','environnment.laneType',
-					 'environnment.classTypeLabel','environnment.locationTypeLabel',
-					 'environnment.samplingPlaceTypeLabel','environnment.laneTypeLabel',
+					 'environment.classType','environment.locationType',
+					 'environment.samplingPlaceType','environment.laneType',
+					 'environment.classTypeLabel','environment.locationTypeLabel',
+					 'environment.samplingPlaceTypeLabel','environment.laneTypeLabel',
 					 'sectors.typeSector','sectors.zoneOfActivity',
 					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel'
 					 ),
@@ -231,8 +231,9 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 		# suppression des champs complexes
 
 	flat <- function(x) {
-		compounded <- !sapply(x, is.vector) & !sapply(x, inherits, 'POSIXct')
-		res        <- x[!compounded]
+		empty      <- sapply(x, is.data.frame) & sapply(x, length) == 0
+		compounded <- !sapply(x, is.vector) & !sapply(x, inherits, 'POSIXct') & !empty
+		res        <- x[!compounded & !empty]
 		if(any(compounded)) {
 			res <- c(list(res), lapply(x[compounded], flat))
 			while(length(res) > 1) {
@@ -258,7 +259,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	champdates         <- fields[['nv3']][grep('POSIXct', fields[['type']])]
 	champdates         <- intersect(champdates, names(result))
 	result[champdates] <- lapply(result[champdates],
-								 strptime, '%Y-%m-%dT%H:%M:%SZ', 'UTC')
+								 as.POSIXct, format='%Y-%m-%dT%H:%M:%SZ', 'UTC')
 
 	# remplissage des colonnes absentes ---------------------------------------
 

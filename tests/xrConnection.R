@@ -95,142 +95,141 @@ fields <- c('IDENTIFIANT','NOM_COURT_SIT','NSIT','ISIT',
 					 'typologie',
 					 'TYPE_SECTEUR','ZONE_ACTIVITE'
 					 )
-xrGetStations(xr, 'D87LIM_PRESID')
-xrGetStations(xr, 'D87LIM_PRESID', search.fields='IDENTIFIANT')
-xrGetStations(xr, 'D87LIM_PRESID', search.fields='NOM_COURT_SIT')
-xrGetStations(xr, 'PRESID', search.fields='NOM_COURT_SIT')
-xrGetStations(xr, '44803', search.fields='NSIT')
-xrGetStations(xr, '35003', search.fields='NSIT_PUBLIC')
-xrGetStations(xr, 'D87LIM_PRESID', exact=TRUE)
-xrGetStations(xr, 'D87LIM_PRESID', search.fields='IDENTIFIANT', exact=TRUE)
-xrGetStations(xr, 'D87LIM_PRESID', search.fields='NOM_COURT_SIT', exact=TRUE)
-xrGetStations(xr, '7LIM_PRE')
-xrGetStations(xr, '7LIM_PRE', search.fields='IDENTIFIANT')
-xrGetStations(xr, '7LIM_PRE', exact=TRUE)
-xrGetStations(xr, '7LIM_PRE', search.fields='IDENTIFIANT', exact=TRUE)
-xrGetStations(xr, 'D87LIM_C')
-xrGetStations(xr, c('D87LIM_C', 'D17LAR_C'))
+xrGetStations(xr, 'D87LIM_PRESID')[fields]
+xrGetStations(xr, 'D87LIM_PRESID', search.fields='IDENTIFIANT')[fields]
+xrGetStations(xr, 'D87LIM_PRESID', search.fields='NOM_COURT_SIT')[fields]
+xrGetStations(xr, 'PRESID', search.fields='NOM_COURT_SIT')[fields]
+xrGetStations(xr, '44803', search.fields='NSIT')[fields]
+xrGetStations(xr, '35003', search.fields='NSIT_PUBLIC')[fields]
+xrGetStations(xr, 'D87LIM_PRESID', exact=TRUE)[fields]
+xrGetStations(xr, 'D87LIM_PRESID', search.fields='IDENTIFIANT', exact=TRUE)[fields]
+xrGetStations(xr, 'D87LIM_PRESID', search.fields='NOM_COURT_SIT', exact=TRUE)[fields]
+xrGetStations(xr, '7LIM_PRE')[fields]
+xrGetStations(xr, '7LIM_PRE', search.fields='IDENTIFIANT')[fields]
+xrGetStations(xr, '7LIM_PRE', exact=TRUE)[fields]
+xrGetStations(xr, '7LIM_PRE', search.fields='IDENTIFIANT', exact=TRUE)[fields]
+xrGetStations(xr, 'D87LIM_C')[fields]
+xrGetStations(xr, c('D87LIM_C', 'D17LAR_C'))[fields]
 
-xrGetStations(xr, campagnes='EUROC_20')
-xrGetStations(xr, campagnes='EUROC_2020')
-xrGetStations(xr, campagnes=list(pattern='EUROC_2020', exact=TRUE))
-xrGetStations(xr, campagnes=list(pattern='EUROC_20', exact=TRUE))
+xrGetStations(xr, campagnes='EUROC_20')[fields]
+xrGetStations(xr, campagnes='EUROC_2020')[fields]
+xrGetStations(xr, campagnes=list(pattern='EUROC_2020', exact=TRUE))[fields]
+xrGetStations(xr, campagnes=list(pattern='EUROC_20', exact=TRUE))[fields]
 
-xrGetStations(xr, reseaux='RALQ1')
-xrGetStations(xr, reseaux=list(pattern='RALQ1', exact=TRUE))
-xrGetStations(xr, reseaux=list(pattern='RALQ', exact=TRUE))
+xrGetStations(xr, reseaux='RALQ1')[fields]
+xrGetStations(xr, reseaux=list(pattern='RALQ1', exact=TRUE))[fields]
+xrGetStations(xr, reseaux=list(pattern='RALQ', exact=TRUE))[fields]
 
-xrGetStations(xr, mesures='O3_PRE')
-xrGetStations(xr, mesures=list(pattern='O3_PRE', exact=TRUE))
-xrGetStations(xr, mesures=list(pattern='O3_PR', exact=TRUE))
+xrGetStations(xr, mesures='O3_PRE')[fields]
+xrGetStations(xr, mesures=list(pattern='O3_PRE', exact=TRUE))[fields]
+xrGetStations(xr, mesures=list(pattern='O3_PR', exact=TRUE))[fields]
 
 # mesures ---------------------------------------------------------------------
 fields <- c('IDENTIFIANT','NOM_COURT_MES','NOM_MES','TYPE_MESURE','TYPE_ACQ',
 					 'D_CREATION', 'D_ARRET','DERNIER_QH', 'D_VALIDATION',
 					 'D_VALIDATION_ENV','D_ADVAL',
 					 'NSIT','NOM_COURT_SIT',
-					 'UNITE',
-					 'CCHIM', 'NOPOL')
-xrGetMesures(xr, 'PM10_MARMANDE')
-xrGetMesures(xr, 'PM10_MARMANDE', search.fields='IDENTIFIANT')
-xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_MES')
-xrGetMesures(xr, ':01908', search.fields='NOM_COURT_MES')
-xrGetMesures(xr, 'PM10_MARMANDE', exact=TRUE)
-xrGetMesures(xr, 'PM10_MARMANDE', search.fields='IDENTIFIANT', exact=TRUE)
-xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_MES', exact=TRUE)
-xrGetMesures(xr, 'PM10_MARM')
-xrGetMesures(xr, 'PM10_MARM', search.fields='IDENTIFIANT')
-xrGetMesures(xr, 'PM10_MARM', exact=TRUE)
-xrGetMesures(xr, 'PM10_MARM', search.fields='IDENTIFIANT', exact=TRUE)
-xrGetMesures(xr, 'PM10_MAR')
-xrGetMesures(xr, c('PM10_MAR', 'PM10_VER'))
+					 'UNITE','NOPOL')
+xrGetMesures(xr, 'PM10_MARMANDE')[fields]
+xrGetMesures(xr, 'PM10_MARMANDE', search.fields='IDENTIFIANT')[fields]
+xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_MES')[fields]
+xrGetMesures(xr, ':01908', search.fields='NOM_COURT_MES')[fields]
+xrGetMesures(xr, 'PM10_MARMANDE', exact=TRUE)[fields]
+xrGetMesures(xr, 'PM10_MARMANDE', search.fields='IDENTIFIANT', exact=TRUE)[fields]
+xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_MES', exact=TRUE)[fields]
+xrGetMesures(xr, 'PM10_MARM')[fields]
+xrGetMesures(xr, 'PM10_MARM', search.fields='IDENTIFIANT')[fields]
+xrGetMesures(xr, 'PM10_MARM', exact=TRUE)[fields]
+xrGetMesures(xr, 'PM10_MARM', search.fields='IDENTIFIANT', exact=TRUE)[fields]
+xrGetMesures(xr, 'PM10_MAR')[fields]
+xrGetMesures(xr, c('PM10_MAR', 'PM10_VER'))[fields]
 
-xrGetMesures(xr, campagnes='EUROC_20')
-xrGetMesures(xr, campagnes='EUROC_2020')
-xrGetMesures(xr, campagnes=list(pattern='EUROC_2020', exact=TRUE))
-xrGetMesures(xr, campagnes=list(pattern='EUROC_20', exact=TRUE))
+xrGetMesures(xr, campagnes='EUROC_20')[fields]
+xrGetMesures(xr, campagnes='EUROC_2020')[fields]
+xrGetMesures(xr, campagnes=list(pattern='EUROC_2020', exact=TRUE))[fields]
+xrGetMesures(xr, campagnes=list(pattern='EUROC_20', exact=TRUE))[fields]
 
-xrGetMesures(xr, reseaux='RALQ1')
-xrGetMesures(xr, reseaux=list(pattern='RALQ1', exact=TRUE))
-xrGetMesures(xr, reseaux=list(pattern='RALQ', exact=TRUE))
+xrGetMesures(xr, reseaux='RALQ1')[fields]
+xrGetMesures(xr, reseaux=list(pattern='RALQ1', exact=TRUE))[fields]
+xrGetMesures(xr, reseaux=list(pattern='RALQ', exact=TRUE))[fields]
 
-xrGetMesures(xr, stations='D87LIM_PRESID')
-xrGetMesures(xr, stations=list(pattern='D87LIM_PRESID', exact=TRUE))
-xrGetMesures(xr, stations=list(pattern='D87LIM_PRESI', exact=TRUE))
+xrGetMesures(xr, stations='D87LIM_PRESID')[fields]
+xrGetMesures(xr, stations=list(pattern='D87LIM_PRESID', exact=TRUE))[fields]
+xrGetMesures(xr, stations=list(pattern='D87LIM_PRESI', exact=TRUE))[fields]
 
-xrGetMesures(xr, polluants='H2S')
-xrGetMesures(xr, polluants=list(pattern='H2S', exact=TRUE))
+xrGetMesures(xr, polluants='H2S')[fields]
+xrGetMesures(xr, polluants=list(pattern='H2S', exact=TRUE))[fields]
 
-xrGetMesures(xr, polluants='H2S', campagnes='EUROC_20')
+xrGetMesures(xr, polluants='H2S', campagnes='EUROC_20')[fields]
 xrGetMesures(xr,
 			 polluants=list(pattern='05', exact=TRUE),
-			 campagnes=list(pattern='EUROC_2019', exact=TRUE))
+			 campagnes=list(pattern='EUROC_2019', exact=TRUE))[fields]
 xrGetMesures(xr,
 			 polluants=list(pattern='29', exact=TRUE),
-			 campagnes=list(pattern='EUROC_2019', exact=TRUE))
+			 campagnes=list(pattern='EUROC_2019', exact=TRUE))[fields]
 xrGetMesures(xr,
 			 polluants=list(pattern='05', exact=TRUE),
-			 campagnes=list(pattern='EUROC_1980', exact=TRUE))
+			 campagnes=list(pattern='EUROC_1980', exact=TRUE))[fields]
 
-xrGetMesures(xr, polluants='PM', reseaux='VH')
-xrGetMesures(xr, polluants='PM10', reseaux='VHBX')
+xrGetMesures(xr, polluants='PM', reseaux='VH')[fields]
+xrGetMesures(xr, polluants='PM10', reseaux='VHBX')[fields]
 xrGetMesures(xr,
 			 polluants=list(pattern='24', exact=TRUE),
-			 reseaux=list(pattern='VHBX', exact=TRUE))
+			 reseaux=list(pattern='VHBX', exact=TRUE))[fields]
 xrGetMesures(xr,
 			 polluants=list(pattern='24', exact=TRUE),
-			 reseaux=list(pattern='VHX', exact=TRUE))
+			 reseaux=list(pattern='VHX', exact=TRUE))[fields]
 xrGetMesures(xr,
 			 polluants=list(pattern='29', exact=TRUE),
-			 reseaux=list(pattern='VHBX', exact=TRUE))
+			 reseaux=list(pattern='VHBX', exact=TRUE))[fields]
 
-xrGetMesures(xr, polluants='PM', stations='PRESID')
-xrGetMesures(xr, polluants='PM10', stations='PRESID')
+xrGetMesures(xr, polluants='PM', stations='PRESID')[fields]
+xrGetMesures(xr, polluants='PM10', stations='PRESID')[fields]
 xrGetMesures(xr,
 			 polluants=list(pattern='24', exact=TRUE),
-			 stations=list(pattern='PRESID', exact=TRUE))
+			 stations=list(pattern='PRESID', exact=TRUE))[fields]
 xrGetMesures(xr,
 			 polluants=list(pattern='24', exact=TRUE),
-			 stations=list(pattern='PREID', exact=TRUE))
+			 stations=list(pattern='PREID', exact=TRUE))[fields]
 xrGetMesures(xr,
 			 polluants=list(pattern='29', exact=TRUE),
-			 stations=list(pattern='PRESID', exact=TRUE))
+			 stations=list(pattern='PRESID', exact=TRUE))[fields]
 
 # polluants -------------------------------------------------------------------
 fields <- c('NOPOL', 'CCHIM', 'NCON')
-xrGetPolluants(xr)
-xrGetPolluants(xr, c('24', 'PM2.5'))
-xrGetPolluants(xr, c('24', 'PM2.5'), exact=TRUE)
-xrGetPolluants(xr, c('24', 'PM2.5'), exact=TRUE, search.fields='CCHIM')
+xrGetPolluants(xr)[fields]
+xrGetPolluants(xr, c('24', 'PM2.5'))[fields]
+xrGetPolluants(xr, c('24', 'PM2.5'), exact=TRUE)[fields]
+xrGetPolluants(xr, c('24', 'PM2.5'), exact=TRUE, search.fields='CCHIM')[fields]
 
 # reseaux ---------------------------------------------------------------------
 fields <- c('NOM_COURT_RES', 'NOM_RES', 'FLAG_RESEAURES')
-xrGetReseaux(xr, 'RALQ1')
-xrGetReseaux(xr, 'RALQ1', search.fields='NOM_RES')
-xrGetReseaux(xr, 'RALQ1', search.fields='NOM_COURT_RES')
-xrGetReseaux(xr, 'RALQ1', exact=TRUE)
-xrGetReseaux(xr, 'RALQ1', search.fields='NOM_RES', exact=TRUE)
-xrGetReseaux(xr, 'RALQ1', search.fields='NOM_COURT_RES', exact=TRUE)
-xrGetReseaux(xr, 'RALQ')
-xrGetReseaux(xr, 'RALQ', search.fields='NOM_RES')
-xrGetReseaux(xr, 'RALQ', exact=TRUE)
-xrGetReseaux(xr, 'RALQ', search.fields='NOM_RES', exact=TRUE)
-xrGetReseaux(xr, c('RALQ', 'VH'))
+xrGetReseaux(xr, 'RALQ1')[fields]
+xrGetReseaux(xr, 'RALQ1', search.fields='NOM_RES')[fields]
+xrGetReseaux(xr, 'RALQ1', search.fields='NOM_COURT_RES')[fields]
+xrGetReseaux(xr, 'RALQ1', exact=TRUE)[fields]
+xrGetReseaux(xr, 'RALQ1', search.fields='NOM_RES', exact=TRUE)[fields]
+xrGetReseaux(xr, 'RALQ1', search.fields='NOM_COURT_RES', exact=TRUE)[fields]
+xrGetReseaux(xr, 'RALQ')[fields]
+xrGetReseaux(xr, 'RALQ', search.fields='NOM_RES')[fields]
+xrGetReseaux(xr, 'RALQ', exact=TRUE)[fields]
+xrGetReseaux(xr, 'RALQ', search.fields='NOM_RES', exact=TRUE)[fields]
+xrGetReseaux(xr, c('RALQ', 'VH'))[fields]
 
 # campagnes -------------------------------------------------------------------
 fields <- c('NOM_COURT_CM','LIBELLE','COMMENTAIRE','DATEDEB','DATEFIN')
-xrGetCampagnes(xr, 'PANTA_2011')
-xrGetCampagnes(xr, 'PANTA_2011')
-xrGetCampagnes(xr, 'PANTA_2011', search.fields='LIBELLE')
-xrGetCampagnes(xr, 'PANTA_2011', search.fields='NOM_COURT_CM')
-xrGetCampagnes(xr, 'PANTA_2011', exact=TRUE)
-xrGetCampagnes(xr, 'PANTA_2011', search.fields='LIBELLE', exact=TRUE)
-xrGetCampagnes(xr, 'PANTA_2011', search.fields='NOM_COURT_CM', exact=TRUE)
-xrGetCampagnes(xr, 'Pantaléon')
-xrGetCampagnes(xr, 'Pantaléon', search.fields='LIBELLE')
-xrGetCampagnes(xr, 'Pantaléon', exact=TRUE)
-xrGetCampagnes(xr, 'Pantaléon', search.fields='LIBELLE', exact=TRUE)
-xrGetCampagnes(xr, c('PANT', 'EUROC'))
+xrGetCampagnes(xr, 'PANTA_2011')[fields]
+xrGetCampagnes(xr, 'PANTA_2011')[fields]
+xrGetCampagnes(xr, 'PANTA_2011', search.fields='LIBELLE')[fields]
+xrGetCampagnes(xr, 'PANTA_2011', search.fields='NOM_COURT_CM')[fields]
+xrGetCampagnes(xr, 'PANTA_2011', exact=TRUE)[fields]
+xrGetCampagnes(xr, 'PANTA_2011', search.fields='LIBELLE', exact=TRUE)[fields]
+xrGetCampagnes(xr, 'PANTA_2011', search.fields='NOM_COURT_CM', exact=TRUE)[fields]
+xrGetCampagnes(xr, 'Pantaléon')[fields]
+xrGetCampagnes(xr, 'Pantaléon', search.fields='LIBELLE')[fields]
+xrGetCampagnes(xr, 'Pantaléon', exact=TRUE)[fields]
+xrGetCampagnes(xr, 'Pantaléon', search.fields='LIBELLE', exact=TRUE)[fields]
+xrGetCampagnes(xr, c('PANT', 'EUROC'))[fields]
 
 
 #==============================================================================
