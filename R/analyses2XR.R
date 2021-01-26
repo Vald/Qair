@@ -10,7 +10,8 @@
 #' chaîne de caractères, ça ne fonctionnera pas), HDEBUT (heure de début, au
 #' format heure), FIN et HFIN (date et heure de fin, aux formats appropriés), 
 #' ANALYSE (date d'analyse au format date). Les colonnes HDEBUT et HFIN ne sont
-#' pas obligatoires.
+#' pas obligatoires. LABO Nom du laboratoire ayant réalisé les analyses
+#' ('Micropolluants Technologie', 'IANESCO CHIMIE', ...).
 #'
 #' En plus de ces colonnes, une colonne supplémentaire doit être ajoutée pour 
 #' chaque polluant ayant fait l'objet d'une analyse. Le nom des colonnes doit 
@@ -19,8 +20,6 @@
 #'
 #' @param fichier nom du fichier d'entrée
 #' @param nreseau numero du réseau (tel qu'il doit être intégré dans XR).
-#' @param labo Nom du laboratoire ayant réalisé les analyses
-#'  ('Micropolluants Technologie', 'IANESCO CHIMIE', ...).
 #' @param fichier_export nom du fichier de sortie (par défaut =
 #'  fichier+'export.csv')
 #' @param sheet numéro ou titre de l'onglet à lire
@@ -29,7 +28,7 @@
 #' @param infLQ caractères utilisés dans le fichier d'entrée pour indiquer
 #'  que la concentration est inférieure à la limite de quantification.
 #' @param unites chaîne de caractères à utiliser pour les unités du polluant.
-analyses2XR <- function(fichier, nreseau, labo, fichier_export=NULL, sheet=1, startRow=1,
+analyses2XR <- function(fichier, nreseau, fichier_export=NULL, sheet=1, startRow=1,
 					infLQ=c('\\*', '< '), unites='microg/m3') {
 
 	osaf <- getOption('stringsAsFactors[')
@@ -135,7 +134,7 @@ analyses2XR <- function(fichier, nreseau, labo, fichier_export=NULL, sheet=1, st
 			concs[['etat']],					# Code qualité 
 			"",									# Unité
 			strftime(prel[['ANALYSE']], '%d/%m/%y %H:%M'),# Date d'analyse 
-			labo,								# Libellé du laboratoire 
+			prel[['LABO']],						# Libellé du laboratoire 
 			"",									# Modèle de l'équipement 
 			"",									# Numéro de série de l'équipement 
 			"",									# Méthode de mesure 
