@@ -240,4 +240,13 @@ xrGetCampagnes(xr, c('PANT', 'EUROC'))[fields]
 # xrGetMethodesPrelevement
 # xrGetSitesPrelevement
 
-
+#==============================================================================
+# INDICES
+#==============================================================================
+indicesXR2R(xr)
+agglos <- c('La Rochelle 2012', 'TULLE 2012', 'Bordeaux 2012')
+indicesXR2R(xr, agglos, '2020-02-05', '2020-02-19')
+indicesXR2R(xr, agglos, '2020-02-05', '2020-02-19', detail=TRUE)
+indicesXR2R(xr, agglos, '2020-02-05', '2020-02-19', detail=TRUE, format='agglo')
+indicesXR2R(xr, agglos, '2020-02-05', '2020-02-19', detail=TRUE, format='aucun')
+indicesXR2R(xr, agglos, '2020-02-05', '2020-02-19', detail=TRUE, format='agglo', type='P')
