@@ -26,7 +26,7 @@ xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01', period='d')[me
 # mensuelles
 xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01', period='m')[mes]
 # annuelles
-xrGetContinuousData(xr, mes, '2018-06-07 08:00:00', '2019-07-01', period='y')[mes]
+xrGetContinuousData(xr, mes, '2017-06-07 08:00:00', '2020-07-01', period='y')[mes]
 # scan
 xrGetScan(xr, 'NO_BASTI', '2019-01-01', '2019-01-02')['2019-01-01 09:15:00', '2019-01-01 09:30:00']
 # exact
@@ -81,6 +81,13 @@ xrGetContinuousData(xr, mes[5], '2019-05-07', '2019-05-09', period='d', cursor=1
 #========================================================================
 
 # stations --------------------------------------------------------------------
+xrGetStations <- function(...) {
+	tmp <- Qair::xrGetStations(...)
+	tmp[['D_CREATION']] <- as.POSIXct(tmp[['D_CREATION']], 'UTC')
+	tmp[['D_ARRET']] <- as.POSIXct(tmp[['D_ARRET']], 'UTC')
+	tmp[['DER_LECT_QH']] <- as.POSIXct(tmp[['DER_LECT_QH']], 'UTC')
+	return(tmp)
+}
 fields <- c('IDENTIFIANT','NOM_COURT_SIT','NSIT','ISIT',
 					 'D_CREATION','D_ARRET',
 					 'NSIT_PUBLIC','ISIT_LONG',
@@ -128,9 +135,8 @@ xrGetStations(xr, mesures=list(pattern='O3_PR', exact=TRUE))[fields]
 fields <- c('IDENTIFIANT','NOM_COURT_MES','NOM_MES','TYPE_MESURE','TYPE_ACQ',
 					 'D_CREATION', 'D_ARRET','DERNIER_QH', 'D_VALIDATION',
 					 'D_VALIDATION_ENV','D_ADVAL',
-					 'NSIT','NSIT_PUBLIC','NOM_COURT_SIT',
-					 'UNITE',
-					 'CCHIM', 'NOPOL')
+					 'NSIT','NOM_COURT_SIT',
+					 'UNITE', 'NOPOL')
 xrGetMesures(xr, 'PM10_MARMANDE')[fields]
 xrGetMesures(xr, 'PM10_MARMANDE', search.fields='IDENTIFIANT')[fields]
 xrGetMesures(xr, 'PM10_MARMANDE', search.fields='NOM_COURT_MES')[fields]
