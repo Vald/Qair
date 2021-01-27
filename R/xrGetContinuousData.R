@@ -149,6 +149,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 
 	nv     <- paste0('nv', conn[['version']])
 	bquery <- sprintf('v2/data?showDbRowIds=true&')
+	id_mes <- if(conn[['version']] == 2) 'NOM_COURT_MES' else 'dbRowId'
 
 	# traitement des dates de debut et de fin ---------------------------------
 	# si debut et fin ne sont pas en POSIXct, conversion
@@ -199,13 +200,13 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		donnees <- xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['dbRowId']][1:limsupmes], search.fields='dbRowId', exact=TRUE,
+				pattern=mesures[['dbRowId']][1:limsupmes], search.fields=id_mes, exact=TRUE,
 				validOnly=FALSE, silent=silent)
 
 		donnees <- merge(donnees, xrGetContinuousData(conn=conn,
 				start=start, end=end, period=period,
 				validated=validated, valid.states=valid.states, what=what,
-				pattern=mesures[['dbRowId']][-(1:limsupmes)], search.fields='dbRowId', exact=TRUE,
+				pattern=mesures[['dbRowId']][-(1:limsupmes)], search.fields=id_mes, exact=TRUE,
 				validOnly=FALSE, silent=silent))
 
 	} else if(nrow(mesures)*difftime(end, start, units='secs')/nbsbp  > limsupdata) {
@@ -230,7 +231,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 					xrGetContinuousData(conn=conn,
 							start=s, end=e, period=period,
 							validated=validated, valid.states=valid.states, what=what,
-							pattern=mesures[['dbRowId']], search.fields='dbRowId',
+							pattern=mesures[['dbRowId']], search.fields=id_mes,
 							exact=TRUE,
 							validOnly=FALSE, silent=silent)
 				})
@@ -246,13 +247,13 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			donnees <- xrGetContinuousData(conn=conn,
 					start=start, end=datesplit, period=period,
 					validated=validated, valid.states=valid.states, what=what,
-					pattern=mesures[['dbRowId']], search.fields='dbRowId', exact=TRUE,
+					pattern=mesures[['dbRowId']], search.fields=id_mes, exact=TRUE,
 					validOnly=FALSE, silent=silent)
 
 			donnees <- merge(donnees, xrGetContinuousData(conn=conn,
 					start=datesplit, end=end, period=period,
 					validated=validated, valid.states=valid.states, what=what,
-					pattern=mesures[['dbRowId']], search.fields='dbRowId', exact=TRUE,
+					pattern=mesures[['dbRowId']], search.fields=id_mes, exact=TRUE,
 					validOnly=FALSE, silent=silent))
 		}
 
