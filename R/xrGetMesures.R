@@ -142,8 +142,8 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 								c(list(conn=conn), stations, silent=silent))
 			}
 		if(nrow(stations) > 0) {
-			query     <- paste0(stations[['refSite']], collapse=',')
-			query     <- paste0(bquery, 'refSites=', query)
+			query     <- paste0(stations[['id']], collapse=',')
+			query     <- paste0(bquery, 'sites=', query)
 			ist       <- unique(xrGetQuery(conn, query, resv3=TRUE)[['id']])
 			idmesures <- collapseIds(ist, idmesures, collapse)
 		} else aucunecorrespondance  <- TRUE
