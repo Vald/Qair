@@ -294,7 +294,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 		donnees <- lapply(mesures[['dbRowId']], function(drid) {
 				i  <- which(donnees[['dbRowId']] == drid)
 				r  <- donnees[[dataTypes]][['data']][[i]]
-				id <- mesures[['id']][i]
+				id <- mesures[['id']][mesures[['dbRowId']] == drid]
 
 				# remplacement des valeurs non-valides par NA
 				if(validated)
@@ -310,6 +310,11 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 				if(length(what) > 1)
 					names(r) <- c('date', paste(sep='.', id, what)) else
 					names(r) <- c('date', id)
+				
+				# cas sans valeur
+				if(is.null(r[['date']]))
+					r <- as.data.frame(lapply(r, function(x) NA))[0,]
+
 				return(r)
 		})
 
@@ -334,10 +339,14 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 					  y = POSIXctp('year'),
 					  scan=POSIXctp(10, 'second'))
 
-		donnees <- TimeIntervalDataFrame(
-			start = donnees[['date']] - pas,
-			end   = donnees[['date']],
-			data  = donnees[setdiff(names(donnees), 'date')])
+		if(nrow(donnees) == 0) 
+			donnees <- TimeIntervalDataFrame(
+				character(0), character(0),
+				data  = donnees[setdiff(names(donnees), 'date')]) else
+			donnees <- TimeIntervalDataFrame(
+				start = donnees[['date']] - pas,
+				end   = donnees[['date']],
+				data  = donnees[setdiff(names(donnees), 'date')])
 
 	}
 
