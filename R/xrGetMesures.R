@@ -179,12 +179,22 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 
 	query <- bquery
 	query <- sprintf('%svalidOnly=%s', query, if(validOnly) 'TRUE' else 'FALSE')
-	if(!is.null(idmesures))
-		query <- sprintf('%s&measures=%s', query, paste(idmesures, collapse=','))
+
+	if(!is.null(idmesures)) {
+		# permet de gérer les cas où trop d'id sont demandés (ce qui fait planter
+		# le serveur ...)
+		idmesures <- split(idmesures, ceiling(seq_along(idmesures)/500))
+
+		queries   <- lapply(idmesures, function(idm)
+							sprintf('%s&measures=%s', query, paste(idm, collapse=',')))
+
+		mesures   <- lapply(queries, function(q)
+							xrGetQuery(conn, q, resv3=TRUE))
+		mesures   <- do.call(rbind, mesures)
+
+	} else mesures <- xrGetQuery(conn, query, resv3=TRUE)
 
 	# TODO:  ajouter filtre stopDate, startDate
-
-	mesures <- xrGetQuery(conn, query, resv3=TRUE)
 
 	# selection des champs de retour ------------------------------------------
 
