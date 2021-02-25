@@ -221,7 +221,7 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 				message("découpage des dates:\n", paste(dates, collapse='\n'))
 
 			nbattempt <- getOption('Xair.nbattempt', 100)
-			options(Xair.nbattempt=100)
+			options(Xair.nbattempt=nbattempt*10)
 
 			donnees <- parallel::mcmapply(
 				SIMPLIFY=FALSE,
