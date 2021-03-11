@@ -11,7 +11,8 @@ analyses2XR(
   sheet = 1,
   startRow = 1,
   infLQ = c("\\\\*", "< "),
-  unites = "microg/m3"
+  unites = "microg/m3",
+  cW = c("w", "W")
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ première ligne à lire dans l'onglet)}
 que la concentration est inférieure à la limite de quantification.}
 
 \item{unites}{chaîne de caractères à utiliser pour les unités du polluant.}
+
+\item{cW}{caractères utilisés dans le fichier d'entrée pour indiquer
+que le code qualité à associer est W.}
 }
 \description{
 Cette fonction lit un fichier xlsx contenant des colonnees spécifiques et

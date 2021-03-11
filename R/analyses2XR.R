@@ -28,8 +28,10 @@
 #' @param infLQ caractères utilisés dans le fichier d'entrée pour indiquer
 #'  que la concentration est inférieure à la limite de quantification.
 #' @param unites chaîne de caractères à utiliser pour les unités du polluant.
+#' @param cW caractères utilisés dans le fichier d'entrée pour indiquer
+#'  que le code qualité à associer est W.
 analyses2XR <- function(fichier, nreseau, fichier_export=NULL, sheet=1, startRow=1,
-					infLQ=c('\\*', '< '), unites='microg/m3') {
+					infLQ=c('\\*', '< '), unites='microg/m3', cW=c('w', 'W')) {
 
 	loadNamespace('openxlsx')
 	osaf <- getOption('stringsAsFactors[')
@@ -71,14 +73,16 @@ analyses2XR <- function(fichier, nreseau, fichier_export=NULL, sheet=1, startRow
 		concs   <- data.frame(NOPOL=sub('ISO_', '', id_mols),
 							  conc =unlist(prel[id_mols]))
 
-		concs[['etat']] <- ifelse(
-			grepl('\\*', concs[['conc']]) | grepl('< ', concs[['conc']]),
-			'L',
-			'A')
-		concs[['conc']] <- sub('\\*', '', concs[['conc']])
-		concs[['conc']] <- sub('< *', '', concs[['conc']])
+		concs[['etat']] <- ifelse(any(sapply(infLQ, grepl, concs[['conc']])), 'L',
+							ifelse(any(sapply(cW, grepl, concs[['conc']])), 'W', 
+								  'A'))
+
+		for(iLQ in infLQ) concs[['conc']] <- sub(iLQ, '', concs[['conc']])
+		for(cw  in cW)   concs[['conc']] <- sub(cw, '', concs[['conc']])
+
 		concs[['conc']] <- sub(',', '.', concs[['conc']])
 		concs[['conc']] <- as.numeric(concs[['conc']])
+
 		if(any(is.na(concs[['conc']]))) {
 			warning('LE PRELEVEMENT ', prel[['NUM_ECH']],
 					" contient des valeurs invalides. Il n'est pas pris en compte")
