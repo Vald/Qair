@@ -19,6 +19,7 @@ export (xrGetQuery, xrConnect,
 	xrGetSitesPrelevement, xrGetMethodesPrelevement,
 	xrGetContinuousData, xrGetManualData, xrGetScan,
 	indicesXR2R, plot.indice, indicesXR2Rlong, 
+	xrGetTypesAnalyseurs,
 	xrVersion)
 
 # outils divers
