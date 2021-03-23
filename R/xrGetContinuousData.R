@@ -216,7 +216,15 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 			if(getOption('Xair.debug', FALSE)) message("requêtage parallèle de l'API")
 
 			dates <- seq(start, end, by=paste(limsupdata*nbsbp/nrow(mesures), 'sec'))
-			dates <- unique(c(dates, end))
+			if(period=='qh') {
+				minutes <- as.numeric(minute(dates, 'hour'))
+				minutes <- minutes - (minutes%%15)
+				dates <- sprintf('%s:%02i:00', format(dates, '%Y-%m-%d %H'), minutes)
+				dates <- as.POSIXct(dates, 'UTC')
+			} else 
+				dates <- trunc(dates, switch(period, h='hour', d='day', m='month', y='year'))
+			dates <- as.POSIXct(as.POSIXlt(unique(c(dates, end)), 'UTC'))
+
 			if(getOption('Xair.debug', FALSE))
 				message("découpage des dates:\n", paste(dates, collapse='\n'))
 
