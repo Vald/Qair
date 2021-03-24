@@ -65,13 +65,7 @@ function (conn, agglos, start, end, detail=FALSE,
 	cchims <- c('SO2', 'NO2', 'O3', 'PM10')
 
 	# liste des agglos disponibles --------------------------------------------
-	# FIXME:ISEO à corriger chez ISEO (résultat vide)
-	#agglos <- xrGetQuery(conn, 'v2/aqiGroups')
-	# en attendant : attention solution partielle, les groupes pour lesquels pas 
-	# d'indice sur la periode demandée n'apparaitront pas
-	lagglos <- xrGetQuery(conn,
-		'v2/disclosedAQI?from=2020-01-01T00:00:00Z&to=2020-01-02T00:00:00Z')
-	lagglos <- lagglos[['group']]
+	lagglos <- xrGetQuery(conn, 'v2/aqiGroups')
 	lagglos <- lagglos[c('idAqiGroup','idAqiIndex','idMeasureGroup','idCommune','areaName')]
 	lagglos <- unique(lagglos)
 	lagglos <- lagglos[order(lagglos[['idAqiIndex']],lagglos[['idMeasureGroup']]),]
