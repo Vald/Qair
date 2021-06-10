@@ -61,8 +61,8 @@ function (conn, agglos, start, end, detail=FALSE,
 	bquery <- 'v2/disclosedAQI?'
 
 	nagglo <- ifelse(!resv3 & nv == 'nv2','NOM_AGGLO','areaName')
-	nopols <- c('01', '03' ,'08', '24')
-	cchims <- c('SO2', 'NO2', 'O3', 'PM10')
+	nopols <- c('01', '03' ,'08', '24', '39')
+	cchims <- c('SO2', 'NO2', 'O3', 'PM10', 'PM2.5')
 
 	# liste des agglos disponibles --------------------------------------------
 	lagglos <- xrGetQuery(conn, 'v2/aqiGroups')
