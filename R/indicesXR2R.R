@@ -125,7 +125,10 @@ function (conn, agglos, start, end, detail=FALSE,
 		sindices <- lapply(1:length(nopols), function(i) {
 			si <- cbind(indices[c('date', nagglo)],
 						NOPOL         =cchims[i],
-						disclosedValue=indices[[nopols[i]]][['subIndexDisclosedValue']])
+						disclosedValue=
+							ifelse(nopols[i] %in% names(indices),
+								   indices[[nopols[i]]][['subIndexDisclosedValue']],
+								   NA))
 			return(si)
 		})
 		sindices <-do.call(rbind, sindices)
