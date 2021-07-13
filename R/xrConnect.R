@@ -164,8 +164,9 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 			drv <- ROracle::Oracle()
 			conxair <- try (DBI::dbConnect (drv, username=getOption('Xair.uid'),
 						   password=getOption('Xair.pwd'),
-						   sprintf('%s:1521/%s', getOption('Xair.host'),
-							   getOption('Xair.dsn'), sep='') ) )
+						   sprintf('%s:1521/%s',
+								   getOption('Xair.host'),
+								   getOption('Xair.dsn')) ) )
 			if(inherits(conxair, 'try-error'))
 				stop('echec de la connexion a la base Xair.')
 		} else {

@@ -356,6 +356,24 @@ xrGetContinuousData <- function (conn, pattern=NULL, start, end,
 				end   = donnees[['date']],
 				data  = donnees[setdiff(names(donnees), 'date')])
 
+		# vérification que la période demandée est complètement couverte
+
+		fstart <- trunc(start, switch(period,
+			h = 'hour',  qh= 'hour', d   = 'day',
+			m = 'month', y = 'year', scan='mins'))
+		fend <- trunc(end, switch(period,
+			h = 'hour',  qh= 'hour', d   = 'day',
+			m = 'month', y = 'year', scan='mins'))
+		fstart <- as.POSIXct(fstart, 'UTC')
+		fend   <- as.POSIXct(fend, 'UTC') +
+			if (period %in% c('qh', 'scan')) POSIXctp('hour') else pas
+
+		fullperiode <- RegularTimeIntervalDataFrame(fstart, fend, pas)[start,end]
+		fullperiode[names(donnees)] <- NA
+
+		donnees <- rbind(fullperiode[,min(start(donnees))],
+						 donnees, 
+						 fullperiode[max(end(donnees)),])
 	}
 
 	if( !is.null(cursor) ) donnees <- as.TimeInstantDataFrame(donnees, cursor)
