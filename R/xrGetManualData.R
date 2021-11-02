@@ -30,7 +30,7 @@
 #'   }
 #'   Par défaut, toutes les catégories de mesures sont récupérées.
 #' @param valid.states liste des codes états d'XR à considérer comme valide. Par défaut
-#'	les données dont le code état est 'A', 'L', 'U' sont considérées comme valides
+#'	les données dont le code état est 'A', 'L', 'U', 'W' sont considérées comme valides
 #'  et sont intégrées au tableau de données pour les données manuelles.
 #'  Les codes 'I', 'l' et 'u' correspondent aux données 'invalides'.
 #' @inheritParams xrGetContinuousData
@@ -44,7 +44,7 @@
 
 xrGetManualData <-
 	function (conn, start, end, sites=NULL, polluants=NULL, methodes=NULL,
-	   	  valid.states = c("A", "L", "U"),
+	   	  valid.states = c("A", "L", "U", "W"),
 		  what = c('value', 'state', 'both'),
 		  campagnes = NULL, tz='UTC', cursor=NULL,
 		  categories=as.character(0:4)) {
