@@ -34,7 +34,7 @@ analyses2XR <- function(fichier, nreseau, fichier_export=NULL, sheet=1, startRow
 					infLQ=c('\\*', '< '), unites='microg/m3', cW=c('w', 'W')) {
 
 	loadNamespace('openxlsx')
-	osaf <- getOption('stringsAsFactors[')
+	osaf <- getOption('stringsAsFactors')
 	options(stringsAsFactors=FALSE)
 
 	# fonction interne --------------------------------------------------------
