@@ -72,9 +72,10 @@ analyses2XR <- function(fichier, nreseau, fichier_export=NULL, sheet=1, startRow
 		concs   <- data.frame(NOPOL=sub('ISO_', '', id_mols),
 							  conc =unlist(prel[id_mols]))
 
-		concs[['etat']] <- ifelse(apply(sapply(infLQ, grepl, concs[['conc']]), 1, any), 'L',
-						   ifelse(apply(sapply(cW, grepl, concs[['conc']]), 1, any), 'W', 
-								  'A'))
+		concs[['etat']] <- ifelse(
+			apply(as.data.frame(lapply(infLQ, grepl, concs[['conc']])), 1, any), 'L', ifelse(
+			apply(as.data.frame(lapply(cW, grepl, concs[['conc']])), 1, any), 'W', 
+			'A'))
 
 		for(iLQ in infLQ) concs[['conc']] <- sub(iLQ, '', concs[['conc']])
 		for(cw  in cW)   concs[['conc']] <- sub(cw, '', concs[['conc']])
