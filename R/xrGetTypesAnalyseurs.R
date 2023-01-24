@@ -63,6 +63,7 @@ xrGetTypesAnalyseurs <- function(conn, x, debut, fin, resv3=FALSE) {
 	# création de la structure de retour --------------------------------------
 
 	res <- lapply(analyseurs[['trackEquipments']], function(a) {
+		if(!'endDate' %in% names(a)) a['endDate'] <- NA
 		a <- unique(a[c('startDate', 'endDate', 'model')])
 		a <- a[(!is.na(a[['startDate']]) & is.na(a[['endDate']])) |
 			   !a[['startDate']]==a[['endDate']],]
