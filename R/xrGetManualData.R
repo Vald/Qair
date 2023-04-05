@@ -1,3 +1,6 @@
+# FIXME: lors de l'adaptation à l'API, voir si traitement possible
+# des données QAI
+
 #' Fonction pour recuperer des donnees manuelles de XR
 #'
 #' @param polluants chaînes de caractères correspondant aux polluants à rapatrier
