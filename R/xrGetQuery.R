@@ -170,6 +170,21 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 # 'as.POSIXct(character())', 'as.POSIXct(character())'
 			)
 		  ))
+	}else if(name == 'samplingMethodes'){
+		return(data.frame(
+			nv2  = c('CODE_METH_P'
+					 # FIXME: à ajouter dans l'API
+					 # 'LIBELLE'
+					 ),
+			nv3  = c('samplingMethod'
+					 # FIXME: à déterminer
+					 # 'COMMENTAIRE', 'NSIT_LOCAL'
+					 # 'DATE_DEB', 'DATE_FIN'
+					 ),
+			type = c('character()'
+					 # FIXME: 'character()'
+			)
+		  ))
 	}else if(name %in% c(
 		'equipments','trackMeasureEquipments','aqiGroups', 'disclosedAQI')){
 		return(NULL)
