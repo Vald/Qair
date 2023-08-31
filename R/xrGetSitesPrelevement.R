@@ -4,8 +4,9 @@
 #' base XR référencée par la connexion \code{conn}.
 #'
 #' @inheritParams xrGetContinuousData
+#' @inheritParams xrGetStations
 #' @param start Debut de la période pour laquelle les sites doivent être recherchés
-#' @param end Debut de la période pour laquelle les sites doivent être recherchés
+#' @param end Fin de la période pour laquelle les sites doivent être recherchés
 #' @param fields vecteurs indiquant les champs de la table à récupérer.
 #'	Tous par défaut.
 #'
@@ -27,7 +28,7 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('v2/sampling?')
+	bquery <- sprintf('v2/samplingSites?')
 
 	# récupération des champs possibles de recherches (dépend de la version de
 	# Qair)
@@ -96,7 +97,7 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 					selection <- sapply(selection, grep, all.sites[[sf]])
 				}}
 			ist     <- all.sites[['idSamplingSite']][unique(unlist(selection))]
-			idsites <- collapseIds(ist, idsites, 'OR')
+			idsites <- collapseIds(ist, idsites, collapse)
 		}
 	}
 

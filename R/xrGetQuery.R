@@ -43,7 +43,8 @@ collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
 xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 								'measure-groups', 'data',
 								'equipments', 'trackMeasureEquipments',
-								'aqiGroups', 'disclosedAQI', 'sampling')){
+								'aqiGroups', 'disclosedAQI',
+								'samplingSites', 'samplingMethodes')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# quand le json n'est pas un simple vecteur mais un dictionnaire en
@@ -146,7 +147,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 			nv3  = c('id', 'label', 'isNetworkGroup'),
 			type = c('character()', 'character()', 'logical()')
 		  ))
-	}else if(name == 'sampling'){
+	}else if(name == 'samplingSites'){
 		return(data.frame(
 			nv2  = c('NRESSURV', 'NSIT', 'IDSITEP', 'LIBELLE',
 					 'LONGI', 'LATI', 'ALTI', 
@@ -204,6 +205,12 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	osaf   <- getOption('stringsAsFactors')
 	options(stringsAsFactors = FALSE)
 
+	# traitement des cas specifiques 0 ----------------------------------------
+
+	type  <- sub('^.*/', '', sub('\\?.*$', '', query))
+	query <- sub('samplingSites', 'sampling', query)
+	query <- sub('samplingMethodes', 'sampling', query)
+
 	# récupération de la requete brute ----------------------------------------
 
 	url <- sprintf('%s%s', xrGetUrl(conn), query)
@@ -231,12 +238,11 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	# traitement du cas générique ---------------------------------------------
 
-	type   <- sub('^.*/', '', sub('\\?.*$', '', query))
 	fields <- xrListFields(type)
 
 	if(type == 'disclosedAQI')
 		type <- 'calculatedIndex' else
-	if(type == 'sampling')
+	if(type %in% c('samplingSites', 'samplingMethodes'))
 		type <- 'samplings'
 
 	result <- result[[type]]
@@ -276,9 +282,9 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	result <- flat(result)
 
-	# traitement des cas specifiques ------------------------------------------
+	# traitement des cas specifiques 1 ----------------------------------------
 
-	if(type == 'samplings'){
+	if(type == 'samplingSites'){
 		result[['noRes']] <- substr(result[['noSite']], 1, 2)
 		result[['noSite']] <- substr(result[['noSite']], 3, 7)
 	#}else if(type == ''){
@@ -297,9 +303,9 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	result[colabsentes] <- NA
 	result <- result[fields[['nv3']]]
 
-	# second traitement des cas specifiques -----------------------------------
+	# traitement des cas specifiques 2 ----------------------------------------
 
-	if(type == 'samplings'){
+	if(type %in% c('samplingSites', 'samplingMethodes')){
 		result <- unique(result)
 	#}else if(type == ''){
 	}
