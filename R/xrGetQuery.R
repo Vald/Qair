@@ -43,7 +43,7 @@ collapseIds <- function(ist, idsites, collapse=c('AND', 'OR')){
 xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 								'measure-groups', 'data',
 								'equipments', 'trackMeasureEquipments',
-								'aqiGroups', 'disclosedAQI')){
+								'aqiGroups', 'disclosedAQI', 'sampling')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# quand le json n'est pas un simple vecteur mais un dictionnaire en
@@ -146,6 +146,29 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 			nv3  = c('id', 'label', 'isNetworkGroup'),
 			type = c('character()', 'character()', 'logical()')
 		  ))
+	}else if(name == 'sampling'){
+		return(data.frame(
+			nv2  = c('NRESSURV', 'NSIT', 'IDSITEP', 'LIBELLE',
+					 'LONGI', 'LATI', 'ALTI', 
+					 'NINSEE', 'AXE'
+					 # FIXME: à ajouter dans l'API
+					 # 'COMMENTAIRE', 'NSIT_LOCAL'
+					 # 'DATE_DEB', 'DATE_FIN'
+					 ),
+			nv3  = c('noRes', 'noSite', 'idSamplingSite', 'samplingSiteLabel',
+					 'address.longitude', 'address.latitude', 'address.altitude',
+					 'address.commune.id', 'address.street'
+					 # FIXME: à déterminer
+					 # 'COMMENTAIRE', 'NSIT_LOCAL'
+					 # 'DATE_DEB', 'DATE_FIN'
+					 ),
+			type = c('numeric()', 'numeric()', 'character()', 'character()',
+					 'numeric()', 'numeric()', 'numeric()',
+					 'numeric()', 'character()'
+					 # FIXME: 'character()', 'numeric()'
+					 # 'as.POSIXct(character())', 'as.POSIXct(character())'
+			)
+		  ))
 	}else if(name %in% c(
 		'equipments','trackMeasureEquipments','aqiGroups', 'disclosedAQI')){
 		return(NULL)
@@ -175,7 +198,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 #' @return une data.frame avec le résultat de la requête ou 
 #' 	une erreur si la requête n'a pas abouti.
 #' 
-#' @seealso \code{\link{xrConnect}}, \code{\link[RODBC]{RODBC}}, \code{\link[RJDBC]{JDBC}}
+#' @seealso \code{\link{xrConnect}}
 #' @export
 xrGetQuery <- function (conn, query, resv3=FALSE) {
 	osaf   <- getOption('stringsAsFactors')
@@ -210,7 +233,12 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	type   <- sub('^.*/', '', sub('\\?.*$', '', query))
 	fields <- xrListFields(type)
-	if(type == 'disclosedAQI') type <- 'calculatedIndex'
+
+	if(type == 'disclosedAQI')
+		type <- 'calculatedIndex' else
+	if(type == 'sampling')
+		type <- 'samplings'
+
 	result <- result[[type]]
 
 	if(is.null(fields)) {
@@ -250,9 +278,11 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	# traitement des cas specifiques ------------------------------------------
 
-	#if(type == 'sites'){
+	if(type == 'samplings'){
+		result[['noRes']] <- substr(result[['noSite']], 1, 2)
+		result[['noSite']] <- substr(result[['noSite']], 3, 7)
 	#}else if(type == ''){
-	#}
+	}
 
 	# gestion des dates -------------------------------------------------------
 
@@ -266,6 +296,13 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	colabsentes <- setdiff(fields[['nv3']], names(result))
 	result[colabsentes] <- NA
 	result <- result[fields[['nv3']]]
+
+	# second traitement des cas specifiques -----------------------------------
+
+	if(type == 'samplings'){
+		result <- unique(result)
+	#}else if(type == ''){
+	}
 
 	# gestion si compatibilité v2 et fin --------------------------------------
 
