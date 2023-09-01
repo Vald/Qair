@@ -104,7 +104,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			campagnes[['resv3']] <- TRUE
 			campagnes <- do.call(xrGetCampagnes,
 								 c(list(conn=conn), campagnes, silent=silent))
-			}
+		}
 		if(nrow(campagnes) > 0) {
 			query     <- paste0(campagnes[['id']], collapse=',')
 			query     <- paste0(bquery, 'campaigns=', query)
@@ -140,7 +140,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			stations[['resv3']] <- TRUE
 			stations <- do.call(xrGetStations,
 								c(list(conn=conn), stations, silent=silent))
-			}
+		}
 		if(nrow(stations) > 0) {
 			query     <- paste0(stations[['id']], collapse=',')
 			query     <- paste0(bquery, 'sites=', query)
@@ -158,7 +158,7 @@ xrGetMesures <- function(conn, pattern = NULL, search.fields = NULL,
 			polluants[['resv3']] <- TRUE
 			polluants <- do.call(xrGetPolluants,
 								 c(list(conn=conn), polluants, silent=silent))
-			}
+		}
 		if(nrow(polluants) > 0) {
 			query     <- paste0(polluants[['id']], collapse=',')
 			query     <- paste0(bquery, 'physicals=', query)

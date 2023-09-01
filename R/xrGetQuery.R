@@ -44,7 +44,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 								'measure-groups', 'data',
 								'equipments', 'trackMeasureEquipments',
 								'aqiGroups', 'disclosedAQI',
-								'samplingSites', 'samplingMethodes')){
+								'samplingSites', 'samplingMethodes', 'sampling')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# quand le json n'est pas un simple vecteur mais un dictionnaire en
@@ -260,7 +260,7 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	if(type == 'disclosedAQI')
 		result <- result[['calculatedIndex']] else
-	if(type %in% c('samplingSites', 'samplingMethodes'))
+	if(type %in% c('samplingSites', 'samplingMethodes', 'sampling'))
 		result <- result[['samplings']] else
 		result <- result[[type]]
 

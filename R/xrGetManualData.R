@@ -50,14 +50,22 @@ xrGetManualData <-
 	   	  valid.states = c("A", "L", "U", "W"),
 		  what = c('value', 'state', 'both'),
 		  campagnes = NULL, tz='UTC', cursor=NULL,
-		  categories=as.character(0:4)) {
+		  categories=as.character(0:4), silent) {
+
+	# initialisation ----------------------------------------------------------
+	if(missing(silent)) silent <- getOption('Xair.silent', FALSE)
+	osaf     <- getOption('stringsAsFactors')
+	options(stringsAsFactors = FALSE)
 
 	what <- match.arg (what)
 	categories <- match.arg(categories, several.ok=TRUE)
 
-	# pour permettre eventuellement d'entrer des chaines de caracteres en
-	# start en end
-	#	on fait un petit cast
+	nv     <- paste0('nv', conn[['version']])
+	bquery <- sprintf('v2/sampling?')
+
+	# traitement des dates de debut et de fin ---------------------------------
+	# si debut et fin ne sont pas en POSIXct, conversion
+
 	if( inherits(start, 'POSIXlt') ) start <- as.POSIXct(start)
 	if( inherits(end, 'POSIXlt') ) end <- as.POSIXct(end)
 
@@ -67,63 +75,76 @@ xrGetManualData <-
 	start <- as.POSIXct(as.POSIXlt(start, tz='UTC'))
 	end <- as.POSIXct(as.POSIXlt(end, tz='UTC'))
 
-	# recuperation des noms de sites, de polluants, de methode de prelevement
-	q <- list ()
-	
-	if (!is.null (sites) ) {
+	# start et end sont mis en forme pour la requete ----------------------
+
+	dformat <- '%Y-%m-%dT%H:%M:%SZ'
+	from    <- format (start, format = dformat, tz='UTC')
+	to      <- format (end+POSIXctp('second'), format = dformat, tz='UTC')
+
+	query <- sprintf('%sfrom=%s&to=%s&', bquery, from, to)
+
+	# recherche sur sites et campagnes ----------------------------------------
+
+	if (!is.null (sites)) {
 		if( !is.list(sites) )
-			sites <- xrGetSitesPrelevement (conn, sites, campagnes=campagnes) else {
-				sites$campagnes <- unique(c(sites$campagnes, campagnes))
-				sites <- do.call(xrGetSitesPrelevement, c(list(conn=conn), sites))
-			}
-		q$sites <- paste ("'", sites$NSIT, "'", sep='', collapse=', ')
+			sites <- xrGetSitesPrelevement (conn, sites, campagnes=campagnes,
+											resv3=TRUE, silent=silent) else {
+			sites[['campagnes']] <- unique(c(sites[['campagnes']], campagnes))
+			sites[['resv3']]     <- TRUE
+			sites <- do.call(xrGetSitesPrelevement,
+							 c(list(conn=conn), sites, silent=silent))
+		}
+		if(nrow(sites) > 0) query <- paste0(
+			query, 'idSamplingSite=',
+			paste0(sites[['idSamplingSite']], collapse=','),
+			'&')
+
 	} else if (!is.null(campagnes)) {
-		sites <- xrGetSitesPrelevement (conn, campagnes=campagnes)
-		q$sites <- paste ("'", sites$NSIT, "'", sep='', collapse=', ')
+		sites <- xrGetSitesPrelevement (conn, campagnes=campagnes, resv3=TRUE)
+		if(nrow(sites) > 0) query <- paste0(
+			query, 'idSamplingSite=',
+			paste0(sites[['idSamplingSite']], collapse=','),
+			'&')
 	}
-	if (!is.null (polluants) ) {
+
+	# recherche sur polluants -------------------------------------------------
+
+	if (!is.null (polluants)) {
 		if( !is.list(polluants) )
-			polluants <- xrGetPolluants (conn, polluants) else
-			polluants <- do.call(xrGetPolluants, c(list(conn=conn), polluants))
-		q$polluants <- paste ("'", polluants$NOPOL, "'", sep='', collapse=', ')
+			polluants <- xrGetPolluants(conn, pattern = polluants,
+										resv3=TRUE, silent=silent) else{
+			polluants[['resv3']] <- TRUE
+			polluants <- do.call(xrGetPolluants,
+								 c(list(conn=conn), polluants, silent=silent))
+		}
+		if(nrow(polluants) > 0) query <- paste0(
+			query, 'nopol=',
+			paste0(polluants[['id']], collapse=','),
+			'&')
 	}
-	if (!is.null (methodes) ) {
-		methodes <- xrGetMethodesPrelevement (conn, methodes)
-		q$methodes <- paste ("'", methodes$CODE_METH_P, "'", sep='', collapse=', ')
+
+	# recherche sur methodes --------------------------------------------------
+
+	if (!is.null (methodes)) {
+		if( !is.list(methodes) )
+			methodes <- xrGetMethodesPrelevement(conn, pattern = methodes,
+										resv3=TRUE, silent=silent) else{
+			methodes[['resv3']] <- TRUE
+			methodes <- do.call(xrGetMethodesPrelevement,
+								c(list(conn=conn), methodes, silent=silent))
+		}
+		if(nrow(methodes) > 0) query <- paste0(
+			query, 'codeSamplingMethod=',
+			paste0(methodes[['samplingMethod']], collapse=','),
+			'&')
 	}
-	# mise en forme des dates pour la requete
-	q$start <- format (start, format = '%Y-%m-%d', tz='UTC')
-	q$start <- sprintf ("TO_DATE('%s', 'YYYY-MM-DD')", q$start)
-	q$end	<- format (end, format = '%Y-%m-%d', tz='UTC')
-	q$end	<- sprintf ("TO_DATE('%s', 'YYYY-MM-DD')", q$end)
-	q$valid.states <- paste ("'", valid.states, "'", sep='', collapse=', ')
-	
-	# création de LA requete de rapatriement
-	query <- sprintf (
-	"SELECT SITE_PRELEVEMENT.LIBELLE site, LONGI, LATI, LAMBERTX, LAMBERTY,
-		METH_PRELEVEMENT.LIBELLE methode,
-		VALEUR, CODE_QUALITE, UNITE, NOPOL, CCHIM,
-		PRELEVEMENT.DATE_DEB, PRELEVEMENT.DATE_FIN
-	FROM SITE_METH_PRELEV
-		JOIN SITE_PRELEVEMENT USING (NSIT)
-		JOIN METH_PRELEVEMENT USING (CODE_METH_P)
-		JOIN PRELEVEMENT USING (CODE_SMP)
-		JOIN ANALYSE USING (CODE_SMP, CODE_PRELEV)
-		JOIN MESURE_LABO USING (CODE_SMP, CODE_MES_LABO)
-		JOIN NOM_MESURE USING (NOPOL)
-	WHERE (PRELEVEMENT.DATE_DEB>=%s AND PRELEVEMENT.DATE_FIN<=%s) AND
-		CODE_QUALITE IN (%s) AND CATEGORIE IN (%s)",
-	q$start, q$end, q$valid.states, paste(categories, collapse=', '))
 
-	if (!is.null(q$sites))
-		query <- sprintf ("%s AND NSIT IN (%s)", query, q$sites)
-	if (!is.null(q$polluants))
-		query <- sprintf ("%s AND NOPOL IN (%s)", query, q$polluants)
-	if (!is.null(q$methodes))
-		query <- sprintf ("%s AND CODE_METH_P IN (%s)", query, q$methodes)
+	# exécution de la requête --------------------------------------------------
 
-	# recuperation des données
-	result <- xrGetQueryBD (conn, query)
+	donnees <- xrGetQuery(conn, query, resv3=TRUE)
+
+	# OLD VERSION
+	# recuperation des noms de sites, de polluants, de methode de prelevement
 
 	# à priori pour airparif, les Q_, H_, etc. sont rappatriés sous forme de
 	# char, donc conversion
