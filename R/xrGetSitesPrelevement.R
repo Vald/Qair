@@ -36,7 +36,7 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# on les 'traduit' en nv3, on fait tout le travail en nv3 et à la fin 
 	# de la fonction on revient éventuellement en nv2.
 
-	xrfields <- xrListFields ('sampling')
+	xrfields <- xrListFields ('samplingSites')
 	if(is.null(search.fields)){
 		search.fields <- xrfields[['nv3']][3:4]
 		if(!silent) message("Champs disponibles pour la recherche (sites de prélèvements) : \n",

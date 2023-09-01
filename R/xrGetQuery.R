@@ -223,6 +223,9 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	# traitement des cas specifiques 0 ----------------------------------------
 
 	type  <- sub('^.*/', '', sub('\\?.*$', '', query))
+
+	if(getOption('Xair.debug', FALSE)) message(type)
+
 	query <- sub('samplingSites', 'sampling', query)
 	query <- sub('samplingMethodes', 'sampling', query)
 
@@ -256,11 +259,10 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 	fields <- xrListFields(type)
 
 	if(type == 'disclosedAQI')
-		type <- 'calculatedIndex' else
+		result <- result[['calculatedIndex']] else
 	if(type %in% c('samplingSites', 'samplingMethodes'))
-		type <- 'samplings'
-
-	result <- result[[type]]
+		result <- result[['samplings']] else
+		result <- result[[type]]
 
 	if(is.null(fields)) {
 		options(stringsAsFactors = osaf)
