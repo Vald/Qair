@@ -151,22 +151,22 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 		return(data.frame(
 			nv2  = c('NRESSURV', 'NSIT', 'IDSITEP', 'LIBELLE',
 					 'LONGI', 'LATI', 'ALTI', 
-					 'NINSEE', 'AXE'
+					 'NINSEE', 'AXE', 'COMMENTAIRE'
 					 # FIXME: à ajouter dans l'API
-					 # 'COMMENTAIRE', 'NSIT_LOCAL'
+					 # 'NSIT_LOCAL'
 					 # 'DATE_DEB', 'DATE_FIN'
 					 ),
 			nv3  = c('noRes', 'noSite', 'idSamplingSite', 'samplingSiteLabel',
 					 'address.longitude', 'address.latitude', 'address.altitude',
-					 'address.commune.id', 'address.street'
+					 'address.commune.id', 'address.street', 'samplingSiteComment'
 					 # FIXME: à déterminer
-					 # 'COMMENTAIRE', 'NSIT_LOCAL'
+					 # 'NSIT_LOCAL'
 					 # 'DATE_DEB', 'DATE_FIN'
 					 ),
 			type = c('numeric()', 'numeric()', 'character()', 'character()',
 					 'numeric()', 'numeric()', 'numeric()',
-					 'numeric()', 'character()'
-					 # FIXME: 'character()', 'numeric()'
+					 'numeric()', 'character()', 'character()'
+					 # FIXME:  'numeric()'
 					 # 'as.POSIXct(character())', 'as.POSIXct(character())'
 			)
 		  ))

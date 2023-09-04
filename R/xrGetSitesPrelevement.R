@@ -16,13 +16,12 @@
 #'	pour les sites trouvés.
 xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 			  campagnes = NULL, fields = NULL, start = NULL, end = NULL, tz='UTC',
-			  collapse = c('AND', 'OR'), exact=FALSE, resv3=FALSE, silent) {
+			  exact=FALSE, resv3=FALSE, silent) {
 
 	# FIXME: ajouter dans l'API campagne ?
 	if(missing(silent)) silent <- getOption('Xair.silent', FALSE)
 	osaf     <- getOption('stringsAsFactors')
 	options(stringsAsFactors = FALSE)
-	collapse <- match.arg(collapse)
 
 	# récupération de la version avec laquelle on bosse et initialisation de
 	# la requête
@@ -68,7 +67,7 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 		end <- as.POSIXct(as.POSIXlt(end, tz='UTC'))
 
 		to     <- format (end+POSIXctp('second'), format = dformat, tz='UTC')
-		bquery <- sprintf('%sto=%s&', bquery, from)
+		bquery <- sprintf('%sto=%s&', bquery, to)
 	}
 
 	# algo:
@@ -97,7 +96,7 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 					selection <- sapply(selection, grep, all.sites[[sf]])
 				}}
 			ist     <- all.sites[['idSamplingSite']][unique(unlist(selection))]
-			idsites <- collapseIds(ist, idsites, collapse)
+			idsites <- collapseIds(ist, idsites, 'OR')
 		}
 	}
 
