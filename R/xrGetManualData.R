@@ -75,7 +75,7 @@ xrGetManualData <-
 	start <- as.POSIXct(as.POSIXlt(start, tz='UTC'))
 	end <- as.POSIXct(as.POSIXlt(end, tz='UTC'))
 
-	# start et end sont mis en forme pour la requete ----------------------
+	# start et end sont mis en forme pour la requete --------------------------
 
 	dformat <- '%Y-%m-%dT%H:%M:%SZ'
 	from    <- format (start, format = dformat, tz='UTC')
@@ -139,90 +139,105 @@ xrGetManualData <-
 			'&')
 	}
 
-	# exécution de la requête --------------------------------------------------
+	# exécution de la requête et préparation des données ----------------------
 
 	donnees <- xrGetQuery(conn, query, resv3=TRUE)
 
-	# OLD VERSION
-	# recuperation des noms de sites, de polluants, de methode de prelevement
+	donnees <- donnees[setdiff(names(donnees), 'address')]
 
-	# à priori pour airparif, les Q_, H_, etc. sont rappatriés sous forme de
-	# char, donc conversion
-	# conversion systématique (sans impact si pas nécessaire, corrige à
-	# priori non pour XR < 6 mais pour windows >= 7)
-	a.convertir <- c('VALEUR', 'LAMBERTX', 'LAMBERTY', 'LONGI', 'LATI')
-	result[a.convertir] <- lapply(result[a.convertir], function(x)
-		{
-			if (is.character(x)) {
-				wv <- grepl(',', x)
-				x[wv] <- sub(',', '.', x[wv])
-			}
-			as.numeric(x)
-		} )
+	donnees <- lapply(donnees, '[', donnees[['category']] %in% categories)
+	donnees <- lapply(donnees, '[', !sapply(donnees[['laboMeasures']], is.null))
 
-	# mise en forme des données
-	result <- split (result, paste (result$DATE_DEB, result$DATE_FIN) )
+	donnees[['laboMeasures']] <- lapply(donnees[['laboMeasures']], function(x)
+						return(x[x[['qc']] %in% valid.states, , drop=FALSE]))
+	
+	donnees <- lapply(donnees, '[', sapply(donnees[['laboMeasures']], nrow) > 0)
+
+
+	nrows <- sapply(donnees[['laboMeasures']], nrow)
+
+	donnees <- data.frame(
+				VALEUR      = unlist(lapply(donnees[['laboMeasures']], '[[', 'value')),
+				CODE_QUALITE= unlist(sapply(donnees[['laboMeasures']], '[[', 'qc')),
+				SITE        = rep(donnees[['samplingSiteLabel']], nrows),
+				# FIXME: à remplacer par le descriptif quand on l'aura
+				METHODE     = rep(donnees[['samplingMethod']], nrows),
+				NOPOL       = unlist(lapply(donnees[['laboMeasures']], '[[', 'nopol')),
+				DATE_DEB    = as.POSIXct(rep(donnees[['startEpoch']], nrows)),
+				DATE_FIN    = as.POSIXct(rep(donnees[['stopEpoch']], nrows)))
+
+
+	# mise en forme des données -----------------------------------------------
+
+	donnees <- split (donnees, paste(donnees[['DATE_DEB']], donnees[['DATE_FIN']]))
+
 	fun.tmp <- function(x, what) {
-		debut <- unique (x$DATE_DEB)
-		fin <- unique (x$DATE_FIN)
+		debut <- unique (x[['DATE_DEB']])
+		fin   <- unique (x[['DATE_FIN']])
+
 		valeurs <- split (
 			x[c('VALEUR', 'CODE_QUALITE')],
-			gsub(' ', '.', paste(x$SITE, x$METHODE, x$NOPOL, sep='.')))
+			gsub(' ', '.', do.call(paste, c(x[c('SITE', 'METHODE', 'NOPOL')], sep='.'))))
 
-		if (any (sapply (valeurs, nrow) > 1) ) {
-			warning (sprintf ("\n%s, \nCertains prélèvements sont
-dupliqués. L'association entre les différentes mesures risque d'être arbitraire.",
-paste (names(valeurs)[sapply (valeurs, nrow) > 1]) ) )
+		if( any(sapply(valeurs, nrow) > 1) ) {
+			warning("Certains prélèvements sont dupliqués.",
+					" L'association entre les différentes mesures risque d'être arbitraire.")
+			warning(paste(names(valeurs)[sapply(valeurs, nrow) > 1], sep='\n'))
 		
-			for (i in which (sapply (valeurs, nrow) > 1))
-			for (j in 1:nrow (valeurs[[i]]) )
-				valeurs[[paste(names(valeurs)[i], j, sep='.')]] <-
-						valeurs[[i]][j, , drop=FALSE]
-			valeurs[which (sapply (valeurs, nrow) > 1)] <- NULL
+			for (i in which(sapply(valeurs, nrow) > 1))
+			for (j in 1:nrow(valeurs[[i]]))
+				valeurs[[paste(names(valeurs)[i], j, sep='.')]] <- valeurs[[i]][j, , drop=FALSE]
+
+			valeurs[which(sapply (valeurs, nrow) > 1)] <- NULL
 		}
-		ret <- data.frame (start=debut, end=fin)
+
+		ret <- data.frame(start=debut, end=fin)
+
 		if (what=='value')
 			ret <- data.frame(
 				ret,
-				lapply(valeurs, function(x) x$VALEUR)) else
+				lapply(valeurs, function(x) x[['VALEUR']])) else
 		if (what=='state')
 			ret <- data.frame(
 				ret,
-				lapply(valeurs, function(x) x$CODE_QUALITE)) else{
+				lapply(valeurs, function(x) x[['CODE_QUALITE']])) else{
 			noms <- names (valeurs)
 			ret <- data.frame(
-				ret, lapply (valeurs, function(x) x$VALEUR),
-				lapply (valeurs, function(x) x$CODE_QUALITE))
+				ret, lapply (valeurs, function(x) x[['VALEUR']]),
+				lapply (valeurs, function(x) x[['CODE_QUALITE']]))
 			names(ret)[-(1:2)] <- paste(
 				rep (noms, 2),
 				rep (c('value', 'state'), each=length(noms)),
 				sep='.')
-			}
+		}
 
 		return (ret)
 	}
-	result <- lapply (result, fun.tmp, what)
-	while (length (result) > 1) {
-		result[[1]] <- merge (result[[1]], result[[2]], all=TRUE)
-		result[[2]] <- NULL
+
+	donnees <- lapply (donnees, fun.tmp, what)
+
+	while (length (donnees) > 1) {
+		donnees[[1]] <- merge (donnees[[1]], donnees[[2]], all=TRUE)
+		donnees[[2]] <- NULL
 	}
 
-	if (length(result) == 0) {
-		result <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
+	if (length(donnees) == 0) {
+		donnees <- TimeIntervalDataFrame(character(0), character(0), 'UTC')
 
 	} else {
-		result <- result[[1]]
+		donnees <- donnees[[1]]
 
-		result <- new ('TimeIntervalDataFrame',
-				   start=as.POSIXct(result$start, 'UTC'),
-				   end=as.POSIXct(result$end, 'UTC'),
-				   timezone='UTC', data=result[-(1:2)])
+		donnees <- new ('TimeIntervalDataFrame',
+				   start   = as.POSIXct(donnees[['start']], 'UTC'),
+				   end     = as.POSIXct(donnees[['end']], 'UTC'),
+				   timezone= 'UTC',
+				   data    = donnees[-(1:2)])
 	}
 
 	if( !is.null(cursor) )
-		result <- as.TimeInstantDataFrame(result, cursor)
-	timezone(result) <- tz
+		donnees <- as.TimeInstantDataFrame(donnees, cursor)
+	timezone(donnees) <- tz
 
-	return (result)
+	return (donnees)
 }
 
