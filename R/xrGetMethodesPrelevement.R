@@ -11,7 +11,7 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les méthodes trouvées.
 xrGetMethodesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
-									 fields = NULL, resv3 = FALSE, silent) {
+									 fields = NULL, exact=FALSE, resv3 = FALSE, silent) {
 
 	if(missing(silent)) silent <- getOption('Xair.silent', FALSE)
 
@@ -19,7 +19,7 @@ xrGetMethodesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('v2/samplingMethodes?')
+	bquery <- sprintf('v2/samplingMethod?')
 
 	# récupération des champs possibles de recherches (dépend de la version de
 	# Qair)
@@ -27,9 +27,9 @@ xrGetMethodesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# on les 'traduit' en nv3, on fait tout le travail en nv3 et à la fin 
 	# de la fonction on revient éventuellement en nv2.
 
-	xrfields <- xrListFields ('samplingMethodes')
+	xrfields <- xrListFields ('samplingMethod')
 	if(is.null(search.fields)) {
-		search.fields <- xrfields[['nv3']][1:3]
+		search.fields <- xrfields[['nv3']][1:2]
 		if(!silent) message("Champs disponibles pour la recherche (méthodes de prélèvements) : \n",
 				paste(collapse=', ', xrfields[[nv]]),
 				"\n\nPar défaut : ",
@@ -53,8 +53,9 @@ xrGetMethodesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# champs sont traités comme les autres (puisqu'on est de toute façon 
 	# obligé de charger toutes les stations pour les autres champs)
 
+	all.methodes <- xrGetQuery(conn, bquery, resv3=TRUE)
+
 	if(!is.null(pattern)) {
-		all.methodes <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
 			if(!exact)
 				selection <- sapply(pattern, grep, all.methodes[[sf]]) else {
@@ -66,25 +67,14 @@ xrGetMethodesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 					selection <- paste0('^', selection, '$')
 					selection <- sapply(selection, grep, all.methodes[[sf]])
 				}}
-			ist         <- all.methodes[['samplingMethod']][unique(unlist(selection))]
+			ist         <- unique(unlist(selection))
 			idmethodes <- collapseIds(ist, idmethodes, 'OR')
 		}
+	} else {
+		idmethodes <- TRUE
 	}
 
-	# si des filtres ont été appliqués et que idsites est vide ----------------
-	# la fonction retourne une data.frame vide
-	# (on procède en donnant une valeur bidon à idsites)
-
-	if(!is.null(pattern) & length(idmethodes) == 0)
-		idmethodes <- 'AUCUNECORRESPONDANCE'
-
-	# création et exécution de la requête -------------------------------------
-
-	query <- bquery
-	if(!is.null(idmethodes))
-		query <- sprintf('%s&codeSamplingMethod=%s', query, paste(idmethodes, collapse=','))
-
-	methodes <- xrGetQuery(conn, query, resv3=TRUE)
+	methodes <- all.methodes[idmethodes,]
 
 	# selection des champs de retour ------------------------------------------
 

@@ -44,7 +44,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 								'measure-groups', 'data',
 								'equipments', 'trackMeasureEquipments',
 								'aqiGroups', 'disclosedAQI',
-								'samplingSites', 'samplingMethodes', 'sampling')){
+								'samplingSite', 'samplingMethod', 'sampling')){
 	name <- match.arg(name)
 	if(name == 'sites'){
 		# quand le json n'est pas un simple vecteur mais un dictionnaire en
@@ -147,43 +147,32 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 			nv3  = c('id', 'label', 'isNetworkGroup'),
 			type = c('character()', 'character()', 'logical()')
 		  ))
-	}else if(name == 'samplingSites'){
+	}else if(name == 'samplingSite'){
 		return(data.frame(
 			nv2  = c('NRESSURV', 'NSIT', 'IDSITEP', 'LIBELLE',
 					 'LONGI', 'LATI', 'ALTI', 
-					 'NINSEE', 'AXE', 'COMMENTAIRE'
-					 # FIXME: à ajouter dans l'API
-					 # 'NSIT_LOCAL'
-					 # 'DATE_DEB', 'DATE_FIN'
+					 'NINSEE', 'AXE', 'COMMENTAIRE',
+					 'NSIT_LOCAL', 'NOM_COURT_SIT_LOCAL',
+					 'DATE_DEB', 'DATE_FIN'
 					 ),
-			nv3  = c('noRes', 'noSite', 'idSamplingSite', 'samplingSiteLabel',
+			nv3  = c('idCustomer', 'idSamplingSite', 'identifier', 'label',
 					 'address.longitude', 'address.latitude', 'address.altitude',
-					 'address.commune.id', 'address.street', 'samplingSiteComment'
-					 # FIXME: à déterminer
-					 # 'NSIT_LOCAL'
-					 # 'DATE_DEB', 'DATE_FIN'
+					 'address.idCommune', 'address.street', 'comment',
+					 'nsitLocal', 'idSiteLocal',
+					 'startDate', 'endDate'
 					 ),
 			type = c('numeric()', 'numeric()', 'character()', 'character()',
 					 'numeric()', 'numeric()', 'numeric()',
-					 'numeric()', 'character()', 'character()'
-					 # FIXME:  'numeric()'
-					 # 'as.POSIXct(character())', 'as.POSIXct(character())'
+					 'numeric()', 'character()', 'character()',
+					 'numeric()', 'character()',
+					 'as.POSIXct(character())', 'as.POSIXct(character())'
 			)
 		  ))
-	}else if(name == 'samplingMethodes'){
+	}else if(name == 'samplingMethod'){
 		return(data.frame(
-			nv2  = c('CODE_METH_P'
-					 # FIXME: à ajouter dans l'API
-					 # 'LIBELLE'
-					 ),
-			nv3  = c('samplingMethod'
-					 # FIXME: à déterminer
-					 # 'COMMENTAIRE', 'NSIT_LOCAL'
-					 # 'DATE_DEB', 'DATE_FIN'
-					 ),
-			type = c('character()'
-					 # FIXME: 'character()'
-			)
+			nv2  = c('CODE_METH_P', 'LIBELLE'),
+			nv3  = c('idSamplingMethod', 'label'),
+			type = c('character()', 'character()')
 		  ))
 	}else if(name %in% c(
 		'equipments','trackMeasureEquipments','aqiGroups', 'disclosedAQI')){
@@ -226,9 +215,6 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	if(getOption('Xair.debug', FALSE)) message(type)
 
-	query <- sub('samplingSites', 'sampling', query)
-	query <- sub('samplingMethodes', 'sampling', query)
-
 	# récupération de la requete brute ----------------------------------------
 
 	url <- sprintf('%s%s', xrGetUrl(conn), query)
@@ -260,7 +246,9 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 
 	if(type == 'disclosedAQI')
 		result <- result[['calculatedIndex']] else
-	if(type %in% c('samplingSites', 'samplingMethodes', 'sampling'))
+	if(type %in% c('samplingSite', 'samplingMethod'))
+		result <- result[[tolower(type)]] else
+	if(type == 'sampling')
 		result <- result[['samplings']] else
 		result <- result[[type]]
 

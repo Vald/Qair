@@ -5,8 +5,6 @@
 #'
 #' @inheritParams xrGetContinuousData
 #' @inheritParams xrGetStations
-#' @param start Debut de la période pour laquelle les sites doivent être recherchés
-#' @param end Fin de la période pour laquelle les sites doivent être recherchés
 #' @param fields vecteurs indiquant les champs de la table à récupérer.
 #'	Tous par défaut.
 #'
@@ -15,7 +13,7 @@
 #' @return une data.frame correspondant au contenu de la table 
 #'	pour les sites trouvés.
 xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
-			  campagnes = NULL, fields = NULL, start = NULL, end = NULL, tz='UTC',
+			  campagnes = NULL, fields = NULL, 
 			  exact=FALSE, resv3=FALSE, silent) {
 
 	# FIXME: ajouter dans l'API campagne ?
@@ -27,7 +25,7 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('v2/samplingSites?')
+	bquery <- sprintf('v2/samplingSite?')
 
 	# récupération des champs possibles de recherches (dépend de la version de
 	# Qair)
@@ -35,7 +33,7 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# on les 'traduit' en nv3, on fait tout le travail en nv3 et à la fin 
 	# de la fonction on revient éventuellement en nv2.
 
-	xrfields <- xrListFields ('samplingSites')
+	xrfields <- xrListFields ('samplingSite')
 	if(is.null(search.fields)){
 		search.fields <- xrfields[['nv3']][3:4]
 		if(!silent) message("Champs disponibles pour la recherche (sites de prélèvements) : \n",
@@ -49,30 +47,8 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 			search.fields <- xrfields[['nv3']][match(search.fields, xrfields[['nv2']])]
 	}
 
-	# start et end sont mis en forme pour la requete ----------------------
-
-	dformat <- '%Y-%m-%dT%H:%M:%SZ'
-	if(!is.null(start)) {
-		if( inherits(start, 'POSIXlt') ) start <- as.POSIXct(start)
-		if( !inherits(start, 'POSIXct') ) start <- as.POSIXct(start, tz=tz)
-		start <- as.POSIXct(as.POSIXlt(start, tz='UTC'))
-
-		from   <- format (start, format = dformat, tz='UTC')
-		bquery <- sprintf('%sfrom=%s&', bquery, from)
-	}
-
-	if(!is.null(end)) {
-		if( inherits(end, 'POSIXlt') ) end <- as.POSIXct(end)
-		if( !inherits(end, 'POSIXct') ) end <- as.POSIXct(end, tz=tz)
-		end <- as.POSIXct(as.POSIXlt(end, tz='UTC'))
-
-		to     <- format (end+POSIXctp('second'), format = dformat, tz='UTC')
-		bquery <- sprintf('%sto=%s&', bquery, to)
-	}
-
 	# algo:
 	# récupération des sites de prelevements sur la base de search.fields
-	# puis refiltre si search.fields contient autre chose que juste id/NJOM_COUR_MEs
 	# --> agregation des différents tests en fonction de collapse...
 
 	idsites <- NULL
@@ -82,8 +58,9 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# champs sont traités comme les autres (puisqu'on est de toute façon 
 	# obligé de charger toutes les stations pour les autres champs)
 
+	all.sites <- xrGetQuery(conn, bquery, resv3=TRUE)
+
 	if(!is.null(pattern)) {
-		all.sites <- xrGetQuery(conn, bquery, resv3=TRUE)
 		for (sf in search.fields){
 			if(!exact)
 				selection <- sapply(pattern, grep, all.sites[[sf]]) else {
@@ -95,25 +72,14 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 					selection <- paste0('^', selection, '$')
 					selection <- sapply(selection, grep, all.sites[[sf]])
 				}}
-			ist     <- all.sites[['idSamplingSite']][unique(unlist(selection))]
+			ist     <- unique(unlist(selection))
 			idsites <- collapseIds(ist, idsites, 'OR')
 		}
+	} else {
+		idsites <- TRUE
 	}
 
-	# si des filtres ont été appliqués et que idsites est vide ----------------
-	# la fonction retourne une data.frame vide
-	# (on procède en donnant une valeur bidon à idsites)
-
-	if(!is.null(pattern) & length(idsites) == 0)
-		idsites <- 'AUCUNECORRESPONDANCE'
-
-	# création et exécution de la requête -------------------------------------
-
-	query <- bquery
-	if(!is.null(idsites))
-		query <- sprintf('%s&idSamplingSite=%s', query, paste(idsites, collapse=','))
-
-	sites <- xrGetQuery(conn, query, resv3=TRUE)
+	sites <- all.sites[idsites,]
 
 	# selection des champs de retour ------------------------------------------
 

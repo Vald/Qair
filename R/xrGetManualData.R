@@ -96,7 +96,7 @@ xrGetManualData <-
 		}
 		if(nrow(sites) > 0) query <- paste0(
 			query, 'idSamplingSite=',
-			paste0(sites[['idSamplingSite']], collapse=','),
+			paste0(sites[['identifier']], collapse=','),
 			'&')
 
 	} else if (!is.null(campagnes)) {
@@ -160,7 +160,6 @@ xrGetManualData <-
 				VALEUR      = unlist(lapply(donnees[['laboMeasures']], '[[', 'value')),
 				CODE_QUALITE= unlist(sapply(donnees[['laboMeasures']], '[[', 'qc')),
 				SITE        = rep(donnees[['samplingSiteLabel']], nrows),
-				# FIXME: à remplacer par le descriptif quand on l'aura
 				METHODE     = rep(donnees[['samplingMethod']], nrows),
 				NOPOL       = unlist(lapply(donnees[['laboMeasures']], '[[', 'nopol')),
 				DATE_DEB    = as.POSIXct(rep(donnees[['startEpoch']], nrows)),
