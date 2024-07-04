@@ -46,10 +46,6 @@
 'indicesXR2R' <-
 function (conn, agglos, start, end, detail=FALSE,
 	  format=c('type', 'agglo', 'aucun'), type=c('C', 'P'), resv3=FALSE) {
-	# FIXME:ISEO possibilité d'écrire l'indice ?
-	# FIXME:ISEO sites de prelevements
-	# FIXME:ISEO methodes de prelevements
-	# FIXME:ISEO donnees manuelles
 
 	format <- match.arg(format)
 	type   <- match.arg(type)
