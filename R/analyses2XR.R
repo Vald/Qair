@@ -99,7 +99,7 @@ analyses2XR <- function(fichier, nreseau, fichier_export=NULL, sheet=1, startRow
 		}
 
 		if (prel[['BT']] == 2)
-			concs[['etat']] <- ifelse(concs[['etat']] == 'L', 'l','I')
+			concs[['etat']] <- ifelse(concs[['etat']] %in% c('L', 'l'), 'l','I')
 
 		concs[['unite']]       <- unites
 		concs[['commentaire']] <- ''
