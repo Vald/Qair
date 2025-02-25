@@ -5,15 +5,22 @@
 #' @param conn Un objet de type 'xr' (\code{\link{xrConnect}})
 #' @param version booléen : faut-il retourner l'url pour récupérer la version ?
 #'  FALSE par défaut.
+#' @param authentification booléen : faut-il retourner l'url pour l'authentification ?
+#'  FALSE par défaut.
 #' @return une chaîne de caractères correspondant à la base de l'URL à requêter
-xrGetUrl <- function(conn, version=FALSE){
-	if(version)
-	return(sprintf('http%s://%s:%s/dms-api/public/version',
+xrGetUrl <- function(conn, version=FALSE, authentification=FALSE){
+	if(authentification)
+	return(sprintf('http%s://%s:%s/dms-api/authentification/login',
 				   if(conn[['port']] == 8443) 's' else '',
-				   conn[['host']], conn[['port']])) else
-	return(sprintf('http%s://%s:%s/dms-api/public/',
+				   conn[['host']], conn[['port']])) else if(version)
+	return(sprintf('http%s://%s:%s/dms-api/%s/version',
 				   if(conn[['port']] == 8443) 's' else '',
-				   conn[['host']], conn[['port']]))
+				   conn[['host']], conn[['port']]),
+				   if(conn[['logged']]) 'restricted' else 'public') else
+	return(sprintf('http%s://%s:%s/dms-api/%s/',
+				   if(conn[['port']] == 8443) 's' else '',
+				   conn[['host']], conn[['port']],
+				   if(conn[['logged']]) 'restricted' else 'public'))
 }
 
 #' Fonction interne pour coller deux jeux d'ids en fonction d'un collapse

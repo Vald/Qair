@@ -180,6 +180,16 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 			   port   = options()[['Xair.port']],
 			   version= options()[['Xair.version']],
 			   db     = conxair)
+
+	if(!is.null(getOption('Xair.uid')) & !is.null(getOption('Xair.pwd')))
+		xr[['logged']] <- status_code(RETRY(
+				'POST',
+				xrGetUrl(xr, authentification=TRUE),
+				httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE),
+				encode='form',
+				body=list(username=getOption('Xair.uid'), password=getOption('Xair.pwd')))) == 200 else
+		xr[['logged']] <- FALSE
+
 	class(xr) <- 'xr'
 
 	if(nrow(suppressMessages(xrGetStations(xr))) == 0) stop('Problème de connexion')
