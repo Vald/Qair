@@ -91,6 +91,24 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 	if(!options()[['Xair.version']] %in% 2:3)
 		stop("Les versions de Qair acceptées sont uniquement 2 ou 3")
 
+	# definition du login
+	if(!is.null(uid)) {
+		options(Xair.uid=uid)
+	} else if(is.null(getOption('Xair.uid'))) {
+		cat('identifiant pour la connexion :\n')
+		options(Xair.uid=scan(what='character', nlines=1))
+		cat('\n')
+	}
+
+	# definition du mot de passe
+	if(!is.null(pwd)) {
+		options(Xair.pwd=pwd)
+	} else if(is.null(getOption('Xair.pwd'))) {
+		cat('mot de passe pour la connexion :\n')
+		options(Xair.pwd=scan(what='character', nlines=1))
+		cat('\n')
+	}
+
 	# conservation de l'accès à la base de données pour les données manuelles -
 
 	conxair <- NULL
@@ -113,24 +131,6 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 			cat('nom de la base de donnees (DataSourceName) :\n',
 				names(RODBC::odbcDataSources('system')), '\n')
 			options(Xair.dsn=scan(what='character', nlines=1));cat('\n')
-		}
-
-		# definition du login
-		if(!is.null(uid)) {
-			options(Xair.uid=uid)
-		} else if(is.null(getOption('Xair.uid'))) {
-			cat('identifiant pour la connexion :\n')
-			options(Xair.uid=scan(what='character', nlines=1))
-			cat('\n')
-		}
-
-		# definition du mot de passe
-		if(!is.null(pwd)) {
-			options(Xair.pwd=pwd)
-		} else if(is.null(getOption('Xair.pwd'))) {
-			cat('mot de passe pour la connexion :\n')
-			options(Xair.pwd=scan(what='character', nlines=1))
-			cat('\n')
 		}
 
 		# definition de l'emplacement des pilotes jdbc
