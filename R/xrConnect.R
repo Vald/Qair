@@ -42,6 +42,14 @@
 #' 	est 'oracle' pour les systèmes type 'unix' et 'odbc' pour windows.
 #' @inheritParams RODBC::odbcConnect
 #' @inheritParams xrGetContinuousData
+#' @param db.uid Les identifiants de la BD et de l'API peuvent être différents.
+#'  Dans ce cas cet argument permet de préciser l'uid pour la base. L'argument
+#'  standard est alors utilisé pour l'API. Si cet argument est manquant, le même
+#'  uid est utilisé pour la BD et l'API.
+#' @param db.pwd Les identifiants de la BD et de l'API peuvent être différents.
+#'  Dans ce cas cet argument permet de préciser le pwd pour la base. L'argument
+#'  standard est alors utilisé pour l'API. Si cet argument est manquant, le même
+#'  pwd est utilisé pour la BD et l'API.
 #' @return Une connexion à la base XR (il s'agit en fait d'une liste avec 'host' et
 #'  'port'. Cela permet de gérer plusieurs 'connexion' simultanément et de mimer
 #'  le comportement de Qair2).
@@ -58,7 +66,7 @@
 #' @export
 xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=NULL,
 					  dsn=NULL, uid=NULL, pwd=NULL, ojdbc=NULL, drv.type=NULL,
-					  believeNRows=TRUE, silent) {
+					  believeNRows=TRUE, silent, db.uid, db.pwd) {
 	if(!is.null(debug)) options(Xair.debug=debug)
 	if(!is.null(nbattempt)) options(Xair.nbattempt=nbattempt)
 	if(!missing(silent)) options(Xair.silent=silent)
@@ -116,20 +124,32 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 		}
 
 		# definition du login
-		if(!is.null(uid)) {
-			options(Xair.uid=uid)
-		} else if(is.null(getOption('Xair.uid'))) {
-			cat('identifiant pour la connexion :\n')
-			options(Xair.uid=scan(what='character', nlines=1))
+		if(!missing(db.uid)) {
+			options(Xair.db.uid=db.uid)
+		} else if(!is.null(getOption('Xair.db.uid'))) {
+			# donothing
+		} else if(!is.null(uid)) {
+			options(Xair.db.uid=uid)
+		} else if(!is.null(getOption('Xair.uid'))) {
+			options(Xair.db.uid=getOption('Xair.uid'))
+		} else {
+			cat('identifiant pour la connexion BD :\n')
+			options(Xair.db.uid=scan(what='character', nlines=1))
 			cat('\n')
 		}
 
 		# definition du mot de passe
-		if(!is.null(pwd)) {
-			options(Xair.pwd=pwd)
-		} else if(is.null(getOption('Xair.pwd'))) {
-			cat('mot de passe pour la connexion :\n')
-			options(Xair.pwd=scan(what='character', nlines=1))
+		if(!missing(db.pwd)) {
+			options(Xair.db.pwd=db.pwd)
+		} else if(!is.null(getOption('Xair.db.pwd'))) {
+			# donothing
+		} else if(!is.null(pwd)) {
+			options(Xair.db.pwd=pwd)
+		} else if(!is.null(getOption('Xair.pwd'))) {
+			options(Xair.db.pwd=getOption('Xair.pwd'))
+		} else {
+			cat('mot de passe pour la connexion BD :\n')
+			options(Xair.db.pwd=scan(what='character', nlines=1))
 			cat('\n')
 		}
 
@@ -145,8 +165,8 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 		# connexion a la base
 		if(getOption('Xair.drv') == 'odbc') {
 			conxair <- try (RODBC::odbcConnect (getOption('Xair.dsn'),
-							 uid = getOption('Xair.uid'),
-							 pwd = getOption('Xair.pwd'),
+							 uid = getOption('Xair.db.uid'),
+							 pwd = getOption('Xair.db.pwd'),
 							 case = 'nochange', believeNRows = believeNRows) )
 			if(inherits(conxair, 'try-error'))
 				stop('echec de la connexion a la base Xair.')
@@ -155,14 +175,14 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 			conxair <- try (DBI::dbConnect (drv,
 						   paste ('jdbc:oracle:thin:@', getOption('Xair.host'),
 							  ':1521:', getOption('Xair.dsn'), sep=''),
-						   getOption('Xair.uid'),
-						   getOption('Xair.pwd'),
+						   getOption('Xair.db.uid'),
+						   getOption('Xair.db.pwd'),
 						   identifer.quote='\'') )
 			if(inherits(conxair, 'try-error'))
 				stop('echec de la connexion a la base Xair.')
 		} else if(getOption('Xair.drv') == 'oracle') {
 			drv <- ROracle::Oracle()
-			conxair <- try (DBI::dbConnect (drv, username=getOption('Xair.uid'),
+			conxair <- try (DBI::dbConnect (drv, username=getOption('Xair.db.uid'),
 						   password=getOption('Xair.pwd'),
 						   sprintf('%s:1521/%s',
 								   getOption('Xair.host'),
@@ -179,16 +199,42 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 	xr <- list(host   = options()[['Xair.host']],
 			   port   = options()[['Xair.port']],
 			   version= options()[['Xair.version']],
-			   db     = conxair)
+			   db     = conxair,
+			   logged = FALSE)
 
-	if(!is.null(getOption('Xair.uid')) & !is.null(getOption('Xair.pwd')))
-		xr[['logged']] <- status_code(RETRY(
-				'POST',
+	# si ni pwd ni uid dispo connexion tentative de connexion non-authentifiée
+	if(!is.null(getOption('Xair.uid')) ||
+	   !is.null(getOption('Xair.pwd')) ||
+	   status_code(RETRY('GET',
+			paste0(xrGetUrl(xr), 'version'),
+			httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE))
+	   ) != 200) {
+		# definition du login
+		if(!is.null(uid)) {
+			options(Xair.uid=uid)
+		} else if(is.null(getOption('Xair.uid'))) {
+			cat('identifiant pour la connexion API :\n')
+			options(Xair.uid=scan(what='character', nlines=1))
+			cat('\n')
+		}
+
+		# definition du mot de passe
+		if(!is.null(pwd)) {
+			options(Xair.pwd=pwd)
+		} else if(is.null(getOption('Xair.pwd'))) {
+			cat('mot de passe pour la connexion BD :\n')
+			options(Xair.pwd=scan(what='character', nlines=1))
+			cat('\n')
+		}
+		
+		xr[['logged']] <- TRUE
+		xr[['logged']] <- status_code(RETRY('POST',
 				xrGetUrl(xr, authentification=TRUE),
 				httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE),
 				encode='form', terminate_on=400,
-				body=list(username=getOption('Xair.uid'), password=getOption('Xair.pwd')))) == 200 else
-		xr[['logged']] <- FALSE
+				body=list(username=getOption('Xair.uid'), password=getOption('Xair.pwd')))
+			) == 200
+	}
 
 	class(xr) <- 'xr'
 
