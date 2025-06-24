@@ -1,8 +1,8 @@
 Package: Qair
 Type: Package
 Title: Qualite de l'Air, Seuils Europeens et Traitement de donnees
-Version: 3.7.1
-Date: 2025-02-26
+Version: 3.8.0
+Date: 2025-06-24
 Depends: timetools,methods,httr,jsonlite,utils,stats,graphics,grDevices
 Suggests: DBI,ROracle,RODBC,RJDBC,openxlsx,parallel
 LazyData: true

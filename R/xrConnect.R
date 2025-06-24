@@ -94,7 +94,7 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 	# definition du login
 	if(!is.null(uid)) {
 		options(Xair.uid=uid)
-	} else if(is.null(getOption('Xair.uid'))) {
+	} else if(is.null(getOption('Xair.uid')) && missing(uid)) {
 		cat('identifiant pour la connexion :\n')
 		options(Xair.uid=scan(what='character', nlines=1))
 		cat('\n')
@@ -103,7 +103,7 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 	# definition du mot de passe
 	if(!is.null(pwd)) {
 		options(Xair.pwd=pwd)
-	} else if(is.null(getOption('Xair.pwd'))) {
+	} else if(is.null(getOption('Xair.pwd')) && missing(pwd)) {
 		cat('mot de passe pour la connexion :\n')
 		options(Xair.pwd=scan(what='character', nlines=1))
 		cat('\n')
@@ -186,7 +186,7 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 				'POST',
 				xrGetUrl(xr, authentification=TRUE),
 				httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE),
-				encode='form',
+				encode='form', terminate_on=400,
 				body=list(username=getOption('Xair.uid'), password=getOption('Xair.pwd')))) == 200 else
 		xr[['logged']] <- FALSE
 
