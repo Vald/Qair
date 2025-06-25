@@ -183,7 +183,7 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 		} else if(getOption('Xair.drv') == 'oracle') {
 			drv <- ROracle::Oracle()
 			conxair <- try (DBI::dbConnect (drv, username=getOption('Xair.db.uid'),
-						   password=getOption('Xair.pwd'),
+						   password=getOption('Xair.db.pwd'),
 						   sprintf('%s:1521/%s',
 								   getOption('Xair.host'),
 								   getOption('Xair.dsn')) ) )
