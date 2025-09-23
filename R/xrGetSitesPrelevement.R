@@ -16,7 +16,6 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 			  campagnes = NULL, fields = NULL, 
 			  exact=FALSE, resv3=FALSE, silent) {
 
-	# FIXME: ajouter dans l'API campagne ?
 	if(missing(silent)) silent <- getOption('Xair.silent', FALSE)
 	osaf     <- getOption('stringsAsFactors')
 	options(stringsAsFactors = FALSE)
@@ -25,7 +24,7 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('v2/samplingSite?')
+	bquery <- sprintf('v2/samplingSite?withCampaigns=true&')
 
 	# récupération des champs possibles de recherches (dépend de la version de
 	# Qair)
@@ -81,6 +80,23 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 
 	sites <- all.sites[idsites,]
 
+	# filtre sur campagnes ---------------------------------------------------- 
+
+	if(!is.null(campagnes)){
+		if( !is.list(campagnes) )
+			campagnes <- xrGetCampagnes(conn, pattern = campagnes,
+										resv3=TRUE, silent=silent) else{
+			campagnes[['resv3']] <- TRUE
+			campagnes <- do.call(xrGetCampagnes,
+								 c(list(conn=conn), campagnes, silent=silent))
+			}
+		if(nrow(campagnes) > 0) {
+			sites <- sites[sapply(sites[['campaigns']], function(s_camps){
+					!is.null(s_camps) && any(s_camps[['id']]%in%campagnes[['id']])
+				}),]
+		}
+	}
+
 	# selection des champs de retour ------------------------------------------
 
 	if(!resv3 & nv == 'nv2')
@@ -95,6 +111,8 @@ xrGetSitesPrelevement <- function(conn, pattern = NULL, search.fields = NULL,
 	# ajoutées
 	if(!all(fields %in% names(sites)))
 		sites[setdiff(fields, names(sites))] <- NA
+
+	# FIXME: qui du champ campaigns ?
 
 	options(stringsAsFactors = osaf)
 	return(sites[fields])

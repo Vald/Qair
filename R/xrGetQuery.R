@@ -74,8 +74,8 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'typologie','environment.locationTypeLabel',
 					 'environment.samplingPlaceTypeLabel','environment.laneTypeLabel',
 					 'TYPE_SECTEUR','ZONE_ACTIVITE',
-					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel'
-					 ),
+					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel',
+					 'campaigns'),
 			nv3  = c('id','dbRowId','refSite','labelSite',
 					 'startDate', 'stopDate',
 					 'refSitePublic','labelSiteExtended',
@@ -92,8 +92,8 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'environment.classTypeLabel','environment.locationTypeLabel',
 					 'environment.samplingPlaceTypeLabel','environment.laneTypeLabel',
 					 'sectors.typeSector','sectors.zoneOfActivity',
-					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel'
-					 ),
+					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel',
+					 'campaigns'),
 			type = c(rep('character()',4), 
 					 'as.POSIXct(character())', 'as.POSIXct(character())',
 					 'character()', 'character()',
@@ -110,8 +110,8 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'character()','character()',
 					 'character()','character()',
 					 'numeric()','numeric()',
-					 'character()','character()'
-					 )
+					 'character()','character()',
+					 'list()')
 		  ))
 	}else if(name == 'measures'){
 		return(data.frame(
@@ -160,19 +160,20 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'LONGI', 'LATI', 'ALTI', 
 					 'NINSEE', 'AXE', 'COMMENTAIRE',
 					 'NSIT_LOCAL', 'NOM_COURT_SIT_LOCAL',
-					 'DATE_DEB', 'DATE_FIN'
-					 ),
+					 'DATE_DEB', 'DATE_FIN',
+					 'campaigns'),
 			nv3  = c('idCustomer', 'idSamplingSite', 'identifier', 'label',
 					 'address.longitude', 'address.latitude', 'address.altitude',
 					 'address.idCommune', 'address.street', 'comment',
 					 'nsitLocal', 'idSiteLocal',
-					 'startDate', 'endDate'
-					 ),
+					 'startDate', 'endDate',
+					 'campaigns'),
 			type = c('numeric()', 'numeric()', 'character()', 'character()',
 					 'numeric()', 'numeric()', 'numeric()',
 					 'numeric()', 'character()', 'character()',
 					 'numeric()', 'character()',
-					 'as.POSIXct(character())', 'as.POSIXct(character())'
+					 'as.POSIXct(character())', 'as.POSIXct(character())',
+					 'list()'
 			)
 		  ))
 	}else if(name == 'samplingMethod'){

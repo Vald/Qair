@@ -19,7 +19,7 @@ xrGetCampagnes <- function(conn, pattern = NULL, search.fields = NULL,
 	# la requête
 
 	nv     <- paste0('nv', conn[['version']])
-	bquery <- sprintf('v1/campaigns?')
+	bquery <- sprintf('v1/campaigns?withSites=true&')
 
 	# récupération des champs possibles de recherches (dépend de la version de
 	# Qair)
