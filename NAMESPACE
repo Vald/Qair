@@ -10,7 +10,7 @@ importFrom("graphics", "box", "par", "plot", "polygon", "segments", "text")
 importFrom("stats", "end", "start")
 importFrom("utils", "URLencode")
 
-exportMethods (dbListFields, dbDisconnect)
+exportMethods (dbListFields, xrDisconnect)
 
 # liens avec une base XR
 export (xrGetQuery, xrConnect, xrDisconnect,

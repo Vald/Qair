@@ -269,6 +269,10 @@ xrGetQuery <- function (conn, query, resv3=FALSE) {
 		f        <- lapply(fields[['type']], function(x) eval(parse(text=x)))
 		names(f) <- fields[['nv3']]
 		result   <- do.call(data.frame, f)
+
+		collist <- fields[['type']] == 'list()'
+		collist <- fields[['nv3']][collist]
+		for(cl in collist) result[[cl]] <- list()
 	}
 
 	# traitement des réponses quand il y a des champs complexes ---------------

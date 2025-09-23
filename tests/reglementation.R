@@ -1,5 +1,4 @@
 library (Qair)
-library (DBI)
 options(Xair.host='xair.atmo-na.org', Xair.version=2, Xair.port=8443,
 		Xair.dsn='N09', Xair.uid='vlad', Xair.pwd='vlad', Xair.drv='oracle')
 
@@ -73,4 +72,4 @@ for (polluant in polluants)
 # On ferme
 #=========
 
-dbDisconnect(xr[['db']])
+xrDisconnect(xr)
