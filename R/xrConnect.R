@@ -38,7 +38,7 @@
 #'}
 #' @export
 xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=NULL,
-					  silent) {
+					  uid=NULL, pwd=NULL, silent) {
 	if(!is.null(debug)) options(Xair.debug=debug)
 	if(!is.null(nbattempt)) options(Xair.nbattempt=nbattempt)
 	if(!missing(silent)) options(Xair.silent=silent)
@@ -75,7 +75,43 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 
 	xr <- list(host   = options()[['Xair.host']],
 			   port   = options()[['Xair.port']],
-			   version= options()[['Xair.version']])
+			   version= options()[['Xair.version']],
+			   logged = FALSE)
+
+	# si ni pwd ni uid dispo connexion tentative de connexion non-authentifiée
+	if(!is.null(getOption('Xair.uid')) ||
+	   !is.null(getOption('Xair.pwd')) ||
+	   status_code(RETRY('GET',
+			paste0(xrGetUrl(xr), 'version'),
+			httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE))
+	   ) != 200) {
+		# definition du login
+		if(!is.null(uid)) {
+			options(Xair.uid=uid)
+		} else if(is.null(getOption('Xair.uid'))) {
+			cat('identifiant pour la connexion API :\n')
+			options(Xair.uid=scan(what='character', nlines=1))
+			cat('\n')
+		}
+
+		# definition du mot de passe
+		if(!is.null(pwd)) {
+			options(Xair.pwd=pwd)
+		} else if(is.null(getOption('Xair.pwd'))) {
+			cat('mot de passe pour la connexion BD :\n')
+			options(Xair.pwd=scan(what='character', nlines=1))
+			cat('\n')
+		}
+		
+		xr[['logged']] <- TRUE
+		xr[['logged']] <- status_code(RETRY('POST',
+				xrGetUrl(xr, authentification=TRUE),
+				httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE),
+				encode='form', terminate_on=400,
+				body=list(username=getOption('Xair.uid'), password=getOption('Xair.pwd')))
+			) == 200
+	}
+
 	class(xr) <- 'xr'
 
 	if(nrow(suppressMessages(xrGetStations(xr))) == 0) stop('Problème de connexion')

@@ -30,8 +30,13 @@
 #' @param unites chaîne de caractères à utiliser pour les unités du polluant.
 #' @param cW caractères utilisés dans le fichier d'entrée pour indiquer
 #'  que le code qualité à associer est W.
+#' @param cI caractères utilisés dans le fichier d'entrée pour indiquer
+#'  que le code qualité à associer est I.
+#' @param infLQI caractères utilisés dans le fichier d'entrée pour indiquer
+#'  que le code qualité à associer est l.
 analyses2XR <- function(fichier, nreseau, fichier_export=NULL, sheet=1, startRow=1,
-					infLQ=c('\\*', '< '), unites='microg/m3', cW=c('w', 'W')) {
+					infLQ=c('\\*', '< '), unites='microg/m3', cW=c('w', 'W'),
+					cI=c('i', 'I'), infLQI=c('<l', 'l')) {
 
 	osaf <- getOption('stringsAsFactors')
 	options(stringsAsFactors=FALSE)
@@ -74,11 +79,15 @@ analyses2XR <- function(fichier, nreseau, fichier_export=NULL, sheet=1, startRow
 
 		concs[['etat']] <- ifelse(
 			apply(as.data.frame(lapply(infLQ, grepl, concs[['conc']])), 1, any), 'L', ifelse(
-			apply(as.data.frame(lapply(cW, grepl, concs[['conc']])), 1, any), 'W', 
-			'A'))
+			apply(as.data.frame(lapply(cW, grepl, concs[['conc']])), 1, any), 'W', ifelse(
+			apply(as.data.frame(lapply(infLQI, grepl, concs[['conc']])), 1, any), 'l', ifelse(
+			apply(as.data.frame(lapply(cI, grepl, concs[['conc']])), 1, any), 'I',
+			'A'))))
 
 		for(iLQ in infLQ) concs[['conc']] <- sub(iLQ, '', concs[['conc']])
 		for(cw  in cW)   concs[['conc']] <- sub(cw, '', concs[['conc']])
+		for(ci  in cI)   concs[['conc']] <- sub(ci, '', concs[['conc']])
+		for(iLQI  in infLQI)   concs[['conc']] <- sub(iLQI, '', concs[['conc']])
 
 		concs[['conc']] <- sub(',', '.', concs[['conc']])
 		concs[['conc']] <- as.numeric(concs[['conc']])
@@ -90,7 +99,7 @@ analyses2XR <- function(fichier, nreseau, fichier_export=NULL, sheet=1, startRow
 		}
 
 		if (prel[['BT']] == 2)
-			concs[['etat']] <- ifelse(concs[['etat']] == 'L', 'l','I')
+			concs[['etat']] <- ifelse(concs[['etat']] %in% c('L', 'l'), 'l','I')
 
 		concs[['unite']]       <- unites
 		concs[['commentaire']] <- ''
