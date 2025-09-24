@@ -1,24 +1,26 @@
 
-R version 4.0.2 (2020-06-22) -- "Taking Off Again"
-Copyright (C) 2020 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
+R version 4.4.0 (2024-04-24) -- "Puppy Cup"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu
 
-R est un logiciel libre livré sans AUCUNE GARANTIE.
-Vous pouvez le redistribuer sous certaines conditions.
-Tapez 'license()' ou 'licence()' pour plus de détails.
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
 
-R est un projet collaboratif avec de nombreux contributeurs.
-Tapez 'contributors()' pour plus d'information et
-'citation()' pour la façon de le citer dans les publications.
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
 
-Tapez 'demo()' pour des démonstrations, 'help()' pour l'aide
-en ligne ou 'help.start()' pour obtenir l'aide au format HTML.
-Tapez 'q()' pour quitter R.
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
 
 > library (Qair)
-> library (DBI)
+Loading required package: timetools
+Loading required package: httr
+Loading required package: jsonlite
 > options(Xair.host='xair.atmo-na.org', Xair.version=2, Xair.port=8443,
-+ 		uid='vlad', pwd='vlad', Xair.drv='oracle')
++ 		Xair.dsn='N09', Xair.uid='vlad', Xair.pwd='vlad', Xair.drv='oracle')
 > 
 > # test des calculs de valeurs réglementaires
 > #===========================================
@@ -49,235 +51,376 @@ Tapez 'q()' pour quitter R.
 + 	print (xrGetPolluants(xr, search.fields='NOPOL', polluant)$NCON)
 + 	print (tmp)
 + }
+Champs disponibles pour la recherche (mesures) : 
+IDENTIFIANT, NOM_COURT_MES, NOM_MES, TYPE_MESURE, TYPE_ACQ, compCode, codeP2, D_CREATION, D_ARRET, DERNIER_QH, D_VALIDATION, D_VALIDATION_ENV, D_ADVAL, id_site, NSIT, NSIT_PUBLIC, NOM_COURT_SIT, UNITE, CCHIM, NOPOL
+
+Par défaut : IDENTIFIANT, NOM_COURT_MES
+
+
+Champs disponibles pour la recherche (stations) : 
+IDENTIFIANT, NOM_COURT_SIT, NSIT, ISIT, D_CREATION, D_ARRET, NSIT_PUBLIC, ISIT_LONG, address.commune.labelCommune, NINSEE, LATI, LONGI, ALTI, AXE, CODE_POSTAL, LAMBERTX, LAMBERTY, address.departement.labelDepartement, address.departement.id, DENSITE, NBRE_SOURCES, NB_VEHICULE, RAYON_ACTION, ZONE_IMPLANT, DER_LECT_QH, CLASSE_SITE, SITE_TYPE, TYPE_LIEU_ECHAN, TYPE_VOIE, typologie, environment.locationTypeLabel, environment.samplingPlaceTypeLabel, environment.laneTypeLabel, TYPE_SECTEUR, ZONE_ACTIVITE, sectors.typeSectorLabel, sectors.zoneOfActivityLabel, campaigns
+
+Par défaut : IDENTIFIANT, NOM_COURT_SIT
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
+
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
 [1] "Dioxyde d'azote"
 [[1]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC         0          NA      0     NA          0
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA         0     NA      0          0
 
 [[2]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC         0           0      0      0          0
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC           0         0      0      0          0
 
 [[3]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC         0           0      0      0          0
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC           0         0      0      0          0
 
 [[4]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC         0           0      0      0          0
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC           0         0      0      0          0
 
 [[5]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC     FALSE          NA  FALSE     NA      FALSE
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA     FALSE     NA  FALSE      FALSE
 
 [[6]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC     FALSE          NA  FALSE     NA      FALSE
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA     FALSE     NA  FALSE      FALSE
 
 [[7]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC     FALSE          NA  FALSE     NA       TRUE
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA     FALSE     NA  FALSE       TRUE
 
 [[8]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC     FALSE          NA  FALSE     NA      FALSE
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA     FALSE     NA  FALSE      FALSE
 
 [[9]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC         0          NA      0     NA          0
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA         0     NA      0          0
 
 [[10]]
-           start            end NO2_AYTRE NO2_2_AYTRE N2_VAU N2_VA2 NO2_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC         0          NA      0     NA          0
+           start            end NO2_2_AYTRE NO2_AYTRE N2_VA2 N2_VAU NO2_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA         0     NA      0          0
 
+Champs disponibles pour la recherche (mesures) : 
+IDENTIFIANT, NOM_COURT_MES, NOM_MES, TYPE_MESURE, TYPE_ACQ, compCode, codeP2, D_CREATION, D_ARRET, DERNIER_QH, D_VALIDATION, D_VALIDATION_ENV, D_ADVAL, id_site, NSIT, NSIT_PUBLIC, NOM_COURT_SIT, UNITE, CCHIM, NOPOL
+
+Par défaut : IDENTIFIANT, NOM_COURT_MES
+
+
+Champs disponibles pour la recherche (stations) : 
+IDENTIFIANT, NOM_COURT_SIT, NSIT, ISIT, D_CREATION, D_ARRET, NSIT_PUBLIC, ISIT_LONG, address.commune.labelCommune, NINSEE, LATI, LONGI, ALTI, AXE, CODE_POSTAL, LAMBERTX, LAMBERTY, address.departement.labelDepartement, address.departement.id, DENSITE, NBRE_SOURCES, NB_VEHICULE, RAYON_ACTION, ZONE_IMPLANT, DER_LECT_QH, CLASSE_SITE, SITE_TYPE, TYPE_LIEU_ECHAN, TYPE_VOIE, typologie, environment.locationTypeLabel, environment.samplingPlaceTypeLabel, environment.laneTypeLabel, TYPE_SECTEUR, ZONE_ACTIVITE, sectors.typeSectorLabel, sectors.zoneOfActivityLabel, campaigns
+
+Par défaut : IDENTIFIANT, NOM_COURT_SIT
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
+
+Simplified splitting algorithm
 [1] "Oxydes d azote"
 [[1]]
-           start            end NOX_AYTRE NOX_2_AYTRE NX_VAU NX_VA2 NOX_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC         0          NA      0     NA          1
+           start            end NOX_2_AYTRE NOX_AYTRE NX_VA2 NX_VAU NOX_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA         0     NA      0          1
 
 [[2]]
-           start            end NOX_AYTRE NOX_2_AYTRE NX_VAU NX_VA2 NOX_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC         0          NA      0     NA          1
+           start            end NOX_2_AYTRE NOX_AYTRE NX_VA2 NX_VAU NOX_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA         0     NA      0          1
 
 [[3]]
-           start            end NOX_AYTRE NOX_2_AYTRE NX_VAU NX_VA2 NOX_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC         0          NA      0     NA          1
+           start            end NOX_2_AYTRE NOX_AYTRE NX_VA2 NX_VAU NOX_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC          NA         0     NA      0          1
 
+Champs disponibles pour la recherche (mesures) : 
+IDENTIFIANT, NOM_COURT_MES, NOM_MES, TYPE_MESURE, TYPE_ACQ, compCode, codeP2, D_CREATION, D_ARRET, DERNIER_QH, D_VALIDATION, D_VALIDATION_ENV, D_ADVAL, id_site, NSIT, NSIT_PUBLIC, NOM_COURT_SIT, UNITE, CCHIM, NOPOL
+
+Par défaut : IDENTIFIANT, NOM_COURT_MES
+
+
+Champs disponibles pour la recherche (stations) : 
+IDENTIFIANT, NOM_COURT_SIT, NSIT, ISIT, D_CREATION, D_ARRET, NSIT_PUBLIC, ISIT_LONG, address.commune.labelCommune, NINSEE, LATI, LONGI, ALTI, AXE, CODE_POSTAL, LAMBERTX, LAMBERTY, address.departement.labelDepartement, address.departement.id, DENSITE, NBRE_SOURCES, NB_VEHICULE, RAYON_ACTION, ZONE_IMPLANT, DER_LECT_QH, CLASSE_SITE, SITE_TYPE, TYPE_LIEU_ECHAN, TYPE_VOIE, typologie, environment.locationTypeLabel, environment.samplingPlaceTypeLabel, environment.laneTypeLabel, TYPE_SECTEUR, ZONE_ACTIVITE, sectors.typeSectorLabel, sectors.zoneOfActivityLabel, campaigns
+
+Par défaut : IDENTIFIANT, NOM_COURT_SIT
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
+
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
 [1] "PM10"
 [[1]]
-           start            end PS_VAU PM10NC_VERDUN PM10_AYTRE X24FVAU
-1 2011-01-01 UTC 2012-01-01 UTC     NA            NA         NA       0
-  PM10_VERDUN X24_VAU PM10_C_VERDUN
-1           0       0             0
+           start            end X24FVAU PM10_VERDUN X24_VAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC       0           0       0             0
+  PM10_AYTRE PS_VAU PM10NC_VERDUN
+1         NA     NA            NA
 
 [[2]]
-           start            end PS_VAU PM10NC_VERDUN PM10_AYTRE X24FVAU
-1 2011-01-01 UTC 2012-01-01 UTC      0             0          0      10
-  PM10_VERDUN X24_VAU PM10_C_VERDUN
-1          10      10            10
+           start            end X24FVAU PM10_VERDUN X24_VAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC      10          10      10            10
+  PM10_AYTRE PS_VAU PM10NC_VERDUN
+1          0      0             0
 
 [[3]]
-           start            end PS_VAU PM10NC_VERDUN PM10_AYTRE X24FVAU
-1 2011-01-01 UTC 2012-01-01 UTC      0             0          0       1
-  PM10_VERDUN X24_VAU PM10_C_VERDUN
-1           1       1             1
+           start            end X24FVAU PM10_VERDUN X24_VAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC       1           1       1             1
+  PM10_AYTRE PS_VAU PM10NC_VERDUN
+1          0      0             0
 
 [[4]]
-           start            end PS_VAU PM10NC_VERDUN PM10_AYTRE X24FVAU
-1 2011-01-01 UTC 2012-01-01 UTC     NA            NA         NA   FALSE
-  PM10_VERDUN X24_VAU PM10_C_VERDUN
-1       FALSE   FALSE         FALSE
+           start            end X24FVAU PM10_VERDUN X24_VAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC   FALSE       FALSE   FALSE         FALSE
+  PM10_AYTRE PS_VAU PM10NC_VERDUN
+1         NA     NA            NA
 
 [[5]]
-           start            end PS_VAU PM10NC_VERDUN PM10_AYTRE X24FVAU
-1 2011-01-01 UTC 2012-01-01 UTC     NA            NA         NA       0
-  PM10_VERDUN X24_VAU PM10_C_VERDUN
-1           0       0             0
+           start            end X24FVAU PM10_VERDUN X24_VAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC       0           0       0             0
+  PM10_AYTRE PS_VAU PM10NC_VERDUN
+1         NA     NA            NA
 
 [[6]]
-           start            end PS_VAU PM10NC_VERDUN PM10_AYTRE X24FVAU
-1 2011-01-01 UTC 2012-01-01 UTC     NA            NA         NA    TRUE
-  PM10_VERDUN X24_VAU PM10_C_VERDUN
-1        TRUE    TRUE          TRUE
+           start            end X24FVAU PM10_VERDUN X24_VAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC    TRUE        TRUE    TRUE          TRUE
+  PM10_AYTRE PS_VAU PM10NC_VERDUN
+1         NA     NA            NA
 
 [[7]]
-           start            end PS_VAU PM10NC_VERDUN PM10_AYTRE X24FVAU
-1 2011-01-01 UTC 2012-01-01 UTC     NA            NA         NA       1
-  PM10_VERDUN X24_VAU PM10_C_VERDUN
-1           1       1             1
+           start            end X24FVAU PM10_VERDUN X24_VAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC       1           1       1             1
+  PM10_AYTRE PS_VAU PM10NC_VERDUN
+1         NA     NA            NA
 
 [[8]]
-           start            end PS_VAU PM10NC_VERDUN PM10_AYTRE X24FVAU
-1 2011-01-01 UTC 2012-01-01 UTC     NA            NA         NA   FALSE
-  PM10_VERDUN X24_VAU PM10_C_VERDUN
-1       FALSE   FALSE         FALSE
+           start            end X24FVAU PM10_VERDUN X24_VAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC   FALSE       FALSE   FALSE         FALSE
+  PM10_AYTRE PS_VAU PM10NC_VERDUN
+1         NA     NA            NA
 
 [[9]]
-           start            end PS_VAU PM10NC_VERDUN PM10_AYTRE X24FVAU
-1 2011-01-01 UTC 2012-01-01 UTC     NA            NA         NA       0
-  PM10_VERDUN X24_VAU PM10_C_VERDUN
-1           0       0             0
+           start            end X24FVAU PM10_VERDUN X24_VAU PM10_C_VERDUN
+1 2011-01-01 UTC 2012-01-01 UTC       0           0       0             0
+  PM10_AYTRE PS_VAU PM10NC_VERDUN
+1         NA     NA            NA
 
+Champs disponibles pour la recherche (mesures) : 
+IDENTIFIANT, NOM_COURT_MES, NOM_MES, TYPE_MESURE, TYPE_ACQ, compCode, codeP2, D_CREATION, D_ARRET, DERNIER_QH, D_VALIDATION, D_VALIDATION_ENV, D_ADVAL, id_site, NSIT, NSIT_PUBLIC, NOM_COURT_SIT, UNITE, CCHIM, NOPOL
+
+Par défaut : IDENTIFIANT, NOM_COURT_MES
+
+
+Champs disponibles pour la recherche (stations) : 
+IDENTIFIANT, NOM_COURT_SIT, NSIT, ISIT, D_CREATION, D_ARRET, NSIT_PUBLIC, ISIT_LONG, address.commune.labelCommune, NINSEE, LATI, LONGI, ALTI, AXE, CODE_POSTAL, LAMBERTX, LAMBERTY, address.departement.labelDepartement, address.departement.id, DENSITE, NBRE_SOURCES, NB_VEHICULE, RAYON_ACTION, ZONE_IMPLANT, DER_LECT_QH, CLASSE_SITE, SITE_TYPE, TYPE_LIEU_ECHAN, TYPE_VOIE, typologie, environment.locationTypeLabel, environment.samplingPlaceTypeLabel, environment.laneTypeLabel, TYPE_SECTEUR, ZONE_ACTIVITE, sectors.typeSectorLabel, sectors.zoneOfActivityLabel, campaigns
+
+Par défaut : IDENTIFIANT, NOM_COURT_SIT
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
+
+Simplified splitting algorithm
 [1] "PM2.5"
 [[1]]
-           start            end P2_VAU BC_PMff_VERD BC_PMwb_VERD PM25_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC     NA           NA           NA           1
+           start            end PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD HCL_VA
+1 2011-01-01 UTC 2012-01-01 UTC           1           NA           NA     NA
+  P2_VAU
+1     NA
 
 [[2]]
-           start            end P2_VAU BC_PMff_VERD BC_PMwb_VERD PM25_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC     NA           NA           NA           0
+           start            end PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD HCL_VA
+1 2011-01-01 UTC 2012-01-01 UTC           0           NA           NA     NA
+  P2_VAU
+1     NA
 
 [[3]]
-           start            end P2_VAU BC_PMff_VERD BC_PMwb_VERD PM25_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC     NA           NA           NA       FALSE
+           start            end PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD HCL_VA
+1 2011-01-01 UTC 2012-01-01 UTC       FALSE           NA           NA     NA
+  P2_VAU
+1     NA
 
 [[4]]
-           start            end P2_VAU BC_PMff_VERD BC_PMwb_VERD PM25_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC     NA           NA           NA           0
+           start            end PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD HCL_VA
+1 2011-01-01 UTC 2012-01-01 UTC           0           NA           NA     NA
+  P2_VAU
+1     NA
 
 [[5]]
-           start            end P2_VAU BC_PMff_VERD BC_PMwb_VERD PM25_VERDUN
-1 2011-01-01 UTC 2012-01-01 UTC     NA           NA           NA           0
+           start            end PM25_VERDUN BC_PMff_VERD BC_PMwb_VERD HCL_VA
+1 2011-01-01 UTC 2012-01-01 UTC           0           NA           NA     NA
+  P2_VAU
+1     NA
 
+Champs disponibles pour la recherche (mesures) : 
+IDENTIFIANT, NOM_COURT_MES, NOM_MES, TYPE_MESURE, TYPE_ACQ, compCode, codeP2, D_CREATION, D_ARRET, DERNIER_QH, D_VALIDATION, D_VALIDATION_ENV, D_ADVAL, id_site, NSIT, NSIT_PUBLIC, NOM_COURT_SIT, UNITE, CCHIM, NOPOL
+
+Par défaut : IDENTIFIANT, NOM_COURT_MES
+
+
+Champs disponibles pour la recherche (stations) : 
+IDENTIFIANT, NOM_COURT_SIT, NSIT, ISIT, D_CREATION, D_ARRET, NSIT_PUBLIC, ISIT_LONG, address.commune.labelCommune, NINSEE, LATI, LONGI, ALTI, AXE, CODE_POSTAL, LAMBERTX, LAMBERTY, address.departement.labelDepartement, address.departement.id, DENSITE, NBRE_SOURCES, NB_VEHICULE, RAYON_ACTION, ZONE_IMPLANT, DER_LECT_QH, CLASSE_SITE, SITE_TYPE, TYPE_LIEU_ECHAN, TYPE_VOIE, typologie, environment.locationTypeLabel, environment.samplingPlaceTypeLabel, environment.laneTypeLabel, TYPE_SECTEUR, ZONE_ACTIVITE, sectors.typeSectorLabel, sectors.zoneOfActivityLabel, campaigns
+
+Par défaut : IDENTIFIANT, NOM_COURT_SIT
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
+
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
 [1] "Ozone"
 [[1]]
-           start            end O3_AYTRE O3_2_AYTRE O3_3_AYTRE O3_VAU O3_VA2
-1 2011-01-01 UTC 2012-01-01 UTC     TRUE         NA         NA   TRUE     NA
-  O3_VERDUN O3_2_VERDUN
-1      TRUE          NA
+           start            end O3_2_AYTRE O3_3_AYTRE O3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC         NA         NA     TRUE     NA   TRUE
+  O3_2_VERDUN O3_VERDUN
+1          NA      TRUE
 
 [[2]]
-           start            end O3_AYTRE O3_2_AYTRE O3_3_AYTRE O3_VAU O3_VA2
-1 2011-01-01 UTC 2012-01-01 UTC       NA         NA         NA      1     NA
-  O3_VERDUN O3_2_VERDUN
-1         1          NA
+           start            end O3_2_AYTRE O3_3_AYTRE O3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC         NA         NA       NA     NA      1
+  O3_2_VERDUN O3_VERDUN
+1          NA         1
 
 [[3]]
-           start            end O3_AYTRE O3_2_AYTRE O3_3_AYTRE O3_VAU O3_VA2
-1 2009-01-01 UTC 2012-01-01 UTC       NA         NA         NA      0     NA
-  O3_VERDUN O3_2_VERDUN
-1         0          NA
+           start            end O3_2_AYTRE O3_3_AYTRE O3_AYTRE O3_VA2 O3_VAU
+1 2009-01-01 UTC 2012-01-01 UTC         NA         NA       NA     NA      0
+  O3_2_VERDUN O3_VERDUN
+1          NA         0
 
 [[4]]
-           start            end O3_AYTRE O3_2_AYTRE O3_3_AYTRE O3_VAU O3_VA2
-1 2007-01-01 UTC 2012-01-01 UTC       NA         NA         NA     NA     NA
-  O3_VERDUN O3_2_VERDUN
-1        NA          NA
+           start            end O3_2_AYTRE O3_3_AYTRE O3_AYTRE O3_VA2 O3_VAU
+1 2007-01-01 UTC 2012-01-01 UTC         NA         NA       NA     NA     NA
+  O3_2_VERDUN O3_VERDUN
+1          NA        NA
 
 [[5]]
-           start            end O3_AYTRE O3_2_AYTRE O3_3_AYTRE O3_VAU O3_VA2
-1 2011-01-01 UTC 2012-01-01 UTC        0          0          0      0      0
-  O3_VERDUN O3_2_VERDUN
-1         0           0
+           start            end O3_2_AYTRE O3_3_AYTRE O3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0          0        0      0      0
+  O3_2_VERDUN O3_VERDUN
+1           0         0
 
 [[6]]
-           start            end O3_AYTRE O3_2_AYTRE O3_3_AYTRE O3_VAU O3_VA2
-1 2011-01-01 UTC 2012-01-01 UTC        0          0          0      0      0
-  O3_VERDUN O3_2_VERDUN
-1         0           0
+           start            end O3_2_AYTRE O3_3_AYTRE O3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0          0        0      0      0
+  O3_2_VERDUN O3_VERDUN
+1           0         0
 
 [[7]]
-           start            end O3_AYTRE O3_2_AYTRE O3_3_AYTRE O3_VAU O3_VA2
-1 2011-01-01 UTC 2012-01-01 UTC        0          0          0      0      0
-  O3_VERDUN O3_2_VERDUN
-1         0           0
+           start            end O3_2_AYTRE O3_3_AYTRE O3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0          0        0      0      0
+  O3_2_VERDUN O3_VERDUN
+1           0         0
 
 [[8]]
-           start            end O3_AYTRE O3_2_AYTRE O3_3_AYTRE O3_VAU O3_VA2
-1 2011-01-01 UTC 2012-01-01 UTC        0          0          0      0      0
-  O3_VERDUN O3_2_VERDUN
-1         0           0
+           start            end O3_2_AYTRE O3_3_AYTRE O3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0          0        0      0      0
+  O3_2_VERDUN O3_VERDUN
+1           0         0
 
 [[9]]
-           start            end O3_AYTRE O3_2_AYTRE O3_3_AYTRE O3_VAU O3_VA2
-1 2011-01-01 UTC 2012-01-01 UTC        0          0          0      0      0
-  O3_VERDUN O3_2_VERDUN
-1         0           0
+           start            end O3_2_AYTRE O3_3_AYTRE O3_AYTRE O3_VA2 O3_VAU
+1 2011-01-01 UTC 2012-01-01 UTC          0          0        0      0      0
+  O3_2_VERDUN O3_VERDUN
+1           0         0
 
+Champs disponibles pour la recherche (mesures) : 
+IDENTIFIANT, NOM_COURT_MES, NOM_MES, TYPE_MESURE, TYPE_ACQ, compCode, codeP2, D_CREATION, D_ARRET, DERNIER_QH, D_VALIDATION, D_VALIDATION_ENV, D_ADVAL, id_site, NSIT, NSIT_PUBLIC, NOM_COURT_SIT, UNITE, CCHIM, NOPOL
+
+Par défaut : IDENTIFIANT, NOM_COURT_MES
+
+
+Champs disponibles pour la recherche (stations) : 
+IDENTIFIANT, NOM_COURT_SIT, NSIT, ISIT, D_CREATION, D_ARRET, NSIT_PUBLIC, ISIT_LONG, address.commune.labelCommune, NINSEE, LATI, LONGI, ALTI, AXE, CODE_POSTAL, LAMBERTX, LAMBERTY, address.departement.labelDepartement, address.departement.id, DENSITE, NBRE_SOURCES, NB_VEHICULE, RAYON_ACTION, ZONE_IMPLANT, DER_LECT_QH, CLASSE_SITE, SITE_TYPE, TYPE_LIEU_ECHAN, TYPE_VOIE, typologie, environment.locationTypeLabel, environment.samplingPlaceTypeLabel, environment.laneTypeLabel, TYPE_SECTEUR, ZONE_ACTIVITE, sectors.typeSectorLabel, sectors.zoneOfActivityLabel, campaigns
+
+Par défaut : IDENTIFIANT, NOM_COURT_SIT
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
+
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
 [1] "Dioxyde de soufre"
 [[1]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC      0         NA   NA          NA
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC          NA      0         NA   NA
 
 [[2]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC      0          0    0           0
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC           0      0          0    0
 
 [[3]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC      0          0    0           0
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC           0      0          0    0
 
 [[4]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC  FALSE         NA   NA          NA
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC          NA  FALSE         NA   NA
 
 [[5]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC  FALSE         NA   NA          NA
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC          NA  FALSE         NA   NA
 
 [[6]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC      0         NA   NA          NA
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC          NA      0         NA   NA
 
 [[7]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2010-10-01 UTC 2012-04-01 UTC      0          0    0           0
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2010-10-01 UTC 2012-04-01 UTC           0      0          0    0
 
 [[8]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC  FALSE         NA   NA          NA
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC          NA  FALSE         NA   NA
 
 [[9]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2011-01-01 UTC 2012-01-01 UTC  FALSE         NA   NA          NA
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2011-01-01 UTC 2012-01-01 UTC          NA  FALSE         NA   NA
 
 [[10]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2010-10-01 UTC 2012-04-01 UTC      0          0    0           0
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2010-10-01 UTC 2012-04-01 UTC           0      0          0    0
 
 [[11]]
-           start            end S2_VAU SO2_VERDUN test SO2_VAUGOIN
-1 2010-10-01 UTC 2012-04-01 UTC      0          0    0           0
+           start            end SO2_VAUGOIN S2_VAU SO2_VERDUN test
+1 2010-10-01 UTC 2012-04-01 UTC           0      0          0    0
 
 > 
 > # le monoxyde de carbone CO
@@ -286,24 +429,46 @@ Tapez 'q()' pour quitter R.
 > polluant <- '04'
 > donnees <- xrGetContinuousData (xr, stations=stations, start='2004-01-01',
 + 				end='2005-01-01', polluants=polluant)
+Champs disponibles pour la recherche (mesures) : 
+IDENTIFIANT, NOM_COURT_MES, NOM_MES, TYPE_MESURE, TYPE_ACQ, compCode, codeP2, D_CREATION, D_ARRET, DERNIER_QH, D_VALIDATION, D_VALIDATION_ENV, D_ADVAL, id_site, NSIT, NSIT_PUBLIC, NOM_COURT_SIT, UNITE, CCHIM, NOPOL
+
+Par défaut : IDENTIFIANT, NOM_COURT_MES
+
+
+Champs disponibles pour la recherche (stations) : 
+IDENTIFIANT, NOM_COURT_SIT, NSIT, ISIT, D_CREATION, D_ARRET, NSIT_PUBLIC, ISIT_LONG, address.commune.labelCommune, NINSEE, LATI, LONGI, ALTI, AXE, CODE_POSTAL, LAMBERTX, LAMBERTY, address.departement.labelDepartement, address.departement.id, DENSITE, NBRE_SOURCES, NB_VEHICULE, RAYON_ACTION, ZONE_IMPLANT, DER_LECT_QH, CLASSE_SITE, SITE_TYPE, TYPE_LIEU_ECHAN, TYPE_VOIE, typologie, environment.locationTypeLabel, environment.samplingPlaceTypeLabel, environment.laneTypeLabel, TYPE_SECTEUR, ZONE_ACTIVITE, sectors.typeSectorLabel, sectors.zoneOfActivityLabel, campaigns
+
+Par défaut : IDENTIFIANT, NOM_COURT_SIT
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
+
 > tmp <- validation.reglementaire (donnees, seuils(polluant=polluant),
 + 				 resultat='comparaison')
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
+Simplified splitting algorithm
 > tmp <- lapply (tmp, function(x)
 + 	       if (nrow(x) > 1) lapply (x, sum, na.rm=TRUE) else x)
 > print (xrGetPolluants(xr, search.fields='NOPOL', polluant)$NCON)
 [1] "Monoxyde de carbone"
 > print(tmp)
 [[1]]
-           start            end CO_VERDUN CO_2_VERDUN CO_VAUGOUIN CO_A_VAUGOUIN
-1 2004-01-01 UTC 2005-01-01 UTC     FALSE          NA          NA            NA
+           start            end CO_VAUGOUIN CO_A_VAUGOUIN CO_2_VERDUN CO_VERDUN
+1 2004-01-01 UTC 2005-01-01 UTC          NA            NA          NA     FALSE
 
 [[2]]
-           start            end CO_VERDUN CO_2_VERDUN CO_VAUGOUIN CO_A_VAUGOUIN
-1 2004-01-01 UTC 2005-01-01 UTC     FALSE          NA          NA            NA
+           start            end CO_VAUGOUIN CO_A_VAUGOUIN CO_2_VERDUN CO_VERDUN
+1 2004-01-01 UTC 2005-01-01 UTC          NA            NA          NA     FALSE
 
 [[3]]
-           start            end CO_VERDUN CO_2_VERDUN CO_VAUGOUIN CO_A_VAUGOUIN
-1 2004-01-01 UTC 2005-01-01 UTC     FALSE          NA          NA            NA
+           start            end CO_VAUGOUIN CO_A_VAUGOUIN CO_2_VERDUN CO_VERDUN
+1 2004-01-01 UTC 2005-01-01 UTC          NA            NA          NA     FALSE
 
 > 
 > # les polluants manuels
@@ -329,96 +494,185 @@ Tapez 'q()' pour quitter R.
 + 	print (xrGetPolluants(xr, search.fields='NOPOL', polluant)$NCON)
 + 	print (tmp)
 + }
+Champs disponibles pour la recherche (sites de prélèvements) : 
+NRESSURV, NSIT, IDSITEP, LIBELLE, LONGI, LATI, ALTI, NINSEE, AXE, COMMENTAIRE, NSIT_LOCAL, NOM_COURT_SIT_LOCAL, DATE_DEB, DATE_FIN, campaigns
+
+Par défaut : IDSITEP, LIBELLE
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
+
 [1] "Plomb"
 [[1]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
-1 2011-01-01 UTC 2012-01-01 UTC                                            9.82
+           start            end D17LAR_STLOUIS.207.19
+1 2011-01-01 UTC 2012-01-01 UTC                  9.82
 
 [[2]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
-1 2011-01-01 UTC 2012-01-01 UTC                                            9.82
+           start            end D17LAR_STLOUIS.207.19
+1 2011-01-01 UTC 2012-01-01 UTC                  9.82
 
 [[3]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
-1 2011-01-01 UTC 2012-01-01 UTC                                            9.82
+           start            end D17LAR_STLOUIS.207.19
+1 2011-01-01 UTC 2012-01-01 UTC                  9.82
 
 [[4]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.19
-1 2011-01-01 UTC 2012-01-01 UTC                                            9.82
+           start            end D17LAR_STLOUIS.207.19
+1 2011-01-01 UTC 2012-01-01 UTC                  9.82
+
+Champs disponibles pour la recherche (sites de prélèvements) : 
+NRESSURV, NSIT, IDSITEP, LIBELLE, LONGI, LATI, ALTI, NINSEE, AXE, COMMENTAIRE, NSIT_LOCAL, NOM_COURT_SIT_LOCAL, DATE_DEB, DATE_FIN, campaigns
+
+Par défaut : IDSITEP, LIBELLE
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
 
 [1] "Benzene"
 [[1]]
-           start            end D17LAR_STLOUIS.TUBE.ACTIF.V4
-1 2011-01-01 UTC 2012-01-01 UTC                          1.7
+           start            end D17LAR_STLOUIS.215.V4
+1 2011-01-01 UTC 2012-01-01 UTC                   1.7
 
 [[2]]
-           start            end D17LAR_STLOUIS.TUBE.ACTIF.V4
-1 2011-01-01 UTC 2012-01-01 UTC                          1.7
+           start            end D17LAR_STLOUIS.215.V4
+1 2011-01-01 UTC 2012-01-01 UTC                   1.7
 
 [[3]]
-           start            end D17LAR_STLOUIS.TUBE.ACTIF.V4
-1 2011-01-01 UTC 2012-01-01 UTC                          1.7
+           start            end D17LAR_STLOUIS.215.V4
+1 2011-01-01 UTC 2012-01-01 UTC                   1.7
 
 [[4]]
-           start            end D17LAR_STLOUIS.TUBE.ACTIF.V4
-1 2011-01-01 UTC 2012-01-01 UTC                          1.7
+           start            end D17LAR_STLOUIS.215.V4
+1 2011-01-01 UTC 2012-01-01 UTC                   1.7
+
+Champs disponibles pour la recherche (sites de prélèvements) : 
+NRESSURV, NSIT, IDSITEP, LIBELLE, LONGI, LATI, ALTI, NINSEE, AXE, COMMENTAIRE, NSIT_LOCAL, NOM_COURT_SIT_LOCAL, DATE_DEB, DATE_FIN, campaigns
+
+Par défaut : IDSITEP, LIBELLE
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
 
 [1] "Arsenic particulaire"
 [[1]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
-1 2011-01-01 UTC 2012-01-01 UTC                                            0.81
+           start            end D17LAR_STLOUIS.207.80
+1 2011-01-01 UTC 2012-01-01 UTC                  0.81
 
 [[2]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
-1 2011-01-01 UTC 2012-01-01 UTC                                            0.81
+           start            end D17LAR_STLOUIS.207.80
+1 2011-01-01 UTC 2012-01-01 UTC                  0.81
 
 [[3]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.80
-1 2011-01-01 UTC 2012-01-01 UTC                                            0.81
+           start            end D17LAR_STLOUIS.207.80
+1 2011-01-01 UTC 2012-01-01 UTC                  0.81
+
+Champs disponibles pour la recherche (sites de prélèvements) : 
+NRESSURV, NSIT, IDSITEP, LIBELLE, LONGI, LATI, ALTI, NINSEE, AXE, COMMENTAIRE, NSIT_LOCAL, NOM_COURT_SIT_LOCAL, DATE_DEB, DATE_FIN, campaigns
+
+Par défaut : IDSITEP, LIBELLE
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
 
 [1] "Cadmium particulaire"
 [[1]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
-1 2011-01-01 UTC 2012-01-01 UTC                                            0.08
+           start            end D17LAR_STLOUIS.207.82
+1 2011-01-01 UTC 2012-01-01 UTC                  0.08
 
 [[2]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
-1 2011-01-01 UTC 2012-01-01 UTC                                            0.08
+           start            end D17LAR_STLOUIS.207.82
+1 2011-01-01 UTC 2012-01-01 UTC                  0.08
 
 [[3]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.82
-1 2011-01-01 UTC 2012-01-01 UTC                                            0.08
+           start            end D17LAR_STLOUIS.207.82
+1 2011-01-01 UTC 2012-01-01 UTC                  0.08
+
+Champs disponibles pour la recherche (sites de prélèvements) : 
+NRESSURV, NSIT, IDSITEP, LIBELLE, LONGI, LATI, ALTI, NINSEE, AXE, COMMENTAIRE, NSIT_LOCAL, NOM_COURT_SIT_LOCAL, DATE_DEB, DATE_FIN, campaigns
+
+Par défaut : IDSITEP, LIBELLE
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
 
 [1] "Nickel particulaire"
 [[1]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
-1 2011-01-01 UTC 2012-01-01 UTC                                            1.29
+           start            end D17LAR_STLOUIS.207.87
+1 2011-01-01 UTC 2012-01-01 UTC                  1.29
 
 [[2]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
-1 2011-01-01 UTC 2012-01-01 UTC                                            1.29
+           start            end D17LAR_STLOUIS.207.87
+1 2011-01-01 UTC 2012-01-01 UTC                  1.29
 
 [[3]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.87
-1 2011-01-01 UTC 2012-01-01 UTC                                            1.29
+           start            end D17LAR_STLOUIS.207.87
+1 2011-01-01 UTC 2012-01-01 UTC                  1.29
 
-[1] "Benzo(a)pyrène particulaire"
+Champs disponibles pour la recherche (sites de prélèvements) : 
+NRESSURV, NSIT, IDSITEP, LIBELLE, LONGI, LATI, ALTI, NINSEE, AXE, COMMENTAIRE, NSIT_LOCAL, NOM_COURT_SIT_LOCAL, DATE_DEB, DATE_FIN, campaigns
+
+Par défaut : IDSITEP, LIBELLE
+
+
+Champs disponibles pour la recherche (polluants) : 
+NOPOL, CCHIM, NCON
+
+Par défaut : NOPOL, CCHIM, NCON
+
+
+[1] "Benzo(a)pyrène particulaire PM10"
 [[1]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.P6
-1 2011-01-01 UTC 2012-01-01 UTC                                             0.2
+           start            end D17LAR_STLOUIS.207.P6
+1 2011-01-01 UTC 2012-01-01 UTC                   0.2
 
 [[2]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.P6
-1 2011-01-01 UTC 2012-01-01 UTC                                             0.2
+           start            end D17LAR_STLOUIS.207.P6
+1 2011-01-01 UTC 2012-01-01 UTC                   0.2
 
 [[3]]
-           start            end D17LAR_STLOUIS.PRELEVEMENT.1.m3.h.SUR.FILTRE.P6
-1 2011-01-01 UTC 2012-01-01 UTC                                             0.2
+           start            end D17LAR_STLOUIS.207.P6
+1 2011-01-01 UTC 2012-01-01 UTC                   0.2
 
 > 
 > # On ferme
 > #=========
 > 
-> dbDisconnect(xr[['db']])
-[1] TRUE
+> xrDisconnect(xr)
+Déconnexion réussie. L'API reste consultable sur sa partie publique (si activée).
+$host
+[1] "xair.atmo-na.org"
+
+$port
+[1] 8443
+
+$version
+[1] 2
+
+$logged
+[1] FALSE
+
+attr(,"class")
+[1] "xr"
 > 
+> proc.time()
+   user  system elapsed 
+ 39.454   0.401  55.599 
