@@ -24,6 +24,8 @@
 #' @param nbattempt Nombre de tentative d'exécution d'une requête avant plantage
 #'  définitif. 100 par défaut. Nécessaire dans le cadre de la limititation du nombre 
 #'  de requêtes pr unité de temps imposée par ISEO.
+#' @param uid Identifiant utilisé pour la connexion à XR.
+#' @param pwd Mot de passe pour initialiser la connexion à XR.
 #' @inheritParams xrGetContinuousData
 #' @return Une connexion à la base XR.
 #'
