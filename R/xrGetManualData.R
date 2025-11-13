@@ -135,7 +135,7 @@ xrGetManualData <-
 		}
 		if(nrow(methodes) > 0) query <- paste0(
 			query, 'codeSamplingMethod=',
-			paste0(methodes[['samplingMethod']], collapse=','),
+			paste0(methodes[['idSamplingMethod']], collapse=','),
 			'&')
 	}
 
