@@ -27,6 +27,8 @@
 #' @param uid Identifiant utilisé pour la connexion à XR.
 #' @param pwd Mot de passe pour initialiser la connexion à XR.
 #' @inheritParams xrGetContinuousData
+#' @param https Booleen pour forcer l'utilisation du protocole https. Vide par défaut
+#'  8080 -> http, 8443 -> https.
 #' @return Une connexion à la base XR.
 #'
 #' @aliases options, Xair.host, Xair.port
@@ -40,7 +42,7 @@
 #'}
 #' @export
 xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=NULL,
-					  uid=NULL, pwd=NULL, silent) {
+					  uid=NULL, pwd=NULL, silent, https) {
 	if(!is.null(debug)) options(Xair.debug=debug)
 	if(!is.null(nbattempt)) options(Xair.nbattempt=nbattempt)
 	if(!missing(silent)) options(Xair.silent=silent)
@@ -77,6 +79,10 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 			   port   = options()[['Xair.port']],
 			   version= options()[['Xair.version']],
 			   logged = FALSE)
+
+	if(missing(https)){
+		xr[['https']] <- xr[['port']]=='8443'}else{
+		xr[['https']] <- https}
 
 	# si ni pwd ni uid dispo connexion tentative de connexion non-authentifiée
 	if(!is.null(getOption('Xair.uid')) ||

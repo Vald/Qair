@@ -11,14 +11,14 @@
 xrGetUrl <- function(conn, version=FALSE, authentification=FALSE){
 	if(authentification)
 	return(sprintf('http%s://%s:%s/dms-api/authentification/login',
-				   if(conn[['port']] == 8443) 's' else '',
+				   if(conn[['https']]) 's' else '',
 				   conn[['host']], conn[['port']])) else if(version)
 	return(sprintf('http%s://%s:%s/dms-api/%s/version',
-				   if(conn[['port']] == 8443) 's' else '',
+				   if(conn[['https']]) 's' else '',
 				   conn[['host']], conn[['port']],
 				   if(conn[['logged']]) 'restricted' else 'public')) else
 	return(sprintf('http%s://%s:%s/dms-api/%s/',
-				   if(conn[['port']] == 8443) 's' else '',
+				   if(conn[['https']]) 's' else '',
 				   conn[['host']], conn[['port']],
 				   if(conn[['logged']]) 'restricted' else 'public'))
 }
