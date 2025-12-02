@@ -14,7 +14,7 @@
 #' (même si non utilisée).
 #'
 #' @param host Adresse de l'hôte hébergeant l'API-REST.
-#' @param port Port de l'hôte hébergeant l'API-REST (8443 ou 8080).
+#' @param port Port de l'hôte hébergeant l'API-REST (normalement 8443 ou 8080 ...).
 #' @param version Version de Qair avec laquelle doivent être compatibles les résultats
 #'  des requêtes : 2 -> avec Qair_2* (rétro-compatibilité), 3 sinon.
 #'  Non-pris en compte pour les données manuelles : le format est nécessairement
@@ -56,12 +56,10 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 	if(!is.null(port)) {
 		options(Xair.port=port)
 	} else if(is.null(getOption('Xair.port'))) {
-		cat("port d'accès à la base (8443 https, 8080 http) :\n")
+		cat("port d'accès à la base (8443 https, 8080 http, autre...?) :\n")
 		options(Xair.port=scan(what='character', nlines=1))
 		cat('\n')
 	}
-	if(!options()[['Xair.port']] %in% c(8443, 8080))
-		stop("XR n'accepte que les ports 8443 ou 8080")
 
 	if(!is.null(version)) {
 		options(Xair.version=version)
