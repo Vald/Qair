@@ -158,7 +158,7 @@ xrGetManualData <-
 
 	donnees <- data.frame(
 				VALEUR      = unlist(lapply(donnees[['laboMeasures']], '[[', 'value')),
-				CODE_QUALITE= unlist(sapply(donnees[['laboMeasures']], '[[', 'qc')),
+				CODE_QUALITE= unlist(lapply(donnees[['laboMeasures']], '[[', 'qc')),
 				SITE        = rep(donnees[['samplingSiteLabel']], nrows),
 				METHODE     = rep(donnees[['samplingMethod']], nrows),
 				NOPOL       = unlist(lapply(donnees[['laboMeasures']], '[[', 'nopol')),
