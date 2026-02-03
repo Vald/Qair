@@ -114,7 +114,8 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 				xrGetUrl(xr, authentification=TRUE),
 				httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE),
 				encode='form', terminate_on=400,
-				body=list(username=getOption('Xair.uid'), password=getOption('Xair.pwd')))
+				body=list(username=getOption('Xair.uid'), password=getOption('Xair.pwd')),
+				user_agent('httr'))
 			) == 200
 	}
 
