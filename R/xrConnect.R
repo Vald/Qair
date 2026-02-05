@@ -29,6 +29,7 @@
 #' @inheritParams xrGetContinuousData
 #' @param https Booleen pour forcer l'utilisation du protocole https. Vide par défaut
 #'  8080 -> http, 8443 -> https.
+#' @param api_root chemin vers la racine de l'API. Par défaut dms-api.
 #' @return Une connexion à la base XR.
 #'
 #' @aliases options, Xair.host, Xair.port
@@ -42,7 +43,7 @@
 #'}
 #' @export
 xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=NULL,
-					  uid=NULL, pwd=NULL, silent, https) {
+					  uid=NULL, pwd=NULL, silent, https, api_root='dms-api') {
 	if(!is.null(debug)) options(Xair.debug=debug)
 	if(!is.null(nbattempt)) options(Xair.nbattempt=nbattempt)
 	if(!missing(silent)) options(Xair.silent=silent)
@@ -73,11 +74,20 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 	if(!options()[['Xair.version']] %in% 2:3)
 		stop("Les versions de Qair acceptées sont uniquement 2 ou 3")
 
+	if(!is.null(api_root)) {
+		options(Xair.api_root=api_root)
+	} else if(is.null(getOption('Xair.api_root'))) {
+		cat("api_root de XR. Chemin à coller juste après l'ip.\n")
+		options(Xair.api_root=scan(what='character', nlines=1))
+		cat('\n')
+	}
+
 	#--------------------------------------------------------------------------
 
 	xr <- list(host   = options()[['Xair.host']],
 			   port   = options()[['Xair.port']],
 			   version= options()[['Xair.version']],
+			   api_root= options()[['Xair.api_root']],
 			   logged = FALSE)
 
 	if(missing(https)){

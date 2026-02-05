@@ -10,16 +10,16 @@
 #' @return une chaîne de caractères correspondant à la base de l'URL à requêter
 xrGetUrl <- function(conn, version=FALSE, authentification=FALSE){
 	if(authentification)
-	return(sprintf('http%s://%s:%s/dms-api/authentification/login',
+	return(sprintf('http%s://%s:%s/%s/authentification/login',
 				   if(conn[['https']]) 's' else '',
-				   conn[['host']], conn[['port']])) else if(version)
-	return(sprintf('http%s://%s:%s/dms-api/%s/version',
+				   conn[['host']], conn[['port']], conn[['api_root']])) else if(version)
+	return(sprintf('http%s://%s:%s/%s/%s/version',
 				   if(conn[['https']]) 's' else '',
-				   conn[['host']], conn[['port']],
+				   conn[['host']], conn[['port']], conn[['api_root']],
 				   if(conn[['logged']]) 'restricted' else 'public')) else
-	return(sprintf('http%s://%s:%s/dms-api/%s/',
+	return(sprintf('http%s://%s:%s/%s/%s/',
 				   if(conn[['https']]) 's' else '',
-				   conn[['host']], conn[['port']],
+				   conn[['host']], conn[['port']], conn[['api_root']],
 				   if(conn[['logged']]) 'restricted' else 'public'))
 }
 
