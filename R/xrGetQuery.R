@@ -75,7 +75,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'environment.samplingPlaceTypeLabel','environment.laneTypeLabel',
 					 'TYPE_SECTEUR','ZONE_ACTIVITE',
 					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel',
-					 'campaigns'),
+					 'campaigns', 'ip_address'),
 			nv3  = c('id','dbRowId','refSite','labelSite',
 					 'startDate', 'stopDate',
 					 'refSitePublic','labelSiteExtended',
@@ -93,7 +93,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'environment.samplingPlaceTypeLabel','environment.laneTypeLabel',
 					 'sectors.typeSector','sectors.zoneOfActivity',
 					 'sectors.typeSectorLabel','sectors.zoneOfActivityLabel',
-					 'campaigns'),
+					 'campaigns', 'communication.ip_address'),
 			type = c(rep('character()',4), 
 					 'as.POSIXct(character())', 'as.POSIXct(character())',
 					 'character()', 'character()',
@@ -111,7 +111,7 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'character()','character()',
 					 'numeric()','numeric()',
 					 'character()','character()',
-					 'list()')
+					 'list()', 'character()')
 		  ))
 	}else if(name == 'measures'){
 		return(data.frame(
