@@ -91,12 +91,13 @@ xrConnect <- function(host=NULL, port=NULL, version=NULL, debug=NULL, nbattempt=
 			   logged = FALSE)
 
 	if(missing(https)){
-		xr[['https']] <- xr[['port']]=='8443'}else{
+		xr[['https']] <- as.character(xr[['port']])=='8443'}else{
 		xr[['https']] <- https}
 
 	# si ni pwd ni uid dispo connexion tentative de connexion non-authentifiée
 	if(!is.null(getOption('Xair.uid')) ||
 	   !is.null(getOption('Xair.pwd')) ||
+	   !is.null(pwd) || !is.null(uid) ||
 	   status_code(RETRY('GET',
 			paste0(xrGetUrl(xr), 'version'),
 			httr::config(ssl_verifypeer=FALSE,ssl_verifyhost=FALSE))
