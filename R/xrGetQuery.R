@@ -161,19 +161,21 @@ xrListFields <- function(name=c('sites' ,'measures', 'campaigns', 'physicals',
 					 'NINSEE', 'AXE', 'COMMENTAIRE',
 					 'NSIT_LOCAL', 'NOM_COURT_SIT_LOCAL',
 					 'DATE_DEB', 'DATE_FIN',
-					 'campaigns'),
+					 'campaigns',
+					 'environment.locationType','environment.locationTypeLabel'),
 			nv3  = c('idCustomer', 'idSamplingSite', 'identifier', 'label',
 					 'address.longitude', 'address.latitude', 'address.altitude',
 					 'address.idCommune', 'address.street', 'comment',
 					 'nsitLocal', 'idSiteLocal',
 					 'startDate', 'endDate',
-					 'campaigns'),
+					 'campaigns',
+					 'environment.locationType','environment.locationTypeLabel'),
 			type = c('numeric()', 'numeric()', 'character()', 'character()',
 					 'numeric()', 'numeric()', 'numeric()',
 					 'numeric()', 'character()', 'character()',
 					 'numeric()', 'character()',
 					 'as.POSIXct(character())', 'as.POSIXct(character())',
-					 'list()'
+					 'list()','numeric()','character()'
 			)
 		  ))
 	}else if(name == 'samplingMethod'){
